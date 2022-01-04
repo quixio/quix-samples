@@ -16,9 +16,16 @@ class QuixFunction:
 
      # Callback triggered for each new parameter data.
     def on_parameter_data_handler(self, data: ParameterData):
-        print(data)
+        
+        df = data.to_panda_frame()  # Input data frame
+        output_df = pd.DataFrame()
+        output_df["time"] = df["time"]
 
-        # Here transform your data.
+        output_df["TAG__LapNumber"] = df["TAG__LapNumber"]
+        print(df)
 
-        self.stream_writer.parameters.write(data)
+        # If braking force applied is more than 50%, we send True.  
+        output_df["HardBraking"] = df.apply(lambda row: "True" if row.Brake > 0.5 else "False", axis=1)  
+
+        stream_writer.parameters.buffer.write(output_df)  # Send filtered data to output topic
 
