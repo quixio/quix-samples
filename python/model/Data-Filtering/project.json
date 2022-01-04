@@ -1,0 +1,26 @@
+{
+    "libraryItemId": "9b7f7253-22c3-41a4-a5e9-9f8ec084f879",
+    "name": "Data Filtering",
+    "language": "python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read/Write SDK"]
+    },
+    "shortDescription": "Filter data with this 'Hard Braking' model",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+            "DefaultValue" : "HelloWorldInput"
+        },
+		{
+            "Name" : "output",
+            "Type" : "Placeholder",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "HelloWorldOutput"
+        }
+    ]    
+}

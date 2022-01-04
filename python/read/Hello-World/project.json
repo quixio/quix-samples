@@ -1,0 +1,19 @@
+{
+    "libraryItemId": "e406d509-930e-4ae3-bfe8-57bfb8befe9d",
+    "name": "Hello World",
+    "language": "python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read SDK"]
+    },
+    "shortDescription": "The most basic and essential 'Hello World' sample",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+            "DefaultValue" : "HelloWorldInput"
+        }
+    ]    
+}
