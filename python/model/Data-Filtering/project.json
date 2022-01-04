@@ -13,8 +13,7 @@
             "Name" : "input",
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
-            "DefaultValue" : "HelloWorldInput"
+            "Description" : "This is the input topic"
         },
 		{
             "Name" : "output",
