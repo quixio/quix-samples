@@ -8,6 +8,8 @@
 		"SDK Usage": ["Read/Write SDK"]
     },
     "shortDescription": "Filter data with this 'Hard Braking' model",
+	"DefaultFile": "README.md",
+	"EntryPoint": "source/build/dockerfile",
     "Variables": [ 
         {
             "Name" : "input",
