@@ -1,12 +1,12 @@
 {
     "libraryItemId": "e406d509-930e-4ae3-bfe8-57bfb8befe9d",
-    "name": "Hello World",
-    "language": "python",
+    "name": "Hello World - Read",
+    "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"]
     },
-    "shortDescription": "The most basic and essential 'Hello World' sample",
+    "shortDescription": "The most basic and essential 'Hello World' read sample",
     "Variables": [ 
         {
             "Name" : "input",
