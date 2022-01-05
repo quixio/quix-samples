@@ -8,7 +8,7 @@ client = QuixStreamingClient('{placeholder:token}')
 # temporary (needed for dev)
 client.api_url = "https://portal-api.dev.quix.ai"
 
-input_topic = client.open_input_topic('{placeholder:input}')
+input_topic = client.open_input_topic('{placeholder:workspaceId}-{placeholder:input}')
 
 
 # read streams

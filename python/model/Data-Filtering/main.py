@@ -9,8 +9,8 @@ client.api_url = "https://portal-api.dev.quix.ai"
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
-input_topic = client.open_input_topic('{placeholder:input}', "default-consumer-group")
-output_topic = client.open_output_topic('{placeholder:output}')
+input_topic = client.open_input_topic('{placeholder:workspaceId}-{placeholder:input}', "default-consumer-group")
+output_topic = client.open_output_topic('{placeholder:workspaceId}-{placeholder:output}')
 
 
 # Callback called for each incoming stream

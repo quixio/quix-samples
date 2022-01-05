@@ -9,7 +9,7 @@ client = QuixStreamingClient('{placeholder:token}')
 # temporary (needed for dev)
 client.api_url = "https://portal-api.dev.quix.ai"
 
-output_topic = client.open_output_topic('{placeholder:output}')
+output_topic = client.open_output_topic('{placeholder:workspaceId}-{placeholder:output}')
 
 stream = output_topic.create_stream()
 
