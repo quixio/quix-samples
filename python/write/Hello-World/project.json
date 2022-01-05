@@ -12,7 +12,7 @@
     "Variables": [
         {
             "Name" : "output",
-            "Type" : "Placeholder",
+            "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
             "DefaultValue" : "HelloWorldOutput"

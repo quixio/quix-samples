@@ -8,7 +8,11 @@ client = QuixStreamingClient('{placeholder:token}')
 # temporary (needed for dev)
 client.api_url = "https://portal-api.dev.quix.ai"
 
+<<<<<<< HEAD
 input_topic = client.open_input_topic('{placeholder:workspaceId}-{placeholder:input}')
+=======
+input_topic = client.open_input_topic(os.environ[])
+>>>>>>> quix-function
 
 
 # read streams
@@ -27,7 +31,6 @@ def read_stream(input_stream: StreamReader):
 
 # Hook up events before initiating read to avoid losing out on any data
 input_topic.on_stream_received += read_stream
-input_topic.start_reading()  # initiate read
 
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
