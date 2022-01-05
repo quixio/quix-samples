@@ -12,18 +12,18 @@
     "Variables": [ 
         {
             "Name" : "input",
-            "Type" : "Placeholder",
+            "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-	    "Required": true
+	        "Required": true
         },
 		{
             "Name" : "output",
-            "Type" : "Placeholder",
+            "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
             "DefaultValue" : "HelloWorldOutput",
-	    "Required": true
+	        "Required": true
         }
     ]    
 }
