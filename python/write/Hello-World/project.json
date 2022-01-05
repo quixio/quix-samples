@@ -7,7 +7,9 @@
 		"SDK Usage": ["Write SDK"]
     },
     "shortDescription": "The most basic and essential 'Hello World' write sample",
-    "Variables": [ 
+    "DefaultFile": "quix_function.py",
+	"EntryPoint": "source/build/dockerfile",
+    "Variables": [
         {
             "Name" : "output",
             "Type" : "Placeholder",
