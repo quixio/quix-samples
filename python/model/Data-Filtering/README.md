@@ -6,4 +6,4 @@ It shows how to make real-time decisions on your data, in this case whether a dr
 
 ## Local Development
 
-For information on how to set up your local development environment see the readme that's relevant to you [here](https://github.com/quixai/quix-library/python/LocalDevelopment/)
+For information on how to set up your local development environment see the readme that's relevant to you [here](../../LocalDevelopment/)
