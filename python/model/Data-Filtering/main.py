@@ -1,4 +1,4 @@
-from quixstreaming import QuixStreamingClient, ParameterData, StreamEndType, StreamReader
+from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader
 from quixstreaming.app import App
 from quix_function import QuixFunction
 
