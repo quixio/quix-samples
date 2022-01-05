@@ -15,15 +15,14 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-	        "Required": true
+            "DefaultValue" : "f1-data"
         },
 		{
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput",
-	        "Required": true
+            "DefaultValue" : "hard-braking"
         }
     ]    
 }

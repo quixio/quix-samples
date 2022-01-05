@@ -12,7 +12,7 @@
     "Variables": [ 
         {
             "Name" : "input",
-            "Type" : "Placeholder",
+            "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
             "DefaultValue" : "HelloWorldInput"
