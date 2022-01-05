@@ -1,7 +1,7 @@
-import os
 from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader
 from quixstreaming.app import App
 from quix_function import QuixFunction
+import os
 
 
 # Create a client. Client helps you to create input reader or output writer for specified topic.
@@ -11,14 +11,10 @@ client.api_url = "https://portal-api.dev.quix.ai"
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
-<<<<<<< HEAD
-input_topic = client.open_input_topic('{placeholder:workspaceId}-{placeholder:input}', "default-consumer-group")
-output_topic = client.open_output_topic('{placeholder:workspaceId}-{placeholder:output}')
 
-=======
 input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
 output_topic = client.open_output_topic(os.environ["output"])
->>>>>>> quix-function
+
 
 # Callback called for each incoming stream
 def read_stream(input_stream: StreamReader):
@@ -27,7 +23,7 @@ def read_stream(input_stream: StreamReader):
     output_stream = output_topic.create_stream(input_stream.stream_id + "-hard-braking")
     output_stream.properties.parents.append(input_stream.stream_id)
 
-    # TODO: Add comment
+    # handle the data in a function to simplify the example
     quix_function = QuixFunction(input_stream, output_stream)
         
     # React to new data received from input topic.

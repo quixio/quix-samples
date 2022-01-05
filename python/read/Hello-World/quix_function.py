@@ -1,5 +1,6 @@
 from quixstreaming import ParameterData
 
+
 class QuixFunction:
 
     # Callback triggered for each new parameter data.
