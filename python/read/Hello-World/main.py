@@ -20,7 +20,7 @@ def read_stream(input_stream: StreamReader):
 
     buffer = input_stream.parameters.create_buffer(buffer_options)
 
-    quix_function = QuixFunction(input_stream)
+    quix_function = QuixFunction()
 
     buffer.on_read += quix_function.on_parameter_data_handler
 
