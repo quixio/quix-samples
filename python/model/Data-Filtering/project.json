@@ -7,7 +7,7 @@
 		"SDK Usage": ["Read/Write SDK"]
     },
     "shortDescription": "Filter data with this 'Hard Braking' model",
-	"DefaultFile": "README.md",
+	"DefaultFile": "quix_function.py",
 	"EntryPoint": "source/build/dockerfile",
     "Variables": [ 
         {
@@ -15,14 +15,15 @@
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-            "DefaultValue" : "HelloWorldInput"
+	    "Required": true
         },
 		{
             "Name" : "output",
             "Type" : "Placeholder",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput"
+            "DefaultValue" : "HelloWorldOutput",
+	    "Required": true
         }
     ]    
 }

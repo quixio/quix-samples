@@ -7,6 +7,8 @@
 		"SDK Usage": ["Read SDK"]
     },
     "shortDescription": "The most basic and essential 'Hello World' read sample",
+    "DefaultFile": "quix_function.py",
+	"EntryPoint": "source/build/dockerfile",
     "Variables": [ 
         {
             "Name" : "input",

@@ -12,6 +12,8 @@ RUN apt-get update && \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
     echo "deb https://download.mono-project.com/repo/ubuntu stable-focal/snapshots/6.10.0 main" | tee /etc/apt/sources.list.d/mono-official-stable.list && apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y mono-devel && \
+# Workaround an issue with certs due to mono BTLS
+    sed -i 's#mozilla/DST_Root_CA_X3.crt#!mozilla/DST_Root_CA_X3.crt#' /etc/ca-certificates.conf && update-ca-certificates \
 # install additional pythonnet dependencies
     DEBIAN_FRONTEND=noninteractive apt-get install -y clang curl dos2unix python3-dev libglib2.0 build-essential && \
     python3 -m pip install pycparser && \

@@ -1,11 +1,13 @@
+from quixstreaming import QuixStreamingClient
 import time
 import datetime
 import math
 
-from quixstreaming import StreamingClient
 
 # Create a client. Client helps you to create input reader or output writer for specified topic.
 client = QuixStreamingClient('{placeholder:token}')
+# temporary (needed for dev)
+client.api_url = "https://portal-api.dev.quix.ai"
 
 output_topic = client.open_output_topic('{placeholder:output}')
 
