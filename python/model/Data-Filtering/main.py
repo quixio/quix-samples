@@ -1,11 +1,11 @@
-from quixstreaming import StreamingClient, ParameterData, StreamEndType, StreamReader
-import threading
-import signal
-import pandas as pd
-import time
+from quixstreaming import QuixStreamingClient, ParameterData, StreamEndType, StreamReader
+from quixstreaming.app import App
+from quix_function import QuixFunction
 
 # Create a client. Client helps you to create input reader or output writer for specified topic.
 client = QuixStreamingClient('{placeholder:token}')
+# temporary (needed for dev)
+client.api_url = "https://portal-api.dev.quix.ai"
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
@@ -22,7 +22,6 @@ def read_stream(new_stream: StreamReader):
     stream_writer.properties.parents.append(new_stream.stream_id)
 
     quix_function = QuixFunction(stream_writer, new_stream)
-
         
     # React to new data received from input topic.
     new_stream.events.on_read += quix_function.on_event_data_handler
@@ -44,25 +43,5 @@ input_topic.start_reading()  # initiate read
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
 
-# Below code is to handle graceful exit of the model.
-event = threading.Event() 
-
-
-def signal_handler(sig, frame):
-    # dispose the topic(s) and close the stream(s)
-    print('Closing streams...')
-    input_topic.dispose()
-    output_topic.dispose()
-
-    print('Setting termination flag')
-    event.set()
-
-
-signal.signal(signal.SIGINT, signal_handler)
-signal.signal(signal.SIGTERM, signal_handler)
-
-while not event.is_set():
-    time.sleep(1)
-
-print('Exiting')
-
+# Handle graceful exit of the model.
+App.run()
