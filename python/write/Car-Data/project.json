@@ -4,7 +4,8 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"]
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Easily write data from a CSV file into a stream",
     "DefaultFile": "main.py",

@@ -4,7 +4,8 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"]
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
     },
     "shortDescription": "The most basic and essential 'Hello World' write sample",
     "DefaultFile": "main.py",
