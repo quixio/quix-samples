@@ -1,13 +1,14 @@
 {
-    "libraryItemId": "e8102920-b815-4c53-9dcd-f477ff865b1c",
-    "name": "Hello World - Write",
+    "libraryItemId": "e86f1198-a3ba-431c-93e5-d0a4f380c79d",
+    "name": "Hello Python - Write",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"]
+		"SDK Usage": ["Write SDK"],
+        "Packages": ["Pandas"]
     },
     "shortDescription": "The most basic and essential 'Hello World' write sample",
-    "DefaultFile": "readme.md",
+    "DefaultFile": "main.py",
 	"EntryPoint": "source/build/dockerfile",
     "Variables": [
         {
@@ -15,7 +16,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput"
+            "DefaultValue" : "HelloPandasOutput"
         }
     ]    
 }

@@ -4,7 +4,7 @@ from quix_function import QuixFunction
 import os
 
 
-# Create a client. Client helps you to create input reader or output writer for specified topic.
+# Create a client. The client helps you to create input reader or output writer for specified topic.
 client = QuixStreamingClient('{placeholder:token}')
 # temporary (needed for dev)
 client.api_url = "https://portal-api.dev.quix.ai"
