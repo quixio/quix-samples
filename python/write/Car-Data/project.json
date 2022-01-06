@@ -1,0 +1,21 @@
+{
+    "libraryItemId": "a8c8b9f2-2063-4f0f-affe-a1624369a650",
+    "name": "Write Car Data",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"]
+    },
+    "shortDescription": "Easily write data from a CSV file into a stream",
+    "DefaultFile": "main.py",
+	"EntryPoint": "source/build/dockerfile",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "car-data"
+        }
+    ]    
+}
