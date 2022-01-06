@@ -4,7 +4,8 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read/Write SDK"]
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Filter data with this 'Hard Braking' model",
 	"DefaultFile": "quix_function.py",
