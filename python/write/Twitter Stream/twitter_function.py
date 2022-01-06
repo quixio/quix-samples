@@ -9,7 +9,9 @@ class TwitterFunction:
 
     def data_handler(self, matching_rules, data):
 
-        # write the tweet id, text and rules name to quix
+        print("Writing tweet {} to stream".format(data["id"]))
+
+        # write the tweet id, text and rule name to Quix
         self.stream_writer.parameters.buffer.add_timestamp(datetime.utcnow()) \
             .add_tag("tag", matching_rules[0]["tag"]) \
             .add_value("tweet_id", data["id"]) \
