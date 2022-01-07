@@ -3,9 +3,9 @@ import pandas as pd
 
 
 class QuixFunction:
-    def __init__(self, stream_writer: StreamWriter, stream_reader: StreamReader):
-        self.stream_writer = stream_writer
-        self.stream_reader = stream_reader
+    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
+        self.input_stream = input_stream
+        self.output_stream = output_stream
 
     # Callback triggered for each new event.
     def on_event_data_handler(self, data: EventData):
@@ -13,7 +13,7 @@ class QuixFunction:
 
         # Here transform your data.
 
-        self.stream_writer.events.write(data)
+        self.output_stream.events.write(data)
 
     # Callback triggered for each new parameter data.
     def on_parameter_data_handler(self, data: ParameterData):
@@ -28,5 +28,5 @@ class QuixFunction:
         # If braking force applied is more than 50%, we send True.  
         output_df["HardBraking"] = df.apply(lambda row: "True" if row.Brake > 0.5 else "False", axis=1)  
 
-        self.stream_writer.parameters.buffer.write(output_df)  # Send filtered data to output topic
+        self.output_stream.parameters.buffer.write(output_df)  # Send filtered data to output topic
 
