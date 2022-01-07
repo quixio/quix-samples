@@ -1,1 +1,1 @@
-quixstreaming==0.3.7a202112161446
+quixstreaming==0.3.7a202201061454
