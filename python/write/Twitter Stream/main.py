@@ -1,29 +1,20 @@
 from quixstreaming import QuixStreamingClient
+from quixstreaming.app import App
 from twitter_function import TwitterFunction
 import requests
 import json
 import time
 from requests.exceptions import ChunkedEncodingError
 import traceback
-import signal
-from threading import Thread, Event
+from threading import Thread
 import os
 
-###### TODO
-###### USE APP
-
-# Handle graceful exit of the model.
-event = Event()
-
-certificatePath = "{placeholder:broker.security.certificatepath}"
-username = "{placeholder:broker.security.username}"
-password = "{placeholder:broker.security.password}"
-broker = "{placeholder:broker.address}"
+run = 1
 
 # Create a client. The client helps you to create input reader or output writer for specified topic.
 client = QuixStreamingClient('{placeholder:token}')
 
-# connect to the output topic
+# create the output topic
 output_topic = client.open_output_topic(os.environ["output"])
 
 # Twitter bearer token goes here
@@ -110,13 +101,11 @@ def set_rules(headers):
 # here were going to get the stream and handle its output
 # we'll do this by streaming the results into Quix
 def get_stream(headers, output_stream):
-    global event
-
+    global run
+    
     TwitterFunction.__init__(output_stream)
 
-    run = 1
-
-    while run and not event.is_set():
+    while run:
         try:
             with requests.get(
                     "https://api.twitter.com/2/tweets/search/stream", headers=headers, stream=True,
@@ -131,7 +120,7 @@ def get_stream(headers, output_stream):
                 for response_line in response.iter_lines():
 
                     # exit the loop if kill signal received
-                    if event.is_set():
+                    if run == 0:
                         break
 
                     if response_line:
@@ -157,8 +146,12 @@ def get_stream(headers, output_stream):
             run = 0
 
 
+def before_shutdown():
+    global run
+    run = 0
+
+
 def main():
-    global event
     global output_topic
 
     headers = create_headers(bearer_token)
@@ -170,18 +163,8 @@ def main():
     thread = Thread(target=get_stream, args=(headers, output_stream))
     thread.start()
 
-    def signal_handler(sig, frame):
-        # dispose the topic and close the stream(s)
-        output_topic.dispose()
-
-        print("Setting termination flag")
-        event.set()
-
-    signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
-
-    while not event.is_set():
-        time.sleep(1)
+    # wait for sigterm
+    App.run(before_shutdown=before_shutdown)
 
     # wait for worker thread to end
     thread.join()
