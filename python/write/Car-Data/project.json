@@ -1,14 +1,14 @@
 {
-    "libraryItemId": "e8102920-b815-4c53-9dcd-f477ff865b1c",
-    "name": "Hello World - Write",
+    "libraryItemId": "a8c8b9f2-2063-4f0f-affe-a1624369a650",
+    "name": "Write Car Data",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "The most basic and essential 'Hello World' write sample",
-    "DefaultFile": "readme.md",
+    "shortDescription": "Easily write data from a CSV file into a stream",
+    "DefaultFile": "main.py",
 	"EntryPoint": "source/build/dockerfile",
     "Variables": [
         {
@@ -16,7 +16,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput"
+            "DefaultValue" : "car-data"
         }
     ]    
 }

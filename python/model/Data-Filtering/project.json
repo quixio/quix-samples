@@ -4,7 +4,8 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read/Write SDK"]
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Filter data with this 'Hard Braking' model",
 	"DefaultFile": "quix_function.py",
@@ -12,18 +13,17 @@
     "Variables": [ 
         {
             "Name" : "input",
-            "Type" : "Placeholder",
+            "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-	    "Required": true
+            "DefaultValue" : "f1-data"
         },
 		{
             "Name" : "output",
-            "Type" : "Placeholder",
+            "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput",
-	    "Required": true
+            "DefaultValue" : "hard-braking"
         }
     ]    
 }
