@@ -16,41 +16,21 @@
    "shortDescription":"The most basic code example how to send data in Quix using Twilio",
    "DefaultFile":"twilio_sink.py",
    "EntryPoint":"build/dockerfile",
-   "Variables":[
-      {
-         "Name":"input",
-         "Type":"EnvironmentVariable",
-         "InputType":"InputTopic",
-         "Description":"This is the input topic",
-         "Required":true
-      },
-      {
-         "Name":"numbers",
-         "Type":"EnvironmentVariable",
-         "InputType":"FreeText",
-         "Description":"This is the threshold's numerical value",
-         "Required":true
-      },
-      {
-         "Name":"account_sid",
-         "Type":"Placeholder",
-         "InputType":"FreeText",
-         "Description":"This is the threshold's numerical value",
-         "Required":true
-      },
-      {
-         "Name":"auth_token",
-         "Type":"Placeholder",
-         "InputType":"FreeText",
-         "Description":"This is the threshold's numerical value",
-         "Required":true
-      },
-      {
-         "Name":"messaging_service_sid",
-         "Type":"Placeholder",
-         "InputType":"FreeText",
-         "Description":"This is the threshold's numerical value",
-         "Required":true
-      }
-   ]
+   "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "realtime-car-data"
+        },
+        {
+            "Name" : "twitter_bearer_token",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Your twitter bearer token",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
 }
