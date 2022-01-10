@@ -1,0 +1,46 @@
+{
+    "libraryItemId": "c3300384-a991-4bef-9c3d-f05b03baf222",
+    "name": "Coin API",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Write realtime Currency data to a stream",
+    "DefaultFile": "twitter_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "realtime-car-data"
+        },
+        {
+            "Name" : "coin_api_key",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Your Coin API key",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "from_currency",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The FROM currency",
+            "DefaultValue" : "BTC",
+            "Required": true
+        },
+        {
+            "Name" : "to_currency",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The TO currency(s)",
+            "DefaultValue" : "USD,GBP",
+            "Required": true
+        }
+    ]    
+}
