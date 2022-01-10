@@ -18,7 +18,7 @@ client = QuixStreamingClient('{placeholder:token}')
 output_topic = client.open_output_topic(os.environ["output"])
 
 # Twitter bearer token goes here
-bearer_token = os.environ["twitter_bearer_token"]
+bearer_token = "{}".format(os.environ["twitter_bearer_token"])
 
 if bearer_token is None:
     raise ValueError('You need to set the twitter_bearer_token to your Twitter developer bearer token')
