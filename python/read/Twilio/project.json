@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Destination"]
     },
     "shortDescription": "The most basic code example how to send data in Quix using Twilio",
-    "DefaultFile": "quix_function.py",
+    "DefaultFile": "twilio_sink.py",
 	"EntryPoint": "build/dockerfile",
     "Variables": [ 
         {
