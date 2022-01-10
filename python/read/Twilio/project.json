@@ -1,0 +1,50 @@
+{
+    "libraryItemId": "e406d509-930e-4ae3-bfe8-57bfb8befe9d",
+    "name": "Twilio sink",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Destination"]
+    },
+    "shortDescription": "The most basic code example how to send data in Quix using Twilio",
+    "DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+            "Required" : true
+        },
+        {
+           "Name" : "numbers",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "None",
+            "Description" : "This is the threshold's numerical value",
+	        "Required": true
+        },
+        {
+           "Name" : "account_sid",
+            "Type" : "Placeholder",
+            "InputType" : "None",
+            "Description" : "This is the threshold's numerical value",
+	        "Required": true
+        },
+        {
+           "Name" : "auth_token",
+            "Type" : "Placeholder",
+            "InputType" : "None",
+            "Description" : "This is the threshold's numerical value",
+	        "Required": true
+        },
+        {
+           "Name" : "messaging_service_sid",
+            "Type" : "Placeholder",
+            "InputType" : "None",
+            "Description" : "This is the threshold's numerical value",
+	        "Required": true
+        }
+    ]    
+}
