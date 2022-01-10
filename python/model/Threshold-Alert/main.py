@@ -13,10 +13,10 @@ client.api_url = "https://portal-api.dev.quix.ai"
 print("Opening input and output topics")
 
 # Environment variables
-input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
-output_topic = client.open_output_topic(os.environ["output"])
-threshold_value = float(os.environ["threshold_value"])
-parameter_name = str(os.environ["parameter_name"])
+input_topic = client.open_input_topic('{placeholder:input}', "default-consumer-group")
+output_topic = client.open_output_topic('{placeholder:output}')
+threshold_value = float('{placeholder:ParameterName}')
+parameter_name = str('{placeholder:ThresholdValue}')
 
 
 # Callback called for each incoming stream
