@@ -1,6 +1,6 @@
 from quixstreaming import QuixStreamingClient
 from quixstreaming.app import App
-from coinapi_functions import CoinApiFunctions
+from quix_functions import QuixFunctions
 import requests
 import time
 from dateutil import parser
@@ -55,7 +55,7 @@ def get_data():
 
             rows = data['rates']
 
-            CoinApiFunctions.data_handler(rows)
+            QuixFunctions.data_handler(rows)
 
             # We sleep for 15 minutes so we don't reach free COIN API account limit.
             # Stop sleeping if process termination requested
