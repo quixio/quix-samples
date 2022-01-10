@@ -21,28 +21,28 @@
         {
            "Name" : "numbers",
             "Type" : "EnvironmentVariable",
-            "InputType" : "Free Text",
+            "InputType" : "FreeText",
             "Description" : "This is the threshold's numerical value",
 	        "Required": true
         },
         {
            "Name" : "account_sid",
             "Type" : "Placeholder",
-            "InputType" : "Free Text",
+            "InputType" : "FreeText",
             "Description" : "This is the threshold's numerical value",
 	        "Required": true
         },
         {
            "Name" : "auth_token",
             "Type" : "Placeholder",
-            "InputType" : "Free Text",
+            "InputType" : "FreeText",
             "Description" : "This is the threshold's numerical value",
 	        "Required": true
         },
         {
            "Name" : "messaging_service_sid",
             "Type" : "Placeholder",
-            "InputType" : "Free Text",
+            "InputType" : "FreeText",
             "Description" : "This is the threshold's numerical value",
 	        "Required": true
         }
