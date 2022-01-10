@@ -9,7 +9,7 @@
     },
     "shortDescription": "Easily write data from a CSV file into a stream",
     "DefaultFile": "main.py",
-	"EntryPoint": "source/build/dockerfile",
+	"EntryPoint": "build/dockerfile",
     "Variables": [
         {
             "Name" : "output",

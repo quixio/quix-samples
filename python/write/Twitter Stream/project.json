@@ -9,7 +9,7 @@
     },
     "shortDescription": "Write realtime Twitter data to a stream",
     "DefaultFile": "twitter_function.py",
-	"EntryPoint": "source/build/dockerfile",
+	"EntryPoint": "build/dockerfile",
     "Variables": [
         {
             "Name" : "output",

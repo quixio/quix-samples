@@ -9,7 +9,7 @@
     },
     "shortDescription": "The most basic and essential 'Hello World' write sample",
     "DefaultFile": "main.py",
-	"EntryPoint": "source/build/dockerfile",
+	"EntryPoint": "build/dockerfile",
     "Variables": [
         {
             "Name" : "output",
