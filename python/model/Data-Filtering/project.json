@@ -9,7 +9,7 @@
     },
     "shortDescription": "Filter data with this 'Hard Braking' model",
 	"DefaultFile": "quix_function.py",
-	"EntryPoint": "source/build/dockerfile",
+	"EntryPoint": "build/dockerfile",
     "Variables": [ 
         {
             "Name" : "input",

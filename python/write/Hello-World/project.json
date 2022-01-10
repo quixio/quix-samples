@@ -9,7 +9,7 @@
     },
     "shortDescription": "The most basic and essential 'Hello World' write sample",
     "DefaultFile": "readme.md",
-	"EntryPoint": "source/build/dockerfile",
+	"EntryPoint": "build/dockerfile",
     "Variables": [
         {
             "Name" : "output",

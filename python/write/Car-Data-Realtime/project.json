@@ -9,7 +9,7 @@
     },
     "shortDescription": "Write data from a CSV into a stream in realtime",
     "DefaultFile": "main.py",
-	"EntryPoint": "source/build/dockerfile",
+	"EntryPoint": "build/dockerfile",
     "Variables": [
         {
             "Name" : "output",
