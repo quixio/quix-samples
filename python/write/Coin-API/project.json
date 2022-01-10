@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Write realtime Currency data to a stream",
-    "DefaultFile": "twitter_function.py",
+    "DefaultFile": "quix_functions.py",
 	"EntryPoint": "build/dockerfile",
     "Variables": [
         {
