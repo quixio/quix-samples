@@ -1,26 +1,29 @@
 {
     "libraryItemId": "9b7f7253-22c3-41a4-a5e9-9f8ec084f879",
-    "name": "Data Filtering",
-    "language": "python",
+    "name": "Data Filtering Model",
+    "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read/Write SDK"]
     },
     "shortDescription": "Filter data with this 'Hard Braking' model",
-    "Variables": [ 
+	"DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [
         {
             "Name" : "input",
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-            "DefaultValue" : "HelloWorldInput"
+	    "Required": true
         },
 		{
             "Name" : "output",
             "Type" : "Placeholder",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput"
+            "DefaultValue" : "HelloWorldOutput",
+	    "Required": true
         }
-    ]    
+    ]
 }
