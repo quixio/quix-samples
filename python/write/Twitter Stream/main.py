@@ -102,7 +102,7 @@ def set_rules(headers):
 # we'll do this by streaming the results into Quix
 def get_stream(headers, output_stream):
     global run
-    
+
     TwitterFunction.__init__(output_stream)
 
     while run:
