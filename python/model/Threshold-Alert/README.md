@@ -1,10 +1,11 @@
 # Threshold alert
 
 This python project generates an alert when certain numeric threshold is crossed. 
+- It works at both sides of the threshold. 
+- The signal value doesn't need to be equal to the threshold value for the alarm to go off.
+- It keeps activating when the threshold is crossed (doesn't stop after it goes off the first time).
 
 ![Threshold_Alert](Threshold_Alert.png?raw=true)
-
-It works at both sides of the threshold. Also, the signal value doesn't need to be equal to the threshold value for the alarm to go off.
 
 ## Environment Variables
 
