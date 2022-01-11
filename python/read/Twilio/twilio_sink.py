@@ -26,6 +26,7 @@ class TwilioSink:
         print(data)
         self._send_text_message(str(data))
 
+    # Callback triggered for each new event data.
     def on_event_data_handler(self, data: EventData):
         print(data)
         self._send_text_message(str(data))

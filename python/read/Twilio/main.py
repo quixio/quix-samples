@@ -10,14 +10,6 @@ client = QuixStreamingClient('{placeholder:token}')
 print("Opening input topic")
 input_topic = client.open_input_topic(os.environ["input"])
 
-account_sid = "{placeholder:account_sid}"
-auth_token = "{placeholder:auth_token}"
-messaging_service_sid = "{placeholder:messaging_service_sid}"
-phone_numbers = os.environ["numbers"].split(",")
-
-twilio_client = Client(account_sid, auth_token)
-
-
 # read streams
 def read_stream(input_stream: StreamReader):
     print("New stream read:" + input_stream.stream_id)
