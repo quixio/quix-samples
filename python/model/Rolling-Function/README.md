@@ -1,11 +1,9 @@
 # Threshold alert
 
-This python project generates an alert when certain numeric threshold is crossed. 
-- It works at both sides of the threshold. 
-- The signal value doesn't need to be equal to the threshold value for the alarm to go off.
-- It keeps activating when the threshold is crossed (doesn't stop after it goes off the first time).
-
-![Threshold_Alert](Threshold_Alert.png?raw=true)
+This python project performs rolling window operations. 
+- The predetermined is function is the mean (moving average). 
+- Any aggregation other aggregation function can be inputed.
+- The window can be defined as a time period or as a number of observations
 
 ## Environment Variables
 
@@ -13,5 +11,21 @@ The different environment variables to populate are:
 
 - **input**: Input topic with the original raw signal values
 - **output**: Output topic where the alarm data will be populated
-- **ParameterName**: Parameter in the input topic of the specific signal that we want to apply the threshold to
+- **ParameterName**: Parameter in the input topic of the specific signal that we want to apply the rolling function to
 - **ThresholdValue**: Threshold's numerical value
+- **WindowType**: Rolling window length type. You can define the WindowType environment variable as:
+  - "Number of Observations": this will define the rolling window length with the number of last observations that we want to take into account.
+  - "Time Period": this will define the rolling window length with the previous time period that we want to take into account.
+  - "None": function will be performed on an expanding window (all historic data will be taken into account). 
+- **WindowValue**: Defines the window length. Depending on WindowType, the WindowValue is defined as:
+  - If WindowType=="Number of Observations", WindowValue must be an integer (number of last observations).
+  - If WindowType=="Time Period", WindowValue must be a [pd.Timedelta](https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html): this will define the rolling window length with the previous time period that we want to take into account.
+  - "None": function will be performed on an expanding window (all historic data will be taken into account). 
+  - If Number of Observations: integer, if Time Period: 30sec, 1week, 3miliseconds, etc.
+
+That is, this is the expected format for WindowValue depending on the value of WindowType:
+| WindowType             | WindowValue |
+|------------------------|-------------|
+| Number of Observations | 100         |
+| Time Period            | 45sec       |
+| None                   | None        |
