@@ -1,11 +1,11 @@
 {
     "libraryItemId": "aac8b9f2-2063-4f0f-affe-a1624369a650",
-    "name": "Write Car Data",
+    "name": "Chat app",
     "language": "Nodejs",
     "tags": {
-        "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Complexity": ["Hard"],
+		"SDK Usage": ["Web sockets"],
+        "Pipeline Stage": ["Source"],
     },
     "shortDescription": "Easily write data from a CSV file into a stream",
     "DefaultFile": "source/main.ts",
@@ -25,5 +25,5 @@
             "Description" : "This is the output topic",
             "DefaultValue" : "broadcast"
         }
-    ]    
+    ]
 }
