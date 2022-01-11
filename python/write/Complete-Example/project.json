@@ -1,13 +1,13 @@
 {
     "libraryItemId": "e8102920-b815-4c53-9dcd-f477ff865b1c",
-    "name": "Hello World - Write",
+    "name": "Complete Write Example",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "The most basic and essential 'Hello World' write sample",
+    "shortDescription": "A write example write sample",
     "DefaultFile": "readme.md",
 	"EntryPoint": "build/dockerfile",
     "Variables": [
@@ -16,7 +16,8 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput"
+            "DefaultValue" : "write-example-output",
+            "Required": true
         }
     ]    
 }
