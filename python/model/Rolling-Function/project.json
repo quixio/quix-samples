@@ -35,14 +35,14 @@
 	    "Required": true
         },
 		{
-            "Name" : "window_type",
+            "Name" : "WindowType",
             "Type" : "EnvironmentVariable",
             "InputType" : "None",
             "Description" : "Rolling window length type (None, Number of Observations, Time Period)",
             "DefaultValue" : "Time Period"
         },
 		{
-            "Name" : "window_value",
+            "Name" : "WindowValue",
             "Type" : "EnvironmentVariable",
             "InputType" : "None",
             "Description" : "If Number of Observations: integer, if Time Period: 30sec, 1week, 3miliseconds, etc.",

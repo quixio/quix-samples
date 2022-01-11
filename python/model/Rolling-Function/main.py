@@ -16,13 +16,13 @@ print("Opening input and output topics")
 # Define environmental variables
 input_topic = client.open_input_topic(os.environ["Quix__Workspace__Id"]+"-"+os.environ["input"], "default-consumer-group")
 output_topic = client.open_output_topic(os.environ["Quix__Workspace__Id"]+"-"+os.environ["output"])
-parameter_name = str(os.environ["parameter_name"])
+parameter_name = str(os.environ["ParameterName"])
 
-# Define window out of window_type and window_value environmental variables
-if os.environ["window_type"] == 'Number of Observations':
-    window = int(os.environ["window_value"])
-elif os.environ["window_type"] == 'Time Period':
-    window = pd.Timedelta(str(os.environ["window_value"]))
+# Define window out of WindowType and WindowValue environmental variables
+if os.environ["WindowType"] == 'Number of Observations':
+    window = int(os.environ["WindowValue"])
+elif os.environ["WindowType"] == 'Time Period':
+    window = pd.Timedelta(str(os.environ["WindowValue"]))
 else:
     window = None
 
