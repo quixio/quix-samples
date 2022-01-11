@@ -13,7 +13,7 @@ The different environment variables to populate are:
 - **output**: Output topic where the alarm data will be populated
 - **ParameterName**: Parameter in the input topic of the specific signal that we want to apply the rolling function to
 - **ThresholdValue**: Threshold's numerical value
-- **WindowType**: Rolling window length type. You can define the WindowType environment variable as:
+- **WindowType**: Rolling window length type. You can define the WindowType environment variable as on the following three options:
   - "Number of Observations": this will define the rolling window length with the number of last observations that we want to take into account.
   - "Time Period": this will define the rolling window length with the previous time period that we want to take into account.
   - "None": function will be performed on an expanding window (all historic data will be taken into account). 
