@@ -1,12 +1,16 @@
 # Threshold alert
 
-This is an example on how create a simple pub/sub model in the Quix platform.
+This python project generates an alert when certain numeric threshold is crossed. 
 
 ![Threshold_Alert](Threshold_Alert.png?raw=true)
 
-It shows how to make real-time decisions on your data, in this case whether a driver is braking hard.
+It works at both sides of the threshold. Also, the signal value doesn't need to be equal to the threshold value for the alarm to go off.
 
-## Local Development
+## Environment Variables
 
-For information on how to set up your local development environment see the readme that's relevant to you [here](../../LocalDevelopment/)
-A
+The different environment variables to populate are:
+
+- **input**: Input topic with the original raw signal values
+- **output**: Output topic where the alarm data will be populated
+- **ParameterName**: Parameter in the input topic of the specific signal that we want to apply the threshold to
+- **ThresholdValue**: Threshold's numerical value
