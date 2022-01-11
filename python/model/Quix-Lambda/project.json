@@ -1,0 +1,28 @@
+{
+    "libraryItemId": "777f7253-22c3-41a4-a5e9-9f8ec084f879",
+    "name": "Quix lambda",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Transform data on the fly.",
+	"DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "Select data input."
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Select output name.",
+            "DefaultValue" : "quixlambda"
+        }
+    ]    
+}
