@@ -9,7 +9,8 @@ import traceback
 from threading import Thread
 import os
 
-run = 1
+# should the main loop run?
+run = True
 
 # Create a client. The client helps you to create input reader or output writer for specified topic.
 client = QuixStreamingClient('{placeholder:token}')
@@ -18,7 +19,7 @@ client = QuixStreamingClient('{placeholder:token}')
 output_topic = client.open_output_topic(os.environ["output"])
 
 # Twitter bearer token goes here
-bearer_token = os.environ["twitter_bearer_token"]
+bearer_token = "{}".format(os.environ["twitter_bearer_token"])
 
 if bearer_token is None:
     raise ValueError('You need to set the twitter_bearer_token to your Twitter developer bearer token')
@@ -120,7 +121,7 @@ def get_stream(headers, output_stream):
                 for response_line in response.iter_lines():
 
                     # exit the loop if kill signal received
-                    if run == 0:
+                    if not run:
                         break
 
                     if response_line:
@@ -143,12 +144,14 @@ def get_stream(headers, output_stream):
             # some unexpected error occurred.. stop the loop
             print("Stopping loop because of un-handled error")
             print(traceback.format_exc())
-            run = 0
+            run = False
 
 
 def before_shutdown():
     global run
-    run = 0
+
+    # Stop the main loop
+    run = False
 
 
 def main():
