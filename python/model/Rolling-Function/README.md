@@ -19,7 +19,7 @@ The different environment variables to populate are:
   - "None": function will be performed on an expanding window (all historic data will be taken into account). 
 - **WindowValue**: Defines the window length. Depending on WindowType, the WindowValue is defined as:
   - If WindowType=="Number of Observations", WindowValue must be an integer (number of last observations).
-  - If WindowType=="Time Period", WindowValue must be a [pd.Timedelta](https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html)'s value (previous time period). See link for different units allowed: ‘W’, ‘D’, ‘T’, ‘S’, ‘L’, ‘U’, ‘N’, ‘days’, ‘day’, ‘hours’, ‘hour’, ‘hr’, ‘h’, ‘minutes’, ‘minute’, ‘min’, ‘m’, ‘seconds’, ‘second’, ‘sec’, ‘milliseconds’, ‘millisecond’, ‘millis’, ‘milli’, ‘microseconds’, ‘microsecond’, ‘micros’, ‘micro’, ‘nanoseconds’, ‘nanosecond’, ‘nanos’, ‘nano’, ‘ns’.
+  - If WindowType=="Time Period", WindowValue must be a [pd.Timedelta](https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html)'s value (previous time period). See the link to learn the different units allowed and examples: ‘W’, ‘D’, ‘T’, ‘S’, ‘L’, ‘U’, ‘N’, ‘days’, ‘day’, ‘hours’, ‘hour’, ‘hr’, ‘h’, ‘minutes’, ‘minute’, ‘min’, ‘m’, ‘seconds’, ‘second’, ‘sec’, ‘milliseconds’, ‘millisecond’, ‘millis’, ‘milli’, ‘microseconds’, ‘microsecond’, ‘micros’, ‘micro’, ‘nanoseconds’, ‘nanosecond’, ‘nanos’, ‘nano’, ‘ns’.
   - If WindowType=="None", WindowValue="None".
 
 That is, this is the expected format for WindowValue depending on the value of WindowType:
