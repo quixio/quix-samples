@@ -1,4 +1,4 @@
-# Python Hello World Model
+# Threshold alert
 
 This is an example on how create a simple pub/sub model in the Quix platform.
 
