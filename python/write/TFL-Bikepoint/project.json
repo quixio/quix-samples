@@ -7,7 +7,7 @@
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Write TFL Bikepoint realtime Currency data to a stream",
+    "shortDescription": "Write TFL Bikepoint realtime data to a stream",
     "DefaultFile": "quix_functions.py",
 	"EntryPoint": "build/dockerfile",
     "Variables": [
@@ -17,14 +17,6 @@
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
             "DefaultValue" : "realtime-car-data"
-        },
-        {
-            "Name" : "coin_api_key",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "Your Coin API key",
-            "DefaultValue" : "",
-            "Required": true
         },
         {
             "Name" : "tfl_primary_key",

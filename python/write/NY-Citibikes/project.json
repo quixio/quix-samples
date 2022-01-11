@@ -1,0 +1,22 @@
+{
+    "libraryItemId": "19f690fb-32e9-43d0-b6e2-0e86773c5efd",
+    "name": "New York CitiBike",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Write New York CitiBike data to a stream",
+    "DefaultFile": "quix_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "realtime-car-data"
+        }
+    ]    
+}
