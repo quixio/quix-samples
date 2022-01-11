@@ -33,9 +33,11 @@ class TwilioSink:
 
     # Send message using Twilio
     def _send_text_message(self, body):
+        # Filter messages older than 60s to keep last minute buffer.
         self._messages_sent = list(
-            filter(lambda x: x > self._time.time() - 60, self._messages_sent))  # Filter epochs older than 60s.
+            filter(lambda x: x > self._time.time() - 60, self._messages_sent))
 
+        # If we have not reached the limit, we proceed with sending
         if len(self._messages_sent) < self._message_limit_per_minute:
             for phone_number in self._phone_numbers:
                 message = self._twilio_client.messages.create(
