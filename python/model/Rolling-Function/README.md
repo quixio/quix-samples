@@ -19,9 +19,8 @@ The different environment variables to populate are:
   - "None": function will be performed on an expanding window (all historic data will be taken into account). 
 - **WindowValue**: Defines the window length. Depending on WindowType, the WindowValue is defined as:
   - If WindowType=="Number of Observations", WindowValue must be an integer (number of last observations).
-  - If WindowType=="Time Period", WindowValue must be a [pd.Timedelta](https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html): this will define the rolling window length with the previous time period that we want to take into account.
-  - "None": function will be performed on an expanding window (all historic data will be taken into account). 
-  - If Number of Observations: integer, if Time Period: 30sec, 1week, 3miliseconds, etc.
+  - If WindowType=="Time Period", WindowValue must be a [pd.Timedelta](https://pandas.pydata.org/docs/reference/api/pandas.Timedelta.html)'s value (previous time period). See link for different units allowed: ‘W’, ‘D’, ‘T’, ‘S’, ‘L’, ‘U’, ‘N’, ‘days’, ‘day’, ‘hours’, ‘hour’, ‘hr’, ‘h’, ‘minutes’, ‘minute’, ‘min’, ‘m’, ‘seconds’, ‘second’, ‘sec’, ‘milliseconds’, ‘millisecond’, ‘millis’, ‘milli’, ‘microseconds’, ‘microsecond’, ‘micros’, ‘micro’, ‘nanoseconds’, ‘nanosecond’, ‘nanos’, ‘nano’, ‘ns’.
+  - If WindowType=="None", WindowValue="None".
 
 That is, this is the expected format for WindowValue depending on the value of WindowType:
 | WindowType             | WindowValue |
