@@ -5,9 +5,12 @@ import os
 
 # Create a client to help you to create input reader or output writer for specified topic.
 client = QuixStreamingClient('{placeholder:token}')
+client.api_url = "https://portal-api.dev.quix.ai"
+
 
 print("Opening input topic")
 input_topic = client.open_input_topic(os.environ["input"])
+
 
 # read streams
 def read_stream(input_stream: StreamReader):
