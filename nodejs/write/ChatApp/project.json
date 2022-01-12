@@ -5,7 +5,7 @@
     "tags": {
         "Complexity": ["Hard"],
 		"SDK Usage": ["Web sockets"],
-        "Pipeline Stage": ["Source"],
+        "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Easily write data from a CSV file into a stream",
     "DefaultFile": "source/main.ts",
