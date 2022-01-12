@@ -10,11 +10,11 @@ class TwilioSink:
         self._time = None
 
         # Connection to Twilio account
-        account_sid = "{placeholder:account_sid}"
-        auth_token = "{placeholder:auth_token}"
+        account_sid = os.environ["account_sid"]
+        auth_token = os.environ["auth_token"]
         self._twilio_client = Client(account_sid, auth_token)
 
-        self._messaging_service_sid = "{placeholder:messaging_service_sid}"
+        self._messaging_service_sid = os.environ["messaging_service_sid"]
 
         self._phone_numbers = os.environ["numbers"].split(",")
 

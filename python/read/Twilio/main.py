@@ -1,7 +1,6 @@
 from quixstreaming import QuixStreamingClient, StreamReader
 from quixstreaming.app import App
 from twilio_sink import TwilioSink
-from twilio.rest import Client
 import os
 
 # Create a client to help you to create input reader or output writer for specified topic.
