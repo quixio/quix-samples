@@ -16,14 +16,16 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-            "DefaultValue" : "f1-data"
+            "DefaultValue" : "f1-data",
+            "Required": true
         },
 		{
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "hard-braking"
+            "DefaultValue" : "hard-braking",
+            "Required": true
         }
     ]    
 }

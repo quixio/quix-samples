@@ -1,14 +1,14 @@
 {
-    "libraryItemId": "a8c8b9f2-2063-4f0f-affe-a1624369a650",
-    "name": "Write Car Data",
+    "libraryItemId": "19f690fb-32e9-43d0-b6e2-0e86773c5efd",
+    "name": "New York CitiBike",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Easily write data from a CSV file into a stream",
-    "DefaultFile": "main.py",
+    "shortDescription": "Write New York CitiBike data to a stream",
+    "DefaultFile": "quix_functions.py",
 	"EntryPoint": "build/dockerfile",
     "Variables": [
         {
@@ -16,7 +16,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "car-data",
+            "DefaultValue" : "ny-citibike-data",
             "Required": true
         }
     ]    

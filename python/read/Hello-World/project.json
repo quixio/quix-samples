@@ -16,7 +16,8 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-            "DefaultValue" : "HelloWorldInput"
+            "DefaultValue" : "HelloWorldInput",
+            "Required": true
         }
     ]    
 }

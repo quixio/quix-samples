@@ -16,7 +16,8 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput"
+            "DefaultValue" : "HelloWorldOutput",
+            "Required": true
         }
     ]    
 }

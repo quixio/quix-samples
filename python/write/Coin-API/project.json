@@ -16,7 +16,8 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "realtime-car-data"
+            "DefaultValue" : "coin-data",
+            "Required": true
         },
         {
             "Name" : "coin_api_key",

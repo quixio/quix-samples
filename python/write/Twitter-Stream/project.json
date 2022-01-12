@@ -16,7 +16,8 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "realtime-car-data"
+            "DefaultValue" : "twitter-data",
+            "Required": true
         },
         {
             "Name" : "twitter_bearer_token",
