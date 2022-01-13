@@ -43,7 +43,7 @@ output_stream.properties.location = "/Coin API"
 def get_data():
     global run
 
-    QuixFunctions.__init__(output_stream)
+    quix_functions = QuixFunctions(output_stream)
 
     while not run:
         try:
@@ -53,7 +53,7 @@ def get_data():
 
             rows = data['rates']
 
-            QuixFunctions.data_handler(rows)
+            quix_functions.data_handler(rows, from_currency)
 
             # We sleep for 15 minutes so we don't reach free COIN API account limit.
             # Stop sleeping if process termination requested
