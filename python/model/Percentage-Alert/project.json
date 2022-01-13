@@ -1,0 +1,47 @@
+{
+    "libraryItemId": "e473cfca-5aba-4cb9-b53a-f0e7e24347cb",
+    "name": "Percentage Alert",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read/Write SDK"],
+		"API Usage": ["Streaming Reader API", "Streaming Writer API"],
+		"Type": ["Process"]
+    },
+    "shortDescription": "Generates an alert when certain numeric threshold is crossed. It works at both sides of the threshold.",
+	"DefaultFile": "percentage_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+	    "Required": true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "HelloWorldOutput",
+	    "Required": true
+        },
+        {
+            "Name" : "ParameterName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "None",
+            "Description" : "This is the stream's parameter to track",
+            "DefaultValue" : "ParameterA",
+	    "Required": true
+        },
+        {
+            "Name" : "PercentagePointsAlert",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "None",
+            "Description" : "Percentage points of increase/decrease for the alert to activate.",
+            "DefaultValue" : "10",
+	    "Required": true
+        }
+    ]
+}
