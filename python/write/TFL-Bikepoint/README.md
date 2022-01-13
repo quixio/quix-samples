@@ -14,7 +14,7 @@ These can be obtained from the TFL API site <https://api-portal.tfl.gov.uk/>
 
 - Register for an account
 - Login and click the "Products" menu item
-- You should have 1 product co choose from "500 Requests per min"
+- You should have 1 product to choose from "500 Requests per min"
 - Click "500 Requests per min"
 - Enter a name for your subscription into the box e.g. QuixFeed and click "Register"
 - You can now find your API Keys in the profile page
