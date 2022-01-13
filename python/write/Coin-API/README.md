@@ -7,10 +7,6 @@ This sample will allow you to connect to Coin API to collect data.
 - A Coin API key
 - A Topic
 
-## Parameters
-
-Ensure you have changed '{placeholder:COIN_API_KEY}' to your Coin API key
-
 ### Local Development
 
 View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/LocalDevelopment) 
