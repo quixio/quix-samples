@@ -1,0 +1,28 @@
+{
+    "libraryItemId": "777f7253-22c3-41a4-a5e9-9f8ec084f879",
+    "name": "Quix function",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "This is an example of how to transform the data on the fly between Source and Destination.\nThe default implementation just passes data from Source to Destination and print content to console output. Insert any Python code to transform data on the fly.",
+	"DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "Select data input."
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Select output name.",
+            "DefaultValue" : "quixlambda"
+        }
+    ]    
+}
