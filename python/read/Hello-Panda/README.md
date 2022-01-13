@@ -1,6 +1,6 @@
-# Python Hello World
+# Python Hello Pandas
 
-This is an example on how to connect and handle the arrival of a new stream
+This is an example on how to connect and handle the arrival of a new stream using panda frames
 
 ## You will need
 

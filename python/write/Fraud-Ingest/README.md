@@ -1,6 +1,7 @@
-# Python Hello World
+# Fraud Detection Ingest Stage
+This sample will send transaction data to a Topic at the rate of 5 rows per second.
 
-This is an example on how to connect and handle the arrival of a new stream
+Note that the TIMESTAMP column is renamed to time for compatibility with Quix
 
 ## You will need
 

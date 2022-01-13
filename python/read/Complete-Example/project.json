@@ -1,0 +1,23 @@
+{
+    "libraryItemId": "5ae126af-ae51-4e82-ae36-53b1a2eac3cd",
+    "name": "Hello Pandas - Read",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "A complete example of how to use all the event handlers",
+    "DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+            "DefaultValue" : "HelloPandasInput",
+            "Required": true
+        }
+    ]    
+}
