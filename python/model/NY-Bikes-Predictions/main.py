@@ -8,9 +8,9 @@ import os
 client = QuixStreamingClient('{placeholder:token}')
 
 # Open input and output topic connections.
-input_topic_bikes = client.open_input_topic(os.environ["bike-input"])
-input_topic_weather = client.open_input_topic(os.environ["weather-input"])
-output_topic = client.open_output_topic(os.environ["output"])
+input_topic_bikes = client.open_input_topic("{}".format(os.environ["bike-input"]))
+input_topic_weather = client.open_input_topic("{}".format(os.environ["weather-input"]))
+output_topic = client.open_output_topic("{}".format(os.environ["output"]))
 
 # Create the streams: collections of data that belong to a single session of a single source.
 bike_stream_writer = output_topic.create_stream("NY-Real-Time-Bikes-NY-Timestamp")
@@ -50,9 +50,6 @@ def read_weather_stream(new_stream: StreamReader):
 # Hook up events before initiating read to avoid losing out on any data
 input_topic_bikes.on_stream_received += read_bike_stream
 input_topic_weather.on_stream_received += read_weather_stream
-
-input_topic_bikes.start_reading()  # initiate read for bike data
-input_topic_weather.start_reading()  # initiate read for weather data
 
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")

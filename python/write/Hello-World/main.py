@@ -11,7 +11,7 @@ client = QuixStreamingClient('{placeholder:token}')
 client.api_url = "https://portal-api.dev.quix.ai"
 
 # TODO
-output_topic = client.open_output_topic(os.environ["output"])
+output_topic = client.open_output_topic("{}".format(os.environ["output"]))
 
 stream = output_topic.create_stream()
 stream.properties.name = "Hello World python stream"

@@ -12,7 +12,7 @@ import os
 client = QuixStreamingClient('{placeholder:token}')
 
 print("Opening input topic")
-input_topic = client.open_input_topic(os.environ["input"])
+input_topic = client.open_input_topic("{}".format(os.environ["input"]))
 
 
 # read streams
@@ -31,7 +31,6 @@ def read_stream(new_stream: StreamReader):
 
 
 input_topic.on_stream_received += read_stream
-input_topic.start_reading()
 
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")

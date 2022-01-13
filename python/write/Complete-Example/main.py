@@ -7,7 +7,7 @@ import os
 client = QuixStreamingClient('{placeholder:token}')
 
 # create the output topic and stream
-output_topic = client.open_output_topic(os.environ["output"])
+output_topic = client.open_output_topic("{}".format(os.environ["output"]))
 output_stream = output_topic.create_stream()
 
 # Initialise Quix function
