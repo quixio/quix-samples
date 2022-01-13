@@ -3,10 +3,9 @@ from quixstreaming.app import App
 from quix_functions import QuixFunctions
 import requests
 import time
-from dateutil import parser
 import traceback
-import signal
-from threading import Thread, Event
+from threading import Thread
+import os
 
 # should the main loop run?
 run = True
@@ -16,7 +15,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic(os.environ["output"])
+output_topic = client.open_output_topic("{}".format(os.environ["output"]))
 
 # Which currency pairs are you interested in?
 from_currency = "{}".format(os.environ["from_currency"])  # e.g."BTC"
@@ -27,7 +26,6 @@ url = 'https://rest.coinapi.io/v1/exchangerate/{0}?filter_asset_id={1}'.format(f
 # COIN API Key
 coin_api_key = "{}".format(os.environ["coin_api_key"])
 
-# leave this placeholder unchanged
 if coin_api_key == '':
     raise ValueError('Please update coin_api_key env var with your COIN API Key')
 
@@ -45,7 +43,7 @@ output_stream.properties.location = "/Coin API"
 def get_data():
     global run
 
-    CoinApiFunctions.__init__(output_stream)
+    QuixFunctions.__init__(output_stream)
 
     while not run:
         try:
@@ -60,7 +58,7 @@ def get_data():
             # We sleep for 15 minutes so we don't reach free COIN API account limit.
             # Stop sleeping if process termination requested
             sleeping = 0
-            while sleeping <= 900 and not exit_event.is_set():
+            while sleeping <= 900 and run:
                 sleeping = sleeping + 1
                 time.sleep(1)
 

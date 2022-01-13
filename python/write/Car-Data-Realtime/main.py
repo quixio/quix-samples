@@ -9,7 +9,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic(os.environ["output"])
+output_topic = client.open_output_topic("{}".format(os.environ["output"]))
 
 # Create a new output_stream. A stream is a collection of data that belong to a single session of a single source.
 # For example single car journey.

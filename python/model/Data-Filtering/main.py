@@ -12,8 +12,8 @@ client.api_url = "https://portal-api.dev.quix.ai"
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
 
-input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
-output_topic = client.open_output_topic(os.environ["output"])
+input_topic = client.open_input_topic("{}".format(os.environ["input"]), "default-consumer-group")
+output_topic = client.open_output_topic("{}".format(os.environ["output"]))
 
 
 # Callback called for each incoming stream
@@ -36,6 +36,7 @@ def read_stream(input_stream: StreamReader):
         print("Stream closed:" + output_stream.stream_id)
 
     input_stream.on_stream_closed += on_stream_close
+
 
 # Hook up events before initiating read to avoid losing out on any data
 input_topic.on_stream_received += read_stream
