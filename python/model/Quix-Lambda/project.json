@@ -7,7 +7,7 @@
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"]
     },
-    "shortDescription": "Transform data on the fly.",
+    "shortDescription": "This is an example of how to transform the data on the fly between Source and Destination.\nThe default implementation just passes data from Source to Destination and print content to console output. Insert any Python code to transform data on the fly.",
 	"DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
     "Variables": [ 
