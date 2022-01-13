@@ -16,7 +16,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for bike data",
-            "DefaultValue" : "ny-real-time-bikes-topic",
+            "DefaultValue" : "ny_real_time_bikes_topic",
             "Required": true
         },
         {
@@ -24,7 +24,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for weather data",
-            "DefaultValue" : "ny-real-time-weather-topic",
+            "DefaultValue" : "ny_real_time_weather_topic",
             "Required": true
         },
 		{
