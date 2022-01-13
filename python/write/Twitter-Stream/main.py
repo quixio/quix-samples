@@ -16,7 +16,7 @@ run = True
 client = QuixStreamingClient('{placeholder:token}')
 
 # create the output topic
-output_topic = client.open_output_topic(os.environ["output"])
+output_topic = client.open_output_topic("{}".format(os.environ["output"]))
 
 # Twitter bearer token goes here
 bearer_token = "{}".format(os.environ["twitter_bearer_token"])

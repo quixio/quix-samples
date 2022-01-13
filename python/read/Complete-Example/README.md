@@ -1,12 +1,10 @@
-# Python Hello World
+# Complete Example
 
-This is an example on how to connect and start a new stream with some values.
-
-## Environment Variables
-
-- ### Output
-  - The destination for this data
-  - Change this to whatever you want
+This is an example on how to connect and handle the arrival of a new stream.
+We show you how to handle:
+ - Stream opening and closing
+ - Parameter definitions changing
+ - Parameter and event data arriving
 
 ## You will need
 

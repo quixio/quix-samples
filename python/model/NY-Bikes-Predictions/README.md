@@ -1,16 +1,11 @@
-# Python Hello World
+# New York Bike Prediction
 
-This is an example on how to connect and start a new stream with some values.
-
-## Environment Variables
-
-- ### Output
-  - The destination for this data
-  - Change this to whatever you want
+In this sample you'll see how to combine NY Bike API and weather data to predict availability of bikes.
 
 ## You will need
 
 - A Quix account - [Signup here](https://quix.ai/signup)
+- Open Weather account - (visit them)
 
 ### Local Development
 
@@ -18,3 +13,4 @@ View the readme's [here](https://github.com/quixai/quix-library/tree/main/python
 for more information on how to develop with the Quix SDK locally
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+

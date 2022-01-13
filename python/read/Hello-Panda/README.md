@@ -1,12 +1,6 @@
-# Python Hello World
+# Python Hello Pandas
 
-This is an example on how to connect and start a new stream with some values.
-
-## Environment Variables
-
-- ### Output
-  - The destination for this data
-  - Change this to whatever you want
+This is an example on how to connect and handle the arrival of a new stream using panda frames
 
 ## You will need
 

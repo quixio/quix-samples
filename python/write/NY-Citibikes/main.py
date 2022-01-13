@@ -18,7 +18,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic(os.environ["output"])
+output_topic = client.open_output_topic("{}".format(os.environ["output"]))
 
 # CREATE A STREAM: collection of data that belong to a single session of a single source.
 stream = output_topic.create_stream("NY-Real-Time-Bikes")

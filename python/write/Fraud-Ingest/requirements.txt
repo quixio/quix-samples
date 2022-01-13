@@ -1,0 +1,2 @@
+quixstreaming==0.3.7a202201061739
+pandas
