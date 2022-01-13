@@ -1,0 +1,39 @@
+{
+    "libraryItemId": "070913ad-1234-4a9d-9379-32ff17de657a",
+    "name": "NY Bikes Prediction Model",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Moderate"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Predict availability of New York bikes",
+	"DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "bike-input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for bike data",
+            "DefaultValue" : "ny-real-time-bikes-topic",
+            "Required": true
+        },
+        {
+            "Name" : "weather-input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for weather data",
+            "DefaultValue" : "ny-real-time-weather-topic",
+            "Required": true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "NY-bikes-prediction",
+            "Required": true
+        }
+    ]    
+}
