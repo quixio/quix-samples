@@ -3,7 +3,6 @@ from twilio.rest import Client
 import time
 import os
 
-
 class TwilioSink:
 
     def __init__(self):
@@ -18,7 +17,7 @@ class TwilioSink:
 
         self._phone_numbers = os.environ["numbers"].split(",")
 
-        self._message_limit_per_minute = 2  # Limit of how many messages per minute we allow to send.
+        self._message_limit_per_minute = int(os.environ["message_limit"])  # Limit of how many messages per minute we allow to send.
         self._messages_sent = []  # Epochs of messages sent.
 
     # Callback triggered for each new parameter data.
@@ -34,7 +33,7 @@ class TwilioSink:
 
     # Send message using Twilio
     def _send_text_message(self, body):
-        # Filter messages older than 60s to keep last minute buffer.
+        # Filter timestamps older than 60s to keep last minute timestamps.
         self._messages_sent = list(
             filter(lambda x: x > self._time - 60, self._messages_sent))
 

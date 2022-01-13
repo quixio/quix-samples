@@ -1,6 +1,5 @@
-# Python Hello World
-
-This is an example on how to connect and handle the arrival of a new stream
+# Twilio sink
+This service will send data from Quix as text message using Twilio platform.
 
 ## Local Development
 
