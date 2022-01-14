@@ -7,7 +7,7 @@
 		"SDK Usage": ["Web sockets"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Easily write data from a CSV file into a stream",
+    "shortDescription": "This is simple example how to use Quix with Javascript.",
     "DefaultFile": "source/main.ts",
 	"EntryPoint": "source/build/dockerfile",
     "Variables": [
