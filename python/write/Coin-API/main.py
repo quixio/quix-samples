@@ -15,7 +15,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic("{}".format(os.environ["output"]))
+output_topic = client.open_output_topic(os.environ["output"])
 
 # Which currency pairs are you interested in?
 from_currency = "{}".format(os.environ["from_currency"])  # e.g."BTC"
@@ -43,9 +43,9 @@ output_stream.properties.location = "/Coin API"
 def get_data():
     global run
 
-    QuixFunctions.__init__(output_stream)
+    quix_functions = QuixFunctions(output_stream)
 
-    while not run:
+    while run:
         try:
             response = requests.get(url, headers=headers)
 
@@ -53,7 +53,7 @@ def get_data():
 
             rows = data['rates']
 
-            QuixFunctions.data_handler(rows)
+            quix_functions.data_handler(rows, from_currency)
 
             # We sleep for 15 minutes so we don't reach free COIN API account limit.
             # Stop sleeping if process termination requested
