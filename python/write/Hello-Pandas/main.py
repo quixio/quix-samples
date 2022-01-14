@@ -9,7 +9,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic and create the stream
 print("Opening output topic")
-output_topic = client.open_output_topic("{}".format(os.environ["output"]))
+output_topic = client.open_output_topic(os.environ["output"])
 output_stream = output_topic.create_stream()
 
 # We can optionally name the stream

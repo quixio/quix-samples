@@ -1,6 +1,7 @@
 import pandas as pd
-import numpy as np
 import requests
+import os
+
 
 # app_id: Listed in profile section as primary key (https://api-portal.tfl.gov.uk/profile)
 app_id = '{}'.format(os.environ["tfl_primary_key"])

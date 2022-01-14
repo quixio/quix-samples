@@ -12,7 +12,7 @@ import os
 client = QuixStreamingClient('{placeholder:token}')
 
 print("Opening input topic")
-input_topic = client.open_input_topic("{}".format(os.environ["input"]))
+input_topic = client.open_input_topic(os.environ["input"])
 
 
 # read streams
