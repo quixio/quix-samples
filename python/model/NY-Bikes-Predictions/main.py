@@ -8,9 +8,9 @@ import os
 client = QuixStreamingClient('{placeholder:token}')
 
 # Open input and output topic connections.
-input_topic_bikes = client.open_input_topic("{}".format(os.environ["bike-input"]))
-input_topic_weather = client.open_input_topic("{}".format(os.environ["weather-input"]))
-output_topic = client.open_output_topic("{}".format(os.environ["output"]))
+input_topic_bikes = client.open_input_topic(os.environ["bike-input"])
+input_topic_weather = client.open_input_topic(os.environ["weather-input"])
+output_topic = client.open_output_topic(os.environ["output"])
 
 # Create the streams: collections of data that belong to a single session of a single source.
 bike_stream_writer = output_topic.create_stream("NY-Real-Time-Bikes-NY-Timestamp")
@@ -25,7 +25,7 @@ prediction_1d_stream_writer = output_topic.create_stream("PRED_ML_1d")
 prediction_1d_stream_writer.properties.name = "Prediction ML Model 1-day ahead forecast"
 prediction_1d_stream_writer.properties.location = "/ML_Predictions"
 
-quix_function = QuixFunction.__init__(bike_stream_writer, prediction_1h_stream_writer,
+quix_function = QuixFunction(bike_stream_writer, prediction_1h_stream_writer,
                                       prediction_1d_stream_writer)
 
 

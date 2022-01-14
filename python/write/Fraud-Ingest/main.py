@@ -17,7 +17,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic("{}".format(os.environ["output"]))
+output_topic = client.open_output_topic(os.environ["output"])
 output_stream = output_topic.create_stream('rawdata-in-stream')
 
 output_stream.properties.name = 'raw_data'
@@ -25,7 +25,7 @@ output_stream.properties.location = '/dataset/raw_data'
 
 
 def get_data():
-    QuixFunctions.__init__(output_stream)
+    quix_functions = QuixFunctions(output_stream)
 
     columns = []
 
@@ -48,7 +48,7 @@ def get_data():
 
         print("Writing 5 rows")
 
-        QuixFunctions.data_handler(dataset)
+        quix_functions.data_handler(dataset)
 
         time.sleep(1)
 

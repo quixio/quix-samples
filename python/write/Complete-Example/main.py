@@ -7,31 +7,31 @@ import os
 client = QuixStreamingClient('{placeholder:token}')
 
 # create the output topic and stream
-output_topic = client.open_output_topic("{}".format(os.environ["output"]))
+output_topic = client.open_output_topic(os.environ["output"])
 output_stream = output_topic.create_stream()
 
 # Initialise Quix function
-QuixFunction.__init__(output_stream)
+quix_function = QuixFunction(output_stream)
 
 # Hook up the exception handler callback
-output_stream.on_write_exception += QuixFunction.on_write_exception_handler
+output_stream.on_write_exception += quix_function.on_write_exception_handler
 
 # Update the stream properties
-QuixFunction.set_stream_properties()
+quix_function.set_stream_properties()
 
 # Define your parameters
-QuixFunction.send_parameter_definitions()
+quix_function.send_parameter_definitions()
 
 # Work with Parameter Data
-QuixFunction.send_parameter_data_epoch()
-QuixFunction.send_parameter_data_specific_date_time()
-QuixFunction.send_parameter_time_delta()
+quix_function.send_parameter_data_epoch()
+quix_function.send_parameter_data_specific_date_time()
+quix_function.send_parameter_time_delta()
 
 # Work with Events
-QuixFunction.send_event_definitions()
-QuixFunction.send_event_data()
+quix_function.send_event_definitions()
+quix_function.send_event_data()
 
 # Close the stream
-QuixFunction.close_stream()
+quix_function.close_stream()
 
 print("Done")

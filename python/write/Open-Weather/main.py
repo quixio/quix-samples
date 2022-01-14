@@ -8,6 +8,8 @@ from datetime import timezone
 import traceback
 import signal
 from threading import Thread, Event
+import os
+
 
 # should the main loop run?
 run = True
@@ -19,7 +21,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic("{}".format(os.environ["output"]))
+output_topic = client.open_output_topic(os.environ["output"])
 
 # CREATE A STREAM: A stream is a collection of data that belong to a single session of a single source.
 stream = output_topic.create_stream("NY-Real-Time-Weather")
@@ -31,7 +33,7 @@ stream.properties.location = "/NY_Real_Time"
 
 def get_data():
 
-    QuixFunctions.__init__(output_stream)
+    quix_functions = QuixFunctions(output_stream)
 
     while run:
         try:
@@ -45,7 +47,7 @@ def get_data():
             list_dfs = [df_now, df_1d]
 
             # Write stream
-            QuixFunctions.data_handler(current_time, list_dfs)
+            quix_functions.data_handler(current_time, list_dfs)
 
             # How long did the Request and transformation take
             current_time_j = datetime.now(timezone.utc)
