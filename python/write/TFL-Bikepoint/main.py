@@ -4,9 +4,8 @@ from quix_functions import QuixFunctions
 from datetime import datetime, timezone
 import traceback
 from tfl_api import get_agg_bikepoint_data
-import signal
-from threading import Thread, Event
-import time
+from threading import Thread
+import os
 
 # should the main loop run?
 run = True
@@ -16,7 +15,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic("{}".format(os.environ["output"]))
+output_topic = client.open_output_topic(os.environ["output"])
 
 # CREATE A STREAM
 # A stream is a collection of data that belong to a single session of a single source.
@@ -34,7 +33,7 @@ output_stream.parameters.buffer.time_span_in_milliseconds = 1000
 
 
 def get_data():
-    QuixFunctions.__init__(output_stream)
+    quix_functions = QuixFunctions(output_stream)
 
     while run:
         try:
@@ -44,7 +43,7 @@ def get_data():
             # ToL API Request
             df, df_agg = get_agg_bikepoint_data()
 
-            QuixFunctions.data_handler(df)
+            quix_functions.data_handler(df, current_time)
 
         except Exception:
             print(traceback.format_exc())
