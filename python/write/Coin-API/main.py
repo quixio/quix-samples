@@ -15,7 +15,7 @@ client = QuixStreamingClient('{placeholder:token}')
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic("{}".format(os.environ["output"]))
+output_topic = client.open_output_topic(os.environ["output"])
 
 # Which currency pairs are you interested in?
 from_currency = "{}".format(os.environ["from_currency"])  # e.g."BTC"
