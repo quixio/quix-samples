@@ -1,9 +1,6 @@
 import requests
 import pandas as pd
 
-from datetime import datetime, timezone
-import pytz
-
 
 def perform_API_request(openweather_api_key):
     # NY Location

@@ -2,12 +2,11 @@ from quixstreaming import QuixStreamingClient
 from quixstreaming.app import App
 from ny_weather_API import perform_API_request, get_current_weather, get_tomorrow_weather
 from datetime import datetime
-import pandas as pd
+from quix_functions import QuixFunctions
 import time
 from datetime import timezone
 import traceback
-import signal
-from threading import Thread, Event
+from threading import Thread
 import os
 
 
@@ -24,11 +23,11 @@ print("Opening output topic")
 output_topic = client.open_output_topic(os.environ["output"])
 
 # CREATE A STREAM: A stream is a collection of data that belong to a single session of a single source.
-stream = output_topic.create_stream("NY-Real-Time-Weather")
+output_stream = output_topic.create_stream("NY-Real-Time-Weather")
 # Give the stream human readable name. This name will appear in data catalogue.
-stream.properties.name = "New York Weather Real Time"
+output_stream.properties.name = "New York Weather Real Time"
 # Save stream in specific folder in data catalogue to help organize your workspace.
-stream.properties.location = "/NY_Real_Time"
+output_stream.properties.location = "/NY_Real_Time"
 
 
 def get_data():
@@ -57,7 +56,7 @@ def get_data():
             # We sleep for 30 minutes so we don't reach free account limit.
             # Stop sleeping if process termination requested
             sleeping = 0
-            while sleeping <= (1800 - int_sec) and not exit_event.is_set():
+            while sleeping <= (1800 - int_sec) and run:
                 sleeping = sleeping + 1
                 time.sleep(1)
 

@@ -7,6 +7,7 @@ class QuixFunctions:
         self.stream_writer = stream_writer
 
     def data_handler(self, current_time, list_dfs):
+
         # Write Data to Stream
         for i, forecast_time in enumerate(['Current', 'NextDay']):
             self.stream_writer.parameters.buffer.add_timestamp(current_time) \
