@@ -45,7 +45,7 @@ def get_data():
 
     quix_functions = QuixFunctions(output_stream)
 
-    while not run:
+    while run:
         try:
             response = requests.get(url, headers=headers)
 
