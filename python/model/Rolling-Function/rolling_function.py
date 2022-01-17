@@ -7,8 +7,10 @@ class RollingFunction:
     def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
         self.input_stream = input_stream
         self.output_stream = output_stream
+
         self.parameter_name = str(os.environ["ParameterName"])
         self.df_window = pd.DataFrame()
+        
         # Define window out of WindowType and WindowValue environmental variables
         if os.environ["WindowType"] == 'Number of Observations':
             self.window = int(os.environ["WindowValue"])

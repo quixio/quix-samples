@@ -10,19 +10,19 @@ client = QuixStreamingClient('{placeholder:token}')
 print("Opening input and output topics")
 
 # Define environmental variables
-input_topic = client.open_input_topic(os.environ["Quix__Workspace__Id"]+"-"+os.environ["input"], "default-consumer-group")
-output_topic = client.open_output_topic(os.environ["Quix__Workspace__Id"]+"-"+os.environ["output"])
+input_topic = client.open_input_topic(os.environ["Quix__Workspace__Id"] + "-" + os.environ["input"], "default-consumer-group")
+output_topic = client.open_output_topic(os.environ["Quix__Workspace__Id"] + "-" + os.environ["output"])
+
 
 # Callback called for each incoming stream
 def read_stream(input_stream: StreamReader):
-
     # Create a new stream to output data
     output_stream = output_topic.create_stream(input_stream.stream_id + '-' + os.environ["Quix__Deployment__Name"])
     output_stream.properties.parents.append(input_stream.stream_id)
 
     # handle the data in a function to simplify the example
     quix_function = PercentageAlert(input_stream, output_stream)
-        
+
     # React to new data received from input topic.
     input_stream.events.on_read += quix_function.on_event_data_handler
     input_stream.parameters.on_read += quix_function.on_parameter_data_handler
@@ -33,6 +33,7 @@ def read_stream(input_stream: StreamReader):
         print("Stream closed:" + output_stream.stream_id)
 
     input_stream.on_stream_closed += on_stream_close
+
 
 # Hook up events before initiating read to avoid losing out on any data
 input_topic.on_stream_received += read_stream
