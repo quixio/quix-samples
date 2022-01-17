@@ -23,7 +23,7 @@ perc_points_alert = float(os.environ["PercentagePointsAlert"])
 def read_stream(input_stream: StreamReader):
 
     # Create a new stream to output data
-    output_stream = output_topic.create_stream(input_stream.stream_id + "-percentage-alert")
+    output_stream = output_topic.create_stream(input_stream.stream_id + '-' + os.environ["Quix__Deployment__Name"])
     output_stream.properties.parents.append(input_stream.stream_id)
 
     # handle the data in a function to simplify the example
