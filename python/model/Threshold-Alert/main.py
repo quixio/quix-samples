@@ -20,8 +20,6 @@ def read_stream(input_stream: StreamReader):
     output_stream = output_topic.create_stream(input_stream.stream_id + '-' + os.environ["Quix__Deployment__Name"])
     output_stream.properties.parents.append(input_stream.stream_id)
 
-    print(type(output_stream))
-
     # handle the data in a function to simplify the example
     quix_function = ThresholdAlert(input_stream, output_stream)
 

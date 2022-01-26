@@ -1,17 +1,7 @@
-# Threshold alert
+# Real-Time-CSV
 
-This python project generates an alert when certain numeric threshold is crossed. 
-- It works at both sides of the threshold. 
-- The signal value doesn't need to be equal to the threshold value for the alarm to go off.
-- It keeps activating when the threshold is crossed (doesn't stop after it goes off the first time).
+This is an example on how use historic data in a csv file to write data to a stream in real time respecting the original time deltas.
 
-![Threshold_Alert](Threshold_Alert.png?raw=true)
+## Local Development
 
-## Environment Variables
-
-The different environment variables to populate are:
-
-- **input**: Input topic with the original raw signal values
-- **output**: Output topic where the alarm data will be populated
-- **ParameterName**: Parameter in the input topic of the specific signal that we want to apply the threshold to
-- **ThresholdValue**: Threshold's numerical value
+For information on how to set up your local development environment see the readme that's relevant to you [here](../../LocalDevelopment/)
