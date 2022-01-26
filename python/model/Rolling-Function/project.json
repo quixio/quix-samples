@@ -1,0 +1,52 @@
+{
+"libraryItemId": "c53e98ac-4953-4211-9541-d6364ceecbd6",
+    "name": "Rolling Window",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Performs rolling window function. Predetermined is moving average. Window can be defined as a time period or as a number of observations",
+	"DefaultFile": "rolling_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+	    "Required": true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "HelloWorldOutput",
+	    "Required": true
+        },
+        {
+            "Name" : "ParameterName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "None",
+            "Description" : "This is the stream's parameter to perform the window function on",
+            "DefaultValue" : "ParameterA",
+	    "Required": true
+        },
+		{
+            "Name" : "WindowType",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "None",
+            "Description" : "Rolling window length type (None, Number of Observations, Time Period)",
+            "DefaultValue" : "Time Period"
+        },
+		{
+            "Name" : "WindowValue",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "None",
+            "Description" : "If Number of Observations: integer, if Time Period: 30sec, 1week, 3miliseconds, etc.",
+            "DefaultValue" : "1min"
+        }
+    ]    
+}
