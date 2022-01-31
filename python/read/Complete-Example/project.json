@@ -1,6 +1,6 @@
 {
-    "libraryItemId": "5ae126af-ae51-4e82-ae36-53b1a2eac3cd",
-    "name": "Hello Pandas - Read",
+    "libraryItemId": "b525d3d8-0ee9-44f5-9aa8-8e49a3ddba44",
+    "name": "Complete Read Example",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -16,7 +16,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-            "DefaultValue" : "HelloPandasInput",
+            "DefaultValue" : "CompleteReadSampleInput",
             "Required": true
         }
     ]    
