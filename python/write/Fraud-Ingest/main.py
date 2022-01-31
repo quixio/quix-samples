@@ -4,8 +4,7 @@ from quix_functions import QuixFunctions
 import os
 import pandas as pd 
 import time
-import signal
-from threading import Thread, Event
+from threading import Thread
 
 # should the main loop run?
 run = True
@@ -13,7 +12,7 @@ run = True
 DATASET_PATH = "./data/data.csv"
 
 # configure security objects
-client = QuixStreamingClient('{placeholder:token}')
+client = QuixStreamingClient()
 
 # Open the output topic
 print("Opening output topic")
