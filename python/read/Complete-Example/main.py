@@ -1,11 +1,6 @@
 from quixstreaming import QuixStreamingClient, StreamReader
-from quixstreaming.models.parametersbufferconfiguration import ParametersBufferConfiguration
 from quixstreaming.app import App
 from quix_function import QuixFunction
-from typing import List
-import signal
-import threading
-import time
 import os
 
 # Create a client to help you to create input reader or output writer for specified topic.

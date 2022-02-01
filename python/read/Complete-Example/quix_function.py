@@ -1,5 +1,6 @@
 from quixstreaming import ParameterDefinition, EventDefinition, ParameterData, StreamEndType, \
     StreamReader, EventData
+from typing import List
 
 
 class QuixFunction:
@@ -8,10 +9,10 @@ class QuixFunction:
         self.stream_reader = stream_reader
 
     # Callback triggered for each new parameter data.
-    def on_stream_closed_handler(end_type: StreamEndType):
+    def on_stream_closed_handler(self, end_type: StreamEndType):
         print("Stream", self.stream_reader.stream_id, "closed with", end_type)
 
-    def on_stream_properties_changed_handler():
+    def on_stream_properties_changed_handler(self):
         properties = self.stream_reader.properties
         print("Stream properties read for stream: " + self.stream_reader.stream_id)
         print("Name", properties.name, sep=": ")
@@ -22,7 +23,7 @@ class QuixFunction:
         # print(properties.parents[0]) # or by index
         print("TimeOfRecording", properties.time_of_recording, sep=": ")
 
-    def on_parameter_data_handler(data: ParameterData):
+    def on_parameter_data_handler(self, data: ParameterData):
         print("Parameter data read for stream: " + self.stream_reader.stream_id)
         print("  Length:", len(data.timestamps))
         for index, val in enumerate(data.timestamps):
@@ -80,7 +81,7 @@ class QuixFunction:
 
         print_events(self.stream_reader.events.definitions, 0)
 
-    def on_event_data_handler(data: EventData):
+    def on_event_data_handler(self, data: EventData):
         print("Event data read for stream: " + self.stream_reader.stream_id)
         print("  Time:", data.timestamp)
         print("  Id:", data.id)

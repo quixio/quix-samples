@@ -18,7 +18,7 @@ def read_stream(input_stream: StreamReader):
     # handle the data in a function to simplify the example
     twilio_sink = TwilioSink()
     input_stream.parameters.on_read += twilio_sink.on_parameter_data_handler
-    input_stream.events.on_read += twilio_sink.on_parameter_data_handler
+    input_stream.events.on_read += twilio_sink.on_event_data_handler
 
 
 # Hook up events before initiating read to avoid losing out on any data

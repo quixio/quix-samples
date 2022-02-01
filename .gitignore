@@ -4,3 +4,5 @@ python/.idea/
 python/model/NY-Bikes-Predictions/.idea/
 
 .idea/
+
+python/read/Complete-Example/__pycache__/
