@@ -14,5 +14,8 @@ class QuixFunction:
             # Call clean function
             cleaned_df = clean_function(row)
 
+            print("Writing cleaned data")
+            print(cleaned_df)
+
             # write the data to the stream
             self.stream_writer.parameters.buffer.write(cleaned_df)
