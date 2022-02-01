@@ -1,13 +1,13 @@
 {
-    "libraryItemId": "d3d0d371-7759-4de8-89da-9b2754cdc2e9",
-    "name": "Stream Processing Demo - Input",
+    "libraryItemId": "b8654922-8172-4a4b-b292-6d8643245737",
+    "name": "Stream Processing Demo - Control",
     "language": "Python",
     "tags": {
         "Complexity": ["Advanced"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"]
     },
-    "shortDescription": "Handle and transform input for the stream processing demo",
+    "shortDescription": "Processes input data and sends coordinates, speed and angle to the output topic",
 	"DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
     "Variables": [ 
@@ -16,7 +16,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-            "DefaultValue" : "gamedata",
+            "DefaultValue" : "car-game-input",
             "Required": true
         },
         {
@@ -24,7 +24,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "car-game-input",
+            "DefaultValue" : "car-game-control",
             "Required": true
         }
     ]    
