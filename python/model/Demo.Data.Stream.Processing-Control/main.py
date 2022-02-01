@@ -1,34 +1,22 @@
-from quixstreaming import SecurityOptions, StreamingClient, StreamReader
+from quixstreaming import QuixStreamingClient, StreamReader
 from quixstreaming.models import ParameterData, EventData, StreamEndType
-import threading
-import signal
+from quixstreaming.app import App
 import math
 import datetime
-import time
 from PIL import Image
-
-# Create a client. Client helps you to create input reader or output writer for specified topic.
-certificatePath = "../certificates/ca.cert"
-username = "{placeholder:broker.security.username}"
-password = "{placeholder:broker.security.password}"
-broker = "{placeholder:broker.address}"
-
-security = SecurityOptions(certificatePath, username, password)
-
+import os
 
 # Switch to UDP style communication by ignoring acks
 properties = {
     "acks": "0"
 }
 
-client = StreamingClient(broker,
-                         security,
-                         properties)
+client = QuixStreamingClient(properties=properties)
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
-input_topic = client.open_input_topic('{placeholder:inputTopic}', "default-consumer-group-1")
-output_topic = client.open_output_topic('{placeholder:outputTopic}')
+input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group-1")
+output_topic = client.open_output_topic(os.environ["output"])
 
 all_pixels = None
 img = None
@@ -213,28 +201,8 @@ set_track("track1.png")
 
 # Hook up events before initiating read to avoid losing out on any data
 input_topic.on_stream_received += read_stream
-input_topic.start_reading()  # initiate read
 
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
-
-# Below code is to handle graceful exit of the model.
-event = threading.Event()
-
-
-def signal_handler(sig, frame):
-    # dispose the topic(s) and close the stream(s)
-    input_topic.dispose()
-    output_topic.dispose()
-
-    print("Setting termination flag")
-    event.set()
-
-
-signal.signal(signal.SIGINT, signal_handler)
-signal.signal(signal.SIGTERM, signal_handler)
-
-while not event.is_set():
-    time.sleep(1)
-
+App.run()
 print("Exiting")
