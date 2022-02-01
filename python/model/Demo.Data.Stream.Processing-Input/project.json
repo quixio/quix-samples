@@ -1,0 +1,31 @@
+{
+    "libraryItemId": "d3d0d371-7759-4de8-89da-9b2754cdc2e9",
+    "name": "Stream Processing Demo - Input",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Handle and transform input for the stream processing demo",
+	"DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+            "DefaultValue" : "gamedata",
+            "Required": true
+        },
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "car-game-input",
+            "Required": true
+        }
+    ]    
+}
