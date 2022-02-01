@@ -42,7 +42,6 @@ def main():
     input_topic = streamingClient.open_input_topic(os.environ["input"])
 
     input_topic.on_stream_received += read_stream
-    input_topic.start_reading()  # initiate read
 
     # Hook up to termination signal (for docker image) and CTRL-C
     print("Listening to streams. Press CTRL-C to exit.")
