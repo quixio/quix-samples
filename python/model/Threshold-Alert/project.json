@@ -30,7 +30,7 @@
         {
             "Name" : "ParameterName",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "This is the stream's parameter to track",
             "DefaultValue" : "ParameterA",
 			"Required" : true
@@ -38,7 +38,7 @@
         {
             "Name" : "ThresholdValue",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "This is the threshold's numerical value",
             "DefaultValue" : "100",
 			"Required" : true

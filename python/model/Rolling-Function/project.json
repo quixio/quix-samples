@@ -29,7 +29,7 @@
         {
             "Name" : "ParameterName",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "This is the stream's parameter to perform the window function on",
             "DefaultValue" : "ParameterA",
 	    "Required": true
@@ -37,14 +37,14 @@
 		{
             "Name" : "WindowType",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "Rolling window length type (None, Number of Observations, Time Period)",
             "DefaultValue" : "Time Period"
         },
 		{
             "Name" : "WindowValue",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "If Number of Observations: integer, if Time Period: 30sec, 1week, 3miliseconds, etc.",
             "DefaultValue" : "1min"
         }
