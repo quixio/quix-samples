@@ -1,0 +1,23 @@
+{
+    "libraryItemId": "cf45110d-2e36-4acd-81cc-c36bb4fefa22",
+    "name": "Hello World",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "The most basic and essential 'Hello World' write sample",
+	"DefaultFile": "WriteHelloWorld/Program.cs",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "write-hello-world",
+            "Required": true
+        }
+    ]    
+}
