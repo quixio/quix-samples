@@ -31,7 +31,7 @@
         {
             "Name" : "HuggingFaceModel",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "This is the model name from Hugging Face model to use",
             "DefaultValue" : "siebert/sentiment-roberta-large-english",
 	    "Required": true
