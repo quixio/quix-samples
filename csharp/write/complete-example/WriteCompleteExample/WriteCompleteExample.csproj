@@ -19,13 +19,6 @@
       <None Update="nlog.config">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>     
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\..\certificates\*.*">
-            <Link>certificates\%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>    
+    </ItemGroup>  
 
 </Project>

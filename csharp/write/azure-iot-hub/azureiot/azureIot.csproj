@@ -10,12 +10,4 @@
 		<PackageReference Include="Azure.Messaging.EventHubs" Version="5.*" />
     </ItemGroup>
     
-
-    <ItemGroup>
-        <None Include="..\..\certificates\*.*">
-            <Link>certificates\%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-
 </Project>
