@@ -10,6 +10,7 @@
     "shortDescription": "A complete example of how to use all the event handlers",
     "DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [ 
         {
             "Name" : "input",

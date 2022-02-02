@@ -11,6 +11,7 @@
     "shortDescription": "Generates an alert when certain numeric threshold is crossed. It works at both sides of the threshold.",
 	"DefaultFile": "threshold_function.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [
         {
             "Name" : "input",

@@ -1,22 +1,23 @@
 {
-    "libraryItemId": "fede18aa-6600-47d6-b684-f662cb9b7b1a",
-    "name": "Fraud Detection - Data Ingest",
+    "libraryItemId": "a8c8b9f2-2063-4f0f-affe-a1624369a650",
+    "name": "Write Car Data",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Write raw transaction data to a stream",
-    "DefaultFile": "quix_functions.py",
+    "shortDescription": "Easily write data from a CSV file into a stream",
+    "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [
         {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "raw-fraud-data",
+            "DefaultValue" : "car-data",
             "Required": true
         }
     ]    

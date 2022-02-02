@@ -8,9 +8,10 @@
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Processes input data and sends coordinates, speed and angle to the output topic",
-	"DefaultFile": "main.py",
+    "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
-    "Variables": [ 
+    "RunEntryPoint": "main.py",
+    "Variables": [
         {
             "Name" : "input",
             "Type" : "EnvironmentVariable",

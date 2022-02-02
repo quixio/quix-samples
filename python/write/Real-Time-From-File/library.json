@@ -10,6 +10,7 @@
     "shortDescription": "Easily write data from a CSV file into a stream respecting the original timedeltas",
     "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [
         {
             "Name" : "output",

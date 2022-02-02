@@ -8,8 +8,9 @@
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Predict availability of New York bikes",
-	"DefaultFile": "quix_function.py",
+	"DefaultFile": "model_functions.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [ 
         {
             "Name" : "bike_input",

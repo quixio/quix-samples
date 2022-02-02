@@ -10,6 +10,7 @@
     "shortDescription": "The most basic and essential 'Hello World' read sample",
     "DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [ 
         {
             "Name" : "input",
