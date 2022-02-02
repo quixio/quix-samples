@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using Microsoft.Extensions.Configuration;
 using Quix.Sdk.Streaming;
 using Quix.Sdk.Streaming.Models;
 
@@ -15,13 +13,13 @@ namespace ReadCompleteExample
         /// <param name="args">Command line arguments (not used)</param>
         static void Main(string[] args)
         {           
-            var configuration = GetConfiguration();
-
             // Create a client which holds generic details for creating input and output topics
             var client = new QuixStreamingClient();
 
+            var inputTopicName = Environment.GetEnvironmentVariable("input");
+
             // Create an output topic using the client's configuration
-            using var inputTopic = client.OpenInputTopic(configuration.Topic, "complete-example"); // consumer group is optional, if not provided defaults to POD_NAMESPACE environment variable or a default one if that is not set
+            using var inputTopic = client.OpenInputTopic(inputTopicName, "complete-example"); // consumer group is optional, if not provided defaults to POD_NAMESPACE environment variable or a default one if that is not set
             
             // Hook up events before initiating read to avoid losing out on any data
             inputTopic.OnStreamReceived += OnStreamReceivedHandler; 
@@ -109,21 +107,6 @@ namespace ReadCompleteExample
                 Console.WriteLine($"Stream {sr.StreamId} closed with '{endType}'");
                 // the stream closed event occurs when the sending side closes the stream. No more data is to be expected in this case, but the stream may still be reopened by sender if they chose to
             };
-        }
-
-
-        /// <summary>
-        /// Gets steaming configuration from app settings
-        /// </summary>
-        static StreamingConfiguration GetConfiguration()
-        {
-            var builder = new ConfigurationBuilder();
-            builder.SetBasePath(Directory.GetCurrentDirectory());
-            builder.AddJsonFile("appsettings.json");
-            var config = builder.Build();
-            var configuration = new Configuration();
-            config.Bind(configuration);
-            return configuration.Streaming;
         }
 
         /// <summary>

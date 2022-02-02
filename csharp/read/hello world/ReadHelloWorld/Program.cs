@@ -38,7 +38,6 @@ namespace ReadHelloWorld
                 };
             };
 
-
             Console.WriteLine("Listening for streams");
             
             // Hook up to termination signal (for docker image) and CTRL-C and open streams
