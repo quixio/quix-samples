@@ -1,22 +1,23 @@
 {
-    "libraryItemId": "b525d3d8-0ee9-44f5-9aa8-8e49a3ddba44",
-    "name": "Complete Read Example",
+    "libraryItemId": "e406d509-930e-4ae3-bfe8-57bfb8befe9d",
+    "name": "Hello World - Read",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "A complete example of how to use all the event handlers",
+    "shortDescription": "The most basic and essential 'Hello World' read sample",
     "DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [ 
         {
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic",
-            "DefaultValue" : "CompleteReadSampleInput",
+            "DefaultValue" : "HelloWorldInput",
             "Required": true
         }
     ]    

@@ -8,8 +8,9 @@
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Use an ML model to predict fraudulent activity",
-	"DefaultFile": "quix_function.py",
+    "DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [ 
         {
             "Name" : "input",

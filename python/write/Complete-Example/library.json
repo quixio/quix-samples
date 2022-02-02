@@ -1,22 +1,23 @@
 {
-    "libraryItemId": "b6a8cb37-18d6-4785-b96f-bd026b8e66a9",
-    "name": "Realtime Write Car Data",
+    "libraryItemId": "614fb711-17d4-4099-8f59-9aae4ee68509",
+    "name": "Complete Write Example",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Write data from a CSV into a stream in realtime",
-    "DefaultFile": "main.py",
+    "shortDescription": "A write example write sample",
+    "DefaultFile": "quix_functions.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [
         {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "realtime-car-data",
+            "DefaultValue" : "write-example-output",
             "Required": true
         }
     ]    

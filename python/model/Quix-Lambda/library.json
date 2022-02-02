@@ -10,6 +10,7 @@
     "shortDescription": "This is an example of how to transform the data on the fly between Source and Destination.",
 	"DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [ 
         {
             "Name" : "input",

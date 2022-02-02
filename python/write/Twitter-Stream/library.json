@@ -1,30 +1,31 @@
 {
-    "libraryItemId": "41d74074-d5be-47f8-8fd8-0a564437f34e",
-    "name": "Real Time CSV",
+    "libraryItemId": "00e1614b-cb4b-400e-9d81-ee84b3ade145",
+    "name": "Twitter Data - Write",
     "language": "Python",
     "tags": {
-        "Complexity": ["Medium"],
+        "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Easily write data from a CSV file into a stream respecting the original timedeltas",
-    "DefaultFile": "main.py",
+    "shortDescription": "Write realtime Twitter data to a stream",
+    "DefaultFile": "twitter_function.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [
         {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "output-topic-name",
+            "DefaultValue" : "twitter-data",
             "Required": true
         },
         {
-            "Name" : "DateColumnName",
+            "Name" : "twitter_bearer_token",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "Original name of the column containing the timestamp information",
-            "DefaultValue" : "datetime",
+            "Description" : "Your twitter bearer token",
+            "DefaultValue" : "",
             "Required": true
         }
     ]    

@@ -8,8 +8,9 @@
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Handle and transform input for the stream processing demo",
-	"DefaultFile": "main.py",
+    "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [ 
         {
             "Name" : "input",

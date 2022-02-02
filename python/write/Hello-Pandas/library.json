@@ -1,22 +1,23 @@
 {
-    "libraryItemId": "19f690fb-32e9-43d0-b6e2-0e86773c5efd",
-    "name": "New York CitiBike",
+    "libraryItemId": "e86f1198-a3ba-431c-93e5-d0a4f380c79d",
+    "name": "Hello Pandas - Write",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Write New York CitiBike data to a stream",
-    "DefaultFile": "quix_functions.py",
+    "shortDescription": "The most basic and essential 'Hello World' write sample",
+    "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [
         {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "ny-citibike-data",
+            "DefaultValue" : "HelloPandasOutput",
             "Required": true
         }
     ]    

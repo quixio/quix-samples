@@ -10,6 +10,7 @@
     "shortDescription": "Write TFL Bikepoint realtime data to a stream",
     "DefaultFile": "quix_functions.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [
         {
             "Name" : "output",
