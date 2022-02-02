@@ -1,0 +1,2 @@
+quixstreaming==0.4.0a202201241958
+Pillow

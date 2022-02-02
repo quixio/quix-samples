@@ -1,0 +1,23 @@
+{
+    "libraryItemId": "b6a8cb37-18d6-4785-b96f-bd026b8e66a9",
+    "name": "Realtime Write Car Data",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Write data from a CSV into a stream in realtime",
+    "DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "realtime-car-data",
+            "Required": true
+        }
+    ]    
+}

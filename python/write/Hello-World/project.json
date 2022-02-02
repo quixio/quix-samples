@@ -4,18 +4,20 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"]
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
     },
     "shortDescription": "The most basic and essential 'Hello World' write sample",
-    "DefaultFile": "quix_function.py",
-	"EntryPoint": "source/build/dockerfile",
+    "DefaultFile": "readme.md",
+	"EntryPoint": "build/dockerfile",
     "Variables": [
         {
             "Name" : "output",
-            "Type" : "Placeholder",
+            "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput"
+            "DefaultValue" : "HelloWorldOutput",
+            "Required": true
         }
     ]    
 }

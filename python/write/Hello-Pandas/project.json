@@ -1,0 +1,23 @@
+{
+    "libraryItemId": "e86f1198-a3ba-431c-93e5-d0a4f380c79d",
+    "name": "Hello Pandas - Write",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "The most basic and essential 'Hello World' write sample",
+    "DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "HelloPandasOutput",
+            "Required": true
+        }
+    ]    
+}

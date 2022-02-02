@@ -1,0 +1,5 @@
+quixstreaming==0.4.0a202201241958
+pandas~=1.3.5
+sklearn
+xgboost==1.4.2
+python-dateutil

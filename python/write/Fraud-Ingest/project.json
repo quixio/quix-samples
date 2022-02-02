@@ -1,0 +1,23 @@
+{
+    "libraryItemId": "fede18aa-6600-47d6-b684-f662cb9b7b1a",
+    "name": "Fraud Detection - Data Ingest",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Write raw transaction data to a stream",
+    "DefaultFile": "quix_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "raw-fraud-data",
+            "Required": true
+        }
+    ]    
+}

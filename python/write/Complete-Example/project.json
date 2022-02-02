@@ -1,0 +1,23 @@
+{
+    "libraryItemId": "614fb711-17d4-4099-8f59-9aae4ee68509",
+    "name": "Complete Write Example",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "A write example write sample",
+    "DefaultFile": "readme.md",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "write-example-output",
+            "Required": true
+        }
+    ]    
+}

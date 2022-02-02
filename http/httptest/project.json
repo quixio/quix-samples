@@ -1,0 +1,22 @@
+{
+    "libraryItemId": "fb64b54f-b9b5-41b1-b4a8-d793daca1123",
+    "name": "Hello HTTP",
+    "language": "HTTP",
+    "tags": {
+      "Type": [ "Sample", "Data Source" ],
+      "API Usage": [ "Streaming Writer API" ],
+      "Complexity": [ "Easy" ]
+    },
+    "sampleTemplate": true,
+    "shortDescription": "Hello HTTP project David",
+    "Variables": [ 
+        {
+            "Name" : "outputTopicName",
+            "Type" : "Placeholder",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "output"
+        }
+    ],
+    "DefaultFile": "httptest.sh"
+}

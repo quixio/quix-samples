@@ -2,13 +2,13 @@ from quixstreaming import QuixStreamingClient, StreamReader
 from quixstreaming.models.parametersbufferconfiguration import ParametersBufferConfiguration
 from quixstreaming.app import App
 from quix_function import QuixFunction
+import os
 
 # Create a client to help you to create input reader or output writer for specified topic.
 client = QuixStreamingClient('{placeholder:token}')
-# temporary (needed for dev)
-client.api_url = "https://portal-api.dev.quix.ai"
 
-input_topic = client.open_input_topic('{placeholder:input}')
+print("Opening input topic")
+input_topic = client.open_input_topic(os.environ["input"])
 
 
 # read streams
@@ -20,6 +20,7 @@ def read_stream(input_stream: StreamReader):
 
     buffer = input_stream.parameters.create_buffer(buffer_options)
 
+    # handle the data in a function to simplify the example
     quix_function = QuixFunction()
 
     buffer.on_read += quix_function.on_parameter_data_handler
@@ -27,10 +28,9 @@ def read_stream(input_stream: StreamReader):
 
 # Hook up events before initiating read to avoid losing out on any data
 input_topic.on_stream_received += read_stream
-input_topic.start_reading()  # initiate read
 
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
 
-# Handle graceful exit of the model.
+# Handle graceful exit
 App.run()
