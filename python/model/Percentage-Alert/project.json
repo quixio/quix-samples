@@ -30,7 +30,7 @@
         {
             "Name" : "ParameterName",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "This is the stream's parameter to track",
             "DefaultValue" : "ParameterA",
 	    "Required": true
@@ -38,7 +38,7 @@
         {
             "Name" : "PercentagePointsAlert",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "Percentage points of increase/decrease for the alert to activate.",
             "DefaultValue" : "10",
 	    "Required": true

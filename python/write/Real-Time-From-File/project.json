@@ -22,7 +22,7 @@
         {
             "Name" : "DateColumnName",
             "Type" : "EnvironmentVariable",
-            "InputType" : "None",
+            "InputType" : "FreeText",
             "Description" : "Original name of the column containing the timestamp information",
             "DefaultValue" : "datetime",
             "Required": true
