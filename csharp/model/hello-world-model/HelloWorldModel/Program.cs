@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
-using Quix.Sdk.Streaming.Configuration;
+using Quix.Sdk.Streaming;
 using Quix.Sdk.Streaming.Models;
 
 namespace HelloWorldModel
@@ -91,18 +90,11 @@ namespace HelloWorldModel
                 };
             };
                 
-            inputTopic.StartReading(); // initiate read
             Console.WriteLine("Listening for streams");
             
-            // Hook up to termination signal (for docker image) and CTRL-C
-            var exitEvent = new ManualResetEventSlim();
-            Console.CancelKeyPress += (s, e) =>
-            {
-                e.Cancel = true; // In order to allow the application to cleanly exit instead of terminating it
-                exitEvent.Set();
-            }; 
             // Wait for CTRL-C
-            exitEvent.Wait();
+            App.Run();
+            
             Console.WriteLine("Exiting");
         }
     }
