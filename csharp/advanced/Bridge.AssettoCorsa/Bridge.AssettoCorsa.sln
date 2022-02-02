@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bridge.AssettoCorsa", "Bridge.AssettoCorsa\Bridge.AssettoCorsa.csproj", "{B2127F3D-4D9A-4A93-B2DB-C4B57C97C8BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bridge.AssettoCorsa.Reader", "Bridge.AssettoCorsa.Reader\Bridge.AssettoCorsa.Reader.csproj", "{92221C5C-0BB3-41ED-8852-10D5BA16A9E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2127F3D-4D9A-4A93-B2DB-C4B57C97C8BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2127F3D-4D9A-4A93-B2DB-C4B57C97C8BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2127F3D-4D9A-4A93-B2DB-C4B57C97C8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2127F3D-4D9A-4A93-B2DB-C4B57C97C8BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92221C5C-0BB3-41ED-8852-10D5BA16A9E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92221C5C-0BB3-41ED-8852-10D5BA16A9E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92221C5C-0BB3-41ED-8852-10D5BA16A9E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92221C5C-0BB3-41ED-8852-10D5BA16A9E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1C69C0E2-ADAC-4FA3-A72B-D1BDC639F2BD}
+	EndGlobalSection
+EndGlobal
