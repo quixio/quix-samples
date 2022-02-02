@@ -1,0 +1,23 @@
+{
+    "libraryItemId": "c7d2fea3-b8e7-4a9c-ab19-a8b62b6f9d6d",
+    "name": "Complete Example",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "A complete example of how to use all the event handlers",
+	"DefaultFile": "ReadCompleteExample/Program.cs",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+            "DefaultValue" : "CompleteReadSampleInput",
+            "Required": true
+        }
+    ]    
+}
