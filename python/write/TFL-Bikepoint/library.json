@@ -1,0 +1,40 @@
+{
+    "libraryItemId": "ff6f7887-c674-4724-858f-562d2445761d",
+    "name": "TFL Bikepoint",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Write TFL Bikepoint realtime data to a stream",
+    "DefaultFile": "quix_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "tfl-bikepoint-data",
+            "Required": true
+        },
+        {
+            "Name" : "tfl_primary_key",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "TFL Primary Key",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "tfl_secondary_key",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "TFL Secondary Key",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
+}

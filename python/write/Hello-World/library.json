@@ -8,8 +8,9 @@
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "The most basic and essential 'Hello World' write sample",
-    "DefaultFile": "readme.md",
+    "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "Variables": [
         {
             "Name" : "output",
