@@ -9,7 +9,7 @@ Note that the TIMESTAMP column is renamed to time for compatibility with Quix
 
 ### Local Development
 
-View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/LocalDevelopment) 
+View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/local-development) 
 for more information on how to develop with the Quix SDK locally
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance

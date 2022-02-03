@@ -4,4 +4,4 @@ This is an example on how use historic data in a csv file to write data to a str
 
 ## Local Development
 
-For information on how to set up your local development environment see the readme that's relevant to you [here](../../LocalDevelopment/)
+For information on how to set up your local development environment see the readme that's relevant to you [here](../../local-development/)

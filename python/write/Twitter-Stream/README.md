@@ -22,7 +22,7 @@ Ensure you have entered your Twitter API token and search parameters
 
 ### Local Development
 
-View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/LocalDevelopment) 
+View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/local-development) 
 for more information on how to develop with the Quix SDK locally
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
