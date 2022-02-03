@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.0-20220124.23" />
+        <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.0-20220124.20" />
     </ItemGroup>
 
 </Project>
