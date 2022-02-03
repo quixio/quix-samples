@@ -1,6 +1,6 @@
 {
     "libraryItemId": "0983e721-5c85-4f87-8859-51e12e137ee3",
-    "name": "Empty template",
+    "name": "Python Empty template",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"]
@@ -14,8 +14,16 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
-            "DefaultValue" : "input_topic",
+            "Description" : "This is the input topic where to read data in",
+            "DefaultValue" : "input-topic",
+            "Required": true
+        },
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic where to write data out",
+            "DefaultValue" : "output-topic",
             "Required": true
         }
     ]    

@@ -1,4 +1,4 @@
-# (NodeJs Empty Template)
+# NodeJs Empty Template
 
 This is an empty template for a website hosted using NodeJS express in the Quix serverless environment.
 

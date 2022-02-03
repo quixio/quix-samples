@@ -1,20 +1,28 @@
 {
     "libraryItemId": "50b9c8da-a101-4383-ad94-49b263b80633",
-    "name": "Empty template",
+    "name": "NodeJs Empty template",
     "language": "Nodejs",
     "tags": {
         "Complexity": ["Easy"]
     },
     "shortDescription": "An empty template for Nodejs applications",
-    "DefaultFile": "main.ts",
+    "DefaultFile": "main.js",
 	"EntryPoint": "build/dockerfile",
     "Variables": [ 
         {
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
-            "DefaultValue" : "input_topic",
+            "Description" : "This is the input topic where to read data in",
+            "DefaultValue" : "input-topic",
+            "Required": true
+        },
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic where to write data out",
+            "DefaultValue" : "output-topic",
             "Required": true
         }
     ]    

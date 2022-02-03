@@ -8,7 +8,7 @@ This is an empty template for Python applications in the Quix serverless environ
 
 ## Environment Variables
 
-The code sample uses the following environment variables:
+This code sample uses the following environment variables:
 
 - **VariableName**: {Description of the variable}
 - **input**: {Description of the variable}

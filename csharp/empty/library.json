@@ -1,6 +1,6 @@
 {
     "libraryItemId": "75369cd3-40d5-471f-8453-ccd2a1cd26d5",
-    "name": "Empty template",
+    "name": "C# Empty template",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"]
@@ -14,8 +14,16 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
-            "DefaultValue" : "input_topic",
+            "Description" : "This is the input topic where to read data in",
+            "DefaultValue" : "input-topic",
+            "Required": true
+        },
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic where to write data out",
+            "DefaultValue" : "output-topic",
             "Required": true
         }
     ]    
