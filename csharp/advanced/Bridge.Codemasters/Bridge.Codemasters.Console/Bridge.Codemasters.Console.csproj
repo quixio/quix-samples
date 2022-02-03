@@ -17,13 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\..\certificates\*.*">
-          <Link>certificates\%(Filename)%(Extension)</Link>
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>  
-
-    <ItemGroup>
       <None Update="appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
