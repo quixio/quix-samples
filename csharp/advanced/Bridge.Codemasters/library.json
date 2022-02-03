@@ -1,0 +1,17 @@
+{
+    "libraryItemId": "ff3fc8c4-d3c5-422e-87e5-d893e5c325c6",
+    "name": "Codemasters F1 2019 Bridge",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "C# Bridge for streaming Codemasters F1 2019 telemetry to Quix",
+    "longDescription": "C# Bridge for streaming Codemasters F1 2019 telemetry to Quix. This bridge is capable of streaming the game's telemetry (PC or Console). **It is intended to be run on a pc on your local network and not deployed within Quix**",
+	"DefaultFile": "Bridge.Codemasters.Console/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RuntimeEntryPoint": "Bridge.Codemasters.Console.csproj"
+    "Variables": [ 
+    ]    
+}
