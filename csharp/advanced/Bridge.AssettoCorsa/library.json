@@ -12,19 +12,27 @@
 	"EntryPoint": "build/dockerfile",
     "Variables": [ 
         {
-            "Name" : "input",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
-            "DefaultValue" : "strava-input-topic",
-            "Required": true
-        },
-		{
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "strava-watts-output",
+            "DefaultValue" : "assetto-corsa-output",
+            "Required": true
+        },
+		{
+            "Name" : "HostName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the Assetto Corsa server host",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "Port",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the Assetto Corsa server port",
+            "DefaultValue" : "",
             "Required": true
         }
     ]    
