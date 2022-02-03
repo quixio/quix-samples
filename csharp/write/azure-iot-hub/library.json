@@ -18,6 +18,38 @@
             "Description" : "This is the output topic",
             "DefaultValue" : "azure-iot-data",
             "Required": true
+        },
+		{
+            "Name" : "eventHubsEndpoint",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The eventhub endpoint",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "eventHubName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The eventhub name",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "iotSasKeyName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The IoT Sas Key Name",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "iotSasKey",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The IoT Sas Key",
+            "DefaultValue" : "",
+            "Required": true
         }
     ]    
 }
