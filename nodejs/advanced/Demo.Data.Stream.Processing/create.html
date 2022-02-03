@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create A Game</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js"></script>
+
+    <link rel="stylesheet" href="css/styles.css"/>
+    <script type="text/javascript" src="js/qrcode.js"></script>
+    <script type="text/javascript" src="js/httpProxy.js"></script>
+</head>
+<body>
+<div id="trackPageOuterDiv">
+    <div>
+        <div>
+            <img id="trackPageHeaderLogo" height="55px" src="https://quix.ai/wp-content/uploads/2021/01/Quix-logo-2021-White-text.svg">
+        </div>
+    </div>
+    <div class="flex-justify-center">
+        <div class="flex-row flex-justify-center flex-m-col flex-m-justify-center main-content">
+            <div class="flex-col flex-row flex-m-justify-center" style="max-width: 1280px">
+                <div class="flex-col flex-row flex-justify-center">
+                    <div class="phone-container">
+                        <h2>Data from your mobile</h2>
+                        <img id="phoneImage" src="images/phone/Default.png">
+                    </div>
+                    <div class="flex-row flex-m-pad flex-col">
+                        <div class="flex" id="playerInfoContainer">
+                            <div class="flex-m-col flex-col">
+                                <span id="countDownSpan">Time: <span id="remainingTime">60</span>s</span>
+                                <div id="playersInfo"></div>
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex-col flex-m-col">
+                                <p class="flex-pad-top info-text">
+                                    All this data is coming from Quix and it has traveled thousands* of km &amp; you
+                                    didn't even notice it
+                                </p>
+                                <!-- <div class="margin-top-auto">
+                                    <div class="flex-row flex-row">
+                                        <a href="">Learn how it works</a>
+                                        <img style="margin-left: 10px" src="images/quix/trending_flat_white_24dp.svg">
+                                    </div>
+                                </div>
+                                <div class="flex-grow" style="max-height: 75px;">
+                                    <div class="btn">
+                                        <span>
+                                            Make it yourself!
+                                        </span>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-justify-center flex-m-justify-center" >
+                <div id="canvasDiv"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="flex-m-col flex-col flex-justify-center flex-m-justify-center">
+    <div class="footer-image">
+        <img height="35px" src="https://quix.ai/wp-content/uploads/2021/01/Quix-logo-2021-White-text.svg">
+    </div>
+    <div class="footer-copyright">
+        Copyright © 2020 Quix Analytics
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="js/create-page.js"></script>
+</html>
+
+

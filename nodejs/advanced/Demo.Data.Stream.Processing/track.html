@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quix - Game Demo Race Track</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+
+
+    <script type="text/javascript" src="js/qrcode.js"></script>
+    <script src="js/httpProxy.js"></script>
+</head>
+<!--<body class="box" style="background-image: url('images/track1.png')">-->
+<body style="background: #222229">
+<div class="container">
+    <div class="row">
+        <div class="col gy-2"> <!--col for logo-->
+            <img height="55px" src="https://quix.ai/wp-content/uploads/2021/01/Quix-logo-2021-White-text.svg">
+        </div>
+        <!--        <div class="row col-5 gx-2 gy-2 d-md-flex justify-content-md-end d-flex flex-row"> &lt;!&ndash;col for menu&ndash;&gt;-->
+        <!--            <div class="col">-->
+        <!--                <button type="button" class="btn btn-link">Visit quix.ai</button>-->
+        <!--            </div>-->
+        <!--            <div class="col">-->
+        <!--                <button type="button" class="btn btn-primary">Sign up</button>-->
+        <!--            </div>-->
+        <!--            <div class="col">-->
+        <!--                <button type="button" class="btn btn-light">Log in</button>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </div>
+    <div class="row"> <!--main page content-->
+        <div class="col-6 gy-5" style="color: white">
+            <div class="row" style="font-weight: 600">
+                <h1>Scan to start streaming data at the speed of light</h1>
+            </div>
+            <div class="row">
+                <div id="canvasDiv" style="margin: 20px;"></div>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="row" style="width: 250px; height: 250px; background: white; border-radius: 4px; margin-top: 60px; margin-left: 100px">
+                <div style="padding: 10px" id="qrcode"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="row">-->
+<!--    <div class="row col-6 col-s-5">-->
+<!--        <div class="col-2 col-s-2" style="margin-left: 20px; margin-top: 20px">-->
+<!--            <img height="55px" src="https://quix.ai/wp-content/uploads/2021/01/Quix-logo-2021-White-text.svg">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="row">-->
+<!--        <ul style="margin-top: 50px">-->
+<!--            <li class="menu-link">-->
+<!--                <a href="https://quix.qi">Visit quix.ai</a>-->
+<!--            </li>-->
+<!--            <li class="menu-button">-->
+<!--                <a href="https://quix.qi">Sign up</a>-->
+<!--            </li>-->
+<!--            <li class="menu-button">-->
+<!--                <a href="https://quix.qi">Log in</a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--    <div class="row col-3">-->
+<!--        <div>-->
+<!--            <h1>Scan to start streaming data at the speed of light</h1>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            By scanning this QR code you will transform your smartphone into a controller, capable of streaming g-force-->
+<!--            sensor data without latency into the Quix platform at 20Hz.-->
+
+<!--            The live data will travel to Paris for processing and back to your browser at the speed of light and you-->
+<!--            won’t even notice it!-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--    <div class="row col-3" style="background: blue">-->
+<!--        <div class="row" style="background: red">-->
+<!--            <div style="width: 100px; height: 100px" style="background: gray">QR</div>-->
+<!--            <div class="row" style="background: goldenrod">-->
+<!--                <div>0</div>-->
+<!--                <div>Copy QR url</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+</body>
+<script src="js/track-page.js"></script>
+<script language="JavaScript">
+</script>
+</html>

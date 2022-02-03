@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60.001" height="60.001" viewBox="0 0 60.001 60.001">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #008eff;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="Group_176" data-name="Group 176" transform="translate(-7288 -2339)">
+    <g id="screen_phone_smart_smartphone_rotate_rotation" data-name="screen; phone; smart; smartphone; rotate; rotation" transform="translate(7288 2339)">
+      <path id="Path_867" data-name="Path 867" class="cls-1" d="M41.5,0a1.251,1.251,0,0,1,.781,2.227l-6.25,5a1.251,1.251,0,1,1-1.563-1.953l3.123-2.5A27.543,27.543,0,0,0,14,30a1.25,1.25,0,1,1-2.5,0A30.034,30.034,0,0,1,41.5,0Z" transform="translate(-11.5)"/>
+      <path id="Path_868" data-name="Path 868" class="cls-1" d="M6.719,35.524a1.251,1.251,0,0,1,1.563,1.953l-3.123,2.5A27.543,27.543,0,0,0,28.75,12.75a1.25,1.25,0,1,1,2.5,0,30.034,30.034,0,0,1-30,30,1.251,1.251,0,0,1-.781-2.227Z" transform="translate(28.75 17.251)"/>
+      <path id="Path_869" data-name="Path 869" class="cls-1" d="M33.347,2.078a3.841,3.841,0,0,1,5.305,0L54.9,18.327a3.749,3.749,0,0,1,0,5.3L23.654,54.879a3.75,3.75,0,0,1-5.305,0L2.1,38.63a3.749,3.749,0,0,1,0-5.3ZM53.5,20.979a1.241,1.241,0,0,0-.366-.884L36.882,3.843a1.248,1.248,0,0,0-1.765,0L7.874,31.087,25.892,49.1,53.135,21.862A1.241,1.241,0,0,0,53.5,20.979ZM3.866,36.863,20.119,53.114a1.276,1.276,0,0,0,1.765,0l2.241-2.241L6.107,32.854,3.866,35.1a1.25,1.25,0,0,0,0,1.768Z" transform="translate(1.5 1.522)"/>
+      <path id="Path_870" data-name="Path 870" class="cls-1" d="M19.134,17.366l2.5,2.5a1.25,1.25,0,1,1-1.768,1.768l-2.5-2.5a1.25,1.25,0,0,1,1.768-1.768Z" transform="translate(-4.5 25.501)"/>
+      <path id="Path_871" data-name="Path 871" class="cls-1" d="M7.134,5.366l2.5,2.5A1.25,1.25,0,1,1,7.866,9.634l-2.5-2.5A1.25,1.25,0,0,1,7.134,5.366Z" transform="translate(37.501 7.5)"/>
+      <ellipse id="Ellipse_103" data-name="Ellipse 103" class="cls-1" cx="1.5" cy="1.5" rx="1.5" ry="1.5" transform="translate(36.001 6)"/>
+    </g>
+    <g id="apple_black_24dp" transform="translate(7306 2355)">
+      <g id="Group_170" data-name="Group 170">
+        <rect id="Rectangle_332" data-name="Rectangle 332" class="cls-2" width="24" height="24"/>
+        <rect id="Rectangle_333" data-name="Rectangle 333" class="cls-2" width="24" height="24"/>
+      </g>
+      <g id="Group_171" data-name="Group 171">
+        <path id="Path_872" data-name="Path 872" class="cls-3" d="M17.05,20.28a2.554,2.554,0,0,1-3.08.35,3.9,3.9,0,0,0-3.24,0c-1.44.62-2.2.44-3.06-.35C2.79,15.25,3.51,7.59,9.05,7.31c1.35.07,2.29.74,3.08.8,1.18-.24,2.31-.93,3.57-.84a4.316,4.316,0,0,1,3.4,1.8,3.957,3.957,0,0,0,.48,7.13,10.157,10.157,0,0,1-2.54,4.09ZM12.03,7.25A4.1,4.1,0,0,1,15.77,3C16.06,5.58,13.43,7.5,12.03,7.25Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
