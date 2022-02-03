@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-bionic as build
+WORKDIR /project
+COPY --from=git /project .
+RUN dotnet build ./Bridge.Codemasters.Console/Bridge.Codemasters.Console.csproj -o /buildoutput
+
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-bionic
+WORKDIR /app
+COPY --from=build /buildoutput .
+ENTRYPOINT dotnet Bridge.Codemasters.Console.dll

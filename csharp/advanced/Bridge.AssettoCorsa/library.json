@@ -1,0 +1,31 @@
+{
+    "libraryItemId": "97350649-66c0-4d38-aa3c-f0eaefe109dc",
+    "name": "Assetto Corsa",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Create a bridge to stream the game's telemetry to Quix",
+	"DefaultFile": "Bridge.AssettoCorsa/Program.cs",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+            "DefaultValue" : "strava-input-topic",
+            "Required": true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "strava-watts-output",
+            "Required": true
+        }
+    ]    
+}

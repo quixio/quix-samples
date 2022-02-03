@@ -1,0 +1,56 @@
+{
+    "libraryItemId": "d6363896-df63-4445-bdcd-af179683fe76",
+    "name": "Strava Bridge",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Periodically import data from your Strava account",
+	"DefaultFile": "Strava.Bridge/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RuntimeEntryPoint": "Strava.Bridge.csproj"
+    "Variables": [ 
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "strava-output-topic",
+            "Required": true
+        },
+		{
+            "Name" : "PATToken",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the Quix PAT token",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "ClientId",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the Strava Client ID",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "Client Secret",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the Strava Client Secret",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "StravaRefreshToken",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the Strava Refresh Token",
+            "DefaultValue" : "",
+            "Required": true
+        },
+    ]    
+}

@@ -1,0 +1,31 @@
+{
+    "libraryItemId": "e5057b54-e71d-4257-b2f6-eb83e89d2e78",
+    "name": "Hello World",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Downsample 100Hz parameter to 10Hz using the built in buffer",
+	"DefaultFile": "HelloWorldModel/Program.cs",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic",
+            "DefaultValue" : "hello-world-input",
+            "Required": true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "hello-world-output",
+            "Required": true
+        }
+    ]    
+}
