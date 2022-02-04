@@ -8,6 +8,7 @@
     },
     "shortDescription": "Listen for data arriving into a stream",
 	"longDescription": "Listen for data arriving into a stream. Using our websockets API you can receive data in real-time",
+	"sampleTemplate": true,
     "DefaultFile": "Streaming_Reader_Example.html",
     "Variables": [ 
         {
