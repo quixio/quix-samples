@@ -5,8 +5,8 @@ let workspace = '{placeholder:broker.security.username}';
 let domain = '{placeholder:environment.subdomain}';
 let bearerToken = '{placeholder:token}';
 
-let gameDataTopicName = "gamedata";
-let carGameInputTopic = "car-game-input";
+let gameDataTopicName = "{placeholder:gamedata}";
+let carGameInputTopic = "{placeholder:gameinput}";
 
 let stream_id = "";
 let playerMessage;

@@ -1,7 +1,7 @@
 let workspace = '{placeholder:broker.security.username}';
 let domain = '{placeholder:environment.subdomain}';
 let bearerToken = '{placeholder:token}';
-let gameDataTopicName = "gamedata";
+let gameDataTopicName = "{placeholder:gamedata}";
 
 let playerName = "Player1";
 let forwardPressed = 0;

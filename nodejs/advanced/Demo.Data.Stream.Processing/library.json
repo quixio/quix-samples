@@ -20,7 +20,7 @@
             "Required": true
         },
 		{
-            "Name" : "game-input",
+            "Name" : "gameinput",
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
             "Description" : "This topic will be read by the Demo Data Stream Processing Control project",
