@@ -10,6 +10,7 @@
     "shortDescription": "The most basic and essential 'Hello World' read sample",
 	"DefaultFile": "ReadHelloWorld/Program.cs",
 	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "ReadHelloWorld.csproj",
     "Variables": [ 
         {
             "Name" : "input",

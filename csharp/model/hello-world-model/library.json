@@ -10,6 +10,7 @@
     "shortDescription": "Downsample 100Hz parameter to 10Hz using the built in buffer",
 	"DefaultFile": "HelloWorldModel/Program.cs",
 	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "HelloWorldModel.csproj",
     "Variables": [ 
         {
             "Name" : "input",

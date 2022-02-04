@@ -10,6 +10,7 @@
     "shortDescription": "Create a bridge to stream the game's telemetry to Quix",
 	"DefaultFile": "Bridge.AssettoCorsa/Program.cs",
 	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "Bridge.AssettoCorsa.csproj",
     "Variables": [ 
         {
             "Name" : "output",

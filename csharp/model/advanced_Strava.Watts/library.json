@@ -10,6 +10,7 @@
     "shortDescription": "Estimate pedal watt output",
 	"DefaultFile": "Strava.Watts/Program.cs",
 	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "Strava.Watts.csproj",
     "Variables": [ 
         {
             "Name" : "input",

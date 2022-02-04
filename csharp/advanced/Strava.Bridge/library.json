@@ -10,7 +10,7 @@
     "shortDescription": "Periodically import data from your Strava account",
 	"DefaultFile": "Strava.Bridge/Program.cs",
 	"EntryPoint": "build/dockerfile",
-	"RuntimeEntryPoint": "Strava.Bridge.csproj"
+	"RunEntryPoint": "Strava.Bridge.csproj",
     "Variables": [ 
 		{
             "Name" : "output",
@@ -51,6 +51,6 @@
             "Description" : "This is the Strava Refresh Token",
             "DefaultValue" : "",
             "Required": true
-        },
+        }
     ]    
 }
