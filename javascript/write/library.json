@@ -9,6 +9,7 @@
     "shortDescription": "Write data to a stream",
 	"longDescription": "The simplest Quix Javascript Hello World example",
     "DefaultFile": "Hello_World_Write_Data.html",
+	"sampleTemplate": true,
     "Variables": [ 
         {
             "Name" : "inputTopicName",
