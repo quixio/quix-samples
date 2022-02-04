@@ -1,0 +1,22 @@
+{
+    "libraryItemId": "9d3f9413-51cd-4d88-9149-fe87ca48ccc3",
+    "name": "Javascript Hello World",
+    "language": "Javascript",
+    "tags": {
+        "Complexity": ["Easy"],
+		"API Usage": ["Writer API (HTTP)"]
+    },
+    "shortDescription": "Write data to a stream",
+	"longDescription": "The simplest Quix Javascript Hello World example",
+    "DefaultFile": "Hello_World_Write_Data",
+    "Variables": [ 
+        {
+            "Name" : "inputTopicName",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "Input topic for the sample",
+            "DefaultValue" : "http-example-input",
+            "Required": true
+        }
+    ]    
+}
