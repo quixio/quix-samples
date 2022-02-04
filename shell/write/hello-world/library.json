@@ -1,0 +1,22 @@
+{
+    "libraryItemId": "2c37a9a2-d9e9-4956-9b89-2ab6ee1b9c45",
+    "name": "Hello Curl",
+    "language": "CURL",
+    "tags": {
+      "Type": [ "Sample", "Data Source" ],
+      "API Usage": [ "Streaming Writer API" ],
+      "Complexity": [ "Easy" ]
+    },
+    "sampleTemplate": true,
+    "shortDescription": "A really simple Hello CURL project",
+	"DefaultFile": "httptest.sh",
+    "Variables": [ 
+        {
+            "Name" : "outputTopicName",
+            "Type" : "Placeholder",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic",
+            "DefaultValue" : "curl-output"
+        }
+    ]
+}
