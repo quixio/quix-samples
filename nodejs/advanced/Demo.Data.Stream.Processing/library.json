@@ -1,0 +1,31 @@
+{
+    "libraryItemId": "",
+    "name": "",
+    "language": "NodeJs",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["UI"]
+    },
+    "shortDescription": "The Web and Phone UI for the Stream Processing Demo",
+	"DefaultFile": "main.js",
+	"EntryPoint": "build/dockerfile",
+    "Variables": [ 
+        {
+            "Name" : "gamedata",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "This topic will be read by the Demo Data Stream Processing Input project",
+            "DefaultValue" : "gamedata",
+            "Required": true
+        },
+		{
+            "Name" : "game-input",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "This topic will be read by the Demo Data Stream Processing Control project",
+            "DefaultValue" : "car-game-input",
+            "Required": true
+        }
+    ]    
+}
