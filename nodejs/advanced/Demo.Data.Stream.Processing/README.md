@@ -1,21 +1,21 @@
-# NodeJs Empty Template
+# Stream Processing Demo
 
-This is an empty template for a website hosted using NodeJS express in the Quix serverless environment.
+This is the Web and Phone UI for the Stream Processing Demo
 
 ## Requirements / Prerequisites (optional)
 
-{This will contain any external resource needed to run this sample, and the instructions to get them}
+In order to make use of this solution you also need to deploy the following projects:
+ - **Stream Processing Demo - Input**
+ - **Stream Processing Demo - Control**
 
 ## Environment Variables
 
 This code sample uses the following environment variables:
 
-- **VariableName**: {Description of the variable}
-- **input**: {Description of the variable}
-- **output**: {Description of the variable}
+- **gamedata**: This topic will be read by the Demo Data Stream Processing Input project
+- **car-game-input**: This topic will be read by the Demo Data Stream Processing Control project
 
 ## Docs
-{This will contain any reference/link to additional documentation or resource available related with the code}
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 

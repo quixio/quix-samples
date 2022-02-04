@@ -1,38 +1,30 @@
 {
-    "libraryItemId": "97350649-66c0-4d38-aa3c-f0eaefe109dc",
-    "name": "Assetto Corsa",
-    "language": "C#",
+    "libraryItemId": "",
+    "name": "",
+    "language": "NodeJs",
     "tags": {
         "Complexity": ["Advanced"],
 		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["UI"]
     },
-    "shortDescription": "Create a bridge to stream the game's telemetry to Quix",
-	"DefaultFile": "Bridge.AssettoCorsa/Program.cs",
+    "shortDescription": "The Web and Phone UI for the Stream Processing Demo",
+	"DefaultFile": "main.js",
 	"EntryPoint": "build/dockerfile",
     "Variables": [ 
         {
-            "Name" : "output",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
-            "DefaultValue" : "assetto-corsa-output",
+            "Name" : "gamedata",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "This topic will be read by the Demo Data Stream Processing Input project",
+            "DefaultValue" : "gamedata",
             "Required": true
         },
 		{
-            "Name" : "HostName",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "This is the Assetto Corsa server host",
-            "DefaultValue" : "",
-            "Required": true
-        },
-		{
-            "Name" : "Port",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "This is the Assetto Corsa server port",
-            "DefaultValue" : "",
+            "Name" : "game-input",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "This topic will be read by the Demo Data Stream Processing Control project",
+            "DefaultValue" : "car-game-input",
             "Required": true
         }
     ]    
