@@ -10,6 +10,7 @@
     "shortDescription": "Connect to kafka and write various messages",
 	"DefaultFile": "WriteCompleteExample/Program.cs",
 	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "WriteCompleteExample.csproj",
     "Variables": [ 
         {
             "Name" : "output",

@@ -10,6 +10,7 @@
     "shortDescription": "Realtime heart-rate zone output",
 	"DefaultFile": "Strava.HeartrateZones/Program.cs",
 	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "Strava.HeartrateZones.csproj",
     "Variables": [ 
         {
             "Name" : "input",

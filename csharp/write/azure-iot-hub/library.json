@@ -10,6 +10,7 @@
     "shortDescription": "Connect to Azure IoT and bridge data into Kafka",
 	"DefaultFile": "azureiot/Program.cs",
 	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "azureIot.csproj",
     "Variables": [ 
         {
             "Name" : "output",
