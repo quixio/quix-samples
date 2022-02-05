@@ -3,9 +3,10 @@
     "name": "Fraud Detection Data Cleaning",
     "language": "Python",
     "tags": {
-        "Complexity": ["Moderate"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+        "Use Case": ["Fraud Detection"]
     },
     "shortDescription": "Clean the data before fraud detection stage",
     "DefaultFile": "quix_function.py",

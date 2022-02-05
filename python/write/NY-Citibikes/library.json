@@ -3,12 +3,13 @@
     "name": "New York CitiBike",
     "language": "Python",
     "tags": {
-        "Complexity": ["Easy"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Use Case": ["Mobility"]
     },
     "shortDescription": "Write New York CitiBike data to a stream",
-    "DefaultFile": "quix_functions.py",
+    "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [

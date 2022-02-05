@@ -3,9 +3,9 @@
     "name": "Complete Example",
     "language": "C#",
     "tags": {
-        "Complexity": ["Easy"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Read SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Destination"]
     },
     "shortDescription": "A complete example of how to use all the event handlers",
 	"DefaultFile": "ReadCompleteExample/Program.cs",

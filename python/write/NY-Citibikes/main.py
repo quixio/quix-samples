@@ -1,6 +1,5 @@
 from quixstreaming import QuixStreamingClient
 from quixstreaming.app import App
-from quix_functions import QuixFunctions
 from datetime import datetime
 from datetime import timezone
 from ny_bikes_API import get_agg_data
@@ -28,8 +27,6 @@ output_stream.properties.location = "/NY_Real_Time"
 
 def get_data():
 
-    quix_functions = QuixFunctions(output_stream)
-
     while run:
         try:
             # Current timestamp
@@ -39,7 +36,11 @@ def get_data():
             df_i_agg = get_agg_data()
             total_bikes = df_i_agg.loc[0, 'num_bikes_available'] + df_i_agg.loc[0, 'num_ebikes_available']
 
-            quix_functions.data_handler(current_time_i, total_bikes, df_i_agg)
+            # Write bikes data to the output stream
+            output_stream.parameters.buffer.add_timestamp(current_time_i) \
+                .add_value('total_num_bikes_available', total_bikes) \
+                .add_value('num_docks_available', df_i_agg.loc[0, 'num_docks_available']) \
+                .write()
 
             # How long did the Request and transformation take
             current_time_j = datetime.now(timezone.utc)

@@ -3,7 +3,7 @@
     "name": "Rolling Window",
     "language": "Python",
     "tags": {
-        "Complexity": ["Easy"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"]
     },

@@ -1,20 +1,20 @@
 {
     "libraryItemId": "fb64b54f-b9b5-41b1-b4a8-d793daca1123",
-    "name": "Hello HTTP",
+    "name": "HTTP sample (command-line)",
     "language": "HTTP",
     "tags": {
-      "Type": [ "Sample", "Data Source" ],
-      "API Usage": [ "Streaming Writer API" ],
-      "Complexity": [ "Easy" ]
+      "API Usage": [ "Writer API (HTTP)" ],
+      "Complexity": [ "Easy" ],
+      "Pipeline Stage": ["Source"]
     },
     "sampleTemplate": true,
-    "shortDescription": "Hello HTTP project David",
+    "shortDescription": "This sample shows how to use HTTP Writer API in a command-line",
     "Variables": [ 
         {
             "Name" : "outputTopicName",
             "Type" : "Placeholder",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic where to write the data",
             "DefaultValue" : "output"
         }
     ],

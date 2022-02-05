@@ -5,7 +5,8 @@
     "tags": {
         "Complexity": ["Advanced"],
 		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Source"],
+        "Popular subjects": ["Sports"]
     },
     "shortDescription": "Periodically import data from your Strava account",
 	"DefaultFile": "Strava.Bridge/Program.cs",

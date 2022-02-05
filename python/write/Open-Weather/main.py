@@ -2,7 +2,6 @@ from quixstreaming import QuixStreamingClient
 from quixstreaming.app import App
 from ny_weather_API import perform_API_request, get_current_weather, get_tomorrow_weather
 from datetime import datetime
-from quix_functions import QuixFunctions
 import time
 from datetime import timezone
 import traceback
@@ -32,8 +31,6 @@ output_stream.properties.location = "/NY_Real_Time"
 
 def get_data():
 
-    quix_functions = QuixFunctions(output_stream)
-
     while run:
         try:
             # Current timestamp
@@ -45,8 +42,14 @@ def get_data():
             df_1d = get_tomorrow_weather(json_response)
             list_dfs = [df_now, df_1d]
 
-            # Write stream
-            quix_functions.data_handler(current_time, list_dfs)
+            # Write Data to Stream
+            for i, forecast_time in enumerate(['Current', 'NextDay']):
+                output_stream.parameters.buffer.add_timestamp(current_time) \
+                    .add_tag('Forecast', forecast_time) \
+                    .add_value('feelslike_temp_c', list_dfs[i].loc[0, 'feelslike_temp_c']) \
+                    .add_value('wind_kph', list_dfs[i].loc[0, 'wind_mps'] * 3.6) \
+                    .add_value('condition', list_dfs[i].loc[0, 'condition']) \
+                    .write()
 
             # How long did the Request and transformation take
             current_time_j = datetime.now(timezone.utc)

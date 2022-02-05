@@ -7,7 +7,7 @@
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "The most basic and essential 'Hello World' write sample",
+    "shortDescription": "The most basic 'Hello World' write sample with Pandas",
     "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

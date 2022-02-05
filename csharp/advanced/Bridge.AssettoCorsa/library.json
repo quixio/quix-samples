@@ -4,8 +4,9 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
-		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Popular subjects": ["Racing", "Gaming"]
     },
     "shortDescription": "Create a bridge to stream the game's telemetry to Quix",
 	"DefaultFile": "Bridge.AssettoCorsa/Program.cs",

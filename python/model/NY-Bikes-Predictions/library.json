@@ -3,9 +3,11 @@
     "name": "NY Bikes Prediction Model",
     "language": "Python",
     "tags": {
-        "Complexity": ["Moderate"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+        "Popular subjects": ["Machine Learning"],
+        "Use Case": ["Mobility"]
     },
     "shortDescription": "Predict availability of New York bikes",
 	"DefaultFile": "model_functions.py",

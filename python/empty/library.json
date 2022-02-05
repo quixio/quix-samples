@@ -3,7 +3,8 @@
     "name": "Python Empty template",
     "language": "Python",
     "tags": {
-        "Complexity": ["Easy"]
+        "Complexity": ["Easy"],
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "An empty template for Python applications",
 	"EntryPoint": "build/dockerfile",

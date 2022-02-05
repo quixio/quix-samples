@@ -5,7 +5,8 @@
     "tags": {
         "Complexity": ["Advanced"],
 		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+        "Popular subjects": ["Sports"]
     },
     "shortDescription": "Pin-point interesting moments in strava activities",
 	"DefaultFile": "Strava.Events/Program.cs",
