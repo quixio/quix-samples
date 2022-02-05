@@ -2,14 +2,23 @@
 
 Augment the raw data from the phone and persist to another stream. 
 
-## You will need
+## Requirements / Prerequisites
 
-- A Quix account - [Signup here](https://quix.ai/signup)
+This is part of our Car Demo example project.
 
-### Local Development
+## Environment Variables
 
-View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/local-development) 
-for more information on how to develop with the Quix SDK locally
+The code sample uses the following environment variables:
+
+- **input**: Name of the input topic to listen to.
+- **output**: Name of the output topic to write into.
+
+## Docs
+{This will contain any reference/link to additional documentation or resource available related with the code}
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+
+Alternativelly, you can check [here](/python/local-development) how to setup your local environment.
