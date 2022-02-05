@@ -3,9 +3,10 @@
     "name": "Strava Watts",
     "language": "C#",
     "tags": {
-        "Complexity": ["Moderate"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+        "Popular subjects": ["Sports"]
     },
     "shortDescription": "Estimate pedal watt output",
 	"DefaultFile": "Strava.Watts/Program.cs",

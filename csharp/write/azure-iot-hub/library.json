@@ -3,9 +3,10 @@
     "name": "Azure IoT Hub",
     "language": "C#",
     "tags": {
-        "Complexity": ["Moderate"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Technology": ["Azure IoT Hub"]
     },
     "shortDescription": "Connect to Azure IoT and bridge data into Kafka",
 	"DefaultFile": "azureiot/Program.cs",

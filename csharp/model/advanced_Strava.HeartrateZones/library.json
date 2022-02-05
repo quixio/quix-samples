@@ -3,9 +3,10 @@
     "name": "Strava Heart-Rate Zone",
     "language": "C#",
     "tags": {
-        "Complexity": ["Moderate"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+        "Popular subjects": ["Sports"]
     },
     "shortDescription": "Realtime heart-rate zone output",
 	"DefaultFile": "Strava.HeartrateZones/Program.cs",

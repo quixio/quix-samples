@@ -3,7 +3,8 @@
     "name": "C# Empty template",
     "language": "C#",
     "tags": {
-        "Complexity": ["Easy"]
+        "Complexity": ["Easy"],
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "An empty template for C# applications",
 	"EntryPoint": "build/dockerfile",

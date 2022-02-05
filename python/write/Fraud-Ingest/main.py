@@ -1,6 +1,5 @@
 from quixstreaming import QuixStreamingClient
 from quixstreaming.app import App
-from quix_functions import QuixFunctions
 import os
 import pandas as pd 
 import time
@@ -24,8 +23,6 @@ output_stream.properties.location = '/dataset/raw_data'
 
 
 def get_data():
-    quix_functions = QuixFunctions(output_stream)
-
     columns = []
 
     row_index = 0
@@ -47,7 +44,9 @@ def get_data():
 
         print("Writing 5 rows")
 
-        quix_functions.data_handler(dataset)
+        # Write Data to Stream
+        output_stream.parameters.write(dataset)
+        output_stream.parameters.flush()
 
         time.sleep(1)
 

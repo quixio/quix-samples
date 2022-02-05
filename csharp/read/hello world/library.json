@@ -5,7 +5,7 @@
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Destination"]
     },
     "shortDescription": "The most basic and essential 'Hello World' read sample",
 	"DefaultFile": "ReadHelloWorld/Program.cs",

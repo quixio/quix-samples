@@ -5,8 +5,9 @@
     "tags": {
         "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
-		"API Usage": ["Streaming Reader API", "Streaming Writer API"],
-		"Type": ["Process"]
+        "Pipeline Stage": ["Transformation"],
+        "Use Case": ["Sentiment Analysis"],
+        "Popular subjects": ["Machine learning"]
     },
     "shortDescription": "It deploys a Hugging Face model that generates predictions based on the input data in the input topic.",
     "DefaultFile": "hugging_face_model.py",

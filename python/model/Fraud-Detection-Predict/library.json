@@ -3,9 +3,10 @@
     "name": "Fraud Detection Prediction",
     "language": "Python",
     "tags": {
-        "Complexity": ["Moderate"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+        "Use Case": ["Fraud Detection"]
     },
     "shortDescription": "Use an ML model to predict fraudulent activity",
     "DefaultFile": "quix_function.py",

@@ -7,7 +7,7 @@
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Easily write data from a CSV file into a stream",
+    "shortDescription": "Write data from a CSV file into a stream",
     "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

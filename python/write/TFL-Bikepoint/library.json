@@ -5,7 +5,8 @@
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Use Case": ["Mobility"]
     },
     "shortDescription": "Write TFL Bikepoint realtime data to a stream",
     "DefaultFile": "quix_functions.py",

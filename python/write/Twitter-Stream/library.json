@@ -5,7 +5,8 @@
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Technology": ["Twitter"]
     },
     "shortDescription": "Write realtime Twitter data to a stream",
     "DefaultFile": "twitter_function.py",

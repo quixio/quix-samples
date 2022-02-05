@@ -3,7 +3,7 @@
     "name": "Complete Write Example",
     "language": "Python",
     "tags": {
-        "Complexity": ["Easy"],
+        "Complexity": ["Medium"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },

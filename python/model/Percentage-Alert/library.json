@@ -5,8 +5,7 @@
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read/Write SDK"],
-		"API Usage": ["Streaming Reader API", "Streaming Writer API"],
-		"Type": ["Process"]
+        "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Generates an alert when certain numeric threshold is crossed. It works at both sides of the threshold.",
 	"DefaultFile": "percentage_function.py",
@@ -25,7 +24,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic",
-            "DefaultValue" : "HelloWorldOutput",
+            "DefaultValue" : "output-topic",
 	        "Required": true
         },
         {

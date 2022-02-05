@@ -5,7 +5,7 @@
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Destination"]
     },
     "shortDescription": "The most basic 'Hello World' read sample with Pandas",
     "DefaultFile": "quix_function.py",
