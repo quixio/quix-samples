@@ -20,10 +20,10 @@ namespace azureIot
             var sasKey = Environment.GetEnvironmentVariable("iotSasKey");
 
             
-            // Create a client factory. Factory helps you create StreamingClient (see below) a little bit easier
+            // Create a client which holds generic details for creating input and output topics
             var client = new Quix.Sdk.Streaming.QuixStreamingClient();
             
-            // Create a StreamingClient (using the factory) in order to easily create new streams for the above configured topic
+            // Create an output topic where to write data out
             using var outputTopic = client.OpenOutputTopic(outputTopicName);
 
             // Event Hub-compatible endpoint
