@@ -5,12 +5,6 @@ import time
 import datetime
 import os
 
-# Create a client. Client helps you to create input reader or output writer for specified topic.
-certificatePath = "../certificates/ca.cert"
-username = "{placeholder:broker.security.username}"
-password = "{placeholder:broker.security.password}"
-broker = "{placeholder:broker.address}"
-
 properties = {
     "acks": "0"
 }

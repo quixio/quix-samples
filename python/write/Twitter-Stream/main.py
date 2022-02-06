@@ -12,10 +12,10 @@ import os
 # should the main loop run?
 run = True
 
-# Create a client. The client helps you to create input reader or output writer for specified topic.
-client = QuixStreamingClient('{placeholder:token}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
+client = QuixStreamingClient('{placeholder:sdktoken}')
 
-# create the output topic
+# Open the output topic where to write data out
 output_topic = client.open_output_topic(os.environ["output"])
 
 # Twitter bearer token goes here

@@ -3,8 +3,8 @@ from quix_functions import QuixFunction
 import datetime
 import os
 
-# Create a client. The client helps you to create input reader or output writer for specified topic.
-client = QuixStreamingClient('{placeholder:token}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
+client = QuixStreamingClient('{placeholder:sdktoken}')
 
 # create the output topic and stream
 output_topic = client.open_output_topic(os.environ["output"])

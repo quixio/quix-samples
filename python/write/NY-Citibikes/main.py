@@ -10,18 +10,17 @@ import os
 # should the main loop run?
 run = True
 
-# configure security objects
-client = QuixStreamingClient('{placeholder:token}')
+client = QuixStreamingClient('{placeholder:sdktoken}')
 
-# Open the output topic
+# Open the output topic where to write data out
 print("Opening output topic")
 output_topic = client.open_output_topic(os.environ["output"])
 
 # CREATE A STREAM: collection of data that belong to a single session of a single source.
 output_stream = output_topic.create_stream("NY-Real-Time-Bikes")
-# Give the stream human readable name. This name will appear in data catalogue.
+# Give the stream human readable name. This name will appear in Live views and Data Explorer.
 output_stream.properties.name = "New York Total Bikes Real Time"
-# Save stream in specific folder in data catalogue to help organize your workspace.
+# Save stream in specific folder in data catalogue to help organize your data.
 output_stream.properties.location = "/NY_Real_Time"
 
 

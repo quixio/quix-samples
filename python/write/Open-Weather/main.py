@@ -14,10 +14,9 @@ run = True
 
 openweather_api_key = "{}".format(os.environ["openweatherkey"])
 
-# configure security objects
-client = QuixStreamingClient('{placeholder:token}')
+client = QuixStreamingClient('{placeholder:sdktoken}')
 
-# Open the output topic
+# Open the output topic where to write data out
 print("Opening output topic")
 output_topic = client.open_output_topic(os.environ["output"])
 

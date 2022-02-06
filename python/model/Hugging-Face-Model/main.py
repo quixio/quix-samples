@@ -3,13 +3,12 @@ from quixstreaming.app import App
 from hugging_face_model import HuggingFaceModel
 import os
 
-# Create a client. The client helps you to create input reader or output writer for specified topic.
-client = QuixStreamingClient('{placeholder:token}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
+client = QuixStreamingClient('{placeholder:sdktoken}')
 
-# Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
 
-# Environment variables
+# Change consumer group to a different constant if you want to run model locally.
 input_topic = client.open_input_topic(os.environ[os.environ["input"], "default-consumer-group")
 output_topic = client.open_output_topic(os.environ[os.environ["output"])
 
