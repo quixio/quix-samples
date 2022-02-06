@@ -1,11 +1,11 @@
 {
     "libraryItemId": "50b9c8da-a101-4383-ad94-49b263b80633",
     "name": "NodeJs Empty template",
-    "language": "Nodejs",
+    "language": "NodeJs",
     "tags": {
         "Complexity": ["Easy"]
     },
-    "shortDescription": "An empty template for Nodejs applications",
+    "shortDescription": "An empty template for NodeJs applications",
     "DefaultFile": "main.js",
 	"EntryPoint": "build/dockerfile",
     "Variables": [ 

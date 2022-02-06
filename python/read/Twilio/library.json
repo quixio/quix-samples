@@ -1,6 +1,6 @@
 {
    "libraryItemId": "0e436ae9-c48b-4da5-b069-f8703f6ab6cb",
-   "name": "Twilio sink",
+   "name": "Twilio Sink",
    "language": "Python",
    "tags":{
       "Complexity": ["Medium"],
