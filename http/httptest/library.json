@@ -1,7 +1,7 @@
 {
     "libraryItemId": "fb64b54f-b9b5-41b1-b4a8-d793daca1123",
-    "name": "HTTP sample (command-line)",
-    "language": "HTTP",
+    "name": "HTTP API Sample",
+    "language": "Shell Script",
     "tags": {
       "API Usage": [ "Writer API (HTTP)" ],
       "Complexity": [ "Easy" ],

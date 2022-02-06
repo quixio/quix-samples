@@ -7,7 +7,7 @@
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
         "Use Case": ["Sentiment Analysis"],
-        "Popular subjects": ["Machine learning"]
+        "Popular subjects": ["Machine Learning"]
     },
     "shortDescription": "It deploys a Hugging Face model that generates predictions based on the input data in the input topic.",
     "DefaultFile": "hugging_face_model.py",

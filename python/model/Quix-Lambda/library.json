@@ -1,13 +1,13 @@
 {
     "libraryItemId": "777f7253-22c3-41a4-a5e9-9f8ec084f879",
-    "name": "Quix function",
+    "name": "Hello World - Transformation",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"]
     },
-    "shortDescription": "This is an example of how to transform the data on the fly between Source and Destination.",
+    "shortDescription": "Template of how to transform data between Source and Destination.",
 	"DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
@@ -23,7 +23,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "Select output name.",
-            "DefaultValue" : "quixlambda"
+            "DefaultValue" : "transform"
         }
     ]    
 }

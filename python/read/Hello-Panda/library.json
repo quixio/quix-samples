@@ -1,11 +1,12 @@
 {
     "libraryItemId": "258da76e-ca18-49f3-befd-73fdf034c149",
-    "name": "Hello Pandas - Read",
+    "name": "Hello Pandas - Destination",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"],
-        "Pipeline Stage": ["Destination"]
+        "Pipeline Stage": ["Destination"],
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "The most basic 'Hello World' read sample with Pandas",
     "DefaultFile": "quix_function.py",

@@ -1,6 +1,6 @@
 {
     "libraryItemId": "6cf9def8-936d-4d20-8068-d6b91a8be0b1",
-    "name": "Azure IoT Hub",
+    "name": "Azure IoT Hub - Source",
     "language": "C#",
     "tags": {
         "Complexity": ["Medium"],
