@@ -1,11 +1,12 @@
 {
     "libraryItemId": "e86f1198-a3ba-431c-93e5-d0a4f380c79d",
-    "name": "Hello Pandas - Write",
+    "name": "Hello Pandas - Source",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "The most basic 'Hello World' write sample with Pandas",
     "DefaultFile": "main.py",

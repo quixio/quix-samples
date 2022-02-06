@@ -5,8 +5,8 @@ This is the Web and Phone UI for the Stream Processing Demo
 ## Requirements / Prerequisites (optional)
 
 In order to make use of this solution you also need to deploy the following projects:
- - **Stream Processing Demo - Input**
- - **Stream Processing Demo - Control**
+ - **Streaming Demo - Input**
+ - **Streaming Demo - Control**
 
 ## Environment Variables
 

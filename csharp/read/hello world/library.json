@@ -1,11 +1,12 @@
 {
     "libraryItemId": "0d7400c4-39da-4ab2-8717-c906252c2237",
-    "name": "Hello World",
+    "name": "Hello World - Destination",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"],
-        "Pipeline Stage": ["Destination"]
+        "Pipeline Stage": ["Destination"],
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "The most basic and essential 'Hello World' read sample",
 	"DefaultFile": "ReadHelloWorld/Program.cs",

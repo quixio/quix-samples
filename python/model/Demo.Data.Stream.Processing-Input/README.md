@@ -1,4 +1,4 @@
-# Stream Processing Demo - Input Processing
+# Streaming Demo - Input Processing
 
 Augment the raw data from the phone and persist to another stream. 
 

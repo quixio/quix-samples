@@ -1,11 +1,12 @@
 {
     "libraryItemId": "cf45110d-2e36-4acd-81cc-c36bb4fefa22",
-    "name": "Hello World",
+    "name": "Hello World - Source",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "The most basic and essential 'Hello World' write sample",
 	"DefaultFile": "WriteHelloWorld/Program.cs",
