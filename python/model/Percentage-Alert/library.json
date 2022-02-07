@@ -16,15 +16,15 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
+            "Description" : "This is the input topic for numeric data",
 	        "Required": true
         },
 		{
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
-            "DefaultValue" : "output-topic",
+            "Description" : "This is the output topic for alerts",
+            "DefaultValue" : "alert-output-topic",
 	        "Required": true
         },
         {

@@ -16,7 +16,7 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
+            "Description" : "This is the input topic for f1 data",
             "DefaultValue" : "f1-data",
             "Required": true
         },
@@ -24,7 +24,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic for hard braking events",
             "DefaultValue" : "hard-braking",
             "Required": true
         }

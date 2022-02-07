@@ -16,7 +16,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic for demo data",
             "DefaultValue" : "write-example-output",
             "Required": true
         }
