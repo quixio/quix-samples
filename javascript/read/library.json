@@ -1,0 +1,23 @@
+{
+    "libraryItemId": "945c70f6-6051-4f0b-b44e-5662deb23abc",
+    "name": "Hello Websockets",
+    "language": "Javascript",
+    "tags": {
+        "Complexity": ["Easy"],
+		"API Usage": ["Reader API (Websockets)"]
+    },
+    "shortDescription": "Listen for data arriving into a stream",
+	"longDescription": "Listen for data arriving into a stream. Using our websockets API you can receive data in real-time",
+	"sampleTemplate": true,
+    "DefaultFile": "Streaming_Reader_Example.html",
+    "Variables": [ 
+        {
+            "Name" : "inputTopicName",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "Input topic for the sample",
+            "DefaultValue" : "http-example-input",
+            "Required": true
+        }
+    ]    
+}
