@@ -1,18 +1,31 @@
-# New York CitiBike API
-This sample will allow you to connect to the New York CitiBike API
+# NY Bikes I - CitiBike API
 
-## You will need
+In this sample you'll connect to the New York CitiBike API.
 
-- A Quix account - [Signup here](https://quix.ai/signup)
-- A Topic
+## Requirements / Prerequisites
 
-## Parameters
+This is part of the Quix [data science tutorial](https://quix.ai/docs/guides/tutorials/data-science-tutorial.html). 
 
-The New York CitiBike API does not need any API keys or tokens
+- **NY Bikes I - Citibikes**: get real time availability of New York bikes.
+- NY Bikes II - Prediction: get real time weather forecasts for New York.
+- NY Bikes III - Prediction: predict near future bikes availability in New York based on current bikes and weather forecasts.
 
-### Local Development
+You will need an [OpenWeather (free) account](https://home.openweathermap.org/users/sign_up/) to complete this tutorial.
 
-View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/local-development) 
-for more information on how to develop with the Quix SDK locally
+
+## Environment Variables
+
+The code sample uses the following environment variables:
+
+- **output**: Name of the output topic to write into.
+
+## Docs
+Check the Quix [data science tutorial](https://quix.ai/docs/guides/tutorials/data-science-tutorial.html) for more detail on how to complete the New York Bikes project. 
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+
+Alternatively, you can check [here](/python/local-development) how to setup your local environment.
+

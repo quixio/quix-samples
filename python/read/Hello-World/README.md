@@ -1,14 +1,18 @@
 # Python Hello World
 
-This is an example on how to connect and handle the arrival of a new stream
+This is an example on how to connect and handle the arrival of a new stream.
 
-## You will need
+## Environment Variables
 
-- A Quix account - [Signup here](https://quix.ai/signup)
+The code sample uses the following environment variables:
 
-### Local Development
+- **input**: Name of the input topic to listen to.
 
-View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/local-development) 
-for more information on how to develop with the Quix SDK locally
+## Docs
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+
+Alternatively, you can check [here](/python/local-development) how to setup your local environment.

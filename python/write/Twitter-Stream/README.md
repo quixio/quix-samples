@@ -1,28 +1,22 @@
 # Twitter Stream Example
 This sample will allow you to stream data from Twitter into a Quix Stream
 
-## You will need
+## Requirements / Prerequisites
 
-- A Twitter developer account
-- A Topic
+This python project requires a Twitter developer account (and Twitter bearer token).
 
 ## Environment Variables
 
-- ### output
-  - The destination for this data
-  - Change this to whatever you want
+The code sample uses the following environment variables:
 
-- ### twitter_bearer_token
-  - Your Twitter bearer token
-  - Get this from your Twitter developer account
+- **output**: Name of the output topic to write into.
+- **twitter_bearer_token**: TFL Primary Key.
 
-## Parameters
-
-Ensure you have entered your Twitter API token and search parameters
-
-### Local Development
-
-View the readme's [here](https://github.com/quixai/quix-library/tree/main/python/local-development) 
-for more information on how to develop with the Quix SDK locally
-
+## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+
+Alternatively, you can check [here](/python/local-development) how to setup your local environment.
+
