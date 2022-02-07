@@ -16,14 +16,14 @@
             "Name" : "messages",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic for chat messages",
             "DefaultValue" : "messages"
         },
         {
             "Name" : "broadcast",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic for broadcast messages",
             "DefaultValue" : "broadcast"
         }
     ]

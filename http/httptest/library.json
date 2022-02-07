@@ -15,7 +15,7 @@
             "Name" : "outputTopicName",
             "Type" : "Placeholder",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic where to write the data",
+            "Description" : "This is the output topic to write the dummy data",
             "DefaultValue" : "output"
         }
     ],

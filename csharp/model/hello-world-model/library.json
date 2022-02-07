@@ -17,7 +17,7 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
+            "Description" : "This is the input topic for data to be downsampled",
             "DefaultValue" : "hello-world-input",
             "Required": true
         },
@@ -25,7 +25,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic for downsampled data",
             "DefaultValue" : "hello-world-output",
             "Required": true
         }

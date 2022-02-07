@@ -16,7 +16,7 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
+            "Description" : "This is the input topic for demo data",
             "DefaultValue" : "CompleteReadSampleInput",
             "Required": true
         }
