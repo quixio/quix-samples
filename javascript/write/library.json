@@ -1,10 +1,11 @@
 {
     "libraryItemId": "9d3f9413-51cd-4d88-9149-fe87ca48ccc3",
-    "name": "Javascript Hello World",
+    "name": "Hello World - POST",
     "language": "Javascript",
     "tags": {
         "Complexity": ["Easy"],
-		"API Usage": ["Writer API (HTTP)"]
+		"API Usage": ["Writer API (HTTP)"],
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "Write data to a stream",
 	"longDescription": "The simplest Quix Javascript Hello World example",

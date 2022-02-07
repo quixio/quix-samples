@@ -1,10 +1,11 @@
 {
     "libraryItemId": "945c70f6-6051-4f0b-b44e-5662deb23abc",
-    "name": "Hello Websockets",
+    "name": "Hello World - Websockets",
     "language": "Javascript",
     "tags": {
         "Complexity": ["Easy"],
-		"API Usage": ["Reader API (Websockets)"]
+		"API Usage": ["Reader API (Websockets)"],
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "Listen for data arriving into a stream",
 	"longDescription": "Listen for data arriving into a stream. Using our websockets API you can receive data in real-time",
