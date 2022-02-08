@@ -8,8 +8,8 @@ It shows how to make real-time decisions on your data, in this case whether a dr
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
+- **input**: This is the input topic for f1 data.
+- **output**: This is the output topic for hard braking events.
 
 ## Docs
 

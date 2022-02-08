@@ -6,7 +6,7 @@ This is an example on how to write CSV data to a stream.
 
 The code sample uses the following environment variables:
 
-- **output**: Name of the output topic to write into.
+- **output**: This is the output topic for car data.
 
 ## Docs
 

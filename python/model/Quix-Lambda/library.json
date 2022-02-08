@@ -17,13 +17,13 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "Select data input."
+            "Description" : "Name of the input topic to listen to."
         },
 		{
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "Select output name.",
+            "Description" : "Name of the output topic to write to.",
             "DefaultValue" : "transform"
         }
     ]    

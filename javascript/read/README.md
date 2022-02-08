@@ -6,7 +6,7 @@ Listen for data arriving into a stream and handle it using WebSockets
 
 This code sample uses the following environment variables:
 
-- **inputTopicName**: The topic to read data from
+- **input**: Input topic to read data from
 
 ## Docs
 

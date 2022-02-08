@@ -32,7 +32,7 @@
             "Name" : "ParameterName",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "This is the stream's parameter to perform the window function on",
+            "Description" : "The stream's parameter to perform the window function upon",
             "DefaultValue" : "ParameterA",
 	        "Required": true
         },
@@ -47,7 +47,7 @@
             "Name" : "WindowValue",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "If Number of Observations: integer, if Time Period: 30sec, 1week, 3miliseconds, etc.",
+            "Description" : "Defines the window length. If Number of Observations: integer, if Time Period: 30sec, 1week, 3miliseconds, etc.",
             "DefaultValue" : "1min"
         }
     ]    

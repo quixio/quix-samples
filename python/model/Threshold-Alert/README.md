@@ -12,10 +12,10 @@ This python project generates an alert when certain numeric threshold is crossed
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
-- **ParameterName**: Parameter in the input topic of the specific signal that we want to apply the alert to.
-- **ThresholdValue**: Numerical value of the threshold.
+- **input**: This is the input topic for raw data.
+- **output**: This is the output topic for alerts.
+- **ParameterName**: This is the stream's parameter to track.
+- **ThresholdValue**: This is the threshold's numerical value.
 
 ## Docs
 

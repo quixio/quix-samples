@@ -8,7 +8,7 @@ The default implementation just passes data from Source to Destination and print
 The code sample uses the following environment variables:
 
 - **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
+- **output**: Name of the output topic to write to.
 
 ## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance

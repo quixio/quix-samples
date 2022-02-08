@@ -6,7 +6,7 @@ The most basic and essential 'Hello World' read sample. The sample contained in 
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
+- **input**: This is the input topic for demo data.
 
 ## Docs
 

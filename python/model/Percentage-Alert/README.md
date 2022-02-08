@@ -10,10 +10,10 @@ This python project generates an alert when certain percentage increase or decre
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
-- **ParameterName**: Parameter in the input topic of the specific signal that we want to apply the alert to
-- **PercentagePointsAlert**: Percentage points that the signal has to vay for the alert to activate. 10 = 10%, 20=20%, etc.
+- **input**: This is the input topic for numeric data.
+- **output**: This is the output topic for alerts.
+- **ParameterName**: The parameter name to track
+- **PercentagePointsAlert**: Percentage points of increase/decrease for the alert to activate e.g. 10 is 10%, 20 is 20%, etc.
 
 ## Docs
 

@@ -3,6 +3,8 @@ This bridge is capable of streaming the game's telemetry (PC or Console) to Quix
 
 **It is intended to be run on a pc on your local network and not deployed within Quix**
 
+After saving the sample to your workspace please download or clone the code locally to run. 
+
 ## Requirements / Prerequisites
  - Codemasters F1 2019 on PC or Console
 
@@ -11,8 +13,6 @@ This bridge is capable of streaming the game's telemetry (PC or Console) to Quix
 These are the variables on the appsettings.json file that you should care about:
 
 - **Topic**: The topic where game data will be output
-- **Token**: Bearer token to access Quix
-- **FilePaths**: The folder where recorded data will be stored
 
 ## Content of the sample
 - Bridge.Codemasters.sln: The solution file describing what projects to include

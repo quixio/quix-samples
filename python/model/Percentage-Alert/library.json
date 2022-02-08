@@ -31,7 +31,7 @@
             "Name" : "ParameterName",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "This is the stream's parameter to track",
+            "Description" : "The parameter name to track",
             "DefaultValue" : "ParameterA",
 	        "Required": true
         },

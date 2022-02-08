@@ -11,7 +11,7 @@ It shows you how to handle:
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
+- **input**: The input topic to listen to.
 
 ## Docs
 

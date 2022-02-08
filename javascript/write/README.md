@@ -6,7 +6,7 @@ Write data to Quix using Javascript with this simple example
 
 This code sample uses the following environment variables:
 
-- **inputTopicName**: The topic to read data from
+- **output**: The output topic to write data to
 
 ## Docs
 

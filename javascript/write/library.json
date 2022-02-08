@@ -13,11 +13,11 @@
 	"sampleTemplate": true,
     "Variables": [ 
         {
-            "Name" : "input",
+            "Name" : "output",
             "Type" : "Placeholder",
-            "InputType" : "InputTopic",
-            "Description" : "Input topic where to write data to",
-            "DefaultValue" : "http-example-input",
+            "InputType" : "OutputTopic",
+            "Description" : "The output topic to write data to",
+            "DefaultValue" : "http-example-output",
             "Required": true
         }
     ]    

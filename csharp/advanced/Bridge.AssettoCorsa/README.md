@@ -8,7 +8,7 @@ This bridge is capable of streaming the game's telemetry (PC or Console) to Quix
 
 These are the variables that will be replaced in the code (`Program.cs`) if you save this sample as a Quix project:
 
-- **output**: The topic where game data will be output
+- **output**: This is the output topic where the game telemetry data will be written
 - **HostName**: This is the Assetto Corsa server host
 - **Port**: This is the Assetto Corsa server port
 

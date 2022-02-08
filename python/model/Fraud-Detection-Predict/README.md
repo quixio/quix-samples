@@ -14,8 +14,8 @@ This is part of the Fraud Detection project:
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
+- **input**: This is the input topic for cleaned fraud data.
+- **output**: This is the output topic for fraud predictions.
 
 ## Docs
 

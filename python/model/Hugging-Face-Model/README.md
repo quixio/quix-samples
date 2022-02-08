@@ -12,8 +12,8 @@ When deploying this python project, ensure you allow enough computational resour
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
+- **input**: This is the raw data input topic.
+- **output**: This is the output for the hugging face model score.
 - **HuggingFaceModel**: Name of the Hugging Face model to be used. A list of available Hugging Face models can be found [here](https://huggingface.co/models).
 
 
