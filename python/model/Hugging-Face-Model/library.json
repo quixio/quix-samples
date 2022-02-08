@@ -9,7 +9,7 @@
         "Use Case": ["Sentiment Analysis"],
         "Popular subjects": ["Machine Learning"]
     },
-    "shortDescription": "It deploys a Hugging Face model that generates predictions based on the input data",
+    "shortDescription": "Deploy a Hugging Face model that generates predictions based on the input data",
     "DefaultFile": "hugging_face_model.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
@@ -19,7 +19,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the raw data input topic",
-            "DefaultValue" : "hugging-face-input",
+            "DefaultValue" : "",
 	        "Required": true
         },
 		{
@@ -27,7 +27,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output for the hugging face model score",
-            "DefaultValue" : "hugging-face-model-score",
+            "DefaultValue" : "hugging-face-output",
 	        "Required": true
         },
         {
