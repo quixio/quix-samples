@@ -16,7 +16,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "Name of the output topic to write into.",
+            "Description" : "This is the output topic for car data",
             "DefaultValue" : "car-data",
             "Required": true
         }

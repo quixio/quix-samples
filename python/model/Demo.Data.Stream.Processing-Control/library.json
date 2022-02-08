@@ -16,7 +16,7 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic",
+            "Description" : "This is the input topic for car game input",
             "DefaultValue" : "car-game-input",
             "Required": true
         },
@@ -24,7 +24,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic for car game control",
             "DefaultValue" : "car-game-control",
             "Required": true
         }

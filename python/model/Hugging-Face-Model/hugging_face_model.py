@@ -21,7 +21,7 @@ class HuggingFaceModel:
         # Get fresh input data
         df = data.to_panda_frame()
 
-        # Get the data to pass to the model. Yo may do any processing here.
+        # Get the data to pass to the model. You may do any processing here.
         # For this example, we select the 'text' column from the input data
         predict_in = df['text'][0]
 

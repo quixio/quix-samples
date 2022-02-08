@@ -15,7 +15,7 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic where to read data in",
+            "Description" : "This is the input topic to read data from",
             "DefaultValue" : "input-topic",
             "Required": true
         },
@@ -23,7 +23,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic where to write data out",
+            "Description" : "This is the output topic to write data to",
             "DefaultValue" : "output-topic",
             "Required": true
         }

@@ -17,7 +17,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic for dummy timeseries data",
             "DefaultValue" : "HelloPandasOutput",
             "Required": true
         }
