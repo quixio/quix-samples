@@ -4,7 +4,7 @@ This python project generates an alert when certain percentage increase or decre
 - The percentage value is inserted in percentage points: 20 = 20%.
 - It automatically updates last relative minima and maxima data values to works smartly on drifting signals and changing environments.
 
-![Percentage_Alert](PercentageAlert.png?raw=true)
+<img src='PercentageAlert.png' width='400px' alt='graph'>
 
 ## Environment Variables
 
