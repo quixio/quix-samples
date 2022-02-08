@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
 
 # Open the output topic

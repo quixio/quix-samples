@@ -10,7 +10,7 @@ import os
 # should the main loop run?
 run = True
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
 
 print("Opening output topic")
