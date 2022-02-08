@@ -36,11 +36,12 @@ namespace Strava.Events
 
                 streamWriter.Events.DefaultLocation = "Models/Events";
                 streamWriter.Events.AddDefinition("maxspeed", "Max speed", "Moment when max speed was reached.")
+                    .SetLevel(EventLevel.Information);
                 
                 streamWriter.Events.AddDefinition("maxaltitude", "Max altitude", "Moment when max altitude was reached.")
                     .SetLevel(EventLevel.Information);
                 
-                streamWriter.Events.AddDefinition("maxheartrate", "Max heartrate", "Moment when max heartrate was reached.")
+                streamWriter.Events.AddDefinition("maxheartrate", "Max heart rate", "Moment when max heart rate was reached.")
                     .SetLevel(EventLevel.Warning);
                 
                 var buffer = streamReader.Parameters.CreateBuffer(bufferConfiguration);
