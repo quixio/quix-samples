@@ -14,7 +14,7 @@ import {MessagePayload} from "../components/webchat/webchat.component";
 })
 export class QuixService {
 
-  readonly workspace = "{placeholder:username}";
+  readonly workspace = "{placeholder:workspaceId}";
   readonly subdomain = "{placeholder:environment.subdomain}";
 
 

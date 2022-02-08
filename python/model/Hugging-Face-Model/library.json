@@ -1,6 +1,6 @@
 {
     "libraryItemId": "d207b9ff-3d52-4adb-b99f-e5e46b2642e9",
-    "name": "Hugging Face",
+    "name": "Hugging Face model",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -9,7 +9,7 @@
         "Use Case": ["Sentiment Analysis"],
         "Popular subjects": ["Machine Learning"]
     },
-    "shortDescription": "It deploys a Hugging Face model that generates predictions based on the input data in the input topic.",
+    "shortDescription": "It deploys a Hugging Face model that generates predictions based on the input data",
     "DefaultFile": "hugging_face_model.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

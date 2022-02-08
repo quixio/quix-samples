@@ -1,6 +1,6 @@
 {
     "libraryItemId": "fb64b54f-b9b5-41b1-b4a8-d793daca1123",
-    "name": "HTTP API sample - Shell Script",
+    "name": "HTTP API - Shell Script",
     "language": "Shell Script",
     "tags": {
       "API Usage": [ "Writer API (HTTP)" ],

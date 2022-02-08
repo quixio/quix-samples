@@ -2,9 +2,9 @@
 
 This python service will send data from Quix as text message using Twilio platform.
 
-## Requirements / Prerequisites (optional)
+## Requirements / Prerequisites
 
-This python service requires a [Twilio](https://www.twilio.com/es-mx/) account SID and Messaging Service SID.
+This python service requires a [Twilio](https://www.twilio.com) account SID and Messaging Service SID.
 
 ## Environment Variables
 
