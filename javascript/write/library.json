@@ -13,7 +13,7 @@
 	"sampleTemplate": true,
     "Variables": [ 
         {
-            "Name" : "inputTopicName",
+            "Name" : "input",
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
             "Description" : "Input topic where to write data to",
