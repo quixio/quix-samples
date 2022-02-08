@@ -1,9 +1,16 @@
+$(date --date "1 second" +%s%9N)
+
+date1=$(date +%s%9N)
+date2=$(date --date "2 second" +%s%9N)
+date3=$(date --date "4 second" +%s%9N)
+date4=$(date --date "6 second" +%s%9N)
+
 # Execute curl POST request to send data to the stream
-curl -X POST "https://writer-{placeholder:workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/{placeholder:outputTopicName}/streams/hello-world/parameters/data" \
+curl -i -X POST "https://writer-{placeholder:workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/{placeholder:outputTopicName}/streams/hello-world/parameters/data" \
 -H "Authorization: bearer {placeholder:token}" \
 -H "Content-Type: application/json" \
 -d "{
-    \"Timestamps\": [ 1591733989000000000, 1591733990000000000, 1591733991000000000, 1591733992000000000],
+    \"Timestamps\": [ $date1, $date2, $date3, $date4 ],
     \"NumericValues\": 
         {
             \"SomeParameter1\": [10.01, 202.02, 303.03, 250],
