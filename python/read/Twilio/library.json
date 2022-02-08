@@ -1,60 +1,68 @@
 {
-   "libraryItemId": "0e436ae9-c48b-4da5-b069-f8703f6ab6cb",
-   "name": "Twilio Sink",
-   "language": "Python",
-   "tags":{
-      "Complexity": ["Medium"],
-		"SDK Usage": ["Read SDK"],
-      "Pipeline Stage": ["Destination"],
-      "Technology": ["Twilio"]
-   },
-   "shortDescription": "The most basic code example how to send data in Quix using Twilio",
-   "DefaultFile": "twilio_sink.py",
-   "EntryPoint": "build/dockerfile",
-   "RunEntryPoint": "main.py",
-   "Variables": [
-            {
-         "Name": "input",
-         "Type": "EnvironmentVariable",
-         "InputType": "InputTopic",
-         "Description": "Select data input.",
-         "Required": true
-      },
-      {
-         "Name": "numbers",
-         "Type": "EnvironmentVariable",
-         "InputType": "FreeText",
-         "Description": "List of phone numbers to send messages to. Split ',' for multiple phone numbers.",
-         "Required": true
-      },
-      {
-         "Name": "account_sid",
-         "Type": "EnvironmentVariable",
-         "InputType": "FreeText",
-         "Description": "Twilio account SID.",
-         "Required": true
-      },
-      {
-         "Name": "auth_token",
-         "Type": "EnvironmentVariable",
-         "InputType": "FreeText",
-         "Description": "Twilio auth token.",
-         "Required": true
-      },
-      {
-         "Name": "messaging_service_sid",
-         "Type": "EnvironmentVariable",
-         "InputType": "FreeText",
-         "Description": "Twilio message service SID.",
-         "Required": true
-      },
-      {
-         "Name": "message_limit",
-         "Type": "EnvironmentVariable",
-         "InputType": "FreeText",
-         "Description": "Set the limit for how many messages are sent per minute.",
-         "Required": true,
-         "DefaultValue": "2"
-      }
-    ]    
+	"libraryItemId": "0e436ae9-c48b-4da5-b069-f8703f6ab6cb",
+	"name": "Twilio Sink",
+	"language": "Python",
+	"tags": {
+		"Complexity": [
+			"Medium"
+		],
+		"SDK Usage": [
+			"Read SDK"
+		],
+		"Pipeline Stage": [
+			"Destination"
+		],
+		"Technology": [
+			"Twilio"
+		]
+	},
+	"shortDescription": "The most basic code example how to send data in Quix using Twilio",
+	"DefaultFile": "twilio_sink.py",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"Variables": [
+		{
+			"Name": "input",
+			"Type": "EnvironmentVariable",
+			"InputType": "InputTopic",
+			"Description": "Select data input.",
+			"Required": true
+		},
+		{
+			"Name": "numbers",
+			"Type": "EnvironmentVariable",
+			"InputType": "FreeText",
+			"Description": "List of phone numbers to send messages to. Split ',' for multiple phone numbers.",
+			"Required": true
+		},
+		{
+			"Name": "account_sid",
+			"Type": "EnvironmentVariable",
+			"InputType": "FreeText",
+			"Description": "Twilio account SID.",
+			"Required": true
+		},
+		{
+			"Name": "auth_token",
+			"Type": "EnvironmentVariable",
+			"InputType": "FreeText",
+			"Description": "Twilio auth token.",
+			"Required": true
+		},
+		{
+			"Name": "messaging_service_sid",
+			"Type": "EnvironmentVariable",
+			"InputType": "FreeText",
+			"Description": "Twilio message service SID.",
+			"Required": true
+		},
+		{
+			"Name": "message_limit",
+			"Type": "EnvironmentVariable",
+			"InputType": "FreeText",
+			"Description": "Set the limit for how many messages are sent per minute.",
+			"Required": true,
+			"DefaultValue": "2"
+		}
+	]
 }
