@@ -10,8 +10,8 @@ client = QuixStreamingClient('{placeholder:sdktoken}')
 print("Opening input and output topics")
 
 # Define environmental variables
-input_topic = client.open_input_topic(os.environ[os.environ["input"], "default-consumer-group")
-output_topic = client.open_output_topic(os.environ[os.environ["output"])
+input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
+output_topic = client.open_output_topic(os.environ["output"])
 
 
 # Callback called for each incoming stream

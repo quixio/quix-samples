@@ -9,8 +9,8 @@ client = QuixStreamingClient('{placeholder:sdktoken}')
 print("Opening input and output topics")
 
 # Change consumer group to a different constant if you want to run model locally.
-input_topic = client.open_input_topic(os.environ[os.environ["input"], "default-consumer-group")
-output_topic = client.open_output_topic(os.environ[os.environ["output"])
+input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
+output_topic = client.open_output_topic(os.environ["output"])
 
 
 # Callback called for each incoming stream
