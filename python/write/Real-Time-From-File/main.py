@@ -34,12 +34,12 @@ df = df.rename(columns={"username": "TAG__username" })
 
 # Get original col names
 original_cols = list(df.columns)
-original_cols.remove(os.environ["DateColumnName"])
+original_cols.remove('datetime')
 
 # Now let's write this file to some stream in real time.
 # We want to respect the orginial time deltas, so we'll need some calculations
 # Get the timestamp data in timestamp format
-date_col_name = os.environ["DateColumnName"]
+date_col_name = 'datetime'
 df['Original_'+date_col_name] = pd.to_datetime(df[date_col_name])  # you may have to define format https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html
 df = df.drop(date_col_name, axis=1)
 

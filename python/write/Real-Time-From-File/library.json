@@ -17,15 +17,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for realtime CSV data",
-            "DefaultValue" : "output-topic-name",
-            "Required": true
-        },
-        {
-            "Name" : "DateColumnName",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "Original name of the column containing the timestamp information",
-            "DefaultValue" : "datetime",
+            "DefaultValue" : "realtime-csv-data",
             "Required": true
         }
     ]    
