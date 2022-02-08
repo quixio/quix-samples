@@ -18,7 +18,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for Strava data",
-            "DefaultValue" : "strava-output-topic",
+            "DefaultValue" : "strava-data",
             "Required": true
         },
 		{

@@ -18,7 +18,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for Strava data",
-            "DefaultValue" : "strava-heart-rate-input",
+            "DefaultValue" : "strava-data",
             "Required": true
         },
 		{

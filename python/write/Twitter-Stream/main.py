@@ -12,8 +12,8 @@ import os
 # should the main loop run?
 run = True
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
-client = QuixStreamingClient('{placeholder:sdktoken}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
+client = QuixStreamingClient()
 
 # Open the output topic where to write data out
 output_topic = client.open_output_topic(os.environ["output"])

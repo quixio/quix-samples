@@ -14,7 +14,8 @@ run = True
 
 openweather_api_key = "{}".format(os.environ["openweatherkey"])
 
-client = QuixStreamingClient('{placeholder:sdktoken}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
+client = QuixStreamingClient()
 
 # Open the output topic where to write data out
 print("Opening output topic")

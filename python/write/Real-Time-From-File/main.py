@@ -3,8 +3,8 @@ import pandas as pd
 import time
 import os
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
-client = QuixStreamingClient('{placeholder:sdktoken}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
+client = QuixStreamingClient()
 
 print("Opening output topic")
 output_topic = client.open_output_topic(os.environ["output"])
@@ -34,12 +34,12 @@ df = df.rename(columns={"username": "TAG__username" })
 
 # Get original col names
 original_cols = list(df.columns)
-original_cols.remove(os.environ["DateColumnName"])
+original_cols.remove('datetime')
 
 # Now let's write this file to some stream in real time.
 # We want to respect the orginial time deltas, so we'll need some calculations
 # Get the timestamp data in timestamp format
-date_col_name = os.environ["DateColumnName"]
+date_col_name = 'datetime'
 df['Original_'+date_col_name] = pd.to_datetime(df[date_col_name])  # you may have to define format https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html
 df = df.drop(date_col_name, axis=1)
 

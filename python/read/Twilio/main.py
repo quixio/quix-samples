@@ -3,8 +3,8 @@ from quixstreaming.app import App
 from twilio_sink import TwilioSink
 import os
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
-client = QuixStreamingClient('{placeholder:sdktoken}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
+client = QuixStreamingClient()
 
 print("Opening input topic")
 input_topic = client.open_input_topic(os.environ["input"])

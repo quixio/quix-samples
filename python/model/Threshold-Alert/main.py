@@ -3,8 +3,8 @@ from quixstreaming.app import App
 from threshold_function import ThresholdAlert
 import os
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
-client = QuixStreamingClient('{placeholder:sdktoken}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
+client = QuixStreamingClient()
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")

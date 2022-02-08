@@ -3,15 +3,15 @@ from quixstreaming.app import App
 from percentage_function import PercentageAlert
 import os
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
-client = QuixStreamingClient('{placeholder:sdktoken}')
+# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
+client = QuixStreamingClient()
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
 
 # Define environmental variables
-input_topic = client.open_input_topic(os.environ[os.environ["input"], "default-consumer-group")
-output_topic = client.open_output_topic(os.environ[os.environ["output"])
+input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
+output_topic = client.open_output_topic(os.environ["output"])
 
 
 # Callback called for each incoming stream
