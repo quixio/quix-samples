@@ -17,7 +17,7 @@ You will need an [OpenWeather (free) account](https://home.openweathermap.org/us
 
 The code sample uses the following environment variables:
 
-- **output**: Name of the output topic to write into.
+- **output**: This is the output topic for NY CitiBike data
 
 ## Docs
 Check the Quix [data science tutorial](https://quix.ai/docs/guides/tutorials/data-science-tutorial.html) for more detail on how to complete the New York Bikes project. 

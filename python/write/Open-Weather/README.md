@@ -17,9 +17,8 @@ This is part of the Quix [data science tutorial](https://quix.ai/docs/guides/tut
 
 The code sample uses the following environment variables:
 
-- **bike_input**: Name of the input topic to listen to for the bike data.
-- **weather_input**: Name of the input topic to listen to for the weather data.
-- **output**: Name of the output topic to write into.
+- **output**: This is the output topic for OpenWeather data.
+- **openweatherkey**: This is your OpenWeather API Key.
 
 ## Docs
 Check the Quix [data science tutorial](https://quix.ai/docs/guides/tutorials/data-science-tutorial.html) for more detail on how to complete the New York Bikes project. 
