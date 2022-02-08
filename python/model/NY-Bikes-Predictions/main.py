@@ -5,7 +5,7 @@ from quix_function import QuixFunction
 import os
 
 # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
-client = QuixStreamingClient('{placeholder:sdktoken}')
+client = QuixStreamingClient()
 
 # Open input and output topic connections.
 input_topic_bikes = client.open_input_topic(os.environ["bike_input"])

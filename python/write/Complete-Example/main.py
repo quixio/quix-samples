@@ -4,7 +4,7 @@ import datetime
 import os
 
 # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as a parameter.
-client = QuixStreamingClient('{placeholder:sdktoken}')
+client = QuixStreamingClient()
 
 # create the output topic and stream
 output_topic = client.open_output_topic(os.environ["output"])
