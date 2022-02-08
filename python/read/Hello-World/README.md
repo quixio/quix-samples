@@ -1,6 +1,6 @@
-# Python Hello World
+# Python Hello World - Destination
 
-This is an example on how to connect and handle the arrival of a new stream.
+This is an example on how to connect and handle the arrival of a new stream and its data.
 
 ## Environment Variables
 

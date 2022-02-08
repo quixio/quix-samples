@@ -1,6 +1,6 @@
 {
     "libraryItemId": "e5057b54-e71d-4257-b2f6-eb83e89d2e78",
-    "name": "Downsample Tranformation",
+    "name": "Downsample example",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],

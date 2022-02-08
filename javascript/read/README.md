@@ -1,4 +1,4 @@
-# Javascript Hello Websockets
+# Websockets API sample - Javascript
 
 Listen for data arriving into a stream and handle it using WebSockets
 

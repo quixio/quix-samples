@@ -1,10 +1,15 @@
 # Streaming Demo - Input Processing
 
-Augment the raw data from the phone and persist to another stream. 
+Transform the raw data from the phone and send it back to the next pipeline stage. 
+
+This is part of our [Car Demo](https://quix.ai/data-stream-processing-example/) example which your can try [here](https://quix.ai/demos/cardemo/qr).
 
 ## Requirements / Prerequisites
 
-This is part of our Car Demo example project.
+In order to make use of this solution you also need to deploy the following projects:
+ - Streaming Demo - UI
+ - Streaming Demo - Input (this one)
+ - Streaming Demo - Control
 
 ## Environment Variables
 
@@ -14,8 +19,6 @@ The code sample uses the following environment variables:
 - **output**: Name of the output topic to write into.
 
 ## Docs
-{This will contain any reference/link to additional documentation or resource available related with the code}
-
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
 ## How to Run

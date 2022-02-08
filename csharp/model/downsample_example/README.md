@@ -1,20 +1,21 @@
-# C# Hello World Model
+# C# Downsample example
 The sample contained in this folder gives an example on how to create a simple model that downsample 100Hz parameter to 10Hz using built in buffer.
 
-# Requirements to run the sample
-- A Quix account - [Signup here](https://quix.ai/signup)
-- .Net Core 3.0 SDK https://dotnet.microsoft.com/download/dotnet-core/3.0
-- An IDE (Microsoft's Visual Studio, JetBrain's Rider or other) to compile it.
+## Environment Variables
 
-# Run the sample
-- Open HelloWorldModel.sln with your IDE
-- Build
-- Run HelloWorldModel project inside IDE or run HelloWorldModel.exe from the bin folder
+The code sample uses the following environment variables:
 
-# Content of the sample
+- **input**: This is the input topic where to read data from.
+- **output**: This is the ouput topic where to write data to.
+
+## Content of the sample
 - HelloWorldModel.sln: The solution file describing what projects to include
 - HelloWorldModel/Program.cs: contains logic necessary to connect to kafka topic and read stream, downsample data and write it back to kafka in different topic.
 - HelloWorldModel/HelloWorldModel.csproj: the project file which holds together the project and describes some build related details
 
-# Docs
+## Docs
+
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.

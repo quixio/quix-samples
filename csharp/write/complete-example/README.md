@@ -1,23 +1,15 @@
-# C# Stream write sample
+# Complete C# Example - Source
 The sample contained in this folder gives an example on how to connect to kafka and write various messages.
+It is a complete example in C# of how to write data into a topic and the usage of all the SDK methods
 
-# Requirements to run the sample
-- A Quix account - [Signup here](https://quix.ai/signup)
-- .Net Core 3.0 SDK https://dotnet.microsoft.com/download/dotnet-core/3.0
-- An IDE (Microsoft's Visual Studio, JetBrain's Rider or other) to compile it.
+## Environment Variables
 
-# Run the sample
-- Open WriteCompleteExample.sln or WriteCompleteExample.csproj with your IDE
-- Build
-- Run WriteCompleteExample project inside IDE or run WriteCompleteExample.exe from the bin folder
+The code sample uses the following environment variables:
 
-# Content of the sample
-- WriteCompleteExample.sln: The solution file describing what projects to include
-- WriteCompleteExample/Program.cs: contains logic necessary to connect to and write to a kafka topic
-- WriteCompleteExample/Configuration.cs: contains property bag classes to parse the appsettings.json
-- WriteCompleteExample/appsettings.json: contains the configuration of the kafka, topic and credentials
-- WriteCompleteExample/nlog.config: contains configuration for NLog, the logger currently in use in the streaming library.
-- WriteCompleteExample/WriteCompleteExample.csproj: the project file which holds together the project and describes some build related details
+- **output**: Name of the output topic to write into.
 
-# Docs
+## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.

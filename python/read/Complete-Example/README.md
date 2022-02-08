@@ -1,7 +1,8 @@
-# Complete Example
+# Complete Python Example - Destination
 
-This is an example on how to connect and handle the arrival of a new stream.
-We show you how to handle:
+This is an example on how to connect and handle the arrival of a new stream an its data.
+
+It shows you how to handle:
  - Stream opening and closing
  - Parameter definitions changing
  - Parameter and event data arriving

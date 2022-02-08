@@ -19,13 +19,13 @@ namespace Bridge.AssettoCorsa
             System.Console.CursorVisible = false;
             System.Console.CancelKeyPress += ConsoleCancelKeyPressHandler;
 
-            var outputTopicName = Environment.GetEnvironmentVariable("output");
+            var outputTopicName = "{placeholder:output}";
 
             // Quix output topic
             outputTopic = new QuixStreamingClient().OpenOutputTopic(outputTopicName);
 
-            var acServer = Environment.GetEnvironmentVariable("HostName");
-            var acPort = Environment.GetEnvironmentVariable("Port") ?? "0";
+            var acServer = "{placeholder:HostName}";
+            var acPort = "{placeholder:Port}";
 
             // Data Source reader
             var ACReader = new AssettoCorsaReader(acServer, int.Parse(acPort));

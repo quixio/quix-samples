@@ -1,15 +1,14 @@
 {
     "libraryItemId": "fb64b54f-b9b5-41b1-b4a8-d793daca1123",
-    "name": "HTTP API Sample",
+    "name": "HTTP API sample - Shell Script",
     "language": "Shell Script",
     "tags": {
       "API Usage": [ "Writer API (HTTP)" ],
       "Complexity": [ "Easy" ],
-      "Pipeline Stage": ["Source"],
       "Popular subjects": ["Quick Start"]
     },
     "sampleTemplate": true,
-    "shortDescription": "This sample shows how to use HTTP Writer API in a command-line",
+    "shortDescription": "This sample shows how to use HTTP Writer API in the command-line",
     "Variables": [ 
         {
             "Name" : "outputTopicName",

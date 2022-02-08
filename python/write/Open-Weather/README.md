@@ -9,7 +9,7 @@ You will need an [OpenWeather (free) account](https://home.openweathermap.org/us
 This is part of the Quix [data science tutorial](https://quix.ai/docs/guides/tutorials/data-science-tutorial.html). 
 
 - NY Bikes I - Citibikes: get real time availability of New York bikes.
-- **NY Bikes II - Prediction**: get real time weather forecasts for New York.
+- NY Bikes II - OpenWeather API (this one): get real time weather forecasts for New York.
 - NY Bikes III - Prediction: predict near future bikes availability in New York based on current bikes and weather forecasts.
 
 

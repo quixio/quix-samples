@@ -1,14 +1,14 @@
 {
     "libraryItemId": "9d3f9413-51cd-4d88-9149-fe87ca48ccc3",
-    "name": "Hello World - POST",
+    "name": "HTTP API sample - Javascript",
     "language": "Javascript",
     "tags": {
         "Complexity": ["Easy"],
 		"API Usage": ["Writer API (HTTP)"],
         "Popular subjects": ["Quick Start"]
     },
-    "shortDescription": "Write data to a stream",
-	"longDescription": "The simplest Quix Javascript Hello World example",
+    "shortDescription": "Write data into a topic using HTTP Writer API",
+	"longDescription": "This Javascript sample shows how write data into a topic using our HTTP Writer API",
     "DefaultFile": "Hello_World_Write_Data.html",
 	"sampleTemplate": true,
     "Variables": [ 
@@ -16,7 +16,7 @@
             "Name" : "inputTopicName",
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
-            "Description" : "Input topic for the sample",
+            "Description" : "Input topic where to write data to",
             "DefaultValue" : "http-example-input",
             "Required": true
         }
