@@ -10,7 +10,7 @@ This python project requires a Twitter developer account (and Twitter bearer tok
 The code sample uses the following environment variables:
 
 - **output**: Name of the output topic to write into.
-- **twitter_bearer_token**: TFL Primary Key.
+- **twitter_bearer_token**: Your Twitter Bearer token.
 
 ## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance

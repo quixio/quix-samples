@@ -1,23 +1,14 @@
-# C# Stream read sample
+# Complete C# Example - Destination
 The sample contained in this folder gives an example on how to connect to kafka and read various messages.
+It is a complete example in C# of how to read data from a topic and the usage of all the SDK event handlers.
 
-# Requirements to run the sample
-- A Quix account - [Signup here](https://quix.ai/signup)
-- .Net Core 3.0 SDK https://dotnet.microsoft.com/download/dotnet-core/3.0
-- An IDE (Microsoft's Visual Studio, JetBrain's Rider or other) to compile it.
+## Environment Variables
+The code sample uses the following environment variables:
 
-# Run the sample
-- Open ReadCompleteExample.sln or ReadCompleteExample.csproj with your IDE
-- Build
-- Run ReadCompleteExample project inside IDE or run ReadCompleteExample.exe from the bin folder
+- **input**: Name of the input topic to listen to.
 
-# Content of the sample
-- ReadCompleteExample.sln: The solution file describing what projects to include
-- ReadCompleteExample/Program.cs: contains logic necessary to connect to and read from a kafka topic
-- ReadCompleteExample/Configuration.cs: contains property bag classes to parse the appsettings.json
-- ReadCompleteExample/appsettings.json: contains the configuration of the kafka, topic and credentials
-- ReadCompleteExample/nlog.config: contains configuration for NLog, the logger currently in use in the streaming library.
-- ReadCompleteExample/ReadCompleteExample.csproj: the project file which holds together the project and describes some build related details
-
-# Docs
+## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.

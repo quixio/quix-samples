@@ -1,10 +1,16 @@
-# Strava events
-This model demonstrates how to pin point interesting moments in strava activities.
+# Strava Events
+This model demonstrates how to pin point interesting moments in Strava activities.
 
-# Requirements to run the sample
-- A Quix account - [Signup here](https://quix.ai/signup)
-- .Net Core 3.0 SDK https://dotnet.microsoft.com/download/dotnet-core/3.0
-- An IDE (Microsoft's Visual Studio, JetBrain's Rider or other) to compile it.
+## Environment Variables
 
-# Docs
+The code sample uses the following environment variables:
+
+- **input**: This is the input topic where to read data from.
+- **output**: This is the ouput topic where to write data to.
+
+## Docs
+
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.

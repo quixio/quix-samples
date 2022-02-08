@@ -1,21 +1,20 @@
-# C# Hello World
+# C# Hello World - Destination
 The sample contained in this folder gives an example on how to connect to kafka and detect the arrival of a new stream and read 'HelloWorld' parameter
 
-# Requirements to run the sample
-- A Quix account - [Signup here](https://quix.ai/signup)
-- .Net Core 3.0 SDK https://dotnet.microsoft.com/download/dotnet-core/3.0
-- An IDE (Microsoft's Visual Studio, JetBrain's Rider or other) to compile it.
+## Environment Variables
 
-# Run the sample
-- Open ReadHelloWorld.sln with your IDE
-- Build
-- Run ReadHelloWorld project inside IDE or run ReadHelloWorld.exe from the bin folder
+The code sample uses the following environment variables:
 
-# Content of the sample
+- **input**: Name of the input topic to listen to.
+
+## Content of the sample
 - ReadHelloWorld.sln: The solution file describing what projects to include
 - ReadHelloWorld/Program.cs: contains logic necessary to connect to kafka topic and read stream
 - ReadHelloWorld/ReadHelloWorld.csproj: the project file which holds together the project and describes some build related details
 
-# Docs
+## Docs
+
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
+## How to Run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.

@@ -18,7 +18,6 @@ The code sample uses the following environment variables:
 
 
 ## Docs
-{This will contain any reference/link to additional documentation or resource available related with the code}
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 

@@ -1,6 +1,6 @@
 # Python Hello Pandas
 
-This is an example on how to connect and handle the arrival of a new stream using panda frames
+This is an example on how to connect and handle the arrival of a new stream and its data using panda frames.
 
 ## Environment Variables
 
@@ -9,7 +9,6 @@ The code sample uses the following environment variables:
 - **input**: Name of the input topic to listen to.
 
 ## Docs
-{This will contain any reference/link to additional documentation or resource available related with the code}
 
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 

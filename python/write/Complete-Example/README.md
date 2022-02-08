@@ -1,6 +1,6 @@
-# Complete Python Example
+# Complete Python Example - Source
 
-The sample contained in this folder gives examples of how to connect and write various messages.
+The sample contained in this folder gives examples of how to connect to kafka and write data to it using [Quix SDK](https://quix.ai/docs/sdk/introduction.html).
 
 ## Environment Variables
 

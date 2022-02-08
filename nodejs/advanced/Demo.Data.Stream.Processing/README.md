@@ -1,12 +1,15 @@
-# Stream Processing Demo
+# Stream Processing Demo - UI
 
-This is the Web and Phone UI for the Stream Processing Demo
+This is the Web and Phone UI for the Stream Processing Demo.
 
-## Requirements / Prerequisites (optional)
+This is part of our [Car Demo](https://quix.ai/data-stream-processing-example/) example which your can try [here](https://quix.ai/demos/cardemo/qr).
+
+## Requirements / Prerequisites
 
 In order to make use of this solution you also need to deploy the following projects:
- - **Streaming Demo - Input**
- - **Streaming Demo - Control**
+ - Streaming Demo - UI (this one)
+ - Streaming Demo - Input
+ - Streaming Demo - Control
 
 ## Environment Variables
 

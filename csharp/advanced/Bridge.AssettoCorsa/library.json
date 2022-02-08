@@ -15,15 +15,15 @@
     "Variables": [ 
         {
             "Name" : "output",
-            "Type" : "EnvironmentVariable",
+            "Type" : "Placeholder",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "This is the output topic where the game telemetry data will be written",
             "DefaultValue" : "assetto-corsa-output",
             "Required": true
         },
 		{
             "Name" : "HostName",
-            "Type" : "EnvironmentVariable",
+            "Type" : "Placeholder",
             "InputType" : "FreeText",
             "Description" : "This is the Assetto Corsa server host",
             "DefaultValue" : "",
@@ -31,7 +31,7 @@
         },
 		{
             "Name" : "Port",
-            "Type" : "EnvironmentVariable",
+            "Type" : "Placeholder",
             "InputType" : "FreeText",
             "Description" : "This is the Assetto Corsa server port",
             "DefaultValue" : "",

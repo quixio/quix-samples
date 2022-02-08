@@ -1,20 +1,18 @@
 # C# Bridge for Codemasters F1 2019
-This bridge is capable of streaming the game's telemetry (PC or Console). 
+This bridge is capable of streaming the game's telemetry (PC or Console) to Quix. 
 
 **It is intended to be run on a pc on your local network and not deployed within Quix**
 
 ## Requirements / Prerequisites
  - Codemasters F1 2019 on PC or Console
 
-## Environment Variables
+## Variables (appsettings.json)
+
+These are the variables on the appsettings.json file that you should care about:
+
 - **Topic**: The topic where game data will be output
 - **Token**: Bearer token to access Quix
 - **FilePaths**: The folder where recorded data will be stored
-
-## Run the sample
-- Open Bridge.Codemasters.sln with your IDE
-- Build
-- Run Bridge.Codemasters.Console project inside IDE or run Bridge.Codemasters.Console.exe from the bin folder
 
 ## Content of the sample
 - Bridge.Codemasters.sln: The solution file describing what projects to include
@@ -23,7 +21,7 @@ This bridge is capable of streaming the game's telemetry (PC or Console).
 - Bridge.Codemasters: Contains game specific logic for transforming the byte packets to usable data objects.
 
 
-## Bridge.Codemasters.Console sppsettings.json
+## UDP or File mode (appsettings.json)
 The application has two modes of running. 
 - "udp": Set "Input" to "udp". This will listen to UDP packages on the network according to the "UDPInput" configuration.
 - "file" Set "Input" to "file". This will replay one or more files specified under "FileInput" configuration.
@@ -33,5 +31,8 @@ More information can be found in Bridge.Codemasters.Console/Configuration/Config
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
 ## How to Run
-Run this code locally a machine with access to the local network.
+Run this code locally in a machine with access to the local network.
 
+- Open Bridge.Codemasters.sln with your IDE
+- Build
+- Run Bridge.Codemasters.Console project inside IDE or run Bridge.Codemasters.Console.exe from the bin folder

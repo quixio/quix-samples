@@ -1,4 +1,4 @@
-# Javascript Hello World
+# HTTP API sample - Javascript
 
 Write data to Quix using Javascript with this simple example
 

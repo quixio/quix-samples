@@ -1,7 +1,7 @@
 # Strava bridge
 This service allows you to periodically import data from Strava account.
 
-## Requirements / Prerequisites (optional)
+## Requirements / Prerequisites
 
 Find out how to obtain the required Strava tokens [here](http://developers.strava.com/docs/getting-started/)
 
@@ -20,5 +20,4 @@ The code sample uses the following environment variables:
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
 ## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or 
-Deploy this application without a local environment setup.
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
