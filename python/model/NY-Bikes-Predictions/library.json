@@ -10,6 +10,7 @@
         "Use Case": ["Mobility"]
     },
     "shortDescription": "Predict availability of New York bikes",
+    "longDescription": "In this sample you'll see how to predict near future bikes availability in New York based on current bikes and weather forecasts",
 	"DefaultFile": "model_functions.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

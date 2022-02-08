@@ -1,6 +1,6 @@
 # Python Hello World - Destination
 
-This is an example on how to connect and handle the arrival of a new stream and its data.
+The most basic and essential 'Hello World' read sample. The sample contained in this folder gives an example on how to connect to kafka and detect the arrival of a new stream and read 'HelloWorld' parameter.
 
 ## Environment Variables
 
