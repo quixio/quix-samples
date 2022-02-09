@@ -23,7 +23,7 @@
         {
             "Name" : "coin_api_key",
             "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
+            "InputType" : "HiddenText",
             "Description" : "Your Coin API key",
             "DefaultValue" : "",
             "Required": true
