@@ -35,7 +35,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic",
+            "Description" : "Name of the output topic to write predictions to",
             "DefaultValue" : "NY-bikes-prediction",
             "Required": true
         }

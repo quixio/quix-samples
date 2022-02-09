@@ -6,7 +6,7 @@ date3=$(date --date "4 second" +%s%9N)
 date4=$(date --date "6 second" +%s%9N)
 
 # Execute curl POST request to send data to the stream
-curl -i -X POST "https://writer-{placeholder:workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/{placeholder:outputTopicName}/streams/hello-world/parameters/data" \
+curl -i -X POST "https://writer-{placeholder:workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/{placeholder:output}/streams/hello-world/parameters/data" \
 -H "Authorization: bearer {placeholder:token}" \
 -H "Content-Type: application/json" \
 -d "{
@@ -19,7 +19,7 @@ curl -i -X POST "https://writer-{placeholder:workspaceId}.{placeholder:environme
 }"
 
 # Execute curl POST request to close the stream
-curl -i -X POST "https://writer-{placeholder:workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/{placeholder:outputTopicName}/streams/hello-world/close" \
+curl -i -X POST "https://writer-{placeholder:workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/{placeholder:output}/streams/hello-world/close" \
 -H "Authorization: bearer {placeholder:token}" \
 -H "Content-Type: application/json"
 

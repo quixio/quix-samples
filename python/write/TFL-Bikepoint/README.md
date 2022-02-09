@@ -16,7 +16,7 @@ You need a [TFL (Transport For London)](https://api-portal.tfl.gov.uk/) account 
 
 The code sample uses the following environment variables:
 
-- **output**: Name of the output topic to write into.
+- **output**: This is the output topic for TFL Bikepoint data.
 - **tfl_primary_key**: TFL Primary Key.
 - **tfl_secondary_key**: TFL Secondary Key.
 

@@ -1,9 +1,18 @@
-# Chat app
+# Chat App
+
 This is simple example how to use Quix with Javascript.
-It implements system of chat rooms where people can have a chat. It use QR code to help invite new chat participants into chat room. 
+
+It implements a system of chat rooms where people can have a chat. It use QR codes to help invite new chat participants into a chat room. 
+
+## Environment Variables
+
+This code sample uses the following environment variables:
+
+- **messages**: This is the output topic for chat messages
+- **broadcast**: This is the output topic for broadcast messages
 
 ## Connection
-Chat app integrates with Quix via Quix WebSocket gateway. Please refer more to [Quix docs](https://documentation.platform.quix.ai/apis/streaming-reader-api/intro.html)
+Chat app integrates with Quix via Quix WebSocket gateway. For more please refer to [Quix docs](https://documentation.platform.quix.ai/apis/streaming-reader-api/intro.html)
 
 ## Set up
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.3.
@@ -31,3 +40,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ### Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Docs
+
+Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance

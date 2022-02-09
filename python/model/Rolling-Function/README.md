@@ -9,9 +9,9 @@ This python project performs rolling window operations.
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
-- **ParameterName**: Name of the specific signal's parameter in the input topic that we want to apply the rolling function to.
+- **input**: This is the input topic for raw data.
+- **output**: This is the output topic for the windowed data.
+- **ParameterName**: The stream's parameter to perform the window function upon.
 - **WindowType**: Rolling window length type. Can be defined as one the following three options:
   - ***"Number of Observations"***: Defines the rolling window length with the number of last observations to take into account.
   - ***"Time Period"***: Defines the rolling window length with the last time period to take into account.

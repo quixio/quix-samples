@@ -6,7 +6,7 @@ This is an example on how to connect and start a new stream with some values usi
 
 The code sample uses the following environment variables:
 
-- **output**: Name of the output topic to write into.
+- **output**: This is the output topic for dummy timeseries data.
 
 ## Docs
 

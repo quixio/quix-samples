@@ -9,11 +9,11 @@ Find out how to obtain the required Strava tokens [here](http://developers.strav
 
 The code sample uses the following environment variables:
 
-- **output**: The output topic for the data
+- **output**: This is the output topic for Strava data
 - **PATToken**: Your Quix Personal Access Token
-- **ClientId**: Strava Client Id
-- **ClientSecret**: Strava Client Secret
-- **StravaRefreshToken**: Strava Refresh Token
+- **ClientId**: This is the Strava Client ID
+- **ClientSecret**: The Strava Client Secret
+- **StravaRefreshToken**: The Strava Refresh Token
 
 ## Docs
 

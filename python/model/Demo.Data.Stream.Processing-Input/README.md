@@ -15,8 +15,8 @@ In order to make use of this solution you also need to deploy the following proj
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
+- **input**: This is the input topic for data from the phone.
+- **output**: This is the output topic for parameters affecting game and vehicle control.
 
 ## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance

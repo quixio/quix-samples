@@ -6,8 +6,7 @@ This is an example on how stream historic data in a csv file in real time, respe
 
 The code sample uses the following environment variables:
 
-- **output**: Name of the output topic to write into.
-- **DateColumnName**: Original name of the column containing the timestamp information.
+- **output**: This is the output topic for realtime CSV data.
 
 ## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance

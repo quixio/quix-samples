@@ -17,9 +17,9 @@ You will need an [OpenWeather (free) account](https://home.openweathermap.org/us
 
 The code sample uses the following environment variables:
 
-- **bike_input**: Name of the input topic to listen to for the bike data.
-- **weather_input**: Name of the input topic to listen to for the weather data.
-- **output**: Name of the output topic to write into.
+- **bike_input**: This is the input topic for bike data.
+- **weather_input**: This is the input topic for weather data.
+- **output**: Name of the output topic to write predictions to.
 
 ## Docs
 Check the Quix [data science tutorial](https://quix.ai/docs/guides/tutorials/data-science-tutorial.html) for more detail on how to complete the New York Bikes project. 

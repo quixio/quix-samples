@@ -18,10 +18,10 @@ print("Opening output topic")
 output_topic = client.open_output_topic(os.environ["output"])
 
 # Which currency pairs are you interested in?
-from_currency = "{}".format(os.environ["from_currency"])  # e.g."BTC"
-to_currency = "{}".format(os.environ["to_currency"])  # e.g."USD,GBP"
+primary_currency = "{}".format(os.environ["primary_currency"])  # e.g."BTC"
+secondary_currencys = "{}".format(os.environ["secondary_currencys"])  # e.g."USD,GBP"
 
-url = 'https://rest.coinapi.io/v1/exchangerate/{0}?filter_asset_id={1}'.format(from_currency, to_currency)
+url = 'https://rest.coinapi.io/v1/exchangerate/{0}?filter_asset_id={1}'.format(primary_currency, secondary_currencys)
 
 # COIN API Key
 coin_api_key = "{}".format(os.environ["coin_api_key"])
@@ -53,7 +53,7 @@ def get_data():
 
             rows = data['rates']
 
-            quix_functions.data_handler(rows, from_currency)
+            quix_functions.data_handler(rows, primary_currency)
 
             # We sleep for 15 minutes so we don't reach free COIN API account limit.
             # Stop sleeping if process termination requested

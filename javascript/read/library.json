@@ -13,10 +13,10 @@
     "DefaultFile": "Streaming_Reader_Example.html",
     "Variables": [ 
         {
-            "Name" : "inputTopicName",
+            "Name" : "input",
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
-            "Description" : "Input topic for the sample",
+            "Description" : "Input topic to read data from",
             "DefaultValue" : "http-example-input",
             "Required": true
         }

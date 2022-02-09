@@ -4,16 +4,16 @@ This python project generates an alert when certain percentage increase or decre
 - The percentage value is inserted in percentage points: 20 = 20%.
 - It automatically updates last relative minima and maxima data values to works smartly on drifting signals and changing environments.
 
-![Percentage_Alert](PercentageAlert.png?raw=true)
+<img src='PercentageAlert.png' width='400px' alt='graph'>
 
 ## Environment Variables
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write into.
-- **ParameterName**: Parameter in the input topic of the specific signal that we want to apply the alert to
-- **PercentagePointsAlert**: Percentage points that the signal has to vay for the alert to activate. 10 = 10%, 20=20%, etc.
+- **input**: This is the input topic for numeric data.
+- **output**: This is the output topic for alerts.
+- **ParameterName**: The parameter name to track
+- **PercentagePointsAlert**: Percentage points of increase/decrease for the alert to activate e.g. 10 is 10%, 20 is 20%, etc.
 
 ## Docs
 

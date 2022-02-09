@@ -6,8 +6,8 @@ Please adjust heart zones according to your age and gender.
 
 The code sample uses the following environment variables:
 
-- **input**: This is the input topic where to read data from.
-- **output**: This is the ouput topic where to write data to.
+- **input**: This is the input topic for raw Strava data.
+- **output**: This is the output topic for heart rate zones.
 
 ## Docs
 

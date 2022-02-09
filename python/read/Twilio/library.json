@@ -25,7 +25,7 @@
 			"Name": "input",
 			"Type": "EnvironmentVariable",
 			"InputType": "InputTopic",
-			"Description": "Select data input.",
+			"Description": "Name of the input topic to listen to.",
 			"Required": true
 		},
 		{

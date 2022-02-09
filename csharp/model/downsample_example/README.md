@@ -5,8 +5,8 @@ The sample contained in this folder gives an example on how to create a simple m
 
 The code sample uses the following environment variables:
 
-- **input**: This is the input topic where to read data from.
-- **output**: This is the ouput topic where to write data to.
+- **input**: This is the input topic for data to be downsampled.
+- **output**: This is the output topic for downsampled data.
 
 ## Content of the sample
 - HelloWorldModel.sln: The solution file describing what projects to include

@@ -9,8 +9,8 @@ This python project requires a Twitter developer account (and Twitter bearer tok
 
 The code sample uses the following environment variables:
 
-- **output**: Name of the output topic to write into.
-- **twitter_bearer_token**: Your Twitter Bearer token.
+- **output**: This is the output topic for Twitter data.
+- **twitter_bearer_token**: Your Twitter bearer token.
 
 ## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance

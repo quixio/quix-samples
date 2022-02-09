@@ -5,8 +5,8 @@ This model demonstrates how to pin point interesting moments in Strava activitie
 
 The code sample uses the following environment variables:
 
-- **input**: This is the input topic where to read data from.
-- **output**: This is the ouput topic where to write data to.
+- **input**: This is the input topic for Strava data.
+- **output**: This is the output topic for interesting events.
 
 ## Docs
 

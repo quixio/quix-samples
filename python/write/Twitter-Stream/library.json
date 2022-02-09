@@ -25,7 +25,7 @@
             "Name" : "twitter_bearer_token",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "Your twitter bearer token",
+            "Description" : "Your Twitter bearer token",
             "DefaultValue" : "",
             "Required": true
         }

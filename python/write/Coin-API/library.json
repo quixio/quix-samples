@@ -29,18 +29,18 @@
             "Required": true
         },
         {
-            "Name" : "from_currency",
+            "Name" : "primary_currency",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "The FROM currency",
+            "Description" : "This is the main currency of interest",
             "DefaultValue" : "BTC",
             "Required": true
         },
         {
-            "Name" : "to_currency",
+            "Name" : "secondary_currencys",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "The TO currency(s)",
+            "Description" : "These are the currencys to compare the primary currency to",
             "DefaultValue" : "USD,GBP",
             "Required": true
         }
