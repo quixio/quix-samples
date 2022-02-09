@@ -1,5 +1,3 @@
-$(date --date "1 second" +%s%9N)
-
 date1=$(date +%s%9N)
 date2=$(date --date "2 second" +%s%9N)
 date3=$(date --date "4 second" +%s%9N)
