@@ -1,5 +1,7 @@
 # Azure IoT Hub Sample
-The sample contained in this folder gives an example on how to connect to Azure IoT Hub and bridge data into Kafka using Quix SDK.
+The sample contained in this folder gives an example on how to connect to Azure IoT Hub and bridge data into Kafka using Quix the SDK.
+
+![graph](iot-bridge.png?raw=true)
 
 ## Environment Variables
 
