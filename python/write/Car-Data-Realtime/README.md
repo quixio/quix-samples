@@ -1,6 +1,6 @@
 # Realtime Car CSV Data
 
-This is an example on how to write CSV data to a stream in realtime.
+Python code sample for writing vehicle telemetry data (time series parameters) into the Quix platform. The example file ([cardata.csv](source/cardata.csv)) is data collected from a virtual F1&reg; car in **Codemasters 2019 racing game**. This data was acquired using our **Codemaster F1&reg; 2019 bridge**. 
 
 ## Environment Variables
 

@@ -1,9 +1,10 @@
 # Twitter Stream Example
-This sample will allow you to stream data from Twitter into a Quix Stream
+
+A Quix model can be used to bridge data from almost any source. In this case we'll be using a Twitter developer account to stream Tweet data with a view to running real time ML models on the feed later on.
 
 ## Requirements / Prerequisites
 
-This python project requires a Twitter developer account (and Twitter bearer token).
+ - A Twitter developer account (sign up at [https://developer.twitter.com/en/apply-for-access](https://developer.twitter.com/en/apply-for-access))
 
 ## Environment Variables
 
