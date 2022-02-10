@@ -1,11 +1,6 @@
 # Azure IoT Hub Sample
 The sample contained in this folder gives an example on how to connect to Azure IoT Hub and bridge data into Kafka using Quix SDK.
 
-## Requirements / Prerequisites
-
-- .net Core 3.0 SDK https://dotnet.microsoft.com/download/dotnet-core/3.0
-- az https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
-
 ## Environment Variables
 
 The code sample uses the following environment variables:
@@ -15,13 +10,6 @@ The code sample uses the following environment variables:
 - **eventHubName**: This is the Event Hub name.
 - **iotSasKeyName**: This is the IoT Sas Key Name.
 - **iotSasKey**: This is the IoT Sas Key.
-
-## Run the sample
-- In root folder run `dotnet restore`
-- `cd .\IoT.Brige\`
-- `dotnet run`
-
-## Code walkthrough
 
 ### Connection to Quix
 In this code snippet, the service connects to the Kafka topic in Quix. Use the Library page in the Quix portal to generate this code for a particular topic in your workspace.
