@@ -22,11 +22,14 @@ class QuixFunction:
         output_df = pd.DataFrame()
         output_df["time"] = df["time"]
 
-        output_df["TAG__LapNumber"] = df["TAG__LapNumber"]
+        if "TAG__LapNumber" in df.columns:
+            output_df["TAG__LapNumber"] = df["TAG__LapNumber"]
+            
         print(df)
 
         # If braking force applied is more than 50%, we send True.  
-        output_df["HardBraking"] = df.apply(lambda row: "True" if row.Brake > 0.5 else "False", axis=1)  
+        if "Brake" in df.columns:
+            output_df["HardBraking"] = df.apply(lambda row: "True" if row.Brake > 0.5 else "False", axis=1)  
 
         self.output_stream.parameters.buffer.write(output_df)  # Send filtered data to output topic
 
