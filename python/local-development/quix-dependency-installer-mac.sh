@@ -154,7 +154,7 @@ then
     python3 -m pip install virtualenv --user
     if [ $? != 0 ] ; then printf "\e[91m╳ virtualenv failed to install.\n\e[0m" ; exit 1 ; fi ;
     echo 'Creating virtualenv'
-    python3 -m virtualenv env --python=python3.8
+    python3 -m virtualenv env --python=python3.8.7
     chmod +x ./env/bin/activate
     printf "\e[32m✓ Created virtualenv\n\e[0m"
 else    
@@ -165,7 +165,14 @@ else
         printf "\e[91m╳ Python used by virtual environment is neither python 3.7 or 3.8. Please delete ./env and run script again\n\e[0m"
         exit 1 
     else
-        printf "\e[32m✓ Python used by virtual environment is correct\n\e[0m"
+        vtest2=$(./env/bin/python --version | grep " 3.8.7")
+        if [[ -z "$vtest2" ]]; then
+            printf "\e[1;33m ! ! ! ! ! ! \n\e[0m"
+            printf "\e[1;33m You might experience problems running your application. Python 3.8.7 was tested to work, higher patch (3.8.x) versions sometimes can cause problems. Check the version of your virtual environment by running './env/bin/python --version'. \n\e[0m"
+            printf "\e[1;33m ! ! ! ! ! ! \n\e[0m"
+        else
+            printf "\e[32m✓ Python used by virtual environment is correct\n\e[0m"
+        fi
     fi
 fi
 
