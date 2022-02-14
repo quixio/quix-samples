@@ -1,12 +1,12 @@
-# NodeJs Empty Template
+# NodeJs empty template
 
-This is an empty template for a website hosted using NodeJS express in the Quix serverless environment.
+This is an empty template for a website hosted using Node JS Express in the Quix serverless environment.
 
-## Requirements / Prerequisites (optional)
+## Requirements/prerequisites (optional)
 
-{This will contain any external resource needed to run this sample, and the instructions to get them}
+{This will contain any external resource needed to run this sample and the instructions to get them.}
 
-## Environment Variables
+## Environment variables
 
 This code sample uses the following environment variables:
 
@@ -15,9 +15,9 @@ This code sample uses the following environment variables:
 - **output**: {Description of the variable}
 
 ## Docs
-{This will contain any reference/link to additional documentation or resource available related with the code}
+{This will contain any available references and links to documentation or resource related to the code.}
 
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.

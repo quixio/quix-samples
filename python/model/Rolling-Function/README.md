@@ -1,11 +1,11 @@
-# Rolling Window Function
+# Rolling window function
 
-This python project performs rolling window operations. 
+This Python project performs rolling window operations. 
 - The predetermined function is the mean (moving average). 
 - Any other aggregation function can be inputed (by editing the rolling_function in rolling_function.py).
 - The window can be defined as a time period or as a number of observations
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
@@ -36,9 +36,8 @@ In summary, this is an example of the expected format for WindowValue depending 
 ## Docs
 Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternatively, you can check [here](/python/local-development) how to setup your local environment.
-
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).
 

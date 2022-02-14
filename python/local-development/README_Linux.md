@@ -1,13 +1,13 @@
 
 # Disclaimer
  
-We do highly recommend to utilize the Docker environment in the linux because of the differences in the distributions. In order to do this please look to the README_Docker.md .
+We highly recommend using the Docker environment in Linux because of the differences in distributions. To do this, look to the README_Docker.md.
  
 # Python
-Currently tested to work with [3.8.7](https://www.python.org/downloads/release/python-387/), but other python versions of 3.7 and 3.8 are expected to also work.
+Currently tested to work with [3.8.7](https://www.python.org/downloads/release/python-387/), but other 3.7 and 3.8 Python versions are expected to also work.
 
 # Install and configure PythonNet dependencies - Ubuntu 20.04
-- Install Mono version 6.10.0
+- Install Mono version 6.10.0:
     ```
     sudo apt install gnupg ca-certificates
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
@@ -46,8 +46,8 @@ Currently tested to work with [3.8.7](https://www.python.org/downloads/release/p
     ```
 
 
-# Create new python environment
-We highly suggest to use a python virtual environment, as the Quix streaming package currently relies on some dll redirecting, which is achieved by adding a file to your python environment. This is done automatically, but to avoid any complication with other python applications you might want to use relying on similar techniques, a virtual environment is advised.
+# Create the new Python environment
+We highly suggest using a Python virtual environment, because the Quix streaming package currently relies on some dll redirecting, which is achieved by adding a file to your Python environment. This is done automatically. You might want to rely on a similar techniques but, to avoid any complication with other Python applications, a virtual environment is advized.
 
 To create a new virtual environment, execute the following in a terminal at your desired location:
 ```
@@ -56,16 +56,16 @@ python3 -m virtualenv env  --python=python3.8
 chmod +x ./env/bin/activate
 source ./env/bin/activate
 ```
-You will know you succeeded in activating the environment if your terminal line starts with (env). Future steps will assume you have the virtual environment activated or happy to install into global python.
+You will know you succeeded in activating the environment if your terminal line starts with (env). Future steps will assume you have the virtual environment activated or are happy to install into global Python.
 
 # Install samples requirements
-In the same terminal you activated the virtual environment, navigate to the folder where `requirements.txt` is located and execute
+In the same terminal that you activated the virtual environment, navigate to the folder where `requirements.txt` is located and execute
 ```
 python3 -m pip install -r requirements.txt --extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/
 ```
 
 # Run the sample 
-In the same terminal you activated the virtual environment, navigate to the folder where `main.py` is located and execute
+In the same terminal that you activated the virtual environment, navigate to the folder where `main.py` is located and execute
 ```
 python3 main.py
 ```

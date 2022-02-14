@@ -1,16 +1,16 @@
 # Websockets API sample - Javascript
 
-Listen for data arriving into a stream and handle it using WebSockets
+Listen for data arriving into a stream and handle it using WebSockets.
 
 ## Environment Variables
 
 This code sample uses the following environment variables:
 
-- **input**: Input topic to read data from
+- **input**: Input topic to read data from.
 
 ## Docs
 
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
 ## How to Run
 

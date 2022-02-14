@@ -1,9 +1,9 @@
-# Python Quix lambda
+# Python Quix Lambda
 
-This is an example of how to transform the data on the fly between Source and Destination.
-The default implementation just passes data from Source to Destination and print content to console output. Insert any Python code to transform data on the fly.
+This is an example of how to transform data on the fly between source and destination.
+The default implementation passes data from source to destination and prints content to console output. Insert any Python code to transform data on the fly.
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
@@ -11,9 +11,9 @@ The code sample uses the following environment variables:
 - **output**: Name of the output topic to write to.
 
 ## Docs
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternatively, you can check [here](/python/local-development) how to setup your local environment.
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).
