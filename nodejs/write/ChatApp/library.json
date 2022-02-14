@@ -14,14 +14,14 @@
     "Variables": [
         {
             "Name" : "messages",
-            "Type" : "EnvironmentVariable",
+            "Type" : "Placeholder",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for chat messages",
             "DefaultValue" : "messages"
         },
         {
             "Name" : "sentiment",
-            "Type" : "EnvironmentVariable",
+            "Type" : "Placeholder",
             "InputType" : "OutputTopic",
             "Description" : "This is the secondary topic for sentiment score for messages. Use Hugging Face model library item to analyze messages sentiment.",
             "DefaultValue" : "sentiment"
