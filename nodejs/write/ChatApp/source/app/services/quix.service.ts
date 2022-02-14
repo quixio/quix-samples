@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {EventValue} from "../models/eventValue";
 import {HttpClient} from "@angular/common/http";
 import {HubConnection, HubConnectionBuilder, IHttpConnectionOptions} from "@microsoft/signalr";
-import {Stream} from "../models/stream";
 import {map} from "rxjs/operators";
-import {EventData} from "../models/eventData";
 import {ParameterData} from "../models/parameter-data";
 import {MessagePayload} from "../components/webchat/webchat.component";
 
@@ -19,8 +16,10 @@ export class QuixService {
 
 
   private token = '{placeholder:token}';
-  public connection: HubConnection;
-  public connectionPromise: Promise<void>;
+  public readerConnection: HubConnection;
+  public readerConnectionPromise: Promise<void>;
+  public writerConnection: HubConnection;
+  public writerConnectionPromise: Promise<void>;
 
   constructor(private httpClient: HttpClient) {
 
@@ -28,49 +27,56 @@ export class QuixService {
       accessTokenFactory: () => this.token,
     };
 
-    this.connection = new HubConnectionBuilder()
-      .withUrl(`https://reader-${this.workspace}.${this.subdomain}.quix.ai/hub`, options)
-      .withAutomaticReconnect()
-      .build();
+    this.readerConnection = new HubConnectionBuilder()
+        .withUrl(`https://reader-${this.workspace}.${this.subdomain}.quix.ai/hub`, options)
+        .withAutomaticReconnect()
+        .build();
 
-    this.connectionPromise = this.connection.start();
+    this.readerConnectionPromise = this.readerConnection.start();
+
+    this.writerConnection = new HubConnectionBuilder()
+        .withUrl(`https://writer-${this.workspace}.${this.subdomain}.quix.ai/hub`, options)
+        .withAutomaticReconnect()
+        .build();
+
+    this.writerConnectionPromise = this.writerConnection.start();
   }
 
   public getLastMessages(room: string) : Observable<MessagePayload[]> {
     let payload =
-      {
-        'numericParameters': [
-          {
-            'parameterName': 'sentiment',
-            'aggregationType': 'None'
-          },
-          {
-            'parameterName': 'average_sentiment',
-            'aggregationType': 'None'
-          }
-        ],
-        'stringParameters': [
-          {
-            'parameterName': 'chat-message',
-            'aggregationType': 'None'
-          }
-        ],
+        {
+          'numericParameters': [
+            {
+              'parameterName': 'sentiment',
+              'aggregationType': 'None'
+            },
+            {
+              'parameterName': 'average_sentiment',
+              'aggregationType': 'None'
+            }
+          ],
+          'stringParameters': [
+            {
+              'parameterName': 'chat-message',
+              'aggregationType': 'None'
+            }
+          ],
 
-        "streamIds": [
-          room + "-output"
-        ],
-        "groupBy": [
-          "role",
-          "name"
-        ],
-      } ;
+          "streamIds": [
+            room + "-output"
+          ],
+          "groupBy": [
+            "role",
+            "name"
+          ],
+        } ;
 
 
     return this.httpClient.post<ParameterData>(`https://telemetry-query-${this.workspace}.${this.subdomain}.quix.ai/parameters/data`, payload, {
-        headers: {
-          "Authorization": "bearer " + this.token
+          headers: {
+            "Authorization": "bearer " + this.token
+          }
         }
-      }
     ).pipe(map(rows => {
 
       let result : MessagePayload[] = [];
@@ -84,8 +90,8 @@ export class QuixService {
 
       }
 
-        return result;
-      }));
+      return result;
+    }));
   }
 
   public async sendMessage(room: string, role: string, name: string, message: string, phone: string, email: string) {
@@ -104,11 +110,6 @@ export class QuixService {
       }
     ];
 
-    await this.httpClient.post(`https://writer-${this.workspace}.${this.subdomain}.quix.ai/topics/{placeholder:messages}/streams/${room}/events/data`, payload, {
-        headers: {
-          "Authorization": "bearer " + this.token
-        }
-      }
-    ).toPromise();
+    await this.writerConnection.invoke("SendEventData", "0-web-chat", room, payload);
   }
 }
