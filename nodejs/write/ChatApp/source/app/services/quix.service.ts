@@ -110,6 +110,6 @@ export class QuixService {
       }
     ];
 
-    await this.writerConnection.invoke("SendEventData", "0-web-chat", room, payload);
+    await this.writerConnection.invoke("SendEventData", "{placeholder:messages}", room, payload);
   }
 }

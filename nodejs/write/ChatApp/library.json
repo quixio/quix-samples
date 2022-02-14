@@ -20,11 +20,11 @@
             "DefaultValue" : "messages"
         },
         {
-            "Name" : "broadcast",
+            "Name" : "sentiment",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic for broadcast messages",
-            "DefaultValue" : "broadcast"
+            "Description" : "This is the secondary topic for sentiment score for messages. Use Hugging Face model library item to analyze messages sentiment.",
+            "DefaultValue" : "sentiment"
         }
     ]
 }

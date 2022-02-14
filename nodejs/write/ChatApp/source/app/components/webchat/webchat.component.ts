@@ -216,10 +216,10 @@ export class WebchatComponent implements OnInit {
   }
 
   connect() {
-    this.quixService.readerConnection.invoke('SubscribeToEvent', '0-web-chat', this.room, 'chat-message');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', '3-web-chat-output', this.room + "-output", 'sentiment');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', '3-web-chat-output', this.room + "-output", 'chat-message');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', '3-web-chat-output', this.room + "-output", 'average_sentiment');
+    this.quixService.readerConnection.invoke('SubscribeToEvent', '{placeholder:messages}', this.room, 'chat-message');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'sentiment');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'chat-message');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'average_sentiment');
 
     let host = window.location.host;
     this.value = `${window.location.protocol}//${host}/lobby?room=${this.room}`;
