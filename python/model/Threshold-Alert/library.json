@@ -28,7 +28,7 @@
 			"Required" : true
         },
         {
-            "Name" : "ParameterName",
+            "Name" : "parameterName",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
             "Description" : "This is the stream's parameter to track",
@@ -36,7 +36,7 @@
 			"Required" : true
         },
         {
-            "Name" : "ThresholdValue",
+            "Name" : "thresholdValue",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
             "Description" : "This is the threshold's numerical value",

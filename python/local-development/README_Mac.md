@@ -10,7 +10,8 @@ chmod +x ./quix-dependency-installer-mac.sh && ./quix-dependency-installer-mac.s
 
 ## Install dependencies manually
 ### Python
-Currently tested to work with [3.8.7](https://www.python.org/downloads/release/python-387/), but other 3.7 and 3.8 versions of Python are expected to also work.
+
+Currently tested to work with [3.8.7](https://www.python.org/downloads/release/python-387/), but other 3.7 and 3.8 versions of Python are expected to also work. Some users reported issues with higher than 3.8.7 version of 3.8.
 
 
 ### Install and configure PythonNet dependencies
