@@ -8,8 +8,8 @@ class ThresholdAlert:
     def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
         self.input_stream = input_stream
         self.output_stream = output_stream
-        self.threshold_value = float(os.environ["threshold_value"])
-        self.parameter_name = os.environ["parameter_name"]
+        self.threshold_value = float(os.environ["thresholdValue"])
+        self.parameter_name = os.environ["parameterName"]
         self.original_inequality_side = None  # what side of the inequality (lower or higher) is originally the signal
         self.previous_value = None
         self.previous_timestamp = None
@@ -29,7 +29,7 @@ class ThresholdAlert:
         if self.original_inequality_side is None:
             self.original_inequality_side = self._get_inequality_side(signal_value)
             print()
-            print("Starting inequality side detected is: ", self.original_inequalitie_side)
+            print("Starting inequality side detected is: ", self.original_inequality_side)
             print()
 
         # If we already know at which side of the threshold we started from, we check the current side
@@ -37,7 +37,7 @@ class ThresholdAlert:
             inequality_side = self._get_inequality_side(signal_value)
 
             # Are we at the same side we started?
-            if self.original_inequalitie_side != inequality_side:
+            if self.original_inequality_side != inequality_side:
                 # If not, we have past the threshold!
                 print("ALERT")
                 print("Signal value: ", signal_value)
