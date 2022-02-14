@@ -24,8 +24,9 @@ The code sample uses the following environment variables:
     
     Some examples of correct WindowValues would be: "5seconds", "500milli", "2min".
   - If WindowType == "None", WindowValue="None".
-  
+
 In summary, this is an example of the expected format for WindowValue depending on the value of WindowType:
+
 | WindowType             | WindowValue |
 |------------------------|-------------|
 | Number of Observations | 100         |
