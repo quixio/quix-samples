@@ -33,7 +33,7 @@ class PercentageAlert:
         max_dif_min_max = (self.percentage_points_alert * 1.5) / 100
         self._update_global_max_and_min(signal_value, ti, max_dif_min_max)
 
-        print(signal_value, self.global_min, self.global_max)
+        print("Signal: ", signal_value, " | Current minima: ", self.global_min, " | Current maxima: ", self.global_max)
 
         # Alert if change is bigger than percentage_points_alert: INCREASE
         if abs((signal_value - self.global_min) / self.global_min) > self.percentage_points_alert / 100:
