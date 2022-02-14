@@ -1,18 +1,18 @@
-# Complete Python Example - Source
+# Complete Python example - source
 
-The sample contained in this folder gives examples of how to connect to kafka and write data to it using [Quix SDK](https://quix.ai/docs/sdk/introduction.html).
+The sample contained in this folder demonstrates how to connect to Kafka and write data to it using the [Quix SDK](https://quix.ai/docs/sdk/introduction.html).
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
 - **output**: Name of the output topic to write into.
 
 ## Docs
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-Alternatively, you can check [here](/python/local-development) how to setup your local environment.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).

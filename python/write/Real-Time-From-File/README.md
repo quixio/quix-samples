@@ -1,22 +1,22 @@
-# Real-Time-CSV
+# Real-time-CSV
 
-This is an example on how stream historic data in a csv file in real time, respecting the original time deltas.
+This is an example of how to stream historic data in a CSV file in real time, respecting the original time deltas.
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
 - **output**: This is the output topic for realtime CSV data.
 
 ## Docs
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternatively, you can check [here](/python/local-development) how to setup your local environment.
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).
 
 
-## Local Development
+## Local development
 
-For information on how to set up your local development environment see the readme that's relevant to you [here](../../local-development/)
+For information on how to set up your local development environment, see the Readme that's relevant to you [here](../../local-development/).

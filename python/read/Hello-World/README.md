@@ -1,8 +1,8 @@
-# Python Hello World - Destination
+# Python hello world - destination
 
-The most basic and essential 'Hello World' read sample. The sample contained in this folder gives an example on how to connect to kafka and detect the arrival of a new stream and read 'HelloWorld' parameter.
+The most basic and essential "Hello World" read sample. The sample contained in this folder gives an example of how to connect to Kafka and detect the arrival of a new stream and read 'HelloWorld' parameter.
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
@@ -10,9 +10,9 @@ The code sample uses the following environment variables:
 
 ## Docs
 
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternatively, you can check [here](/python/local-development) how to setup your local environment.
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).

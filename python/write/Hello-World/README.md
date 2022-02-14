@@ -1,16 +1,17 @@
-# Python Hello World - Source
+# Python hello world - source
 This is an example on how to connect and start a new stream with some values.
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
 - **output**: This is the output topic for hello world data.
 
 ## Docs
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-Alternatively, you can check [here](/python/local-development) how to setup your local environment.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).

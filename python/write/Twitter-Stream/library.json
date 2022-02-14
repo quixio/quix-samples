@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Source"],
         "Technology": ["Twitter"]
     },
-    "shortDescription": "Write realtime Twitter data to a stream",
+    "shortDescription": "Write real-time Twitter data to a stream",
     "DefaultFile": "twitter_function.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

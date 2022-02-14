@@ -1,7 +1,7 @@
-# C# Hello World - Source
-The sample contained in this folder gives an example on how to connect to kafka and start a new stream with a few 'HelloWorld' parameter values
+# C# Hello world - source
+The sample contained in this folder gives an example on how to connect to Kafka and start a new stream with a few "HelloWorld" parameter values.
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
@@ -13,7 +13,7 @@ The code sample uses the following environment variables:
 - WriteHelloWorld/WriteHelloWorld.csproj: the project file which holds together the project and describes some build related details
 
 ## Docs
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.

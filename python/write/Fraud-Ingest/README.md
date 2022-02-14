@@ -1,16 +1,16 @@
-# Fraud Detection I - Ingest
+# Fraud detection I - ingest
 
 This is the ingestion stage for the Fraud Detection example. This sample will send public transaction data to a Topic at the rate of 5 rows per second.
 
-## Requirements / Prerequisites
+## Requirements/prerequisites
 
-This is part of the Fraud Detection project:
+This is part of the fraud detection project:
 
-- Fraud Detection I - Ingest (this one): project that writes transaction data into topic
-- Fraud Detection II - Clean: project that reads raw transaction data and cleans it (dummyfication) 
-- Fraud Detection III - Predict: project that writes the cleaned transaction data and uses it to predict fraud using a loaded machine learning model. 
+- Fraud detection I - ingest (this one): project that writes transaction data into topic.
+- Fraud detection II - clean: project that reads raw transaction data and cleans it (dummyfication). 
+- Fraud detection III - predict: project that writes the cleaned transaction data and uses it to predict fraud using a loaded machine learning model. 
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
@@ -18,10 +18,10 @@ The code sample uses the following environment variables:
 
 ## Docs
 
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternativelly, you can check [here](/python/local-development) how to setup your local environment.
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).
 

@@ -1,14 +1,14 @@
-# Hugging Face Model
+# Hugging Face model
 
 This python project generates a prediction with a [Hugging Face](https://huggingface.co/) model: 
 - It listens to the input topic for input data to predict on.
 - It generates a prediction using the selected Hugging Face model.
 - It outputs the class and score of the prediction to the selected output topic.
 
-## Requirements / Prerequisites
-When deploying this python project, ensure you allow enough computational resources to host and execute the Hugging Face pipeline objects.
+## Requirements/prerequisites
+When deploying this Python project, ensure you allow enough computational resources to host and execute the Hugging Face pipeline objects.
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
@@ -19,10 +19,10 @@ The code sample uses the following environment variables:
 
 ## Docs
 
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternativelly, you can check [here](/python/local-development) how to setup your local environment.
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).
 

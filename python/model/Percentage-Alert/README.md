@@ -1,12 +1,12 @@
-# Percentage Alert
+# Percentage alert
 
-This python project generates an alert when certain percentage increase or decrease is achieved. 
+This Python project generates an alert when certain percentage increase or decrease is achieved. 
 - The percentage value is inserted in percentage points: 20 = 20%.
 - It automatically updates last relative minima and maxima data values to works smartly on drifting signals and changing environments.
 
 ![graph](PercentageAlert.png?raw=true)
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
@@ -17,11 +17,11 @@ The code sample uses the following environment variables:
 
 ## Docs
 
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternatively, you can check [here](/python/local-development) how to setup your local environment.
+Alternativelly, you can learn how to set up your local environment [here](/python/local-development).
 
 
