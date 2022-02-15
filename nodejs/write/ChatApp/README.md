@@ -9,7 +9,7 @@ It implements a system of chat rooms where people can have communicate. It use Q
 This code sample uses the following environment variables:
 
 - **messages**: This is the output topic for chat messages
-- **broadcast**: This is the output topic for broadcast messages
+- **sentiment**: This is the input topic for sentiment score from ML model. Use Hugging Face model library item to analyze messages sentiment.
 
 ## Connection
 Chat app integrates with Quix via Quix WebSocket gateway. For more please refer to [Quix docs](https://documentation.platform.quix.ai/apis/streaming-reader-api/intro.html).
