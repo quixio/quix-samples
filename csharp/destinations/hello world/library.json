@@ -1,0 +1,25 @@
+{
+    "libraryItemId": "0d7400c4-39da-4ab2-8717-c906252c2237",
+    "name": "Hello World - Destination",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Destination"],
+        "Popular subjects": ["Quick Start"]
+    },
+    "shortDescription": "The most basic and essential 'Hello World' read sample",
+	"DefaultFile": "ReadHelloWorld/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "ReadHelloWorld.csproj",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for demo data",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
+}

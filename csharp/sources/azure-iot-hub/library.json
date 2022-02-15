@@ -1,0 +1,57 @@
+{
+    "libraryItemId": "6cf9def8-936d-4d20-8068-d6b91a8be0b1",
+    "name": "Azure IoT Hub - Source",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Technology": ["Azure IoT Hub"]
+    },
+    "shortDescription": "Connect to Azure IoT and bridge data into Kafka",
+	"DefaultFile": "azureiot/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "azureIot.csproj",
+    "Variables": [ 
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for IoT data",
+            "DefaultValue" : "azure-iot-data",
+            "Required": true
+        },
+		{
+            "Name" : "eventHubsEndpoint",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The eventhub endpoint",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "eventHubName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The eventhub name",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "iotSasKeyName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The IoT Sas Key Name",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "iotSasKey",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The IoT Sas Key",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
+}

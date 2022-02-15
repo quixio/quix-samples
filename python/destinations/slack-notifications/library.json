@@ -1,0 +1,40 @@
+{
+	"libraryItemId": "67c64064-e9ba-4551-8b75-2330d2e13e2e",
+	"name": "Slack Notifications",
+	"language": "Python",
+	"tags": {
+		"Complexity": [
+			"Easy"
+		],
+		"SDK Usage": [
+			"Read SDK"
+		],
+		"Pipeline Stage": [
+			"Destination"
+		],
+		"Technology": [
+			"Slack"
+		]
+	},
+	"shortDescription": "Easily send notifications to Slack via webhooks",
+	"DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"Variables": [
+		{
+			"Name": "input",
+			"Type": "EnvironmentVariable",
+			"InputType": "InputTopic",
+			"Description": "Name of the input topic to listen to.",
+			"DefaultValue": "hard-braking",
+			"Required": true
+		},
+		{
+			"Name": "webhook_url",
+			"Type": "EnvironmentVariable",
+			"InputType": "FreeText",
+			"Description": "The webhook url to send notifications to",
+			"Required": true
+		}
+	]
+}

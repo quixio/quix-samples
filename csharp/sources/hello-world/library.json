@@ -1,0 +1,25 @@
+{
+    "libraryItemId": "cf45110d-2e36-4acd-81cc-c36bb4fefa22",
+    "name": "Hello World - Source",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Popular subjects": ["Quick Start"]
+    },
+    "shortDescription": "The most basic and essential 'Hello World' write sample",
+	"DefaultFile": "WriteHelloWorld/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "WriteHelloWorld.csproj",
+    "Variables": [ 
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for demo sine wave data",
+            "DefaultValue" : "write-hello-world",
+            "Required": true
+        }
+    ]    
+}

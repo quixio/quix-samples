@@ -1,0 +1,25 @@
+{
+    "libraryItemId": "c7d2fea3-b8e7-4a9c-ab19-a8b62b6f9d6d",
+    "name": "Complete Example - Destination",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Destination"]
+    },
+    "shortDescription": "A complete example of how to read data from a topic",
+    "longDescription": "This is a complete example in C# of how to read data from a topic and the usage of all the SDK event handlers",
+	"DefaultFile": "ReadCompleteExample/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "ReadCompleteExample.csproj",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic to listen to",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
+}

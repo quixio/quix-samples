@@ -1,0 +1,25 @@
+{
+    "libraryItemId": "19f690fb-32e9-43d0-b6e2-0e86773c5efd",
+    "name": "New York Bikes - Source",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Use Case": ["Mobility"]
+    },
+    "shortDescription": "Write New York CitiBike data to a stream",
+    "DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for NY CitiBike data",
+            "DefaultValue" : "bikes-topic",
+            "Required": true
+        }
+    ]    
+}

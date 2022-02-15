@@ -1,0 +1,36 @@
+<div class="clr-col-12">
+  <div class="form-block">
+    <label>Room </label>
+    <input [(ngModel)]="room" class="clr-input" style="width: 200px"/>
+
+  </div>
+
+
+  <div  class="form-block">
+    <label>Name </label>
+    <input [(ngModel)]="name" class="clr-input" style="width: 200px"/>
+
+  </div>
+
+  <div  class="form-block">
+    <label>Telephone Number (optional)</label>
+    <input [(ngModel)]="phone" class="clr-input" style="width: 200px"/>
+
+  </div>
+
+  <div  class="form-block">
+    <label>Email (optional)</label>
+    <input [(ngModel)]="email" class="clr-input" style="width: 200px"/>
+
+  </div>
+
+  <div>
+    <button (click)="connect()" [disabled]="!canConnect()" style="margin-left: 10px" class="btn btn-sm btn-success">Connect</button>
+  </div>
+
+
+  <div class="clr-row" >
+
+
+  </div>
+</div>

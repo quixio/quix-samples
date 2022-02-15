@@ -1,0 +1,42 @@
+{
+    "libraryItemId": "97350649-66c0-4d38-aa3c-f0eaefe109dc",
+    "name": "Assetto Corsa Bridge",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Popular subjects": ["Racing"]
+    },
+    "shortDescription": "Create a bridge to stream the game's telemetry to Quix",
+    "longDescription": "Create a bridge to stream the local game's telemetry to Quix. Note that this bridge must be run locally on the same network as the game.",
+	"DefaultFile": "Bridge.AssettoCorsa/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "Bridge.AssettoCorsa.csproj",
+    "Variables": [ 
+        {
+            "Name" : "output",
+            "Type" : "Placeholder",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic where the game telemetry data will be written",
+            "DefaultValue" : "assetto-corsa-output",
+            "Required": true
+        },
+		{
+            "Name" : "HostName",
+            "Type" : "Placeholder",
+            "InputType" : "FreeText",
+            "Description" : "This is the Assetto Corsa server host",
+            "DefaultValue" : "",
+            "Required": true
+        },
+		{
+            "Name" : "Port",
+            "Type" : "Placeholder",
+            "InputType" : "FreeText",
+            "Description" : "This is the Assetto Corsa server port",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
+}

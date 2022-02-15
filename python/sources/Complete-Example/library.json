@@ -1,0 +1,25 @@
+{
+    "libraryItemId": "614fb711-17d4-4099-8f59-9aae4ee68509",
+    "name": "Complete Example - Source",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "A complete example of how to write data into a topic",
+    "longDescription": "This is a complete example in Python of how to write data into a topic and the usage of all the SDK methods",
+    "DefaultFile": "quix_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Name of the output topic to write into",
+            "DefaultValue" : "write-example-output",
+            "Required": true
+        }
+    ]    
+}

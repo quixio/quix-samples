@@ -1,0 +1,85 @@
+<div style="background: green; color: white; font-weight: bold; text-align: center; margin: -25px" *ngIf="readerConnected && writerConnected">Connected</div>
+<div style="background: orange;color: white; font-weight: bold; text-align: center; margin: -25px" *ngIf="!readerConnected || !writerConnected">Reconnecting</div>
+<div class="content-area clr-hidden-md-down">
+
+
+  <div class="clr-row" [hidden]="!readerConnected || !writerConnected">
+
+    <div class="clr-col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          Chat
+
+        </div>
+        <div class="card-block">
+          <div class="card-text" style="overflow-y: scroll; height: 300px;" #messagesDiv>
+            <p *ngFor="let message of messages"><small>{{getDateFromEpoch(message.timestamp)  | date:'hh:mm'}}</small>:
+              <span *ngIf="!message.sentiment" class="label label-1">{{message.name}}</span>
+              <span *ngIf="message.sentiment > 0.5" class="label label-success">{{message.name}}</span>
+              <span *ngIf="message.sentiment < -0.5" class="label label-danger">{{message.name}}</span>
+              <span *ngIf="message.sentiment < 0.5 && message.sentiment > -0.5" class="label label-gray">{{message.name}}</span>
+              {{message.message}}</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <input [(ngModel)]="message" (keydown.enter)="send()" (submit)="send()" class="clr-input message-input"  type="text"/>
+          <button  (click)="send()" [disabled]="!message" class="btn btn-sm btn-primary">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="clr-col-lg-3">
+      <H3>Messages counter: {{rate}}</H3>
+      <canvas
+
+              baseChart
+              [chartType]="'line'"
+              [datasets]="datasets"
+              [options]="options">
+      </canvas>
+      <ngx-qrcode [scale]="8"
+                  [elementType]="elementType"
+                  [value]="value"></ngx-qrcode>
+    </div>
+  </div>
+</div>
+
+<div class="content-area clr-hidden-md-up" style="padding: 0;">
+  <div class="clr-row">
+    <div class="clr-col-12">Messages counter: {{rate}}
+      <canvas
+              height="150px"
+              baseChart
+              [chartType]="'line'"
+              [datasets]="datasets"
+              [options]="options">
+      </canvas>
+    </div>
+  </div>
+  <div class="clr-row" style="padding: 0" [hidden]="!readerConnected || !writerConnected">
+
+    <div class="clr-col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          Chat
+        </div>
+        <div class="card-block">
+          <div class="card-text" style="overflow-y: scroll; height: 200px;" #messagesDivMobile>
+            <p *ngFor="let message of messages"><small>{{getDateFromEpoch(message.timestamp)  | date:'hh:mm'}}</small>:
+              <span *ngIf="!message.sentiment" class="label label-gray">{{message.name}}</span>
+              <span *ngIf="message.sentiment > 0.5" class="label label-success">{{message.name}}</span>
+              <span *ngIf="message.sentiment < -0.5" class="label label-danger">{{message.name}}</span>
+              <span *ngIf="message.sentiment < 0.5 && message.sentiment > -0.5" class="label label-gray">{{message.name}}</span>
+              {{message.message}}</p>
+          </div>
+        </div>
+        <div class="card-footer">
+          <input [(ngModel)]="message" (keydown.enter)="send()" (submit)="send()" class="clr-input message-input"  type="text"/>
+          <button  (click)="send()" [disabled]="!message" class="btn btn-sm btn-primary">Send</button>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 20px">@Quix_ai</h3>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join the Game</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="css/styles.css"/>
+    <script type="text/javascript" src="js/httpProxy.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0-preview.6.21355.2/signalr.min.js"
+            integrity="sha512-miYtcbO44jmXtYtECr/A2UXURYruNqJCx7yVkOC0CIQPCpSU7UokCjCkNtnRJ6O9ni8v+nmB9pR9m5AlXHFAWg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+<body>
+<div id="playerInfo" class="">
+
+    <div class="show-when-portrait-only">
+        <div class="controller-copy-text controller-copy-text-lg">
+            <h1 class="heading">Rotate your phone 90 degrees to proceed</h1>
+            <!--            <p><img src="images/quix/rotate.svg" width="50px"></p>-->
+            <p>Ensure screen rotation is unlocked/enabled on your device</p>
+            <div class="flex flex-col flex-justify-center flex-m-justify-center rotate-images">
+                <div>
+                    <img src="images/quix/rotate_android.svg" width="50px">
+                    <p>Android</p>
+                    <p>Rotate counter-clockwise</p>
+
+                </div>
+                <div>
+                    <img src="images/quix/rotate_apple.svg" width="50px">
+                    <p>Apple</p>
+                    <p>Rotate clockwise</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="flex-col flex-m-col flex-m-justify-center flex-justify-center show-when-landscape-only">
+        <div class="controller-copy-text">
+            <h1 class="heading">Your phone is ready to stream data</h1>
+            <p>
+                Your phone is connected to the Quix server and ready to
+                send live data from its g-force sensor to your computer.
+                <span>Click start</span> to see data traveling at the speed of
+                light!
+            </p>
+        </div>
+        <div class="btn" onclick="joinGame()"><span>start</span></div>
+        <div id="mobile-cloud-desktop-image">
+            <img height="60px" src="images/quix/mobile-cloud-desktop.svg">
+        </div>
+        <br/>
+    </div>
+</div>
+
+<div id="game-controls" class="fill-height" hidden>
+    <div class="flex-m-justify-center flex-justify-center flex-row fill-height">
+        <div class="fill-height auto-margin">
+            <button class="btn control-button" id="brakeButton"></button>
+            <div class="phone-text">slower</div>
+        </div>
+        <div id="centreContainer" class="fill-height">
+            <div class="phone-text ">
+                Tilt phone to steer!
+            </div>
+            <div class="fill-height" id="steeringWheel"></div>
+        </div>
+        <div class="fill-height auto-margin">
+            <button class="btn control-button" id="accelerateButton"></button>
+            <div class="phone-text">faster</div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="js/phone-page.js"></script>
+</html>

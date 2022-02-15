@@ -1,0 +1,33 @@
+{
+    "libraryItemId": "0fb402c6-c337-4f3f-b28f-958d6eb592f5",
+    "name": "Strava Events",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"],
+        "Popular subjects": ["Sports"]
+    },
+    "shortDescription": "Pin-point interesting moments in strava activities",
+	"DefaultFile": "Strava.Events/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "Strava.Events.csproj",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for Strava data",
+            "DefaultValue" : "strava-data",
+            "Required": true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for interesting events",
+            "DefaultValue" : "strava-events-output",
+            "Required": true
+        }
+    ]    
+}

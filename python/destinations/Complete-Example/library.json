@@ -1,0 +1,25 @@
+{
+    "libraryItemId": "b525d3d8-0ee9-44f5-9aa8-8e49a3ddba44",
+    "name": "Complete Example - Destination",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Destination"]
+    },
+    "shortDescription": "A complete example of how to read data from a topic",
+    "longDescription": "This is a complete example in Python of how to read data from a topic and the usage of all the SDK event handlers",
+    "DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "The input topic to listen to",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
+}

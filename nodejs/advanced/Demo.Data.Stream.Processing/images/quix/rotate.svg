@@ -1,0 +1,15 @@
+<svg id="screen_phone_smart_smartphone_rotate_rotation" data-name="screen; phone; smart; smartphone; rotate; rotation" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #008eff;
+      }
+    </style>
+  </defs>
+  <path id="Path_867" data-name="Path 867" class="cls-1" d="M12,0a.5.5,0,0,0-.313.891l2.5,2a.5.5,0,1,0,.625-.781l-1.249-1A11.017,11.017,0,0,1,23,12a.5.5,0,0,0,1,0A12.013,12.013,0,0,0,12,0Z"/>
+  <path id="Path_868" data-name="Path 868" class="cls-1" d="M9.812,21.109a.5.5,0,0,0-.625.781l1.249,1A11.017,11.017,0,0,1,1,12a.5.5,0,0,0-1,0A12.013,12.013,0,0,0,12,24a.5.5,0,0,0,.312-.891Z"/>
+  <path id="Path_869" data-name="Path 869" class="cls-1" d="M10.062,1.44a1.537,1.537,0,0,0-2.122,0l-6.5,6.5a1.5,1.5,0,0,0,0,2.121l12.5,12.5a1.5,1.5,0,0,0,2.122,0l6.5-6.5a1.5,1.5,0,0,0,0-2.121ZM2,9a.5.5,0,0,1,.146-.354l6.5-6.5a.5.5,0,0,1,.706,0l10.9,10.9L13.043,20.25l-10.9-10.9A.5.5,0,0,1,2,9Zm19.854,6.354-6.5,6.5a.511.511,0,0,1-.706,0l-.9-.9,7.207-7.207.9.9a.5.5,0,0,1,0,.707Z"/>
+  <path id="Path_870" data-name="Path 870" class="cls-1" d="M18.146,17.146l-1,1a.5.5,0,1,0,.707.707l1-1a.5.5,0,0,0-.707-.707Z"/>
+  <path id="Path_871" data-name="Path 871" class="cls-1" d="M6.146,5.146l-1,1a.5.5,0,1,0,.707.707l1-1a.5.5,0,0,0-.707-.707Z"/>
+  <circle id="Ellipse_103" data-name="Ellipse 103" class="cls-1" cx="0.5" cy="0.5" r="0.5" transform="translate(8.5 2.5)"/>
+</svg>

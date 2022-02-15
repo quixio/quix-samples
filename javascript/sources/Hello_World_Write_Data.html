@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Quix Javascript Hello World</h2>
+<div>
+    <button type="button" onclick="goGoDemo()">Run Demo</button>
+    <div id="log"></div>
+</div>
+
+<script>
+    // Get bearer token from platform.
+    const token = "bearer {placeholder:token}";
+
+    // Set the Workspace and Topic
+    const workspaceId = "{placeholder:workspaceId}";
+    const topicName = "{placeholder:output}";
+
+    // Execute POST request to create a new stream and execute a callback passing the returned identifier
+    function getStreamId(streamIdReceivedHandler) {
+        let xhttp = new XMLHttpRequest();
+
+        // Configure the callback
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let response = JSON.parse(xhttp.responseText);
+
+                // Execute the callback to make use of the streamId
+                streamIdReceivedHandler(response.streamId);
+            }
+        };
+
+        // Open the Connection
+        xhttp.open("POST", `https://writer-${workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/${topicName}/streams`, true);
+
+        // Add Auth and Content headers
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.setRequestHeader("Authorization", token);
+
+        //Send the POST
+        xhttp.send(
+            JSON.stringify(
+                {
+                    "Name": "Hello World Stream",
+                    "Metadata":
+                        {
+                            "SomeField1": "Some metadata value 1",
+                            "SomeField2": "Some metadata value 2"
+                        }
+                }));
+    }
+
+    // Execute POST request to send data to the stream
+    function sendData(streamId) {
+        let xhttp = new XMLHttpRequest();
+
+        // Configure the callback
+        xhttp.onreadystatechange = function () {
+            if(this.readyState == 4) {
+
+                appendToLog(`Received status code ${this.status} when attempting to send data`);
+
+                // whatever happens close the stream
+                appendToLog(`Closing stream with ID ${streamId}`);
+                closeStream(streamId);
+
+                appendToLog(`Check the Portal to see the demo data`);
+            }
+        };
+
+        // Open the Connection
+        xhttp.open("POST", `https://writer-${workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/${topicName}/streams/${streamId}/parameters/data`, true);
+
+        // Add Auth and Content headers
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.setRequestHeader("Authorization", token);
+
+		current_date = new Date().getTime();
+		now_plus_2 = (current_date + 20000) * 1000 * 1000;
+		now_plus_4 = (current_date + 40000) * 1000 * 1000;
+		now_plus_6 = (current_date + 60000) * 1000 * 1000;
+
+        //Send the POST
+        xhttp.send(
+            JSON.stringify(
+                {
+                    "Timestamps": [ now_plus_2, now_plus_4, now_plus_6 ],
+                    "NumericValues":
+                        {
+                            "SomeParameter1": [10.01, 202.02, 303.03],
+                            "SomeParameter2": [400.04, 50.05, 60.06]
+                        }
+                }));
+    }
+
+    function closeStream(streamId){
+        let xhttp = new XMLHttpRequest();
+
+        // Open the Connection
+        xhttp.open("POST", `https://writer-${workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/${topicName}/streams/${streamId}/close`, true);
+
+        // Add Auth and Content headers
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.setRequestHeader("Authorization", token);
+
+        //Send the POST
+        xhttp.send();
+    }
+
+    // a little function to append to the log list
+    function appendToLog(text) {
+        var ul = document.getElementById("log");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(text));
+        ul.appendChild(li);
+    }
+
+    function goGoDemo() {
+
+        appendToLog("Creating Stream..");
+
+        getStreamId((streamId) => {
+            appendToLog(`Received streamId ${streamId}`)
+
+            // send some data!
+            sendData(streamId);
+        })
+    }
+
+</script>
+
+</body>
+</html>

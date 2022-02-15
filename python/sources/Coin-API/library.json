@@ -1,0 +1,48 @@
+{
+    "libraryItemId": "c3300384-a991-4bef-9c3d-f05b03baf222",
+    "name": "Coin API",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Write realtime Currency data to a stream",
+    "DefaultFile": "quix_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for coin data",
+            "DefaultValue" : "coin-data",
+            "Required": true
+        },
+        {
+            "Name" : "coin_api_key",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "HiddenText",
+            "Description" : "Your Coin API key",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "primary_currency",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the main currency of interest",
+            "DefaultValue" : "BTC",
+            "Required": true
+        },
+        {
+            "Name" : "secondary_currencys",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "These are the currencys to compare the primary currency to",
+            "DefaultValue" : "USD,GBP",
+            "Required": true
+        }
+    ]    
+}

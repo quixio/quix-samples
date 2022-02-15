@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60.001" height="60.001" viewBox="0 0 60.001 60.001">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #008eff;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="Group_175" data-name="Group 175" transform="translate(-7194 -2339)">
+    <g id="screen_phone_smart_smartphone_rotate_rotation" data-name="screen; phone; smart; smartphone; rotate; rotation" transform="translate(7194 2339)">
+      <path id="Path_867" data-name="Path 867" class="cls-1" d="M12.75,0a1.251,1.251,0,0,0-.781,2.227l6.25,5a1.251,1.251,0,1,0,1.563-1.953l-3.123-2.5A27.543,27.543,0,0,1,40.251,30a1.25,1.25,0,0,0,2.5,0A30.034,30.034,0,0,0,12.75,0Z" transform="translate(17.251)"/>
+      <path id="Path_868" data-name="Path 868" class="cls-1" d="M24.532,35.524a1.251,1.251,0,0,0-1.563,1.953l3.123,2.5A27.543,27.543,0,0,1,2.5,12.75a1.25,1.25,0,1,0-2.5,0,30.034,30.034,0,0,0,30,30,1.251,1.251,0,0,0,.781-2.227Z" transform="translate(0 17.251)"/>
+      <path id="Path_869" data-name="Path 869" class="cls-1" d="M23.654,2.078a3.841,3.841,0,0,0-5.305,0L2.1,18.327a3.749,3.749,0,0,0,0,5.3L33.347,54.879a3.75,3.75,0,0,0,5.305,0L54.9,38.63a3.749,3.749,0,0,0,0-5.3ZM3.5,20.979a1.241,1.241,0,0,1,.366-.884L20.119,3.843a1.248,1.248,0,0,1,1.765,0L49.127,31.087,31.109,49.1,3.866,21.862A1.241,1.241,0,0,1,3.5,20.979ZM53.135,36.863,36.882,53.114a1.276,1.276,0,0,1-1.765,0l-2.241-2.241L50.894,32.854,53.135,35.1a1.25,1.25,0,0,1,0,1.768Z" transform="translate(1.5 1.522)"/>
+      <path id="Path_870" data-name="Path 870" class="cls-1" d="M19.866,17.366l-2.5,2.5a1.25,1.25,0,1,0,1.768,1.768l2.5-2.5a1.25,1.25,0,0,0-1.768-1.768Z" transform="translate(25.501 25.501)"/>
+      <path id="Path_871" data-name="Path 871" class="cls-1" d="M7.866,5.366l-2.5,2.5A1.25,1.25,0,1,0,7.134,9.634l2.5-2.5A1.25,1.25,0,0,0,7.866,5.366Z" transform="translate(7.5 7.5)"/>
+      <circle id="Ellipse_103" data-name="Ellipse 103" class="cls-1" cx="1.5" cy="1.5" r="1.5" transform="translate(21 6)"/>
+    </g>
+    <g id="android_black_24dp" transform="translate(7212 2355)">
+      <g id="Group_172" data-name="Group 172">
+        <path id="Path_873" data-name="Path 873" class="cls-2" d="M0,0H24V24H0Z"/>
+      </g>
+      <g id="Group_174" data-name="Group 174">
+        <g id="Group_173" data-name="Group 173">
+          <path id="Path_874" data-name="Path 874" class="cls-3" d="M17.6,9.48,19.44,6.3a.63.63,0,0,0-1.09-.63L16.47,8.91a11.463,11.463,0,0,0-8.94,0L5.65,5.67a.63.63,0,0,0-1.09.63L6.4,9.48A10.781,10.781,0,0,0,1,18H23A10.781,10.781,0,0,0,17.6,9.48ZM7,15.25A1.25,1.25,0,1,1,8.25,14,1.25,1.25,0,0,1,7,15.25Zm10,0A1.25,1.25,0,1,1,18.25,14,1.25,1.25,0,0,1,17,15.25Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

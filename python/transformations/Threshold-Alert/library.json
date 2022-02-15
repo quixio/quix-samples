@@ -1,0 +1,47 @@
+{
+    "libraryItemId": "acb7ca8a-c4ba-45b1-9ad4-51df9d479c77",
+    "name": "Threshold Alert",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Generates an alert when certain numeric threshold is crossed",
+	"DefaultFile": "threshold_function.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for raw data",
+			"Required" : true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for alerts",
+            "DefaultValue" : "threshold-alert-output",
+			"Required" : true
+        },
+        {
+            "Name" : "parameterName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the stream's parameter to track",
+            "DefaultValue" : "ParameterA",
+			"Required" : true
+        },
+        {
+            "Name" : "thresholdValue",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "This is the threshold's numerical value",
+            "DefaultValue" : "100",
+			"Required" : true
+        }
+    ]
+}

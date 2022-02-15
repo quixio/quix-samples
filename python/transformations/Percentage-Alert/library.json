@@ -1,0 +1,47 @@
+{
+    "libraryItemId": "e473cfca-5aba-4cb9-b53a-f0e7e24347cb",
+    "name": "Percentage Alert",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Generates an alert when certain percentage increase or decrease is achieved",
+	"DefaultFile": "percentage_function.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for numeric data",
+	        "Required": true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for alerts",
+            "DefaultValue" : "alert-output-topic",
+	        "Required": true
+        },
+        {
+            "Name" : "ParameterName",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The parameter name to track",
+            "DefaultValue" : "ParameterA",
+	        "Required": true
+        },
+        {
+            "Name" : "PercentagePointsAlert",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Percentage points of increase/decrease for the alert to activate.",
+            "DefaultValue" : "10",
+	        "Required": true
+        }
+    ]
+}

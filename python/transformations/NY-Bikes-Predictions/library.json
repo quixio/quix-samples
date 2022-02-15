@@ -1,0 +1,43 @@
+{
+    "libraryItemId": "fa339ec4-76cc-4912-bf82-8f5b48972007",
+    "name": "New York Bikes - Prediction",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"],
+        "Popular subjects": ["Machine Learning"],
+        "Use Case": ["Mobility"]
+    },
+    "shortDescription": "Predict availability of bikes in New York",
+    "longDescription": "In this sample, you'll see how to predict near-future bikes availability in New York based on current bikes and weather forecasts",
+	"DefaultFile": "model_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [ 
+        {
+            "Name" : "bike_input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for bike data",
+            "DefaultValue" : "bikes-topic",
+            "Required": true
+        },
+        {
+            "Name" : "weather_input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for weather data",
+            "DefaultValue" : "weather-topic",
+            "Required": true
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Name of the output topic to write predictions to",
+            "DefaultValue" : "NY-bikes-prediction",
+            "Required": true
+        }
+    ]    
+}

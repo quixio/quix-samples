@@ -1,0 +1,32 @@
+{
+    "libraryItemId": "d3d0d371-7759-4de8-89da-9b2754cdc2e9",
+    "name": "Streaming Demo - Input",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"]
+    },
+    "shortDescription": "Handle and transform input for the stream processing demo",
+    "DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for data from the phone",
+            "DefaultValue" : "gamedata",
+            "Required": true
+        },
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for parameters affecting game and vehicle control",
+            "DefaultValue" : "car-game-input",
+            "Required": true
+        }
+    ]    
+}
