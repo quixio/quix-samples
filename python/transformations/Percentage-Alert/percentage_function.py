@@ -27,6 +27,10 @@ class PercentageAlert:
         # Get fresh data
         df = data.to_panda_frame()
         ti = pd.Timestamp(df.loc[0, 'time'])
+        
+        if self.parameter_name not in df.columns:
+            return
+
         signal_value = float(df.loc[0, self.parameter_name])
 
         # Update global max and min variables
