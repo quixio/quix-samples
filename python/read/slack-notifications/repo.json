@@ -13,7 +13,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "webhook_url",
-      "DefaultValue": "https://hooks.slack.com/services/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",
+      "DefaultValue": "",
       "Required": true
     }
   ],
