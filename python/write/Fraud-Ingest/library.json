@@ -10,7 +10,7 @@
     },
     "shortDescription": "Write raw transaction data to a stream",
     "DefaultFile": "quix_functions.py",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "main.py",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
