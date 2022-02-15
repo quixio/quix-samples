@@ -6,7 +6,7 @@ import {ChartDataSets, ChartOptions} from "chart.js";
 
 export  class MessagePayload{
   public name: string;
-  public message: string;
+  public message?: string;
   public sentiment?: number;
   public timestamp: number;
 }
@@ -132,7 +132,6 @@ export class WebchatComponent implements OnInit {
 
         let message = this.messages.find(f => f.timestamp == payload.timestamps[0] && f.name == payload.tagValues["name"]);
 
-        let chatMessage = payload.stringValues["chat-message"][0];
         let sentiment = payload.numericValues["sentiment"] ? payload.numericValues["sentiment"][0] : 0;
         let timestamp = payload.timestamps[0];
 
@@ -141,12 +140,10 @@ export class WebchatComponent implements OnInit {
             timestamp: timestamp,
             name: payload.tagValues["name"],
             sentiment: sentiment,
-            message: chatMessage
           });
         }
         else{
           message.sentiment = sentiment;
-          message.message = chatMessage;
         }
 
 

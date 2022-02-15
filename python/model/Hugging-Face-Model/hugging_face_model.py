@@ -30,7 +30,7 @@ class HuggingFaceModel:
             .add_value("sentiment", score) \
             .write()
 
-    # Callback triggered for each new event.
+    # Callback triggered for each new table data.
     def on_parameter_data_handler(self, data: ParameterData):
 
         for row in data.timestamps:
