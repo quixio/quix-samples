@@ -8,7 +8,7 @@
       "Popular subjects": ["Quick Start"]
     },
     "sampleTemplate": true,
-    "shortDescription": "This sample shows how to use  <br> HTTP Writer API in the command-line",
+    "shortDescription": "This sample shows how to use HTTP Writer API in the command-line",
     "longDescription": "This sample shows how to use HTTP Writer API in the command-line. <br> Name the output topic or select one from the list. <br> Copy and paste the code sample. <br> Execute it in command line. <br> Once you start sending data, it will be streamed into Quix. You can explore the selected topic from Quix/topics to visualize it. The sample is formatted to run in a Linux/Unix environment but can be easily edited to run in a Windows terminals. For more information on streaming data to Quix via HTTP, see Quix docs.",
     "Variables": [ 
         {
