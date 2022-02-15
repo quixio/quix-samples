@@ -45,7 +45,7 @@
             "Description" : "For the table structured input, specify name of the column where input text is located.",
             "DefaultValue" : "text",
 	        "Required": false
-        },
+        }
         
     ]
 }
