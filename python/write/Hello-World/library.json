@@ -18,7 +18,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for hello world data",
-            "DefaultValue" : "HelloWorldSource",
+            "DefaultValue" : "hello-world-source",
             "Required": true
         }
     ]    

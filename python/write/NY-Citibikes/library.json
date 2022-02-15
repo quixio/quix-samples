@@ -18,7 +18,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for NY CitiBike data",
-            "DefaultValue" : "ny-citibike-data",
+            "DefaultValue" : "bikes-topic",
             "Required": true
         }
     ]    

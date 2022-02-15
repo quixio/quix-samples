@@ -17,7 +17,7 @@
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
             "Description" : "Input topic to read data from",
-            "DefaultValue" : "http-example-input",
+            "DefaultValue" : "",
             "Required": true
         }
     ]    
