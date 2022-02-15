@@ -15,7 +15,7 @@ The code sample uses the following environment variables:
 - **input**: This is the raw data input topic.
 - **output**: This is the output for the hugging face model score.
 - **HuggingFaceModel**: Name of the Hugging Face model to be used. A list of available Hugging Face models can be found [here](https://huggingface.co/models).
-
+- **TextColumnName**: "For the table structured input, name of the column where input text to perform predictions on."
 
 ## Docs
 
