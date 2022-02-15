@@ -1,0 +1,22 @@
+{
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "This is the input topic to read data from",
+      "DefaultValue": "hard-braking",
+      "Required": true
+    },
+    {
+      "Name": "webhook_url",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "webhook_url",
+      "DefaultValue": "https://hooks.slack.com/services/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",
+      "Required": true
+    }
+  ],
+  "EntryPoint": "build/dockerfile",
+  "RunEntryPoint": "main.py"
+}
