@@ -12,34 +12,25 @@ output_topic = client.open_output_topic(os.environ["output"])
 # CREATE A NEW STREAM
 # A stream is a collection of data that belong to a single session of a single source.
 output_stream = output_topic.create_stream()
-
-# If you want append data into the stream later, assign a stream id.
-# stream = output_topic.create_stream("my-own-stream-id")
-
-# Give the stream human readable name. This name will appear in data catalogue.
-output_stream.properties.name = "ExampleData"
-
-# Save stream in specific folder in data catalogue to help organize your workspace.
-output_stream.properties.location = "/example data"
-
-# Add stream metadata to add context to time series data.
-output_stream.properties.metadata["version"] = "Version 1"
+# EDIT STREAM
+# stream = output_topic.create_stream("my-own-stream-id")  # To append data into the stream later, assign a stream id.
+output_stream.properties.name = "ExampleData"  # Give the stream a human readable name (for the data catalogue).
+output_stream.properties.location = "/example data"  # Save stream in specific folder to organize your workspace.
+# output_stream.properties.metadata["version"] = "Version 1"  # Add stream metadata to add context to time series data.
 
 # Read the CSV data
 df = pd.read_csv("ExampleData.csv")
+date_col_name = 'datetime'  # Column name containing the timestamp information
+# df = df.rename(columns={"username": "TAG__username" })  # Add TAG__ prefix to to use this column as tag (index).
 print("File loaded.")
-
-# Add TAG__ prefix to column LapNumber to use this column as tag (index).
-df = df.rename(columns={"username": "TAG__username" })
 
 # Get original col names
 original_cols = list(df.columns)
-original_cols.remove('datetime')
+original_cols.remove(date_col_name)
 
 # Now let's write this file to some stream in real time.
-# We want to respect the orginial time deltas, so we'll need some calculations
+# We want to respect the original time deltas, so we'll need some calculations
 # Get the timestamp data in timestamp format
-date_col_name = 'datetime'
 df['Original_'+date_col_name] = pd.to_datetime(df[date_col_name])  # you may have to define format https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html
 df = df.drop(date_col_name, axis=1)
 
@@ -73,6 +64,7 @@ while True:
         df_to_write = df.loc[filter_df_to_write, ['timestamp', 'Original_'+date_col_name]+original_cols]
         print("Writing {} rows of data".format(len(df_to_write)))
         output_stream.parameters.write(df_to_write)
+        print(df_to_write.to_string(index=False))
 
         # Update df
         df = df[filter_df_to_write == False]
