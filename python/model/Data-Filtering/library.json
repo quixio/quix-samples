@@ -17,7 +17,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for f1 data",
-            "DefaultValue" : "f1-data",
+            "DefaultValue" : "",
             "Required": true
         },
 		{

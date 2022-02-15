@@ -18,7 +18,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "The input topic to listen to",
-            "DefaultValue" : "CompleteReadSampleInput",
+            "DefaultValue" : "",
             "Required": true
         }
     ]    

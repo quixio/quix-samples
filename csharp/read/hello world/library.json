@@ -18,7 +18,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for demo data",
-            "DefaultValue" : "read-hello-world",
+            "DefaultValue" : "",
             "Required": true
         }
     ]    

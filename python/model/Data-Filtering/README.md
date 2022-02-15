@@ -1,4 +1,4 @@
-# Hello world model
+# Data filtering model
 
 This is an example on how to create a simple pub/sub model on the Quix platform.
 

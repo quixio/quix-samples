@@ -16,7 +16,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic where to read data in",
-            "DefaultValue" : "input-topic",
+            "DefaultValue" : "",
             "Required": true
         },
         {
