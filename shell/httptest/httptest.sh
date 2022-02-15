@@ -1,7 +1,9 @@
-date1=$(date +%s%9N)
-date2=$(date --date "2 second" +%s%9N)
-date3=$(date --date "4 second" +%s%9N)
-date4=$(date --date "6 second" +%s%9N)
+nanosecsinsecs=1000000000
+date1=$(date +%s)
+date2=$((($date1+2)*nanosecsinsecs))
+date3=$((($date1+4)*nanosecsinsecs))
+date4=$((($date1+6)*nanosecsinsecs))
+date1=$((($date1)*nanosecsinsecs))
 
 # Execute curl POST request to send data to the stream
 curl -i -X POST "https://writer-{placeholder:workspaceId}.{placeholder:environment.subdomain}.quix.ai/topics/{placeholder:output}/streams/hello-world/parameters/data" \
