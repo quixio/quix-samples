@@ -1,17 +1,21 @@
 from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader
 from quixstreaming.app import App
 from hugging_face_model import HuggingFaceModel
+from transformers import pipeline
 import os
 
 # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
 
-print("Opening input and output topics")
+# Download the Hugging Face model (list of available models here: https://huggingface.co/models)
+model_name = os.environ["HuggingFaceModel"]
+print("Downloading {0} model...".format(model_name))
+model_pipeline = pipeline(model=model_name)
 
+print("Opening input and output topics")
 # Change consumer group to a different constant if you want to run model locally.
 input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
 output_topic = client.open_output_topic(os.environ["output"])
-
 
 # Callback called for each incoming stream
 def read_stream(input_stream: StreamReader):
@@ -20,7 +24,7 @@ def read_stream(input_stream: StreamReader):
     output_stream.properties.parents.append(input_stream.stream_id)
 
     # handle the data in a function to simplify the example
-    quix_function = HuggingFaceModel(input_stream, output_stream)
+    quix_function = HuggingFaceModel(model_pipeline, input_stream, output_stream)
 
     # React to new data received from input topic.
     input_stream.events.on_read += quix_function.on_event_data_handler
