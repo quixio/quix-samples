@@ -22,7 +22,7 @@
         {
             "Name" : "sentiment",
             "Type" : "Placeholder",
-            "InputType" : "OutputTopic",
+            "InputType" : "InputTopic",
             "Description" : "This is the secondary topic for sentiment score for messages. Use Hugging Face model library item to analyze messages sentiment.",
             "DefaultValue" : "sentiment"
         }
