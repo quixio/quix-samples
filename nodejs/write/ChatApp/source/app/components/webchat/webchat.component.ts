@@ -6,8 +6,8 @@ import {ChartDataSets, ChartOptions} from "chart.js";
 
 export  class MessagePayload{
   public name: string;
-  public message: string;
-  public sentiment: number;
+  public message?: string;
+  public sentiment?: number;
   public timestamp: number;
 }
 
@@ -19,12 +19,12 @@ export  class MessagePayload{
 export class WebchatComponent implements OnInit {
 
   @ViewChild("myChart") myChart: Chart;
-    datasets: ChartDataSets[] = [{
-      borderColor: "#3e4f97",
-      backgroundColor: "rgba(62,79,151,0.48)",
-      pointBackgroundColor: "black",
-      data: [],
-      label: 'Chatroom sentiment',
+  datasets: ChartDataSets[] = [{
+    borderColor: "#3e4f97",
+    backgroundColor: "rgba(62,79,151,0.48)",
+    pointBackgroundColor: "black",
+    data: [],
+    label: 'Chatroom sentiment',
 
 
   }];
@@ -64,7 +64,8 @@ export class WebchatComponent implements OnInit {
   @ViewChild("messagesDivMobile")
   messagesDivMobile  : ElementRef;
 
-  public connected: boolean;
+  public readerConnected: boolean;
+  public writerConnected: boolean;
 
   public messages: MessagePayload[] = [];
 
@@ -89,42 +90,99 @@ export class WebchatComponent implements OnInit {
     this.message = "";
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
     this.room = this.route.snapshot.params["room"];
     this.name = this.route.snapshot.params["name"];
-    this.phone = this.route.snapshot.params["phone"];
-    this.email = this.route.snapshot.params["email"];
+    this.phone = this.route.snapshot.queryParams["phone"];
+    this.email = this.route.snapshot.queryParams["email"];
 
-    this.quixService.connection.onclose(e =>{
-      this.connected = false;
+    this.quixService.readerConnection.onclose(e =>{
+      this.readerConnected = false;
     });
 
 
-    this.quixService.connection.onreconnecting(e =>{
-      this.connected = false;
+    this.quixService.readerConnection.onreconnecting(e =>{
+      this.readerConnected = false;
     });
 
 
-    this.quixService.connection.onreconnected(e =>{
-      this.connected = true;
+    this.quixService.readerConnection.onreconnected(e =>{
+      this.readerConnected = true;
     });
 
-    this.quixService.connectionPromise.then(_ => {
+    this.quixService.writerConnection.onclose(e =>{
+      this.writerConnected = false;
+    });
 
-      this.quixService.connection.on('ParameterDataReceived', (payload) => {
+
+    this.quixService.writerConnection.onreconnecting(e =>{
+      this.writerConnected = false;
+    });
 
 
-        let chatMessage = payload.stringValues["chat-message"][0];
+    this.quixService.writerConnection.onreconnected(e =>{
+      this.writerConnected = true;
+    });
+
+    this.quixService.readerConnectionPromise.then(_ => {
+
+      this.quixService.readerConnection.on('ParameterDataReceived', (payload) => {
+
+
+        let message = this.messages.find(f => f.timestamp == payload.timestamps[0] && f.name == payload.tagValues["name"]);
+
         let sentiment = payload.numericValues["sentiment"] ? payload.numericValues["sentiment"][0] : 0;
         let timestamp = payload.timestamps[0];
 
-        this.messages.push({
-          timestamp: timestamp,
-          name: payload.tagValues["name"],
-          sentiment:sentiment,
-          message: chatMessage
-        });
+        if (!message){
+          this.messages.push({
+            timestamp: timestamp,
+            name: payload.tagValues["name"],
+            sentiment: sentiment,
+          });
+        }
+        else{
+          message.sentiment = sentiment;
+        }
+
+
+
+        if (payload.numericValues["average_sentiment"]) {
+          this.sentiment = payload.numericValues["average_sentiment"][0];
+
+          let row = {
+
+            x: Date.now(),
+
+            y: this.sentiment
+          }
+
+          this.datasets[0].data.push(row as any)
+        }
+
+        setTimeout(() => this.messagesDiv.nativeElement.scrollTop = this.messagesDiv.nativeElement.scrollHeight, 200);
+        setTimeout(() => this.messagesDivMobile.nativeElement.scrollTop = this.messagesDivMobile.nativeElement.scrollHeight, 200);
+      });
+
+      this.quixService.readerConnection.on('EventDataReceived', (payload) => {
+
+
+        let message = this.messages.find(f => f.timestamp == payload.timestamp && f.name == payload.tags["name"]);
+
+        let chatMessage = payload.value;
+        let timestamp = payload.timestamp;
+
+        if (!message){
+          this.messages.push({
+            timestamp: timestamp,
+            name: payload.tags["name"],
+            message: chatMessage
+          });
+        }
+
+
+
 
         if (payload.numericValues["average_sentiment"]) {
           this.sentiment = payload.numericValues["average_sentiment"][0];
@@ -144,16 +202,21 @@ export class WebchatComponent implements OnInit {
       });
       this.connect();
 
+      this.readerConnected = true;
+
     }).catch(e => {
       console.log(e);
     });
+
+    await this.quixService.writerConnectionPromise;
+    this.writerConnected = true;
   }
 
   connect() {
-    this.quixService.connection.invoke('SubscribeToParameter', '{placeholder:broadcast}', this.room + "-output", 'sentiment');
-    this.quixService.connection.invoke('SubscribeToParameter', '{placeholder:broadcast}', this.room + "-output", 'chat-message');
-    this.quixService.connection.invoke('SubscribeToParameter', '{placeholder:broadcast}', this.room + "-output", 'average_sentiment');
-    this.connected = true;
+    this.quixService.readerConnection.invoke('SubscribeToEvent', '{placeholder:messages}', this.room, 'chat-message');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'sentiment');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'chat-message');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'average_sentiment');
 
     let host = window.location.host;
     this.value = `${window.location.protocol}//${host}/lobby?room=${this.room}`;

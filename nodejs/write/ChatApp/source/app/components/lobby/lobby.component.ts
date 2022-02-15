@@ -24,7 +24,10 @@ export class LobbyComponent implements OnInit {
   }
 
   connect(){
-    this.router.navigate(["webchat", this.room, this.name, this.phone, this.email])
+    this.router.navigate(["webchat", this.room, this.name], {queryParams:{
+        "email": this.email,
+        "phone": this.phone
+      }})
   }
 
   canConnect() {
