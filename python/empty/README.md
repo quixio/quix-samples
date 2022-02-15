@@ -22,4 +22,4 @@ Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detaile
 ## How to run
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
 
-Alternativelly, you can visit [here](/python/local-development) to learn how to setup your local environment.
+Alternativelly, you can visit [here](https://quix.ai/docs/sdk/python-setup.html) to learn how to setup your local environment.
