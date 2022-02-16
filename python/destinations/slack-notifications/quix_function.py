@@ -1,22 +1,29 @@
-from quixstreaming import StreamReader, ParameterData
+from quixstreaming import StreamReader, ParameterData, EventData
 import requests
+import pandas as pd
 
 class QuixFunction:
     def __init__(self, webhook_url, input_stream: StreamReader):
         self.webhook_url = webhook_url
         self.input_stream = input_stream
-        self.last_value = False
+
+        pd.set_option('display.max_rows', 500)
+        pd.set_option('display.max_columns', 500)
+        pd.set_option('display.width', 1000)
 
     # Callback triggered for each new parameter data.
     def on_parameter_data_handler(self, data: ParameterData):
 
-        # change the parameter name to whatever you want
-        current_value = data.timestamps[0].parameters['HardBraking'].string_value
+        print(str(data.to_panda_frame()))
 
-        # define any logic you need
-        if self.last_value != current_value:
-            self.last_value = current_value
-            
-            # send your slack message
-            slack_message = {"text": "ALERT:{}".format(current_value)}
-            requests.post(self.webhook_url, json=slack_message)
+        # send your slack message
+        slack_message = {"text": str(data.to_panda_frame())}
+        requests.post(self.webhook_url, json=slack_message)
+
+    # Callback triggered for each new event.
+    def on_event_data_handler(self, data: EventData):
+        print(data)
+
+        # send your slack message
+        slack_message = {"text": str(data)}
+        requests.post(self.webhook_url, json=slack_message)

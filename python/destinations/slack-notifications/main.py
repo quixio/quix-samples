@@ -8,7 +8,7 @@ import os
 client = QuixStreamingClient()
 
 print("Opening input and output topics")
-input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
+input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group-5")
 
 webhook_url = os.environ["webhook_url"]
 
@@ -21,6 +21,7 @@ def read_stream(input_stream: StreamReader):
         
     # React to new data received from input topic.
     input_stream.parameters.on_read += quix_function.on_parameter_data_handler
+    input_stream.events.on_read += quix_function.on_event_data_handler
 
 # Hook up events before initiating read to avoid losing out on any data
 input_topic.on_stream_received += read_stream
