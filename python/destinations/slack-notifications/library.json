@@ -25,15 +25,15 @@
 			"Name": "input",
 			"Type": "EnvironmentVariable",
 			"InputType": "InputTopic",
-			"Description": "Name of the input topic to listen to.",
-			"DefaultValue": "hard-braking",
+			"Description": "Name of the topic to listen to for alerts.",
+			"DefaultValue": "",
 			"Required": true
 		},
 		{
 			"Name": "webhook_url",
 			"Type": "EnvironmentVariable",
 			"InputType": "FreeText",
-			"Description": "The webhook url to send notifications to",
+			"Description": "The Slack webhook url to send notifications to",
 			"Required": true
 		}
 	]
