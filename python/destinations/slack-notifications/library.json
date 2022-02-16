@@ -14,7 +14,8 @@
 		],
 		"Technology": [
 			"Slack"
-		]
+		],
+		"Popular subjects": ["Onboarding"]
 	},
 	"shortDescription": "Easily send notifications to Slack via webhooks",
 	"DefaultFile": "quix_function.py",
