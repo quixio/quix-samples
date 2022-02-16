@@ -23,11 +23,12 @@ class ThresholdAlert:
 
         # Get fresh data
         df = data.to_panda_frame()
-        try:
-            signal_value = float(df.loc[0, self.parameter_name])
-        except KeyError:
+
+        if self.parameter_name not in df.columns:
             print("Parameter {0} not present in data frame.".format(self.parameter_name))
             return
+
+        signal_value = float(df.loc[0, self.parameter_name])
 
         # First time we get a value of data we need to check at which side of the inequality we start from
         if self.original_inequality_side is None:
@@ -73,7 +74,6 @@ class ThresholdAlert:
                     self.previous_timestamp = df.loc[0, 'timestamp']
                 else:
                     self.previous_timestamp = pd.Timestamp.now()
-        
 
     # Is it the signal value lower or higher than the threshold value?
     def _get_inequality_side(self, signal_value):
