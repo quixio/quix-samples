@@ -23,6 +23,11 @@ class ThresholdAlert:
 
         # Get fresh data
         df = data.to_panda_frame()
+
+        if self.parameter_name not in df.columns:
+            print("Parameter {0} not present in data frame.".format(self.parameter_name))
+            return
+
         signal_value = float(df.loc[0, self.parameter_name])
 
         # First time we get a value of data we need to check at which side of the inequality we start from
