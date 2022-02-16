@@ -10,7 +10,7 @@ client = QuixStreamingClient()
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
 
-input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
+input_topic = client.open_input_topic(os.environ["input"], "slack-sink")
 output_topic = client.open_output_topic(os.environ["output"])
 
 
