@@ -1,0 +1,49 @@
+{
+    "libraryItemId": "500ab353-412c-481d-81de-b953045bcb0d",
+    "name": "Ably Sink",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Destination"],
+        "Technology": ["Ably"]
+    },
+    "shortDescription": "Capture data from an Ably Hub source",
+	"DefaultFile": "AblyHubSource/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "AblyHubSource.csproj",
+    "Variables": [ 
+        {
+		  "Name": "input",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "InputTopic",
+		  "Description": "Name of the input topic to read from",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "AblyToken",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The Ably API token to use",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "AblyChannel",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The Ably Channel to send to",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "AblyMessageNamePrefix",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The prefix for the Ably Message Name",
+		  "DefaultValue": "",
+		  "Required": true
+		}
+    ]    
+}
