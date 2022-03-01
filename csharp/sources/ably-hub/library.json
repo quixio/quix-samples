@@ -1,0 +1,49 @@
+{
+    "libraryItemId": "749caf7c-40c4-463e-9840-ef70d66c45fc",
+    "name": "Ably Hub Source",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Technology": ["Ably"]
+    },
+    "shortDescription": "Capture data from an Ably Hub source",
+	"DefaultFile": "AblyHubSource/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "AblyHubSource.csproj",
+    "Variables": [ 
+        {
+		  "Name": "output",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "OutputTopic",
+		  "Description": "Name of the output topic to write into",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "AblyToken",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The Ably API token to use",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "AblyChannel",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The Ably Channel to listen to",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "StreamId",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "A name for the data stream",
+		  "DefaultValue": "",
+		  "Required": true
+		}
+    ]    
+}
