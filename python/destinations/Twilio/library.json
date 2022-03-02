@@ -65,5 +65,14 @@
 			"Required": true,
 			"DefaultValue": "2"
 		}
-	]
+	],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 200,
+		"MemoryInMb": 800,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": false
+	}
 }
