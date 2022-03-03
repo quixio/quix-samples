@@ -1,0 +1,25 @@
+{
+    "libraryItemId": "7abe02e1-1e75-4783-864c-46b930b42afe",
+    "name": "F1 Telemetry Data",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Popular subjects": ["Quick Start"]
+    },
+    "shortDescription": "Stream telemetry data from a Codemasters F1 session",
+	"DefaultFile": "Bridge.Console/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "Bridge.Console.csproj",
+    "Variables": [ 
+        {
+            "Name" : "Topic",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "Name of the output topic to write into",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
+}
