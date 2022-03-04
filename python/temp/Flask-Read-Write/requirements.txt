@@ -1,0 +1,3 @@
+quixstreaming==0.4.0a202202102214
+flask
+requests

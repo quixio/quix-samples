@@ -1,0 +1,24 @@
+{
+    "libraryItemId": "c4690209-dae4-4460-b309-d286b1e4f5a8",
+    "name": "Flask API",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "Pipeline Stage": ["Destination", "Source"],
+        "Popular subjects": ["Quick Start"]
+    },
+    "shortDescription": "Build a Flask API around the Quix Telemetry Query and Streaming Writer API's",
+    "DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+		{
+            "Name" : "topic",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "Name of the topic to read streams from",
+            "DefaultValue" : "",
+            "Required": true
+        },
+	]
+}
