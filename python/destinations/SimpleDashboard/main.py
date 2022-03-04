@@ -13,7 +13,7 @@ app = Flask("Dashboard")
 def get_board(streamId:str):
     
     board = streams[streamId]
-    return board.dashboard[["TAG__LapNumber","Speed"]].to_html(classes='data'), 200
+    return board.dashboard[["TAG__LapNumber","EngineRPM"]].to_html(classes='data'), 200
 
 
 def data_sub():
