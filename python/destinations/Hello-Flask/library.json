@@ -1,0 +1,15 @@
+{
+    "libraryItemId": "046d2e80-07e6-4fdd-9b8d-768f32875848",
+    "name": "Hello Flask",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "Pipeline Stage": ["Destination"],
+        "Popular subjects": ["Quick Start"]
+    },
+    "shortDescription": "The most basic and essential 'Hello World' sample for Flask",
+    "DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": []    
+}
