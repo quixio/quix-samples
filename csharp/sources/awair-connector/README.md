@@ -1,4 +1,4 @@
-# Awair importer
+# Awair Connector
 This sample will connect to Awair's background services to continously scrape and publish data for your devices.
 
 ## Requirements
