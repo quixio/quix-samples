@@ -1,0 +1,43 @@
+{
+    "libraryItemId": "36ee9d31-d789-49f8-a7b0-2001d9120690",
+    "name": "Awair importer",
+    "language": "C#",
+    "tags": {
+      "Complexity": ["Medium"],
+      "SDK Usage": ["Write SDK"],
+      "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Periodically retrieve data for your Awair devices.",
+    "longDescription": "This sample will connect to Awair's background services to continously scrape and publish data for your devices.",
+	  "defaultFile": "Service/Program.cs",
+    "iconFile": "icon.png",
+    "entryPoint": "build/dockerfile",
+    "runEntryPoint": "Service/Service.csproj",
+    "variables": [
+      {
+        "Name": "Topic",
+        "Type": "EnvironmentVariable",
+        "InputType": "OutputTopic",
+        "Description": "The topic to write the scraped data",
+        "DefaultValue": "awair",
+        "Required": true
+      },
+      {
+        "Name": "Awair__Token",
+        "Type": "EnvironmentVariable",
+        "InputType": "FreeText",
+        "Description": "The token needed to communicate with Awair API",
+        "DefaultValue": "",
+        "Required": true
+      }
+    ],
+    "DeploySettings":
+    {
+      "DeploymentType": "Service",
+      "CpuMillicores": 100,
+      "MemoryInMb": 200,
+      "Replicas": 1,
+      "PublicAccess": false,
+      "ValidateConnection": true
+    }
+}
