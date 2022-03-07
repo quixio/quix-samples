@@ -1,0 +1,38 @@
+{
+  "Variables": [
+        {
+		  "Name": "input",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "InputTopic",
+		  "Description": "Name of the input topic to read from",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "AblyToken",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The Ably API token to use",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "AblyChannel",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The Ably Channel to send to",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "AblyMessageNamePrefix",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The prefix for the Ably Message Name",
+		  "DefaultValue": "",
+		  "Required": true
+		}
+  ],
+  "EntryPoint": "build/dockerfile",
+  "RunEntryPoint": "AblySink/AblySink.csproj"
+}
