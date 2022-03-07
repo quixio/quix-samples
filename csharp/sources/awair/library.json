@@ -25,7 +25,7 @@
       {
         "Name": "Awair__Token",
         "Type": "EnvironmentVariable",
-        "InputType": "FreeText",
+        "InputType": "HiddenText",
         "Description": "The token needed to communicate with Awair API",
         "DefaultValue": "",
         "Required": true
