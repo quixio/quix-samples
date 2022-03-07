@@ -9,9 +9,9 @@
         "Technology": ["Ably"]
     },
     "shortDescription": "Capture data from an Ably Hub source",
-	"DefaultFile": "AblyHubSource/Program.cs",
+	"DefaultFile": "AblySink/Program.cs",
 	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "AblyHubSource.csproj",
+	"RunEntryPoint": "AblySink/AblySink.csproj",
     "Variables": [ 
         {
 		  "Name": "input",
