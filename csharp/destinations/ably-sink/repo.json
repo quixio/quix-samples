@@ -34,5 +34,5 @@
 		}
   ],
   "EntryPoint": "build/dockerfile",
-  "RunEntryPoint": "WriteHelloWorld.csproj"
+  "RunEntryPoint": "AblySink/AblySink.csproj"
 }

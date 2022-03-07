@@ -11,14 +11,14 @@
     "shortDescription": "Capture data from an Ably Hub source",
 	"DefaultFile": "AblyHubSource/Program.cs",
 	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "AblyHubSource.csproj",
+	"RunEntryPoint": "AblyHubSource/AblyHubSource.csproj",
     "Variables": [ 
         {
 		  "Name": "output",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "OutputTopic",
 		  "Description": "Name of the output topic to write into",
-		  "DefaultValue": "",
+		  "DefaultValue": "ably-data",
 		  "Required": true
 		},
 		{

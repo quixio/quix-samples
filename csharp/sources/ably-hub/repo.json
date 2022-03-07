@@ -5,7 +5,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
       "Description": "Name of the output topic to write into",
-      "DefaultValue": "test-ably",
+      "DefaultValue": "ably-data",
       "Required": true
     },
     {
@@ -34,5 +34,5 @@
     }
   ],
   "EntryPoint": "build/dockerfile",
-  "RunEntryPoint": "WriteHelloWorld.csproj"
+  "RunEntryPoint": "AblyHubSource/AblyHubSource.csproj"
 }
