@@ -3,7 +3,7 @@ This sample will connect to Awair's background services to continously scrape an
 
 ## Requirements
 
-You will need to register for a [developer account](https://developer.getawair.com/onboard/welcome) to access your Awair data. Once you have that, you can get your Access token from [here](https://developer.getawair.com/console/access-token).
+You will need to register for a [developer account](https://developer.getawair.com/onboard/welcome) to access your Awair data. Once you have that, you can get your access token from [here](https://developer.getawair.com/console/access-token).
 
 ## Environment variables
 

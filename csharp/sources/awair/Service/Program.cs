@@ -190,10 +190,10 @@ namespace Service
             var response = await client.SendAsync(message);
             if (!response.IsSuccessStatusCode)
             {
-                var msg = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var msg = await response.Content.ReadAsStringAsync();
                 throw new Exception($"StatusCode: {response.StatusCode}{Environment.NewLine}Response: {msg}");
             }
-            var content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var content = await response.Content.ReadAsStringAsync();
             return Newtonsoft.Json.JsonConvert.DeserializeObject<DeviceListResponse>(content).Devices;
         }
         
