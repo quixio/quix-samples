@@ -1,8 +1,10 @@
-# Data filtering model
+# Event Detection
 
-This is an example on how to create a simple pub/sub model on the Quix platform.
+This is an example of how to create a simple pub/sub model on the Quix platform.
 
-It shows how to make real-time decisions on your data. In this case, it shows if a driver is braking hard.
+It shows how to make real-time decisions on your data. 
+
+In this case, it detects an event on the time series data.
 
 ## Environment variables
 
