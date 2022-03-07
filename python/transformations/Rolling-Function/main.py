@@ -11,7 +11,7 @@ client = QuixStreamingClient()
 print("Opening input and output topics")
 
 # Define environmental variables
-input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
+input_topic = client.open_input_topic(os.environ["input"], "rolling-window-" + os.environ["ParameterName"])
 output_topic = client.open_output_topic(os.environ["output"])
 
 
@@ -19,14 +19,13 @@ output_topic = client.open_output_topic(os.environ["output"])
 def read_stream(input_stream: StreamReader):
 
     # Create a new stream to output data
-    output_stream = output_topic.create_stream(input_stream.stream_id + '-' + os.environ["Quix__Deployment__Name"])
+    output_stream = output_topic.create_stream(input_stream.stream_id + '-' + "rolling-window-" + os.environ["ParameterName"])
     output_stream.properties.parents.append(input_stream.stream_id)
 
     # handle the data in a function to simplify the example
     quix_function = RollingFunction(input_stream, output_stream)
         
     # React to new data received from input topic.
-    input_stream.events.on_read += quix_function.on_event_data_handler
     input_stream.parameters.on_read_pandas += quix_function.on_parameter_data_handler
 
     # When input stream closes, we close output stream as well. 
