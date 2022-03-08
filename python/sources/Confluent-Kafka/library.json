@@ -1,0 +1,66 @@
+{
+    "libraryItemId": "18e00cde-7fb3-4506-a7e3-bcd86b18d0f7",
+    "name": "Confluent Kafka Connector",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge",
+    "longDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge<br/>If you already have a Confluent Kafka topic, you can connect it to Quix with this simple bridge.",
+    "DefaultFile": "quix_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+			"Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the Quix Topic that will receive the stream",
+            "DefaultValue" : "coin-data",
+            "Required": true
+        },
+        {
+            "Name" : "kafka_key",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Obtained from the Confluent Kafka portal",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "kafka_secret",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "HiddenText",
+            "Description" : "Obtained from the Confluent Kafka portal",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "kafka_broker_address",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Obtained from the Confluent Kafka portal",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "kafka_topic",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The Confluent Kafka Topic you wish to read from",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	}
+}
