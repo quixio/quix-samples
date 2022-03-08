@@ -7,8 +7,8 @@
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Connect your Google Pub/Sub topic to a Quix topic with this bridge",
-    "longDescription": "If you already have a Google Pub/Sub topic, you can connect it to Quix with this simple bridge.",
+    "shortDescription": "Subscribe to data in a Google Pub/Sub topic",
+    "longDescription": "If you already have data in a Google Pub/Sub topic, you can connect to it to build your application in Quix.",
     "DefaultFile": "quix_functions.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
