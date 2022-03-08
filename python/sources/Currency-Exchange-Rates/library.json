@@ -1,0 +1,24 @@
+{
+    "libraryItemId": "51e8b701-f688-49e3-82ff-000fdf4b5ee1",
+    "name": "Currency Exchange Rates Data",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Stream currency exchange rates from a CSV file",
+    "DefaultFile": "functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for the data",
+            "DefaultValue" : "currency-exchange-data",
+            "Required": true
+        }
+    ]    
+}
