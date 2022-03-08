@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Source"],
         "Technology": ["Ably"]
     },
-    "shortDescription": "Capture data from an Ably source",
+    "shortDescription": "Subscribe to data in an Ably channel",
 	"DefaultFile": "AblyHubSource/Program.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "AblyHubSource/AblyHubSource.csproj",
