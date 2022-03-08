@@ -1,5 +1,7 @@
-# C# Ably Hub Source
-The sample contained in this folder gives an example on how to connect to sources in the [Ably Hub](https://ably.com/hub) and write values to a Quix stream.
+# C# Ably Source
+This sample is a connector to Ably. It lets you subscribe to any channel as a source for your Quix application.
+
+You can also use it to stream data from [Ably's Hub](https://ably.com/hub) to quickly access open data.
 
 ## Requirements / Prerequisites
  - An active [Ably](https://ably.com/) subscription (The free account is ok too)
@@ -10,19 +12,20 @@ The code sample uses the following environment variables:
 
 - **output**: Name of the output topic to write into.
 - **AblyToken**: The Ably API token to use.
-- **AblyChannel**: The Ably Channel to listen to.
+- **AblyChannel**: The Ably Channel to subscribe to.
 - **StreamId**: A name for the data stream.
 
-## Choosing an Ably Hub source
+## Choosing an Ably source
 
- - Go to the [Ably Hub](https://ably.com/hub) and pick a data source like 'Live Trains', 'Live Bitcoin' prices or 'Live Weather'.
- - Choose the "Shell script" option
- - Copy the API Key's value from the line beginning with "api_key" (note that this API key is usually only going to last 4 hours for the free Ably account)
+ - Go to the [Ably Hub](https://ably.com/hub) or your Ably account.
+ - Pick a data source like 'Live Trains', 'Live Bitcoin' or one of your own channels.
+ - Choose the "Shell script" option in the Hub, or "Your App"/"API Keys" from the dashboard.
+ - Copy the API Key (note that this API key is usually only going to last 4 hours for the free Ably account)
  - Paste this into the AblyToken box in Quix
 
 Repeat this for the "channel"
 
-When you run the code it subscribes to the Ably Hub data source you configured and streams the data into Quix.
+When you run the code it subscribes to the Ably data source you configured and streams the data into Quix.
 
 ## Docs
 Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance

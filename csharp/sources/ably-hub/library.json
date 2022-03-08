@@ -1,6 +1,6 @@
 {
     "libraryItemId": "1c0dec04-545f-40cc-aad2-cb3e9a80d8c4",
-    "name": "Ably Hub Source",
+    "name": "Ably Source",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Source"],
         "Technology": ["Ably"]
     },
-    "shortDescription": "Capture data from an Ably Hub source",
+    "shortDescription": "Subscribe to data in an Ably channel",
 	"DefaultFile": "AblyHubSource/Program.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "AblyHubSource/AblyHubSource.csproj",
