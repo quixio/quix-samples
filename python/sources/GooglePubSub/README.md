@@ -1,5 +1,7 @@
 # Google Pub/Sub Connector
-If you already have a Google Pub/Sub topic, you can connect it to Quix with this simple bridge.
+This project let's you connect to Google Pub/Sub.
+
+You can subscribe to any Pub/Sub topic, and use the real-time data to build your application in Quix.
 
 ## Requirements/prerequisites
 
@@ -7,7 +9,7 @@ You will need a Google Pub/Sub account to use this project.
 
 ## Environment variables
 
-The code sample uses the following environment variables:
+This project uses the following environment variables:
 
 - **output**: This is the Quix Topic that will receive the stream.
 - **google_key**: Google service account credentials.
