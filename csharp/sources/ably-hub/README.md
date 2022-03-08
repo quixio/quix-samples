@@ -1,4 +1,4 @@
-# C# Ably Hub Source
+# C# Ably Source
 The sample contained in this folder gives an example on how to connect to sources in the [Ably Hub](https://ably.com/hub) and write values to a Quix stream.
 
 ## Requirements / Prerequisites
@@ -13,7 +13,7 @@ The code sample uses the following environment variables:
 - **AblyChannel**: The Ably Channel to listen to.
 - **StreamId**: A name for the data stream.
 
-## Choosing an Ably Hub source
+## Choosing an Ably source
 
  - Go to the [Ably Hub](https://ably.com/hub) and pick a data source like 'Live Trains', 'Live Bitcoin' prices or 'Live Weather'.
  - Choose the "Shell script" option
@@ -22,7 +22,7 @@ The code sample uses the following environment variables:
 
 Repeat this for the "channel"
 
-When you run the code it subscribes to the Ably Hub data source you configured and streams the data into Quix.
+When you run the code it subscribes to the Ably data source you configured and streams the data into Quix.
 
 ## Docs
 Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
