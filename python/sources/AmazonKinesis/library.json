@@ -1,0 +1,66 @@
+{
+    "libraryItemId": "dbfe14b4-b4f5-4c5d-afa8-9fa9b926489f",
+    "name": "Amazon Kinesis Connector",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Technology": ["Amazon Kinesis"]
+    },
+    "shortDescription": "Connect your Amazon Kinesis data to a Quix topic with this bridge",
+    "DefaultFile": "quix_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+			"Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the Quix Topic that will receive the stream",
+            "DefaultValue" : "amazon-kinesis-data",
+            "Required": true
+        },
+        {
+            "Name" : "aws_access_key_id",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "AWS Access Key Id",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "aws_secret_access_key",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "HiddenText",
+            "Description" : "AWS Secret Access Key",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "aws_region_name",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "AWS Region Name",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "aws_stream_name",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The name of the AWS stream you want to use",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	}
+}
