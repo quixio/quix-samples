@@ -37,10 +37,10 @@
             "Required": true
         },
         {
-            "Name" : "secondary_currencys",
+            "Name" : "secondary_currencies",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "These are the currencys to compare the primary currency to",
+            "Description" : "These are the currencies to compare the primary currency to",
             "DefaultValue" : "USD,GBP",
             "Required": true
         }
