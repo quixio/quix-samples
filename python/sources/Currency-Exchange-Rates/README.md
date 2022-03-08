@@ -1,6 +1,6 @@
 # Currency Exchange Rates Data
 
-Stream currency exchange rates from a CSV file. 
+Replay currency exchange rates of September 2021 as if they happened today.
 
 This example is intended to provide some data for you to experiment with.
 

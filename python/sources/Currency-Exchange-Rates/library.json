@@ -7,7 +7,7 @@
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Stream currency exchange rates from a CSV file",
+    "shortDescription": "Replay currency exchange rates of September 2021 as if they happened today",
     "DefaultFile": "functions.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
@@ -17,8 +17,17 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for the data",
-            "DefaultValue" : "currency-exchange-data",
+            "DefaultValue" : "currency-data",
             "Required": true
         }
-    ]    
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 300,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	} 
 }
