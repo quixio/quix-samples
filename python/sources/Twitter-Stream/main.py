@@ -19,14 +19,13 @@ client = QuixStreamingClient()
 output_topic = client.open_output_topic(os.environ["output"])
 
 # Twitter bearer token goes here
-bearer_token = "{}".format(os.environ["twitter_bearer_token"])
+bearer_token = os.environ["twitter_bearer_token"]
 
 if bearer_token is None:
     raise ValueError('You need to set the twitter_bearer_token to your Twitter developer bearer token')
 
 # Twitter search parameters
-# Change this to whatever you are interested in
-twitter_search = "(#BTC OR btc OR #btc OR BTC)"
+twitter_search = os.environ["twitter_search_params"]
 
 
 # define code to create the output stream
