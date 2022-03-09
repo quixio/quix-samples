@@ -11,7 +11,6 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-           
 
             <Label Text="Session name (optional): "></Label>
             <Entry Text="{Binding SessionName}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand"
