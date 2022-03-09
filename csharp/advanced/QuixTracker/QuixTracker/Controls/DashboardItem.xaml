@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuixTracker.Controls.DashboardItem">
+  <ContentView.Content>
+        <Frame OutlineColor="Black" CornerRadius="0" Padding="0" Margin="0">
+            <Grid x:Name="Root">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+
+                <Label Grid.Row="1" LineHeight="5" Scale="{Binding ValueScale}" Text="{Binding Value}" FontSize="Large" TextType="Text" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" >
+			
+                </Label>
+            </Grid>
+        </Frame>
+    </ContentView.Content>
+</ContentView>

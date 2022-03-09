@@ -1,0 +1,16 @@
+{
+    "libraryItemId": "4ac8b9f2-2063-4f0f-affe-a1624369a650",
+    "name": "Quix tracker",
+    "language": "csharp",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"API Usage": ["Writer API (Websockets)", "Reader API (Websockets)"],
+        "Pipeline Stage": ["Source"],
+        "Use Case": ["Mobility"]
+    },
+    "shortDescription": "Xamarin Android app for backround tracking.",
+    "longDescription": "Xamarin Android app for tracking GPS location, g-sensors, heart-rate sensors connected via Bluetooth etc.",
+    "DefaultFile": "QuixTracker/MainPage.xaml.cs",
+    "Variables": [
+    ]
+}
