@@ -1,12 +1,12 @@
 # Twitter stream example
 
-A Quix model can be used to bridge data from almost any source. In this case, we'll use a Twitter developer account to stream Tweet data with a view to running real time ML models on the feed later on.
+A Quix model can be used to bridge data from almost any source. In this case, we'll use a Twitter developer account to stream Tweet data and run real-time ML models on the feed later on.
 
-You’ll be able to analyse the messages as they happen!
+You’ll be able to analyze the messages as they happen!
 
 ## Requirements/prerequisites
 
- - A Twitter developer account (sign up at [https://developer.twitter.com/en/apply-for-access](https://developer.twitter.com/en/apply-for-access))
+ - A Twitter developer account (sign up at [https://developer.twitter.com/en/apply-for-access](https://developer.twitter.com/en/apply-for-access)).
 
 ## Environment variables
 
