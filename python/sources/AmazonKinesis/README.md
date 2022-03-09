@@ -1,5 +1,5 @@
 # Amazon Kinesis Connector
-Connect your Amazon Kinesis data to a Quix topic with this bridge
+Connect your Amazon Kinesis data to a Quix topic with this bridge.
 
 ## Requirements/prerequisites
 
