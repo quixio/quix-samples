@@ -12,6 +12,7 @@
 	"DefaultFile": "AblyHubSource/Program.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "AblyHubSource/AblyHubSource.csproj",
+	"IconFile": "icon.jpg",
     "Variables": [ 
         {
 		  "Name": "output",
