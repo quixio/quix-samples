@@ -12,6 +12,7 @@
 	"DefaultFile": "Bridge.Console/Program.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "Bridge.Console.csproj",
+	"IconFile": "icon.png",
     "Variables": [ 
         {
             "Name" : "Topic",
