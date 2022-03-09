@@ -1,6 +1,6 @@
-# Electric Motor Temperature Data
+# Electric motor temperature data
 
-Stream live data from a permanent magnet synchronous motor (PMSM) 
+Stream live data from a permanent magnet synchronous motor (PMSM). 
 
 This example is intended to provide some data for you to experiment with.
 
