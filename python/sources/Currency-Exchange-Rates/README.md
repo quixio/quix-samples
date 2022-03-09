@@ -1,6 +1,6 @@
-# Currency Exchange Rates Data
+# Currency exchange rates data
 
-Replay currency exchange rates of September 2021 as if they happened today.
+Replay currency exchange rates from September 2021 as if they happened today.
 
 This example is intended to provide some data for you to experiment with.
 
