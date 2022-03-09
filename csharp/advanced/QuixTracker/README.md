@@ -3,4 +3,5 @@ Xamarin Android app for tracking GPS location, g-sensors, heart-rate sensors con
 
 ## Requirements / Prerequisites
  - Xamarin development environment [Get started with Xamarin](https://docs.microsoft.com/en-us/xamarin/android/get-started/)
+ - Android API level 30 (Android 11)
 
