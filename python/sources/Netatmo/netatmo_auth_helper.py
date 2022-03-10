@@ -17,12 +17,12 @@ class NetatmoAuthHelper:
             self._get_token()
             
         if time.time() - self._expire_in > 0:
-            self._refresh_token()
+            self._get_refresh_token()
 
         return self._token
             
 
-    def _refresh_token(self):
+    def _get_refresh_token(self):
         payload = {
             "grant_type": "refresh_token",
             "client_id": self._client_id,
