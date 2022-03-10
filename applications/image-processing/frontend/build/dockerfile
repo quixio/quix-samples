@@ -1,0 +1,11 @@
+FROM node:14-alpine
+WORKDIR /app
+COPY package.json ./
+COPY package-lock.json ./
+COPY ./ ./
+RUN npm i && npm run build
+RUN ls -la /app
+
+FROM nginx:latest
+COPY --from=0 /app/build /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf

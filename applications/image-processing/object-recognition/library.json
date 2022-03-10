@@ -1,0 +1,33 @@
+{
+    "libraryItemId": "fa8af3c0-fdd3-4ac9-bdb5-f0451378fd2b",
+    "name": "Image processing - Object detection",
+    "language": "Python",
+    "tags": {
+      "API Usage": [ "Write SDK", "Read SDK" ],
+      "Complexity": [ "Medium" ],
+      "Popular subjects": ["Image Processing"]
+    },
+    "shortDescription": "This model detects object from the images inside topic",
+    "longDescription": "This sample shows how to use HTTP Writer API in the command-line. <br> Name the output topic or select one from the list. <br> Copy and paste the code sample. <br> Execute it in command line. <br> Once you start sending data, it will be streamed into Quix. You can explore the selected topic from Quix/topics to visualize it. The sample is formatted to run in a Linux/Unix environment but can be easily edited to run in a Windows terminals. For more information on streaming data to Quix via HTTP, see Quix docs.",
+    "Variables": [ 
+        {
+            "Name" : "topic_raw",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "Input topic containing unprocessed images from source",
+            "DefaultValue" : "image-raw",
+            "Required": true
+        },
+        {
+            "Name" : "topic_processed",
+            "Type" : "Placeholder",
+            "InputType" : "OutputTopic",
+            "Description" : "Output topic containing images with topics inside them",
+            "DefaultValue" : "image-processed",
+            "Required": true
+        }
+    ],
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+    "DefaultFile": "main.py"
+}

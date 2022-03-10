@@ -1,0 +1,14 @@
+version: "3.4"                                                                                                        
+                                                                                                                      
+x-defaults: &defaults                                                                                                 
+  restart: unless-stopped                                                                                             
+
+services:
+  server:
+    build:
+      context: ..
+      dockerfile: source/docker/Dockerfile
+    env_file:
+     - ./docker/.env
+    volumes:
+      - ../:/app

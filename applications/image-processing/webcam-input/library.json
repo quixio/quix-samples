@@ -1,0 +1,24 @@
+{
+    "libraryItemId": "81cd2592-0e83-4733-bdb0-6710f8dcca04",
+    "name": "Image processing - Webcam input",
+    "language": "NodeJs",
+    "tags": {
+      "API Usage": [ "Writer API (HTTP)" ],
+      "Complexity": [ "Medium" ],
+      "Popular subjects": ["Image Processing"]
+    },
+    "shortDescription": "This project contains webpage which is able to capture image from your webcam",
+    "Variables": [ 
+        {
+            "Name" : "topic_raw",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Output topic containing unprocessed images from webcam",
+            "DefaultValue" : "image-raw",
+            "Required": true
+        }
+    ],
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.js",
+    "DefaultFile": "main.js"
+}
