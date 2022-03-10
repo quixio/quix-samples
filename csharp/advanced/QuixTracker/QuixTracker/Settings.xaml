@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:app="clr-namespace:QuixTracker"
              x:Class="QuixTracker.Settings">
@@ -13,29 +14,26 @@
         <StackLayout>
 
             <Label Text="Session name (optional): "></Label>
-            <Entry Text="{Binding SessionName}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand"
-               />
+            <Entry Text="{Binding Path=SessionName}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand" />
 
             <Label Text="DeviceId: "></Label>
-            <Entry Text="{Binding DeviceId}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand"
-               />
+            <Entry Text="{Binding DeviceId}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand" />
+            
             <Label Text="Rider: "></Label>
-            <Entry Text="{Binding Rider}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand"
-               />
-
+            <Entry Text="{Binding Rider}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand" />
+            
             <Label Text="Team: "></Label>
-            <Entry Text="{Binding Team}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand"
-               />
-
+            <Entry Text="{Binding Team}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand" />
+            
             <Label Text="Log G force: "></Label>
-            <CheckBox IsChecked="{Binding LogGForce}" IsEnabled="{Binding Connected, Converter={StaticResource NegativeConverter}}" HorizontalOptions="FillAndExpand"
-               />
-
+            <CheckBox IsChecked="{Binding LogGForce}"
+                      IsEnabled="{Binding Connected, Converter={StaticResource NegativeConverter}}"
+                      HorizontalOptions="FillAndExpand" />
+            
             <Label Text="Tracking interval [ms]: "></Label>
-            <Entry Text="{Binding Interval}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand" Keyboard="Numeric"
-               />
+            <Entry Text="{Binding Interval}" IsReadOnly="{Binding Connected}" HorizontalOptions="FillAndExpand"
+                   Keyboard="Numeric" />
 
-      
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

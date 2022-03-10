@@ -2,13 +2,11 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Widget;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
-using Flurl.Http;
 using System.Threading;
 using Android.Hardware;
 using System.Collections.Concurrent;
@@ -138,9 +136,6 @@ namespace QuixTracker.Droid
 
         public override void OnCreate()
         {
-            FlurlHttp.ConfigureClient("https://writer-ziadmoussa1-workspace1.platform.quix.ai",
-                cli => cli.Settings.HttpClientFactory = new UntrustedCertClientFactory());
-
             isRunning = false;
 
             task = new Task(DoWork);
@@ -201,8 +196,6 @@ namespace QuixTracker.Droid
 
         public async void DoWork()
         {
-            //Task.Factory.StartNew(LocationTracking);
-
             this.sensorManager = GetSystemService(Context.SensorService) as SensorManager;
 
             this.gyroSensor = this.sensorManager.GetDefaultSensor(SensorType.Accelerometer);
@@ -229,7 +222,7 @@ namespace QuixTracker.Droid
 
                 await this.quixService.SubscribeToEvent(this.streamId, "notification");
 
-                this.quixService.EventDataRecieved += QuixService_EventDataRecieved;
+                this.quixService.EventDataReceived += QuixServiceEventDataReceived;
 
                 this.LocationTracking();
 
@@ -293,7 +286,7 @@ namespace QuixTracker.Droid
             this.OnLocationChanged(e.Position);
         }
 
-        private void QuixService_EventDataRecieved(object sender, EventDataDTO e)
+        private void QuixServiceEventDataReceived(object sender, EventDataDTO e)
         {
             var notification = JsonSerializer.Deserialize<NotificationDTO>(e.Value,
                 new JsonSerializerOptions {PropertyNameCaseInsensitive = true});

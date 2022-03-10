@@ -14,18 +14,15 @@ namespace QuixTracker
 
         public Func<Page> Factory { get; set; }
     }
+
     public partial class MainPage : MasterDetailPage
     {
         public static MainPage Instance { get; set; }
-      
-
-    
-
 
         public List<MainMenuItem> MainMenuItems => new List<MainMenuItem>()
         {
-            new MainMenuItem() { Title = "Dashboard",TargetType = typeof(Dashboard), Factory = () => new Dashboard() },
-            new MainMenuItem() { Title = "Settings", TargetType = typeof(Settings), Factory = () => new Settings()  }
+            new MainMenuItem() {Title = "Dashboard", TargetType = typeof(Dashboard), Factory = () => new Dashboard()},
+            new MainMenuItem() {Title = "Settings", TargetType = typeof(Settings), Factory = () => new Settings()}
         };
 
         public MainPage()
@@ -36,17 +33,11 @@ namespace QuixTracker
             BindingContext = this;
 
             // Build the Menu
- 
+
             // Set the default page, this is the "home" page.
             Detail = new NavigationPage(new Dashboard());
- 
 
-
-            Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Best)).ContinueWith(_ =>
-            {
-
-            });
-
+            Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Best)).ContinueWith(_ => { });
         }
 
         protected override void OnAppearing()
@@ -54,7 +45,6 @@ namespace QuixTracker
             base.OnAppearing();
 
             Xamarin.Essentials.DeviceDisplay.KeepScreenOn = true;
-          
         }
 
         protected override void OnDisappearing()
@@ -63,25 +53,21 @@ namespace QuixTracker
             Xamarin.Essentials.DeviceDisplay.KeepScreenOn = false;
         }
 
-
-
         private void MainMenuItem_Selected(object sender, SelectedItemChangedEventArgs e)
         {
             var item = e.SelectedItem as MainMenuItem;
             if (item != null)
             {
-                    Detail = new NavigationPage(item.Factory());
+                Detail = new NavigationPage(item.Factory());
 
                 MenuListView.SelectedItem = null;
                 IsPresented = false;
             }
-
         }
     }
 
     public interface IStartService
     {
-
         void StartForegroundServiceCompat();
 
         void StopForegroundServiceCompat();

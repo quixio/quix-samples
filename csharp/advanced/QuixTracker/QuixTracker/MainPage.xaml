@@ -4,8 +4,6 @@
              x:Class="QuixTracker.MainPage">
 
     <MasterDetailPage.Resources>
-
-
     </MasterDetailPage.Resources>
 
     <MasterDetailPage.Master>
@@ -14,9 +12,11 @@
 
             <!-- Slide out Menu -->
             <StackLayout VerticalOptions="FillAndExpand">
-                <Label Text="XFMenu" TextColor="White" FontSize="22" VerticalOptions="Center" HorizontalOptions="Center" Margin="0, 27, 0, 5" />
+                <Label Text="Menu" TextColor="White" FontSize="22" VerticalOptions="Center" HorizontalOptions="Center" 
+                       Margin="0, 27, 0, 5" />
 
-                <ListView x:Name="MenuListView" ItemsSource="{Binding MainMenuItems}" ItemSelected="MainMenuItem_Selected" VerticalOptions="FillAndExpand" SeparatorVisibility="None" BackgroundColor="#f5f5f5">
+                <ListView x:Name="MenuListView" ItemsSource="{Binding MainMenuItems}" ItemSelected="MainMenuItem_Selected" 
+                          VerticalOptions="FillAndExpand" SeparatorVisibility="None" BackgroundColor="#f5f5f5">
                     <!-- Menu background color -->
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -27,10 +27,8 @@
             </StackLayout>
 
         </ContentPage>
-
-
+        
     </MasterDetailPage.Master>
     <!-- Slide out Menu -->
-
-
+    
 </MasterDetailPage>

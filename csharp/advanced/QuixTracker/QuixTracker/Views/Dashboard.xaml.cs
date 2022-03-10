@@ -1,11 +1,6 @@
 ﻿using QuixTracker.Services;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -52,8 +47,7 @@ namespace QuixTracker.Views
                 this.OnPropertyChanged();
             }
         }
-
-
+        
         public string ErrorMessage
         {
             get { return errorMessage; }
@@ -85,17 +79,15 @@ namespace QuixTracker.Views
 
         public Dashboard()
         {
-
             InitializeComponent();
-
-            BindingContext = this;
 
             this.connectionService = ConnectionService.Instance;
 
             this.connectionService.OutputConnectionChanged += ConnectionService_OutputConnectionChanged;
             this.connectionService.ConnectionError += ConnectionService_ConnectionError;
-
             this.connectionService.DataReceived += ConnectionService_DataReceived;
+            
+            BindingContext = this;
 
         }
 
@@ -123,24 +115,32 @@ namespace QuixTracker.Views
                 case ConnectionState.Reconnecting:
                     this.Reconnecting = true;
                     this.Connected = false;
-
                     break;
                 case ConnectionState.Disconnected:
                     this.Connected = false;
                     this.Reconnecting = false;
                     break;
-
             }
         }
 
         private void OnButtonClicked(object sender, EventArgs e)
         {
-            DependencyService.Get<IStartService>().StartForegroundServiceCompat();
+            Start();
         }
-
+        
         private void OnStopClicked(object sender, EventArgs e)
         {
+            Stop();
+        }
+
+        private void Stop()
+        {
             DependencyService.Get<IStartService>().StopForegroundServiceCompat();
+        }
+        
+        private void Start()
+        {
+            DependencyService.Get<IStartService>().StartForegroundServiceCompat();
         }
     }
 }

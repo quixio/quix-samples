@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Text;
 using Xamarin.Essentials;
 
 namespace QuixTracker.Services
@@ -20,10 +17,9 @@ namespace QuixTracker.Services
         public double Speed { get; set; }
 
         public double Accuracy { get; set; }
-
     }
 
-    public class Settings 
+    public class Settings
     {
         private string deviceId;
 
@@ -32,15 +28,32 @@ namespace QuixTracker.Services
         private string team;
         private bool logGForce;
         private string sessionName;
-
+        private string workspaceId;
+        private string subDomain;
+        private string token;
+        
         public Settings()
         {
-            this.DeviceId = Preferences.Get("DeviceId", "My session");
-            this.Rider = Preferences.Get("Rider", "MyName");
-            this.Team = Preferences.Get("Team", "My team");
-            this.Interval = Preferences.Get("Interval", 250);
-            this.LogGForce = Preferences.Get("LogGForce", true);
+            // this.DeviceId = Preferences.Get("DeviceId", "My session");
+            // this.Rider = Preferences.Get("Rider", "MyName");
+            // this.Team = Preferences.Get("Team", "My team");
+            // this.Interval = Preferences.Get("Interval", 250);
+            // this.LogGForce = Preferences.Get("LogGForce", true);
+
+            // these will be populated by Quix when you save the project to your workspace.
+            this.workspaceId = "{placeholder:workspaceId}";
+            this.subDomain = "{placeholder:environment.subdomain}";
+            this.token = "{placeholder:token}";
+
+            // debug values
+            this.token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlpXeUJqWTgzcXotZW1pUlZDd1I4dyJ9.eyJodHRwczovL3F1aXguYWkvb3JnX2lkIjoicXVpeGRldiIsImh0dHBzOi8vcXVpeC5haS9yb2xlcyI6ImFkbWluIFF1aXhBZG1pbiIsImlzcyI6Imh0dHBzOi8vYXV0aC5kZXYucXVpeC5haS8iLCJzdWIiOiJhdXRoMHw5YjFhYjE5Yy05NWYwLTRhZjQtYjczMy0yYWRmYjY0MmUxMmUiLCJhdWQiOlsiaHR0cHM6Ly9wb3J0YWwtYXBpLmRldi5xdWl4LmFpLyIsImh0dHBzOi8vcXVpeC1kZXYuZXUuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTY0NjgzODgwNywiZXhwIjoxNjQ5NDMwODA3LCJhenAiOiI2MDRBOXE1Vm9jWW92b05Qb01panVlVVpjRUhJY2xNcyIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJwZXJtaXNzaW9ucyI6W119.Yt4a7NBWQmk51gM3YTpOyUzqLGcU8fSqKMQKA2MyjBfJc24RUF03FQzsfNajnGat75k-4KwW8W1xNwQduBmZUsCQn8IGhfm5mDLyYWMOSsA393kXEi2cduyGZFgu-3chlccF2CZ4IzxRmOqyUeCh6OKDOJ1L9UPxjvkAhS-MtT93iZGR4j2XlQPDzCjcTs9-ktoCxqNrqPD2Q6aOBSaTF28-OMnhyIjMWSRSMfDdui3pPECciIbUYNnA0OenUiVqqyf5mxKS_HWVprp6g2pp5ywF86bEqa_LQCdrbqW0P8BrW9B1T1zQHBAM3NUJ5Bm8C07-OyYPTXihQ7nSxwTl5A";
+            this.workspaceId = "quixdev-stevesstuff";
+            this.subDomain = "dev";
         }
+
+        public string WorkspaceId => workspaceId;
+        public string SubDomain => subDomain;
+        public string Token => token;
 
         public string SessionName
         {
@@ -101,13 +114,12 @@ namespace QuixTracker.Services
                 Preferences.Set("logGForce", value);
             }
         }
-
-     
     }
 
     public class ConnectionService
     {
         private static ConnectionService instance;
+
         public static ConnectionService Instance
         {
             get
@@ -125,19 +137,16 @@ namespace QuixTracker.Services
 
         public event EventHandler<ConnectionState> InputConnectionChanged;
         public event EventHandler<ConnectionState> OutputConnectionChanged;
-        public event EventHandler<string> ConnectionError; 
+        public event EventHandler<string> ConnectionError;
         public event EventHandler<CurrentData> DataReceived;
 
         public ConnectionService()
         {
             this.Settings = new Settings();
-
-
         }
 
         public void Test()
         {
-
         }
 
         public void OnDataReceived(CurrentData data)
@@ -145,7 +154,6 @@ namespace QuixTracker.Services
             Debug.WriteLine("HEY");
             DataReceived?.Invoke(this, data);
         }
-
 
         public void OnInputConnectionChanged(ConnectionState newState)
         {
