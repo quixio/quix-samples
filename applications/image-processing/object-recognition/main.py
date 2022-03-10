@@ -42,11 +42,7 @@ def tryDownloadFiles():
     print("Model ready")
 
 
-
-print("-------------------")
-print("DOWNLOADING Weights")
-url = "https://quixstorageaccount.blob.core.windows.net/libraryassets/19519-image-processing-yolov3.weights"
-weightsFilename = wget.download(url)
+tryDownloadFiles()
 
 #Load YOLO Algorithm
 net=cv2.dnn.readNet("yolov3.weights","yolov3.cfg")
@@ -133,8 +129,6 @@ def read_stream(new_stream: StreamReader):
             start = time.time()
             img=processImage(img)
             delta = start - time.time()
-
-            print(delta)
 
             stream.parameters.buffer.add_timestamp(datetime.now()) \
                 .add_value("image", imgToBase64(img)) \
