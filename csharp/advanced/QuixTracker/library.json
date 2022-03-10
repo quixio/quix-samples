@@ -1,7 +1,7 @@
 {
     "libraryItemId": "4ac8b9f2-2063-4f0f-affe-a1624369a650",
     "name": "Quix Companion App",
-    "language": "csharp",
+    "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
 		"API Usage": ["Writer API (Websockets)", "Reader API (Websockets)"],
@@ -12,5 +12,13 @@
     "longDescription": "Use this app to track your movements using the phone's sensors (GPS, G-Force, Orientation etc), and connect external sensors (like HRM) via Bluetooth",
     "DefaultFile": "QuixTracker/MainPage.xaml.cs",
     "Variables": [
+	    {
+            "Name" : "topic",
+            "Type" : "Placeholder",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the topic for the streaming reader and streaming writer to use",
+            "DefaultValue" : "phone-data",
+            "Required": true
+        }
     ]
 }

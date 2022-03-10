@@ -146,7 +146,8 @@ namespace QuixTracker.Services
 
         public async Task CloseStream(string streamId)
         {
-            await this.outputConnection.InvokeAsync("CloseStream", "phone", streamId);
+            await this.outputConnection.InvokeAsync("CloseStream", 
+                this.connectionService.Settings.Topic, streamId);
         }
 
         public async Task<string> CreateStream(string deviceId, string rider, string team, string sessionName)
@@ -168,14 +169,16 @@ namespace QuixTracker.Services
                 }
             };
 
-            await this.outputConnection.InvokeAsync("UpdateStream", "phone", streamId, streamDetails);
+            await this.outputConnection.InvokeAsync("UpdateStream", 
+                this.connectionService.Settings.Topic, streamId, streamDetails);
 
             return streamId;
         }
 
         public async Task SendParameterData(string streamId, ParameterDataDTO data)
         {
-            await this.outputConnection.InvokeAsync("SendParameterData", "phone", streamId, data);
+            await this.outputConnection.InvokeAsync("SendParameterData", 
+                this.connectionService.Settings.Topic, streamId, data);
         }
     }
 }
