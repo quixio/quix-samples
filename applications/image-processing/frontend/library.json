@@ -1,7 +1,7 @@
 {
     "libraryItemId": "8adaed6d-d342-440a-91d4-0ab8ec06ee50",
     "name": "Image processing - Frontend",
-    "language": "Javascript",
+    "language": "NodeJS",
     "tags": {
       "API Usage": [ "Reader API (HTTP)" ],
       "Complexity": [ "Medium" ],
