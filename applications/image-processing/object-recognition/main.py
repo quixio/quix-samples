@@ -1,6 +1,5 @@
 from quixstreaming import SecurityOptions, QuixStreamingClient, ParameterData, StreamReader
 import time
-import wget
 
 client = QuixStreamingClient()
 
@@ -20,13 +19,37 @@ import sys
 import signal
 import threading
 
+def tryDownloadFiles():
+    import os
+    from os import path
+    if path.exists("yolov3.weights") and path.exists("yolov3.cfg"):
+        print("Model files present => nothing to download")
+        return
+
+    import wget
+    from zipfile import ZipFile
+
+    print("Downloading model bundle")
+    url = "https://quixstorageaccount.blob.core.windows.net/libraryassets/19519-yolov3.zip"
+    weightsFilename = wget.download(url)
+
+    print("Extracting model bundle")
+    zf = ZipFile(weightsFilename, 'r')
+    zf.extractall('.')
+    zf.close()
+
+    os.remove(weightsFilename)
+    print("Model ready")
+
+
+
 print("-------------------")
 print("DOWNLOADING Weights")
 url = "https://quixstorageaccount.blob.core.windows.net/libraryassets/19519-image-processing-yolov3.weights"
 weightsFilename = wget.download(url)
 
 #Load YOLO Algorithm
-net=cv2.dnn.readNet(weightsFilename,"yolov3.cfg")
+net=cv2.dnn.readNet("yolov3.weights","yolov3.cfg")
 #To load all objects that have to be detected
 classes=[]
 with open("coco.names","r") as f:

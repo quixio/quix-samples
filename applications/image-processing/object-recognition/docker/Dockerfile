@@ -18,7 +18,7 @@ RUN apt-get update && \
 # install generic dependencies of SDK to reduce build times
     python3 -m pip install pandas==1.2.1 pythonnet==2.5.1
 # Install librdkafka dependencies for ubuntu 20.04
-COPY ./source/docker/kafkadepinstaller.sh .
+COPY ./docker/kafkadepinstaller.sh .
 RUN dos2unix ./kafkadepinstaller.sh && chmod +x ./kafkadepinstaller.sh && \
     /bin/bash ./kafkadepinstaller.sh && \
     rm /kafkadepinstaller.sh
@@ -45,7 +45,7 @@ RUN cd ~/ &&\
 
 RUN mkdir /app
 WORKDIR /app
-COPY ./source/requirements.txt ./source/requirements.txt
+COPY ./requirements.txt ./requirements.txt
 WORKDIR /app/source
 
 RUN pip3 install -r ./requirements.txt  --extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/

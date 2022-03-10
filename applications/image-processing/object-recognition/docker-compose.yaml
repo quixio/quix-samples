@@ -6,8 +6,8 @@ x-defaults: &defaults
 services:
   server:
     build:
-      context: ..
-      dockerfile: source/docker/Dockerfile
+      context: .
+      dockerfile: docker/Dockerfile
     env_file:
      - ./docker/.env
     volumes:

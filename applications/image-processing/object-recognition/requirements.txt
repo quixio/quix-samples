@@ -1,3 +1,4 @@
 quixstreaming==0.3.0a202106102346
 numpy==1.21.0
+zipfile
 opencv-python==4.5.2.54
