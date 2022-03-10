@@ -89,13 +89,8 @@ while True:
                 .add_tag("country", country) \
                 .add_tag("city", city ) \
                 .add_value(name + "-temperature", temperature) \
-                .add_value(name + "-co2", co2) \
                 .add_value(name + "-humidity", humidity) \
-                .add_value(name + "-noise", noise) \
-                .add_value(name + "-pressure", pressure) \
-                .add_value(name + "-absolute_pressure", absolute_pressure) \
                 .add_value(name + "-temp_trend", temp_trend) \
-                .add_value(name + "-pressure_trend", pressure_trend) \
                 .write()
 
             print("Module {0} telemetry sent.".format(name))
