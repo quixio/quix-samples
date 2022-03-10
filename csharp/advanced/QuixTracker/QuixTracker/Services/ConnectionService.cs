@@ -34,11 +34,12 @@ namespace QuixTracker.Services
         
         public Settings()
         {
-            // this.DeviceId = Preferences.Get("DeviceId", "My session");
-            // this.Rider = Preferences.Get("Rider", "MyName");
-            // this.Team = Preferences.Get("Team", "My team");
-            // this.Interval = Preferences.Get("Interval", 250);
-            // this.LogGForce = Preferences.Get("LogGForce", true);
+            this.SessionName = Preferences.Get("SessionName", $"Session on {DateTime.Now:yyyy-M-dd h:mm:ss}"); 
+            this.DeviceId = Preferences.Get("DeviceId", "My Device");
+            this.Rider = Preferences.Get("Rider", "My Name");
+            this.Team = Preferences.Get("Team", "My Team");
+            this.Interval = Preferences.Get("Interval", 250);
+            this.LogGForce = Preferences.Get("LogGForce", true);
 
             // these will be populated by Quix when you save the project to your workspace.
             this.workspaceId = "{placeholder:workspaceId}";
