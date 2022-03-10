@@ -145,13 +145,8 @@ namespace QuixTracker.Services
             this.Settings = new Settings();
         }
 
-        public void Test()
-        {
-        }
-
         public void OnDataReceived(CurrentData data)
         {
-            Debug.WriteLine("HEY");
             DataReceived?.Invoke(this, data);
         }
 

@@ -1,6 +1,7 @@
 ﻿using QuixTracker.Services;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -93,7 +94,7 @@ namespace QuixTracker.Views
 
         private void ConnectionService_DataReceived(object sender, CurrentData e)
         {
-            Debug.WriteLine(e.Accuracy.ToString());
+            Debug.WriteLine(e.Accuracy.ToString(CultureInfo.InvariantCulture));
 
             this.Speed = ((int)e.Speed).ToString();
             this.Accuracy = ((int)e.Accuracy).ToString();
