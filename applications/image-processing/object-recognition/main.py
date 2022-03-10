@@ -60,7 +60,6 @@ def processImage(img):
     #We need to pass the img_blob to the algorithm
     net.setInput(blob)
     outs=net.forward(output_layers)
-    #print(outs)
     #Displaying informations on the screen
     class_ids=[]
     confidences=[]
@@ -82,7 +81,7 @@ def processImage(img):
                 boxes.append([x,y,w,h])
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
-            #cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
+
     #Removing Double Boxes
     indexes=cv2.dnn.NMSBoxes(boxes,confidences,0.3,0.4)
     for i in range(len(boxes)):
@@ -93,14 +92,7 @@ def processImage(img):
             cv2.putText(img, label, (x, y), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 2)
 
     return img
-    # cv2.imshow("Output",img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
 
-# is_success, im_buf_arr = cv2.imencode(".jpg")
-# byte_im = im_buf_arr.tobytes()
-
-# img = cv2.imdecode(img, cv2.IMREAD_GRAYSCALE)
 
 input_topic = client.open_input_topic('{placeholder:topic_raw}')
 def read_stream(new_stream: StreamReader):
@@ -115,22 +107,18 @@ def read_stream(new_stream: StreamReader):
             ts = timestamp.timestamp_nanoseconds
             string = timestamp.parameters['image'].string_value
             img=imgFromBase64(string)
-            # img=cv2.imread("traffic.jpg")
             start = time.time()
             img=processImage(img)
             delta = start - time.time()
 
             print(delta)
-            # imgstr = imgToBase64(img)
 
             stream.parameters.buffer.add_timestamp(datetime.now()) \
                 .add_value("image", imgToBase64(img)) \
                 .add_value("delta", delta) \
                 .write()
-            # cv2.imwrite('traffic_old.jpg',img)
 
         print("Done processing parameters")
-        # print("ParameterA - " + str(timestamp) + ": " + str(num_value))
 
     buffer.on_read += on_parameter_data_handler
 
