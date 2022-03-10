@@ -1,10 +1,4 @@
 ﻿using QuixTracker.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,7 +9,7 @@ namespace QuixTracker
     {
         private string deviceId;
 
-        private int interval = 250;
+        private string interval = "250";
         private string rider;
         private string team;
         private bool logGForce;
@@ -66,14 +60,14 @@ namespace QuixTracker
             }
         }
 
-        public int Interval
+        public string Interval
         {
             get { return interval; }
             set
             {
                 interval = value;
                 this.OnPropertyChanged();
-                connectionService.Settings.Interval = value;
+                connectionService.Settings.Interval = int.Parse(value);
             }
         }
 
@@ -92,14 +86,15 @@ namespace QuixTracker
         {
             InitializeComponent();
 
-            BindingContext = this;
-
             this.connectionService = ConnectionService.Instance;
+            this.SessionName = connectionService.Settings.SessionName;
             this.DeviceId = connectionService.Settings.DeviceId;
             this.Rider = connectionService.Settings.Rider;
             this.Team = connectionService.Settings.Team;
-            this.Interval = connectionService.Settings.Interval;
             this.LogGForce = connectionService.Settings.LogGForce;
+            this.Interval = connectionService.Settings.Interval.ToString();
+
+            BindingContext = this;
 
         }
     }

@@ -1,6 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:app="clr-namespace:QuixTracker" xmlns:controls="clr-namespace:QuixTracker.Controls"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:app="clr-namespace:QuixTracker"
+             xmlns:controls="clr-namespace:QuixTracker.Controls"
              x:Class="QuixTracker.Views.Dashboard">
     <ContentPage.Resources>
         <app:NegativeNullConverter x:Key="NegativeNullConverter" />
@@ -17,37 +19,39 @@
             </Grid.RowDefinitions>
 
             <StackLayout Grid.Row="0">
-                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="{Binding ErrorMessage}" BackgroundColor="Red" HorizontalTextAlignment="Center"  TextColor="White"
-               Padding="0,5">
+                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="{Binding ErrorMessage}"
+                       BackgroundColor="Red" HorizontalTextAlignment="Center" TextColor="White"
+                       Padding="0,5">
                     <Label.IsVisible>
                         <MultiBinding Converter="{StaticResource LogicalConverter}" ConverterParameter="AND">
-                            <Binding Path="Connected" Converter="{StaticResource NegativeConverter}"/>
-                            <Binding Path="ErrorMessage" Converter="{StaticResource NegativeNullConverter}"/>
+                            <Binding Path="Connected" Converter="{StaticResource NegativeConverter}" />
+                            <Binding Path="ErrorMessage" Converter="{StaticResource NegativeNullConverter}" />
                         </MultiBinding>
                     </Label.IsVisible>
                 </Label>
-                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="{Binding ErrorMessage}" BackgroundColor="Orange" HorizontalTextAlignment="Center"  TextColor="White"
-               Padding="0,5">
+                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="{Binding ErrorMessage}"
+                       BackgroundColor="Orange" HorizontalTextAlignment="Center" TextColor="White"
+                       Padding="0,5">
                     <Label.IsVisible>
                         <MultiBinding Converter="{StaticResource LogicalConverter}" ConverterParameter="AND">
-                            <Binding Path="Connected"/>
-                            <Binding Path="ErrorMessage" Converter="{StaticResource NegativeNullConverter}"/>
+                            <Binding Path="Connected" />
+                            <Binding Path="ErrorMessage" Converter="{StaticResource NegativeNullConverter}" />
                         </MultiBinding>
                     </Label.IsVisible>
                 </Label>
-                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="Reconnecting" HorizontalTextAlignment="Center" BackgroundColor="Orange" TextColor="White"
-               Padding="0,5" IsVisible="{Binding Reconnecting}"
-               >
+                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="Reconnecting"
+                       HorizontalTextAlignment="Center" BackgroundColor="Orange" TextColor="White"
+                       Padding="0,5" IsVisible="{Binding Reconnecting}">
                 </Label>
 
-                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="Reconnecting WebSockets" HorizontalTextAlignment="Center" BackgroundColor="Orange" TextColor="White"
-               Padding="0,5" IsVisible="{Binding ReconnectingWebSocket}"
-               >
+                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="Reconnecting WebSockets"
+                       HorizontalTextAlignment="Center" BackgroundColor="Orange" TextColor="White"
+                       Padding="0,5" IsVisible="{Binding ReconnectingWebSocket}">
                 </Label>
 
-                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="Connected" HorizontalTextAlignment="Center" BackgroundColor="DarkGreen" TextColor="White"
-               Padding="0,5" IsVisible="{Binding Connected}"
-               >
+                <Label LineBreakMode="WordWrap" FontAttributes="Bold" Text="Connected" HorizontalTextAlignment="Center"
+                       BackgroundColor="DarkGreen" TextColor="White"
+                       Padding="0,5" IsVisible="{Binding Connected}">
                 </Label>
             </StackLayout>
 
@@ -65,17 +69,16 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <controls:DashboardItem  Grid.Column="0" ValueScale="1" Grid.Row="0" />
-                <controls:DashboardItem Value="{Binding Speed}" Grid.Column="1" ValueScale="4" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2"/>
-                <controls:DashboardItem  Grid.Column="3" Grid.Row="0"  ValueScale="1" />
-                <controls:DashboardItem  Value="{Binding Accuracy}"  ValueScale="2" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" />
-                <controls:DashboardItem Grid.Column="2" Grid.ColumnSpan="2" ValueScale="2" Grid.Row="2" />
-                <controls:DashboardItem  Grid.Column="0" Grid.ColumnSpan="2" ValueScale="2" Grid.Row="3" />
-                <controls:DashboardItem  Grid.Column="2" Grid.ColumnSpan="2" ValueScale="2" Grid.Row="3" />
+                <controls:DashboardItem Name="Speed" Value="{Binding Speed}" Grid.Column="1" ValueScale="4" Grid.ColumnSpan="2"
+                                        Grid.Row="0"  />
+                <controls:DashboardItem Name="Accuracy" Value="{Binding Accuracy}" ValueScale="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                        Grid.Row="1" />
             </Grid>
 
             <StackLayout Grid.Row="2">
-                <Button Text="Start" IsVisible="{Binding Connected, Converter={StaticResource NegativeConverter}}" Clicked="OnButtonClicked"></Button>
+                <Button Text="Start" IsVisible="{Binding Connected, Converter={StaticResource NegativeConverter}}"
+                        Clicked="OnButtonClicked">
+                </Button>
                 <Button Text="Stop" IsVisible="{Binding Connected}" Clicked="OnStopClicked"></Button>
             </StackLayout>
 

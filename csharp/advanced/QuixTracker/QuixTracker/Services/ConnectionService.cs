@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Text;
 using Xamarin.Essentials;
 
 namespace QuixTracker.Services
@@ -20,10 +17,9 @@ namespace QuixTracker.Services
         public double Speed { get; set; }
 
         public double Accuracy { get; set; }
-
     }
 
-    public class Settings 
+    public class Settings
     {
         private string deviceId;
 
@@ -32,15 +28,37 @@ namespace QuixTracker.Services
         private string team;
         private bool logGForce;
         private string sessionName;
-
+        private string workspaceId;
+        private string subDomain;
+        private string token;
+        private string topic;
+        
         public Settings()
         {
-            this.DeviceId = Preferences.Get("DeviceId", "My session");
-            this.Rider = Preferences.Get("Rider", "MyName");
-            this.Team = Preferences.Get("Team", "My team");
+            this.SessionName = Preferences.Get("SessionName", $"Session on {DateTime.Now:yyyy-M-dd h:mm:ss}"); 
+            this.DeviceId = Preferences.Get("DeviceId", "My Device");
+            this.Rider = Preferences.Get("Rider", "My Name");
+            this.Team = Preferences.Get("Team", "My Team");
             this.Interval = Preferences.Get("Interval", 250);
             this.LogGForce = Preferences.Get("LogGForce", true);
+
+            // these will be populated by Quix when you save the project to your workspace.
+            this.workspaceId = "{placeholder:workspaceId}";
+            this.subDomain = "{placeholder:environment.subdomain}";
+            this.token = "{placeholder:token}";
+            this.topic = "{placeholder:topic}";
+
+            // debug values
+            // this.token = "";
+            // this.workspaceId = "";
+            // this.subDomain = "dev";
+            // this.topic = "phone";
         }
+
+        public string WorkspaceId => workspaceId;
+        public string SubDomain => subDomain;
+        public string Token => token;
+        public string Topic => topic;
 
         public string SessionName
         {
@@ -101,13 +119,12 @@ namespace QuixTracker.Services
                 Preferences.Set("logGForce", value);
             }
         }
-
-     
     }
 
     public class ConnectionService
     {
         private static ConnectionService instance;
+
         public static ConnectionService Instance
         {
             get
@@ -125,27 +142,18 @@ namespace QuixTracker.Services
 
         public event EventHandler<ConnectionState> InputConnectionChanged;
         public event EventHandler<ConnectionState> OutputConnectionChanged;
-        public event EventHandler<string> ConnectionError; 
+        public event EventHandler<string> ConnectionError;
         public event EventHandler<CurrentData> DataReceived;
 
         public ConnectionService()
         {
             this.Settings = new Settings();
-
-
-        }
-
-        public void Test()
-        {
-
         }
 
         public void OnDataReceived(CurrentData data)
         {
-            Debug.WriteLine("HEY");
             DataReceived?.Invoke(this, data);
         }
-
 
         public void OnInputConnectionChanged(ConnectionState newState)
         {
