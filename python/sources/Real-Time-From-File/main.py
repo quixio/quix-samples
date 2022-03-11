@@ -32,20 +32,18 @@ original_cols.remove(date_col_name)
 # We want to respect the original time deltas, so we'll need some calculations
 # Get the timestamp data in timestamp format
 df['Original_'+date_col_name] = pd.to_datetime(df[date_col_name])  # you may have to define format https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html
+df['Original_'+date_col_name] = [pd.Timestamp(ti, unit='ns').timestamp() for ti in df['Original_'+date_col_name]]
 df = df.drop(date_col_name, axis=1)
 
-# Let's calculate the original time deltas
+# Let's calculate the original time deltas and then the accumulated timedeltas
 print("Calculating time deltas...")
-df['delta_'+date_col_name] = [delta for delta in df['Original_'+date_col_name].shift(-1)-df['Original_'+date_col_name]]
-total = pd.Timedelta(0)
-# Calculate accumulated timedeltas
-for i, row in df.iterrows():
-    total = total + row['delta_'+date_col_name]
-    df.loc[i, 'acc_delta_'+date_col_name] = total
+df['delta_s_'+date_col_name] = df['Original_'+date_col_name].shift(-1)-df['Original_'+date_col_name]
+df['acc_delta_s_'+date_col_name] = df['delta_s_'+date_col_name].expanding(1).sum()
 
 # Let's generate the new timestamps
 print("Generate new timestamps")
-df['timestamp'] = pd.Timestamp.now() + df['acc_delta_'+date_col_name]
+timestamp_now = pd.Timestamp(pd.Timestamp.now(), unit='ns').timestamp()
+df['timestamp'] = timestamp_now + df['acc_delta_s_'+date_col_name]
 
 # Iterate over file
 while True:
