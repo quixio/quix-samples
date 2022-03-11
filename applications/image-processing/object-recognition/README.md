@@ -9,7 +9,7 @@ In order to make use of this solution you also need to deploy the following proj
  - Image processing - Frontend
  - Image processing - Webcam input
 
-## Miinimum requirements ( IMPORTANT ! )
+## Minimum requirements ( IMPORTANT ! )
 
 This project is resource intensive due to underlying ML model. Quix platform minimum requirements are:
 
