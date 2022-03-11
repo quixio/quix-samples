@@ -1,4 +1,4 @@
-# Netatmo source
+# Netatmo connector
 
 Netatmo is a company which manufactures smart home devices. 
 
