@@ -20,6 +20,7 @@
 	"DefaultFile": "twilio_sink.py",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "main.py",
+	"IconFile": "icon.png",
 	"Variables": [
 		{
 			"Name": "input",
@@ -64,5 +65,14 @@
 			"Required": true,
 			"DefaultValue": "2"
 		}
-	]
+	],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 200,
+		"MemoryInMb": 800,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": false
+	}
 }

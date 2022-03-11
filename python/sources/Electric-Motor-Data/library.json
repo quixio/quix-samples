@@ -1,0 +1,33 @@
+{
+    "libraryItemId": "d62ec7e1-e0c9-4747-b8e3-a0d8e6152a68",
+    "name": "Electric Motor Temperature Data",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Live data from a permanent magnet synchronous motor (PMSM)",
+    "DefaultFile": "functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for the data",
+            "DefaultValue" : "motor-temperature-data",
+            "Required": true
+        }
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 400,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	}
+}

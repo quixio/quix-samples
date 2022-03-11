@@ -1,0 +1,59 @@
+{
+    "libraryItemId": "1bb04ae0-2c62-490a-ae77-8a7af00a8853",
+    "name": "Google Pub/Sub Connector",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Subscribe to data in a Google Pub/Sub topic",
+    "longDescription": "If you already have data in a Google Pub/Sub topic, you can connect to it to build your application in Quix.",
+    "DefaultFile": "quix_functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+	"IconFile": "icon.png",
+    "Variables": [
+        {
+			"Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the Quix Topic that will receive the stream",
+            "DefaultValue" : "google-pub-sub-data",
+            "Required": true
+        },
+        {
+            "Name" : "google_key",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Google Service Account Credentials",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "google_project_id",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "HiddenText",
+            "Description" : "The ID of the Google project",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "google_subscription_id",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The ID of the Google subscription",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	}
+}

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Bridge.Readers\Bridge.Readers.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Quix.Sdk.Logging" Version="0.4.0-20220210.1" />
+    </ItemGroup>
+
+</Project>
