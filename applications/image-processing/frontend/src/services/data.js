@@ -16,7 +16,7 @@ export const CreateConnection = (onData, topic) => {
         };
 
         connection = new signalR.HubConnectionBuilder()
-        .withUrl(`https://reader-${workspace_id}.dev.quix.ai/hub`, options)
+        .withUrl(`https://reader-${workspace_id}.{placeholder:environment.subdomain}.quix.ai/hub`, options)
         .build();
 
         // Establish connection
