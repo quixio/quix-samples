@@ -3,9 +3,9 @@
     "name": "Image processing - Webcam input",
     "language": "NodeJs",
     "tags": {
-      "API Usage": [ "Writer API (HTTP)" ],
       "Complexity": [ "Medium" ],
-      "Popular subjects": ["Image Processing"]
+      "API Usage": [ "Writer API (HTTP)" ],
+      "Pipeline Stage": ["Source"]
     },
     "shortDescription": "This project contains webpage which is able to capture image from your webcam",
     "Variables": [ 
