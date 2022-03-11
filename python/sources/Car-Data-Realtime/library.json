@@ -19,6 +19,14 @@
             "Description" : "This is the output topic for car data",
             "DefaultValue" : "realtime-car-data",
             "Required": true
+        },
+        {
+            "Name" : "seconds_to_wait",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Seconds to wait between each data writing",
+            "DefaultValue" : "1",
+            "Required": true
         }
     ]    
 }
