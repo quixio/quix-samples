@@ -1,6 +1,6 @@
 {
     "libraryItemId": "1c0dec04-545f-40cc-aad2-cb3e9a80d8c4",
-    "name": "Ably Source",
+    "name": "Ably Connector - Source",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
