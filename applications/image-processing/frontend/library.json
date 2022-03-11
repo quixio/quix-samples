@@ -7,7 +7,7 @@
       "Complexity": [ "Medium" ],
       "Popular subjects": ["Image Processing"]
     },
-    "shortDescription": "This project contains webpage which shows both processed and unprocessed images",
+    "shortDescription": "The Image Processing UI which shows both processed and unprocessed images",
     "Variables": [ 
         {
             "Name" : "topic_raw",
@@ -21,7 +21,7 @@
             "Name" : "topic_processed",
             "Type" : "Placeholder",
             "InputType" : "InputTopic",
-            "Description" : "Input topic containing images with topics inside them",
+            "Description" : "Input topic containing processed images",
             "DefaultValue" : "image-processed",
             "Required": true
         }
