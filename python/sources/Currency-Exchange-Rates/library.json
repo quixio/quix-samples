@@ -1,0 +1,33 @@
+{
+    "libraryItemId": "51e8b701-f688-49e3-82ff-000fdf4b5ee1",
+    "name": "Currency Exchange Rates Data",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Replay currency exchange rates of September 2021 as if they happened today",
+    "DefaultFile": "functions.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for the data",
+            "DefaultValue" : "currency-data",
+            "Required": true
+        }
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 300,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	} 
+}

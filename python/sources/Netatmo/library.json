@@ -1,0 +1,65 @@
+{
+    "libraryItemId": "e3fcd46d-457a-4a33-84d7-a5198ddad673",
+    "name": "Netatmo - Source",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Technology": ["Netatmo"]
+    },
+    "shortDescription": "Subscribe to sensor data from your Netatmo devices",
+    "DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for Netatmo data",
+            "DefaultValue" : "netatmo",
+            "Required": true
+        },
+        {
+            "Name" : "client_id",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Your Netatmo app client id",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "client_secret",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "HiddenText",
+            "Description" : "Your Netatmo app client secret",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "username",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Your Netatmo account username",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "password",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "HiddenText",
+            "Description" : "Your Netatmo account password",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "device_id",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Your Netatmo device id.",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ]    
+}

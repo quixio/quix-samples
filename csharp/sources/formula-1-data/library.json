@@ -1,0 +1,35 @@
+{
+    "libraryItemId": "7abe02e1-1e75-4783-864c-46b930b42afe",
+    "name": "Formula 1 Data",
+    "language": "C#",
+    "tags": {
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Popular subjects": ["Quick Start", "Onboarding"]
+    },
+    "shortDescription": "Stream F1 Telemetry Data into a Quix topic from a recorded game session",
+	"longDescription": "Stream F1 Telemetry Data into a Quix topic from a recorded game session. <br/>You’ll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
+	"DefaultFile": "Bridge.Console/Program.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "Bridge.Console.csproj",
+	"IconFile": "icon.png",
+    "Variables": [ 
+        {
+            "Name" : "Topic",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Name of the output topic to write into",
+            "DefaultValue" : "f1-data",
+            "Required": true
+        }
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	}
+}

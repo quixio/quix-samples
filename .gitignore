@@ -32,3 +32,11 @@ csharp/write/hello-world/WriteHelloWorld/obj/
 csharp/write/complete-example/WriteCompleteExample/obj/Debug/netcoreapp3.0/
 
 csharp/write/complete-example/WriteCompleteExample/obj/
+
+**/.DS_Store
+
+**/.vs/
+
+csharp/**/bin/
+
+csharp/**/obj/

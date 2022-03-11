@@ -7,7 +7,7 @@
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Write data from a CSV into a stream in realtime",
+    "shortDescription": "Write data from a CSV into a stream in realtime at a given rate",
     "DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
@@ -18,6 +18,14 @@
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for car data",
             "DefaultValue" : "realtime-car-data",
+            "Required": true
+        },
+        {
+            "Name" : "seconds_to_wait",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Seconds to wait between each data writing",
+            "DefaultValue" : "1",
             "Required": true
         }
     ]    
