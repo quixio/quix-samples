@@ -44,12 +44,15 @@ output_stream.parameters.add_definition("EngineRPM").set_range(0, 14000)
 
 # Every second we read one second worth of data from data frame and send it to the platform.
 print("Writing data")
-for i in range(df["Timestamp"].count()):
-    start = time.time()
-    sub_df = df.head(i).tail(1)
-    output_stream.parameters.write(sub_df)
-    print("Sending " + str(i) + "/" + str(df["Timestamp"].count()))
-    time.sleep(max(0.0, 1 - (time.time() - start)))
+seconds_to_wait = float(os.environ["seconds_to_wait"])
+
+for i in range(len(df)):
+    start_loop = time.time()
+    df_i = df.iloc[[i]]
+    output_stream.parameters.write(df_i)
+    print("Sending " + str(i) + "/" + str(len(df)))
+    end_loop = time.time()
+    time.sleep(max(0.0, seconds_to_wait - (end_loop - start_loop)))
 
 print("Closing stream")
 
