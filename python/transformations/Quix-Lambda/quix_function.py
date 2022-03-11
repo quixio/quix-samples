@@ -15,7 +15,7 @@ class QuixFunction:
 
     # Callback triggered for each new parameter data.
     def on_parameter_data_handler(self, data: ParameterData):
-        print(data.value)
+        print(data)
 
         # Here transform your data.
 
