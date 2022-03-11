@@ -12,6 +12,7 @@
 	"DefaultFile": "AblySink/Program.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "AblySink/AblySink.csproj",
+	"IconFile": "icon.png",
     "Variables": [ 
         {
 		  "Name": "input",
