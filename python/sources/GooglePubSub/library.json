@@ -5,7 +5,8 @@
     "tags": {
         "Complexity": ["Medium"],
 		"SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Technology": ["Google Pub/Sub"]
     },
     "shortDescription": "Subscribe to data in a Google Pub/Sub topic",
     "longDescription": "If you already have data in a Google Pub/Sub topic, you can connect to it to build your application in Quix.",
