@@ -9,6 +9,14 @@ In order to make use of this solution you also need to deploy the following proj
  - Image processing - Frontend
  - Image processing - Webcam input
 
+## Minimum requirements ( IMPORTANT ! )
+
+This project is resource intensive due to the underlying ML model. 
+The suggested minimum requirements are:
+
+- 0.5 CPU core
+- 2GB memory
+
 ## Environment variables
 
 This code sample uses the following environment variables:
