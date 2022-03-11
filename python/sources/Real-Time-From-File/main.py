@@ -53,7 +53,7 @@ while True:
         break
 
     # Get df_to_write
-    filter_df_to_write = (df['timestamp'] <= pd.Timestamp.now())
+    filter_df_to_write = (df['timestamp'] <= pd.Timestamp(pd.Timestamp.now(), unit='ns').timestamp())
 
     # If there are rows to write to the stream at this time
     if filter_df_to_write.sum() > 0:
@@ -70,7 +70,7 @@ while True:
     # If there are no rows to write now, wait a bit:
     else:
         # Calculate time to the next data point and wait that
-        time_to_wait = df['delta_'+date_col_name].iloc[0].total_seconds()
+        time_to_wait = df['delta_s_'+date_col_name].iloc[0]
         print("Waiting for ", time_to_wait, " seconds.")
         time.sleep(time_to_wait)
 
