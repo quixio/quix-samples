@@ -7,6 +7,7 @@ This is a Python code sample for writing vehicle telemetry data (time series par
 The code sample uses the following environment variables:
 
 - **output**: This is the output topic for car data.
+- **seconds_to_wait**: Seconds to wait between each data row writing.
 
 ## Docs
 Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
