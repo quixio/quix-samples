@@ -1,3 +1,3 @@
-quixstreaming==0.4.0a202202102214
+quixstreaming==0.4.2a202203102201
 transformers
 tensorflow
