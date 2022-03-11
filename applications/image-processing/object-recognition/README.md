@@ -11,7 +11,8 @@ In order to make use of this solution you also need to deploy the following proj
 
 ## Minimum requirements ( IMPORTANT ! )
 
-This project is resource intensive due to underlying ML model. Quix platform minimum requirements are:
+This project is resource intensive due to the underlying ML model. 
+The suggested minimum requirements are:
 
 - 0.5 CPU core
 - 2GB memory
