@@ -50,5 +50,14 @@
             "Description" : "Defines the window length. If Number of Observations: integer, if Time Period: 30sec, 1week, 3miliseconds, etc.",
             "DefaultValue" : "1min"
         }
-    ]    
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	} 
 }

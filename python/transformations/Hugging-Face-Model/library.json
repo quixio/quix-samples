@@ -46,6 +46,14 @@
             "DefaultValue" : "text",
 	        "Required": false
         }
-        
-    ]
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 1000,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	}
 }
