@@ -6,7 +6,7 @@
         "Complexity": ["Medium"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Technology": ["Confluent Kafka"]
+		"Technology": ["Confluent"]
     },
     "shortDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge",
     "longDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge<br/>If you already have a Confluent Kafka topic, you can connect it to Quix with this simple bridge.",
@@ -58,11 +58,11 @@
     ],
 	"DeploySettings":
 	{
-		"DeploymentType": "Job",
+		"DeploymentType": "Service",
 		"CpuMillicores": 200,
 		"MemoryInMb": 200,
 		"Replicas": 1,
 		"PublicAccess": false,
-		"ValidateConnection": true
+		"ValidateConnection": false
 	}
 }
