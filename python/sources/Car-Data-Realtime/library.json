@@ -36,6 +36,6 @@
 		"MemoryInMb": 200,
 		"Replicas": 1,
 		"PublicAccess": false,
-		"ValidateConnection": true
+		"ValidateConnection": false
 	}
 }
