@@ -16,8 +16,16 @@
             "Name" : "topic",
             "Type" : "Placeholder",
             "InputType" : "OutputTopic",
-            "Description" : "This is the topic for the streaming reader and streaming writer to use",
+            "Description" : "This is the output topic for phone data.",
             "DefaultValue" : "phone-data",
+            "Required": true
+        },
+        {
+            "Name" : "notificationsTopic",
+            "Type" : "Placeholder",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for incoming notifications.",
+            "DefaultValue" : "phone-out",
             "Required": true
         }
     ]
