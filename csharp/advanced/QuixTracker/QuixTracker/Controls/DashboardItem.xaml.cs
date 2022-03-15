@@ -6,21 +6,22 @@ namespace QuixTracker.Controls
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DashboardItem : ContentView
     {
-        public string Name
+        public string Title
         {
             get
             {
-                return (string)GetValue(NameProperty);
+                return (string)GetValue(TitleProperty);
             }
             set
             {
-                SetValue(NameProperty, value);
+                SetValue(TitleProperty, value);
             }
         }
 
-        public static readonly BindableProperty NameProperty =
-           BindableProperty.Create(nameof(Name), typeof(string), typeof(DashboardItem), "N/A");
-        
+        public static readonly BindableProperty TitleProperty =
+           BindableProperty.Create(nameof(Title), typeof(string), typeof(DashboardItem), "");
+
+
         public string Value
         {
             get
@@ -34,7 +35,7 @@ namespace QuixTracker.Controls
         }
 
         public static readonly BindableProperty ValueProperty =
-           BindableProperty.Create(nameof(Value), typeof(string), typeof(DashboardItem), "N/A");
+           BindableProperty.Create(nameof(Value), typeof(string), typeof(DashboardItem), "");
 
 
         public double ValueScale
