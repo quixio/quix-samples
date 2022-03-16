@@ -31,8 +31,8 @@
 		  "Required": true
 		},
 		{
-		  "Name": "AblyChannel",
-		  "Type": "Redshift__SecretAccessKey",
+		  "Name": "Redshift__SecretAccessKey",
+		  "Type": "EnvironmentVariable",
 		  "InputType": "HiddenText",
 		  "Description": "Secret Access Key obtained from your AWS account",
 		  "DefaultValue": "",
