@@ -6,7 +6,7 @@
         "Complexity": ["Medium"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Technology": ["Google Pub/Sub"]
+        "Technology": ["Google"]
     },
     "shortDescription": "Subscribe to data in a Google Pub/Sub topic",
     "longDescription": "If you already have data in a Google Pub/Sub topic, you can connect to it to build your application in Quix.",
@@ -50,7 +50,7 @@
     ],
 	"DeploySettings":
 	{
-		"DeploymentType": "Job",
+		"DeploymentType": "Service",
 		"CpuMillicores": 200,
 		"MemoryInMb": 200,
 		"Replicas": 1,

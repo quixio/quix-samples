@@ -3,9 +3,9 @@
     "name": "Image processing - Frontend",
     "language": "NodeJs",
     "tags": {
-      "API Usage": [ "Reader API (HTTP)" ],
       "Complexity": [ "Medium" ],
-      "Popular subjects": ["Image Processing"]
+      "API Usage": [ "Reader API (Websockets)" ],
+      "Pipeline Stage": ["Destination"]
     },
     "shortDescription": "The Image Processing UI which shows both processed and unprocessed images",
     "Variables": [ 
