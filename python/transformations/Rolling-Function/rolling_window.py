@@ -15,8 +15,9 @@ class RollingWindow:
             self.window = None
 
     
-    def append(self, df : pd.DataFrame()):
-        df['time'] = [pd.Timestamp(time_i) for time_i in df['time']]  # Correct time format to pd.Timestamp()
+    def append(self, new_df: pd.DataFrame()):
+        df = new_df.copy()
+        df.loc['time'] = df['time'].apply(lambda x: pd.Timestamp(x))   # Correct time format to pd.Timestamp()
         self.df_window = self.df_window.append(df)  # Update df_window
 
         # Apply window

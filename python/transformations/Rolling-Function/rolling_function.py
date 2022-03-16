@@ -22,7 +22,7 @@ class RollingFunction:
             # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html
             df[self.parameter_name + '_rolling_avg'] = self.rolling_window.df_window[self.parameter_name].agg('mean', axis=0)
             
-            print(df[self.parameter_name, self.parameter_name + '_rolling_avg'])
+            print(df[[self.parameter_name, self.parameter_name + '_rolling_avg']])
 
             # Write data including the new rolling function column
             self.output_stream.parameters.buffer.write(df)  # Send data
