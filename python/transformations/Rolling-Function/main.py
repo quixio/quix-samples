@@ -39,6 +39,8 @@ def read_stream(input_stream: StreamReader):
 # Hook up events before initiating read to avoid losing out on any data
 input_topic.on_stream_received += read_stream
 
+print("CONNECTED!")
+
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
 
