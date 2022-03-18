@@ -15,6 +15,8 @@ class RollingFunction:
     # Callback triggered for each new parameter data.
     def on_parameter_data_handler(self, df: pd.DataFrame):
 
+        df['time'] = df['time'].apply(lambda x: pd.Timestamp(x))   # Correct time format to pd.Timestamp()
+
         if self.parameter_name in df:
             self.rolling_window.append(df[['time', self.parameter_name]])
 
