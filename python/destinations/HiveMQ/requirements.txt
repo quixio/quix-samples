@@ -1,1 +1,2 @@
 quixstreaming==0.4.2a202203161202
+paho-mqtt
