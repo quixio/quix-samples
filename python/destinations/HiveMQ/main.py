@@ -13,7 +13,7 @@ if not hivemq_port.isnumeric():
 # Alternatively, you can always pass an SDK token manually as an argument.
 quix_client = QuixStreamingClient()
 
-print("Opening input and output topics")
+print("Opening input topic")
 input_topic = quix_client.open_input_topic(os.environ["input"], "default-consumer-group")
 
 

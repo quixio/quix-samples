@@ -1,29 +1,29 @@
 {
-	"libraryItemId": "00ce6fbc-6044-4b97-bca9-0fb3d83cd510",
+	"libraryItemId": "a0b7d375-ee3f-49eb-bc22-ac054ee70ea5",
 	"name": "HiveMQ",
 	"language": "Python",
 	"tags": {
 		"Complexity": ["Easy"],
-		"SDK Usage": ["Read SDK"],
-		"Pipeline Stage": ["Destination"],
+		"SDK Usage": ["Write SDK"],
+		"Pipeline Stage": ["Source"],
 		"Technology": ["MQTT"]
 	},
-	"shortDescription": "Easily publish data to a HiveMQ instance",
+	"shortDescription": "Easily publish data to Quix from a HiveMQ topic",
 	"DefaultFile": "hivemq_function.py",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "main.py",
 	"IconFile": "icon.png",
 	"Variables": [
 		{
-			"Name": "input",
+			"Name": "output",
 			"Type": "EnvironmentVariable",
-			"InputType": "InputTopic",
-			"Description": "Name of the input topic to listen to.",
+			"InputType": "OutputTopic",
+			"Description": "Name of the output topic to publish to.",
 			"DefaultValue": "",
 			"Required": true
 		},
 		{
-			"Name": "hivemq_topic_root",
+			"Name": "hivemq_topic",
 			"Type": "EnvironmentVariable",
 			"InputType": "FreeText",
 			"Description": "The root for messages in HiveMQ, this can be anything",
