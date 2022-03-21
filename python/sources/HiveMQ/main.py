@@ -1,4 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamReader
+from quixstreaming import QuixStreamingClient
 from quixstreaming.app import App
 from hivemq_function import HiveMQFunction
 import paho.mqtt.client as paho
@@ -10,6 +10,10 @@ hivemq_port = os.environ["hivemq_port"]
 if not hivemq_port.isnumeric():
     raise ValueError('hivemq_port must be a numeric value')
 
+hivemq_client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
+# we'll be using tls
+hivemq_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+hivemq_client.username_pw_set(os.environ["hivemq_username"], os.environ["hivemq_password"])
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
@@ -24,7 +28,7 @@ output_stream = output_topic.create_stream()
 output_stream.properties.name = "HiveMQ Data"  # Give the stream a human-readable name (for the data catalogue).
 output_stream.properties.location = "/hivemq data"  # Save stream in specific folder to organize your workspace.
 
-hivemq_functions = HiveMQFunction()
+hivemq_functions = HiveMQFunction(os.environ["hivemq_topic"], hivemq_client, output_stream)
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -48,11 +52,6 @@ def on_message(client, userdata, msg):
 def on_subscribe(client, userdata, mid, granted_qos, properties=None):
     print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
-
-hivemq_client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
-# we'll be using tls
-hivemq_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-hivemq_client.username_pw_set(os.environ["hivemq_username"], os.environ["hivemq_password"])
 
 hivemq_client.on_connect = on_connect
 hivemq_client.on_message = on_message

@@ -1,7 +1,7 @@
 from quixstreaming import StreamWriter
 import paho.mqtt.client as paho
 from datetime import datetime
-import os
+
 
 class HiveMQFunction:
 
@@ -19,7 +19,7 @@ class HiveMQFunction:
             .write()
 
         # once connection is confirmed, subscribe to the topic
-        self.hivemq_client.subscribe(os.environ["hivemq_topic"], qos=1)
+        self.hivemq_client.subscribe(self.topic, qos=1)
 
     def handle_hivemq_message(self, topic, payload, qos):
 

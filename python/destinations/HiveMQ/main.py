@@ -31,7 +31,7 @@ hivemq_client.username_pw_set(os.environ["hivemq_username"], os.environ["hivemq_
 hivemq_topic_root = os.environ["hivemq_topic_root"]
 
 # connect to HiveMQ Cloud on port 8883 (default for MQTT)
-hivemq_client.connect(os.environ["hivemq_server"], hivemq_port)
+hivemq_client.connect(os.environ["hivemq_server"], int(hivemq_port))
 
 
 # Callback called for each incoming stream
