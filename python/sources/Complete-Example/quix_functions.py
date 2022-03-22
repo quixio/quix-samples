@@ -1,4 +1,4 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+from quixstreaming import StreamWriter, StreamEndType, EventLevel
 import datetime
 
 
@@ -61,7 +61,7 @@ class QuixFunction:
 
     # Set timestamp for parameters explicitly
     def send_parameter_data_specific_date_time(self):
-        self.stream.parameters.buffer \
+        self.stream_writer.parameters.buffer \
             .add_timestamp(datetime.datetime(2018, 1, 1, 11, 42, 39, 321)) \
             .add_value("string_param", "value1") \
             .add_value("num_param", 123.43) \
@@ -71,39 +71,39 @@ class QuixFunction:
 
     # Sent an epoch then use seconds and ms time delta
     def send_parameter_time_delta(self):
-        self.stream.parameters.buffer.epoch = datetime.datetime(2018, 1, 2)
-        self.stream.parameters.buffer \
+        self.stream_writer.parameters.buffer.epoch = datetime.datetime(2018, 1, 2)
+        self.stream_writer.parameters.buffer \
             .add_timestamp(datetime.timedelta(seconds=1, milliseconds=555)) \
             .add_value("num_param", 123.32) \
             .write()  # 1 second 555 milliseconds after 2018-01-02
 
     def send_event_definitions(self):
-        self.stream.events.add_definition("event_at_root", "Root Event",
+        self.stream_writer.events.add_definition("event_at_root", "Root Event",
                                           "This is a root event as there is no default location")
-        self.stream.events.default_location = "/Base"
-        self.stream.events.add_definition("event_1", "Event One", "This is test event number one") \
+        self.stream_writer.events.default_location = "/Base"
+        self.stream_writer.events.add_definition("event_1", "Event One", "This is test event number one") \
             .add_definition("event_2", description="This is event 2").set_level(EventLevel.Debug).set_custom_properties(
             "{test prop for event}")
-        self.stream.events.add_location("/NotBase").add_definition("event_3").set_level(EventLevel.Critical)
+        self.stream_writer.events.add_location("/NotBase").add_definition("event_3").set_level(EventLevel.Critical)
 
     def send_event_data(self):
-        self.stream.events.default_location = "/default"
-        self.stream.events.default_tags["Tag1"] = "tag one"
-        self.stream.events.default_tags["Tag2"] = "tag two"
-        self.stream.events.epoch = datetime.datetime(2018, 1, 1)
-        self.stream.events \
+        self.stream_writer.events.default_location = "/default"
+        self.stream_writer.events.default_tags["Tag1"] = "tag one"
+        self.stream_writer.events.default_tags["Tag2"] = "tag two"
+        self.stream_writer.events.epoch = datetime.datetime(2018, 1, 1)
+        self.stream_writer.events \
             .add_timestamp(datetime.datetime(2018, 1, 1, 11, 31, 22, 111)) \
             .add_value("event_1", "event value 1") \
             .add_tag("Tag2", "tag two updated") \
             .add_tag("Tag3", "tag three") \
             .write()  # When using a datetime, previously configured epoch is ignored
-        self.stream.events \
+        self.stream_writer.events \
             .add_timestamp_nanoseconds(57383000000) \
             .add_value("event_1", "event value 1.1") \
             .add_value("event_2", "event value 2") \
             .write()  # 2018-01-01 15:56:23 GMT as nanoseconds since unix epoch
-        self.stream.events.epoch = datetime.datetime(2018, 1, 2)
-        self.stream.events \
+        self.stream_writer.events.epoch = datetime.datetime(2018, 1, 2)
+        self.stream_writer.events \
             .add_timestamp(datetime.timedelta(seconds=1, milliseconds=555)) \
             .add_value("event_3", "3232") \
             .write()  # 1 second 555 milliseconds after 2018-01-02
@@ -111,7 +111,7 @@ class QuixFunction:
     # Close the stream when needed
     def close_stream(self):
         print("Closing")
-        self.stream.close(StreamEndType.Aborted)
+        self.stream_writer.close(StreamEndType.Aborted)
 
     # Handle exceptions
     def on_write_exception_handler(self, ex: BaseException):
