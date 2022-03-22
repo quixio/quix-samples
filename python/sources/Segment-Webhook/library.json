@@ -1,0 +1,44 @@
+{
+    "libraryItemId": "715a301c-6f52-420c-9fba-4d30b0ba3c3f",
+    "name": "Segment Webhook",
+    "language": "Python",
+    "tags": {
+		"SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+		"Technology": ["Segment", "Webhook"]
+    },
+    "shortDescription": "Stream Segment event data into Quix",
+	"DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"IconFile": "icon.jpg",
+    "Variables": [ 
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Name of the output topic to stream into",
+            "DefaultValue" : "segment-data",
+            "Required": true
+        },
+		{
+            "Name" : "shared_secret",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The secret you configured in Segment",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true,
+		"PublicAccess": true,
+		"DeploymentUrlPrefix": "segment-webhook"
+	}
+}
