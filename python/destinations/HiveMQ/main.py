@@ -38,12 +38,15 @@ hivemq_client.connect(os.environ["hivemq_server"], int(hivemq_port))
 def read_stream(input_stream: StreamReader):
 
     # handle the data in a function to simplify the example
-    hivemq_function = HiveMQFunction(hivemq_topic_root, hivemq_client)
+    hivemq_function = HiveMQFunction(input_stream, hivemq_topic_root, hivemq_client, input_stream.stream_id)
 
     # React to new data received from input topic.
     input_stream.events.on_read += hivemq_function.on_event_data_handler
     input_stream.parameters.on_read += hivemq_function.on_parameter_data_handler
-
+    input_stream.properties.on_changed += hivemq_function.stream_properties_changed
+    input_stream.on_stream_closed += hivemq_function.on_stream_closed_handler
+    input_stream.parameters.on_definitions_changed += hivemq_function.on_parameter_definitions_changed_handler
+    input_stream.events.on_definitions_changed += hivemq_function.on_event_definitions_changed_handler
 
 input_topic.on_stream_received += read_stream
 
