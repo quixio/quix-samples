@@ -4,6 +4,8 @@ import paho.mqtt.client as paho
 import traceback
 from typing import List
 from datetime import datetime
+import json
+from json import JSONEncoder
 
 
 class HiveMQFunction:
@@ -16,73 +18,116 @@ class HiveMQFunction:
         self.stream_id = stream_id
 
     def on_stream_closed_handler(self, end_type: StreamEndType):
-        self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                   "/StreamEnd/Type",
-                                   payload=end_type.__str__(), qos=1)
-        self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                   "/StreamEnd/DateTime",
-                                   payload=datetime.utcnow().__str__(), qos=1)
+
+        pass
+        #et = json.dumps(end_type)
+        #print(et)
+
+        # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+        #                            "/StreamEnd/Type",
+        #                            payload=end_type.__str__(), qos=1)
+        # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+        #                            "/StreamEnd/DateTime",
+        #                            payload=datetime.utcnow().__str__(), qos=1)
 
     def stream_properties_changed(self):
-        self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                   "/Properties/Name",
-                                   payload=self.input_stream.properties.name, qos=1)
+        pass
 
-        self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                   "/Properties/Parents",
-                                   payload=','.join(self.input_stream.properties.parents), qos=1)
+        class MyEncoder(JSONEncoder):
+            def default(self, o):
+                return o.__dict__
 
-        self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                   "/Properties/Location",
-                                   payload=self.input_stream.properties.location, qos=1)
+        class Bar:
+            def __init__(self, name):
+                self.name = name
 
-        for key, val in self.input_stream.properties.metadata.items():
-            self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                       "/Properties/Metadata/" + key,
-                                       payload=val, qos=1)
+        class Foo:
+            def __init__(self, name):
+                self.name = name
+                #self.bar = bar_var
 
-        self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                   "/Properties/TimeOfRecording",
-                                   payload=str(self.input_stream.properties.time_of_recording), qos=1)
+            @property
+            def prop1(self):
+                return "i am prop 1"
+
+        #b = Bar("I am bar")
+        f = Foo("i am foo")
+        #print(json.dumps(f))
+
+
+        fs = MyEncoder().encode(f)
+        print(fs)
+        #
+        #
+        # xx = self.input_stream.properties
+        # yy = MyEncoder().encode(xx)
+        # print(yy)
+
+
+        # sp = json.dumps(xx)
+        # print(sp)
+        # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+        #                            "/Properties/Name",
+        #                            payload=self.input_stream.properties.name, qos=1)
+        #
+        # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+        #                            "/Properties/Parents",
+        #                            payload=','.join(self.input_stream.properties.parents), qos=1)
+        #
+        # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+        #                            "/Properties/Location",
+        #                            payload=self.input_stream.properties.location, qos=1)
+        #
+        # for key, val in self.input_stream.properties.metadata.items():
+        #     self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+        #                                "/Properties/Metadata/" + key,
+        #                                payload=val, qos=1)
+        #
+        # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+        #                            "/Properties/TimeOfRecording",
+        #                            payload=str(self.input_stream.properties.time_of_recording), qos=1)
 
     def on_parameter_definitions_changed_handler(self):
         def send_parameters(params: List[ParameterDefinition], level):
             for parameter in params:
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/Name",
-                                           payload=parameter.name, qos=1)
+                pass
+                #p = json.dumps(parameter)
 
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/Location",
-                                           payload=parameter.location, qos=1)
-
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/Id",
-                                           payload=parameter.id, qos=1)
-
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/Format",
-                                           payload=parameter.format, qos=1)
-
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/Unit",
-                                           payload=parameter.unit, qos=1)
-
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/Description",
-                                           payload=parameter.description, qos=1)
-
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/CustomProperties",
-                                           payload=parameter.custom_properties, qos=1)
-
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/MinimumValue",
-                                           payload=parameter.minimum_value, qos=1)
-
-                self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
-                                           "/ParameterDefinition/MaximumValue",
-                                           payload=parameter.maximum_value, qos=1)
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/Name",
+                #                            payload=parameter.name, qos=1)
+                #
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/Location",
+                #                            payload=parameter.location, qos=1)
+                #
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/Id",
+                #                            payload=parameter.id, qos=1)
+                #
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/Format",
+                #                            payload=parameter.format, qos=1)
+                #
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/Unit",
+                #                            payload=parameter.unit, qos=1)
+                #
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/Description",
+                #                            payload=parameter.description, qos=1)
+                #
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/CustomProperties",
+                #                            payload=parameter.custom_properties, qos=1)
+                #
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/MinimumValue",
+                #                            payload=parameter.minimum_value, qos=1)
+                #
+                # self.hivemq_client.publish(self.topic_root + "/" + self.stream_id +
+                #                            "/ParameterDefinition/MaximumValue",
+                #                            payload=parameter.maximum_value, qos=1)
 
         send_parameters(self.input_stream.parameters.definitions, 0)
 
