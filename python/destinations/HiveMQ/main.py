@@ -1,9 +1,13 @@
-from quixstreaming import QuixStreamingClient, StreamReader
+import json
+
+from quixstreaming import QuixStreamingClient, StreamReader, ParameterData
 from hivemq_function import HiveMQFunction
 from quixstreaming.app import App
 import paho.mqtt.client as paho
 from paho import mqtt
 import os
+import jsonpickle
+
 
 hivemq_port = os.environ["hivemq_port"]
 if not hivemq_port.isnumeric():
@@ -34,6 +38,13 @@ hivemq_topic_root = os.environ["hivemq_topic_root"]
 hivemq_client.connect(os.environ["hivemq_server"], int(hivemq_port))
 
 
+def read_raw_params(pd: ParameterData):
+    #print(pd)
+    #print(json.dumps(pd))
+    #print(jsonpickle.encode(pd))
+    pass
+
+
 # Callback called for each incoming stream
 def read_stream(input_stream: StreamReader):
 
@@ -46,6 +57,9 @@ def read_stream(input_stream: StreamReader):
     input_stream.properties.on_changed += hivemq_function.stream_properties_changed
     input_stream.on_stream_closed += hivemq_function.on_stream_closed_handler
     input_stream.parameters.on_definitions_changed += hivemq_function.on_parameter_definitions_changed_handler
+
+    input_stream.parameters.on_read_raw += read_raw_params
+
     input_stream.events.on_definitions_changed += hivemq_function.on_event_definitions_changed_handler
 
 input_topic.on_stream_received += read_stream
