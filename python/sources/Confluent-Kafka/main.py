@@ -24,13 +24,13 @@ try:
 
     print("Opening output topic")
     output_topic = quix_client.open_output_topic(os.environ["output"])
-    stream = output_topic.create_stream()
-    stream.properties.location = "Confluent Kafka Data"
-    stream.properties.name = "{} - {}".format("Confluent Kafka", datetime.utcnow().strftime("%d-%m-%Y %X"))
+    output_stream = output_topic.create_stream()
+    output_stream.properties.location = "Confluent Kafka Data"
+    output_stream.properties.name = "{} - {}".format("Confluent Kafka", datetime.utcnow().strftime("%d-%m-%Y %X"))
 
     is_connected = False
 
-    quix_functions = QuixFunctions(output_topic)
+    quix_functions = QuixFunctions(output_stream)
     input_topic.on_message_read += quix_functions.raw_message_handler
 
     # Hook up to termination signal (for docker image) and CTRL-C
