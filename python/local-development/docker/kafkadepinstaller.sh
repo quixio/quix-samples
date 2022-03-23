@@ -14,4 +14,4 @@ rm -rdf kafkadownloads
 
 echo "deb http://security.ubuntu.com/ubuntu bionic-security main" >> /etc/apt/sources.list
 apt-get update
-apt-get update libssl1.0.0
+apt-get install libssl1.0.0

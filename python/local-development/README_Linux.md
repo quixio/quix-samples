@@ -39,7 +39,7 @@ Currently tested to work with [3.8.7](https://www.python.org/downloads/release/p
 
     echo "deb http://security.ubuntu.com/ubuntu bionic-security main" >> /etc/apt/sources.list
     apt-get update
-    apt-get update libssl1.0.0
+    apt-get install libssl1.0.0
     ```
 
 
