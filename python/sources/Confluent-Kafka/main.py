@@ -33,6 +33,8 @@ try:
     quix_functions = QuixFunctions(output_stream)
     input_topic.on_message_read += quix_functions.raw_message_handler
 
+    print("CONNECTED!")
+
     # Hook up to termination signal (for docker image) and CTRL-C
     print("Listening to streams. Press CTRL-C to exit.")
 
