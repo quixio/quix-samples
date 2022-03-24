@@ -1,13 +1,9 @@
-import json
-
-from quixstreaming import QuixStreamingClient, StreamReader, ParameterData
+from quixstreaming import QuixStreamingClient, StreamReader
 from hivemq_function import HiveMQFunction
 from quixstreaming.app import App
 import paho.mqtt.client as paho
 from paho import mqtt
 import os
-import jsonpickle
-
 
 hivemq_port = os.environ["hivemq_port"]
 if not hivemq_port.isnumeric():
@@ -37,32 +33,17 @@ hivemq_topic_root = os.environ["hivemq_topic_root"]
 # connect to HiveMQ Cloud on port 8883 (default for MQTT)
 hivemq_client.connect(os.environ["hivemq_server"], int(hivemq_port))
 
-
-def read_raw_params(pd: ParameterData):
-    #print(pd)
-    #print(json.dumps(pd))
-    #print(jsonpickle.encode(pd))
-    pass
-
-
 # Callback called for each incoming stream
 def read_stream(input_stream: StreamReader):
 
     # handle the data in a function to simplify the example
-    hivemq_function = HiveMQFunction(input_stream, hivemq_topic_root, hivemq_client, input_stream.stream_id)
+    hivemq_function = HiveMQFunction(hivemq_topic_root, hivemq_client)
 
-    # React to new data received from input topic.
-    input_stream.events.on_read += hivemq_function.on_event_data_handler
-    input_stream.parameters.on_read += hivemq_function.on_parameter_data_handler
-    input_stream.properties.on_changed += hivemq_function.stream_properties_changed
-    input_stream.on_stream_closed += hivemq_function.on_stream_closed_handler
-    input_stream.parameters.on_definitions_changed += hivemq_function.on_parameter_definitions_changed_handler
-
-    input_stream.parameters.on_read_raw += read_raw_params
-
-    input_stream.events.on_definitions_changed += hivemq_function.on_event_definitions_changed_handler
+    # hookup the package received event handler
+    input_stream.on_package_received += hivemq_function.package_received_handler
 
 input_topic.on_stream_received += read_stream
+
 
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
