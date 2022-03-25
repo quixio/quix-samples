@@ -10,8 +10,6 @@ You will need a [Confluent Kafka](https://www.confluent.io/) account to use this
 
 The code sample uses the following environment variables:
 
-TODO 
-
 - **input**: This is the Quix topic to listen to.
 - **kafka_topic**: The Confluent Kafka Topic you wish to read from.
 - **kafka_key**: Obtained from the Confluent Kafka portal.
