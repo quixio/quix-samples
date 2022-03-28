@@ -118,7 +118,7 @@ namespace Bridge.Codemasters.Quix.V2019
                         Stream = stream
                     };
                     stream.Epoch = DateTime.UtcNow - TimeSpan.FromSeconds(converted.Header.SessionTime);
-                    stream.Parameters.Buffer.TimeSpanInMilliseconds = 100;
+                    stream.Parameters.Buffer.TimeSpanInMilliseconds = 200;
                     streams[converted.SessionId] = streamWrap;
                     this.SetupStreamProperties(stream, converted);
                     this.SetupParameterMetaInfo(streamWrap);
@@ -164,7 +164,7 @@ namespace Bridge.Codemasters.Quix.V2019
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendStatusDataToParameterDataTimestamp(ts, carStatusData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Parameters.Buffer.Write(pdata);
                 /* TODO
                  var prefix = isPlayer ? "" : $"Player{index}_";
                   var engineRpm = stream.Stream..GetParameterProperties($"{prefix}EngineRPM");
@@ -228,7 +228,7 @@ namespace Bridge.Codemasters.Quix.V2019
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarTelemetryDataToParameterData(ts, carTelemetryData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Parameters.Buffer.Write(pdata);
             }
         }
         
@@ -284,7 +284,7 @@ namespace Bridge.Codemasters.Quix.V2019
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarSetupDataToParameterData(ts, carSetupData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Parameters.Buffer.Write(pdata);
             }
         }
         
@@ -431,7 +431,7 @@ namespace Bridge.Codemasters.Quix.V2019
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendLapDataToParameterData(ts, lapData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Parameters.Buffer.Write(pdata);
                 
                 if (!isPlayer || stream.LastPacketLapData == null) continue;
                 // add a few events for players
@@ -483,7 +483,7 @@ namespace Bridge.Codemasters.Quix.V2019
             // var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
             // ts.AddValue("Session_Weather", converted.Weather)
             //     .AddValue("Session_SafetyCarStatus", converted.SafetyCarStatus);
-            // stream.Stream.Parameters.Write(pdata);
+            // stream.Stream.Parameters.Buffer.Write(pdata);
         }
 
         private void AddMotionPacketData(PacketMotionData converted,StreamWrap stream)
@@ -502,7 +502,7 @@ namespace Bridge.Codemasters.Quix.V2019
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarMotionDataToParameterData(ts, carMotionData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Parameters.Buffer.Write(pdata);
             }
         }
 
