@@ -1,2 +1,2 @@
-quixstreaming==0.4.2a202203161202
+quixstreaming==0.4.4a202203262011
 pandas
