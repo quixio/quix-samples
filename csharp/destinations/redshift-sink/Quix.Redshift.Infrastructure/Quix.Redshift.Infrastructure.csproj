@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.RedshiftDataAPIService" Version="3.7.5.15" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0-preview.1" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.6.0" />  
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Amazon;
@@ -22,7 +21,6 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
     public class RedshiftWriteRepository : ITimeSeriesWriteRepository, IRequiresSetup
     {
         private readonly ILogger<RedshiftWriteRepository> logger;
-        private readonly HttpClient httpClient;
         private readonly RedshiftConnectionConfiguration redshiftConfiguration;
         private readonly AmazonRedshiftDataAPIServiceClient client;
         private const string ParameterValuesTableName = "parametervalues";
@@ -32,22 +30,20 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
         private const string StringEventColumnFormat = "{0}";
         private const string TagFormat = "tag_{0}";
         private const string TimeStampColumn = "timestamp";
-        private static string StreamIdColumn = string.Format(TagFormat, "streamid");
+        private static readonly string StreamIdColumn = string.Format(TagFormat, "streamid");
         private const int RedShiftMaxQueryLength = 95000; // 100K in theory, but better be safe
 
-        private HashSet<string> parameterColumns = new HashSet<string>();
-        private HashSet<string> eventColumns = new HashSet<string>();
+        private readonly HashSet<string> parameterColumns = new HashSet<string>();
+        private readonly HashSet<string> eventColumns = new HashSet<string>();
 
         public RedshiftWriteRepository(
             ILogger<RedshiftWriteRepository> logger,
-            HttpClient httpClient,
             RedshiftConnectionConfiguration redshiftConfiguration)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             this.redshiftConfiguration = redshiftConfiguration;
             if (redshiftConfiguration == null) throw new ArgumentNullException(nameof(redshiftConfiguration));
-            this.client = new Amazon.RedshiftDataAPIService.AmazonRedshiftDataAPIServiceClient(new BasicAWSCredentials(redshiftConfiguration.AccessKeyId, redshiftConfiguration.SecretAccessKey), RegionEndpoint.EnumerableAllRegions.First(y=> y.SystemName == redshiftConfiguration.Region));
+            this.client = new AmazonRedshiftDataAPIServiceClient(new BasicAWSCredentials(redshiftConfiguration.AccessKeyId, redshiftConfiguration.SecretAccessKey), RegionEndpoint.EnumerableAllRegions.First(y=> y.SystemName == redshiftConfiguration.Region));
         }
 
         public async Task Setup()
@@ -100,7 +96,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
             var totalVals = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts);
             this.logger.LogTrace($"Saving {totalVals} parameter values to Redshift db");
 
-            await VerifyColumns(uniqueColumns, ParameterValuesTableName);
+            await VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
 
             var sqlInsertStatements = new List<string>();
             foreach (var statementPair in sqlInserts)
@@ -210,7 +206,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                         }
                     }
 
-                    if (numericValueCount == 0 && stringValueCount == 0) continue; // unpersistable values only
+                    if (numericValueCount == 0 && stringValueCount == 0) continue; // non-persistable values only
 
                     headerSb.Append(") values");
                     valueSb.Append(")");
@@ -231,9 +227,9 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
             return totalValues;
         }
 
-        private async Task VerifyColumns(Dictionary<string, string> columnsToHave, string tableToVerify)
+        private async Task VerifyColumns(Dictionary<string, string> columnsToHave, HashSet<string> existingColumns, string tableToVerify)
         {
-            var columnsToAdd = columnsToHave.Keys.Except(this.parameterColumns, StringComparer.InvariantCultureIgnoreCase).ToList();
+            var columnsToAdd = columnsToHave.Keys.Except(existingColumns, StringComparer.InvariantCultureIgnoreCase).ToList();
             if (columnsToAdd.Count == 0) return;
             List<string> sqlStatements = new List<string>();
             foreach (var col in columnsToAdd)
@@ -241,13 +237,13 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                 switch (columnsToHave[col])
                 {
                     case "string":
-                        if (this.parameterColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} VARCHAR(MAX)");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} VARCHAR(MAX)");
                         break;
                     case "tag":
-                        if (this.parameterColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} VARCHAR(512)");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} VARCHAR(512)");
                         break;
                     case "number":
-                        if (this.parameterColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} FLOAT8");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} FLOAT8");
                         break;
                 }
             }
@@ -265,7 +261,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
             var totalVals = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts);
             this.logger.LogTrace($"Saving {totalVals} event values to Redshift db");
 
-            await VerifyColumns(uniqueColumns, EventValuesTableName);
+            await VerifyColumns(uniqueColumns, eventColumns, EventValuesTableName);
 
             var sqlInsertStatements = new List<string>();
             foreach (var statementPair in sqlInserts)

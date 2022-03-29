@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Quix.Redshift.Application.Streaming;
 using Quix.Redshift.Application.TimeSeries;
-using Quix.Redshift.Writer.Configuration;
 using Quix.Redshift.Writer.Helpers;
 using Quix.Sdk.Process;
 using Quix.Sdk.Process.Kafka;
