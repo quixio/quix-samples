@@ -151,7 +151,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             var totalValues = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts);
             this.logger.LogTrace($"Saving {totalValues} parameter values to Snowflake db");
 
-            VerifyColumns(uniqueColumns, ParameterValuesTableName);
+            VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
 
             var sqlInsertStatements = new List<string>();
             foreach (var statementPair in sqlInserts)
@@ -302,9 +302,9 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             return totalValues;
         }
 
-        private void VerifyColumns(Dictionary<string, string> columnsToHave, string tableToVerify)
+        private void VerifyColumns(Dictionary<string, string> columnsToHave, HashSet<string> existingColumns, string tableToVerify)
         {
-            var columnsToAdd = columnsToHave.Keys.Except(this.parameterColumns, StringComparer.InvariantCultureIgnoreCase).ToList();
+            var columnsToAdd = columnsToHave.Keys.Except(existingColumns, StringComparer.InvariantCultureIgnoreCase).ToList();
             if (columnsToAdd.Count == 0) return;
             List<string> sqlStatements = new List<string>();
             foreach (var col in columnsToAdd)
@@ -312,13 +312,13 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 switch (columnsToHave[col])
                 {
                     case "string":
-                        if (this.parameterColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} VARCHAR(16777216)");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} VARCHAR(16777216)");
                         break;
                     case "tag":
-                        if (this.parameterColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} VARCHAR(512)");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} VARCHAR(512)");
                         break;
                     case "number":
-                        if (this.parameterColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} FLOAT8");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} FLOAT8");
                         break;
                 }
             }
@@ -340,7 +340,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             var totalValues = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts);
             this.logger.LogTrace($"Saving {totalValues} event values to Snowflake db");
 
-            VerifyColumns(uniqueColumns, EventValuesTableName);
+            VerifyColumns(uniqueColumns, eventColumns, EventValuesTableName);
 
             var sqlInsertStatements = new List<string>();
             foreach (var statementPair in sqlInserts)
