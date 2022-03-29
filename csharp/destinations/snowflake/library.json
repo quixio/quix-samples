@@ -23,22 +23,6 @@
 		  "Required": true
 		},
 		{
-		  "Name": "Quix__Workspace__Id",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "HiddenText",
-		  "Description": "The Id of your Quix workspace (login and copy it from the URL)",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Quix__Sdk__Token",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "HiddenText",
-		  "Description": "Your Quix SDK token",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
 		  "Name": "Snowflake__ConnectionString",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "HiddenText",
