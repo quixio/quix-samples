@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Quix.Sdk.Logging" Version="0.4.2-20220316.1" />
+      <PackageReference Include="Quix.Sdk.Logging" Version="0.4.4-20220326.1" />
     </ItemGroup>
 
 </Project>

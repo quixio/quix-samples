@@ -1,0 +1,2 @@
+quixstreaming==0.4.3a202203231859
+paho-mqtt

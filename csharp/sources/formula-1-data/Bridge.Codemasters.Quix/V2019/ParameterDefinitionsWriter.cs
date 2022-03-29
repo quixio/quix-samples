@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Quix.Sdk.Streaming.Models.StreamWriter;
 
 namespace Bridge.Codemasters.Quix.V2019
