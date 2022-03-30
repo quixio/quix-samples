@@ -7,7 +7,7 @@ class InterpolatingFunction:
     def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
         self.input_stream = input_stream
         self.output_stream = output_stream
-        self.parameters = os.environ["Parameters"]
+        self.parameters = os.environ["Parameters"].split(",")
         self.last_timestamp = None
         self.last_parameters_value = None
 
