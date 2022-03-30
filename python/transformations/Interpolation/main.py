@@ -9,7 +9,7 @@ client = QuixStreamingClient()
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
 
-input_topic = client.open_input_topic(os.environ["input"], "interpolation-")
+input_topic = client.open_input_topic(os.environ["input"], "interpolation-consumer-group")
 output_topic = client.open_output_topic(os.environ["output"])
 
 
