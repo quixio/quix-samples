@@ -11,17 +11,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Quix.Redshift.Writer.Configuration;
-using Quix.Redshift.Writer.Helpers.QuixApi.Portal;
-using Quix.Redshift.Writer.Helpers.QuixApi.Portal.Requests;
+using Quix.Snowflake.Writer.Configuration;
+using Quix.Snowflake.Writer.Helpers.QuixApi.Portal;
+using Quix.Snowflake.Writer.Helpers.QuixApi.Portal.Requests;
 using Quix.Sdk.Process.Configuration;
 using Quix.Sdk.Process.Kafka;
 using Quix.Sdk.Streaming.Exceptions;
 using Quix.Sdk.Streaming.QuixApi;
 using Quix.Sdk.Transport.Fw;
 using Exception = System.Exception;
+using Workspace = Quix.Snowflake.Writer.Helpers.QuixApi.Portal.Workspace;
 
-namespace Quix.Redshift.Writer.Helpers
+namespace Quix.Snowflake.Writer.Helpers
 {
     public class QuixConfigHelper
     {
@@ -114,7 +115,6 @@ namespace Quix.Redshift.Writer.Helpers
         {
             var workspaces = await this.GetWorkspaces();
             
-
             this.logger.LogTrace("Checking if workspace matching topic {0} exists", topicName);
             Workspace matchingWorkspace = null;
             
@@ -181,7 +181,7 @@ namespace Quix.Redshift.Writer.Helpers
                 throw new Exception("CommitAfterEveryCount can not be set to null to avoid deadlocks");
             }
 
-            return new KafkaReaderConfiguration(ws.Broker.Address, $"{ws.WorkspaceId}-writer.redshift", brokerProperties)
+            return new KafkaReaderConfiguration(ws.Broker.Address, $"{ws.WorkspaceId}-writer.Snowflake", brokerProperties)
             {
                 CommitOptions = new CommitOptions()
                 {

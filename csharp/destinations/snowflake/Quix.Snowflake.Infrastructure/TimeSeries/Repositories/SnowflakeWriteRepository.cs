@@ -1,118 +1,173 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Amazon;
-using Amazon.RedshiftDataAPIService;
-using Amazon.RedshiftDataAPIService.Model;
-using Amazon.Runtime;
 using Microsoft.Extensions.Logging;
-using Quix.Redshift.Domain.Common;
-using Quix.Redshift.Domain.TimeSeries.Models;
-using Quix.Redshift.Domain.TimeSeries.Repositories;
-using Quix.Redshift.Infrastructure.TimeSeries.Models;
+using Quix.Snowflake.Domain.Common;
+using Quix.Snowflake.Domain.TimeSeries.Models;
+using Quix.Snowflake.Domain.TimeSeries.Repositories;
+using Quix.Snowflake.Infrastructure.TimeSeries.Models;
+using Snowflake.Data.Client;
 
-namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
+namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
 {
     /// <summary>
-    /// Implementation of <see cref="ITimeSeriesWriteRepository"/> for Redshift
+    /// Implementation of <see cref="ITimeSeriesWriteRepository"/> for Snowflake
     /// </summary>
-    public class RedshiftWriteRepository : ITimeSeriesWriteRepository, IRequiresSetup
+    public class SnowflakeWriteRepository : ITimeSeriesWriteRepository, IRequiresSetup, IDisposable
     {
-        private readonly ILogger<RedshiftWriteRepository> logger;
-        private readonly RedshiftConnectionConfiguration redshiftConfiguration;
-        private readonly AmazonRedshiftDataAPIServiceClient client;
-        private const string ParameterValuesTableName = "parametervalues";
-        private const string EventValuesTableName = "eventvalues";
-        private const string NumericParameterColumnFormat = "n_{0}";
-        private const string StringParameterColumnFormat = "s_{0}";
+        private readonly ILogger<SnowflakeWriteRepository> logger;
+        private readonly SnowflakeConnectionConfiguration snowflakeConfiguration;
+
+        private SnowflakeDbConnection snowflakeDbConnection;
+        
+        private const string ParameterValuesTableName = "PARAMETERVALUES";
+        private const string EventValuesTableName = "EVENTVALUES";
+        private const string InformationSchema = "PUBLIC";
+        private const string NumericParameterColumnFormat = "N_{0}";
+        private const string StringParameterColumnFormat = "S_{0}";
         private const string StringEventColumnFormat = "{0}";
-        private const string TagFormat = "tag_{0}";
-        private const string TimeStampColumn = "timestamp";
-        private static readonly string StreamIdColumn = string.Format(TagFormat, "streamid");
-        private const int RedShiftMaxQueryLength = 95000; // 100K in theory, but better be safe
+        private const string TagFormat = "TAG_{0}";
+        private const string TimeStampColumn = "TIMESTAMP";
+        private static readonly string StreamIdColumn = string.Format(TagFormat, "STREAMID");
+        private const int MaxQueryLength = 950000; // 1mb in theory, but better be safe
 
         private readonly HashSet<string> parameterColumns = new HashSet<string>();
         private readonly HashSet<string> eventColumns = new HashSet<string>();
 
-        public RedshiftWriteRepository(
-            ILogger<RedshiftWriteRepository> logger,
-            RedshiftConnectionConfiguration redshiftConfiguration)
+        public SnowflakeWriteRepository(
+            ILogger<SnowflakeWriteRepository> logger,
+            SnowflakeConnectionConfiguration snowflakeConfiguration)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.redshiftConfiguration = redshiftConfiguration;
-            if (redshiftConfiguration == null) throw new ArgumentNullException(nameof(redshiftConfiguration));
-            this.client = new AmazonRedshiftDataAPIServiceClient(new BasicAWSCredentials(redshiftConfiguration.AccessKeyId, redshiftConfiguration.SecretAccessKey), RegionEndpoint.EnumerableAllRegions.First(y=> y.SystemName == redshiftConfiguration.Region));
+            this.snowflakeConfiguration = snowflakeConfiguration;
+            if (snowflakeConfiguration == null) throw new ArgumentNullException(nameof(snowflakeConfiguration));
         }
 
-        public async Task Setup()
+        private IDataReader ExecuteSnowflakeRead(string sql)
+        {
+            IDbCommand cmd = snowflakeDbConnection.CreateCommand();
+            cmd.CommandText = sql;
+            return cmd.ExecuteReader();
+        }
+
+        private int ExecuteSnowFlakeNonQuery(string sql)
+        {
+            try
+            {
+                IDbCommand cmd = snowflakeDbConnection.CreateCommand();
+                cmd.CommandText = sql;
+                return cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        private bool TableExists(string table)
+        {
+            var checkForTableSql = $"SELECT EXISTS (SELECT * FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table}')";
+            var existingTablesReader = ExecuteSnowflakeRead(checkForTableSql);
+            
+            while (existingTablesReader.Read())
+            {
+                if (existingTablesReader.GetString(0) == "1")
+                    return true;
+            }
+
+            return false;
+        }
+        
+        private void VerifyTable(string requiredTable, HashSet<string> columns)
+        {
+            // check if the table exists
+            if (!TableExists(requiredTable))
+            {
+                // if not
+                // create the table
+                var sqlInsertStatements = new List<string>
+                {
+                    $"CREATE TABLE {InformationSchema}.{requiredTable} ({TimeStampColumn} BIGINT, {StreamIdColumn} VARCHAR(256))",
+                    $"ALTER TABLE {InformationSchema}.{requiredTable} CLUSTER BY (timestamp)"
+                };
+                
+                //var recordsAffected = ExecuteSnowFlakeNonQuery(sql);
+                ExecuteSqlList(sqlInsertStatements);
+                
+                this.logger.LogInformation($"Table {requiredTable} created");
+                
+                columns.Add(TimeStampColumn);
+                columns.Add(StreamIdColumn);    
+            }
+            else
+            {
+                // otherwise
+                // get the tables existing column names and add them to the list
+                var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{requiredTable}'";
+                var existingColumnNameReader = ExecuteSnowflakeRead(sql);
+                
+                while (existingColumnNameReader.Read())
+                {
+                    parameterColumns.Add(existingColumnNameReader.GetString(0));    
+                }
+                
+                this.logger.LogInformation($"Table {requiredTable} verified");
+            }
+        }
+        
+        public Task Setup()
         {
             this.logger.LogDebug("Checking tables...");
-            var tables = await this.client.ListTablesAsync(new ListTablesRequest() { Database = redshiftConfiguration.DatabaseName});
-            // todo handle more than 1 page
-            if (tables.Tables.All(y => !y.Name.Equals(ParameterValuesTableName, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                this.logger.LogInformation("Creating table " + ParameterValuesTableName);
-                await this.client.ExecuteStatementAsync(new ExecuteStatementRequest() { Database = redshiftConfiguration.DatabaseName, Sql = $"CREATE TABLE {ParameterValuesTableName} ({TimeStampColumn} BIGINT, {StreamIdColumn} VARCHAR(256)) SORTKEY ({TimeStampColumn}, {StreamIdColumn})"});
-                this.logger.LogInformation("Creating table " + ParameterValuesTableName);
-                parameterColumns.Add(TimeStampColumn);
-                parameterColumns.Add(StreamIdColumn);
-            }
-            else
-            {
-                var tableDetails = await this.client.DescribeTableAsync(new DescribeTableRequest() {Database = redshiftConfiguration.DatabaseName, Table = ParameterValuesTableName});
-                foreach (var columnMetadata in tableDetails.ColumnList)
-                {
-                    parameterColumns.Add(columnMetadata.Name);
-                }
-            }
 
-            if (tables.Tables.All(y => !y.Name.Equals(EventValuesTableName, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                this.logger.LogInformation("Creating table " + EventValuesTableName);
-                await this.client.ExecuteStatementAsync(new ExecuteStatementRequest() { Database = redshiftConfiguration.DatabaseName, Sql = $"CREATE TABLE {EventValuesTableName} (timestamp BIGINT, {StreamIdColumn} VARCHAR(256)) SORTKEY ({TimeStampColumn}, {StreamIdColumn})"});
-                this.logger.LogInformation("Created table " + EventValuesTableName);
-                eventColumns.Add(TimeStampColumn);
-                eventColumns.Add(StreamIdColumn);
-            }
-            else
-            {
-                var tableDetails = await this.client.DescribeTableAsync(new DescribeTableRequest() {Database = redshiftConfiguration.DatabaseName, Table = EventValuesTableName});
-                foreach (var columnMetadata in tableDetails.ColumnList)
-                {
-                    eventColumns.Add(columnMetadata.Name);
-                }
-            }
+            snowflakeDbConnection = new SnowflakeDbConnection();
+            snowflakeDbConnection.ConnectionString = snowflakeConfiguration.ConnectionString;
+            
+            snowflakeDbConnection.Open();
+            this.logger.LogInformation($"Connected to Snowflake database {snowflakeDbConnection.Database}");
+
+            CheckDbConnection();
+
+            // verify tables exist, if not create them
+            VerifyTable(ParameterValuesTableName, parameterColumns);
+            VerifyTable(EventValuesTableName, eventColumns);
+
             this.logger.LogInformation("Tables verified");
+            
+            return Task.CompletedTask;
         }
 
-        public async Task WriteTelemetryData(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData)
+        public Task WriteTelemetryData(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData)
         {
+            CheckDbConnection();
+            
             var sqlInserts = new Dictionary<string, List<string>>();
             
             var uniqueColumns = new Dictionary<string, string>();
 
-            var totalVals = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts);
-            this.logger.LogTrace($"Saving {totalVals} parameter values to Redshift db");
+            var totalValues = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts);
+            this.logger.LogTrace($"Saving {totalValues} parameter values to Snowflake db");
 
-            await VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
+            VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
 
             var sqlInsertStatements = new List<string>();
             foreach (var statementPair in sqlInserts)
             {
                 var sb = new StringBuilder();
-                sb.Append(statementPair.Key);
+                sb.Append(statementPair.Key.ToUpper());
                 sb.Append(" ");
                 foreach (var line in statementPair.Value)
                 {
-                    if (sb.Length > RedShiftMaxQueryLength)
+                    if (sb.Length > MaxQueryLength)
                     {
                         sb.Remove(sb.Length - 1, 1);
                         sqlInsertStatements.Add(sb.ToString());
                         
                         sb = new StringBuilder();
-                        sb.Append(statementPair.Key);
+                        sb.Append(statementPair.Key.ToUpper());
                         sb.Append(" ");                        
                     }
                     sb.Append(line);
@@ -122,10 +177,31 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                 sb.Remove(sb.Length - 1, 1);
                 sqlInsertStatements.Add(sb.ToString());
             }
+
+            ExecuteSqlList(sqlInsertStatements);
+
+            this.logger.LogTrace($"Saved {totalValues} parameter values to Snowflake db");
             
-            await this.client.BatchExecuteStatementAsync(new BatchExecuteStatementRequest() {  Database = redshiftConfiguration.DatabaseName, Sqls = sqlInsertStatements});
-            
-            this.logger.LogTrace($"Saved {totalVals} parameter values to Redshift db");
+            return Task.CompletedTask;
+        }
+
+        private void CheckDbConnection()
+        {
+            if (snowflakeDbConnection.State != ConnectionState.Open)
+                throw new Exception("Database connection is not in the 'Open' state");
+        }
+
+        private int ExecuteSqlList(List<string> sqlInsertStatements)
+        {
+            var totalInserted = 0;
+            foreach (var sqlInsertStatement in sqlInsertStatements)
+            {
+                var recordsAffected = ExecuteSnowFlakeNonQuery(sqlInsertStatement);
+                totalInserted += recordsAffected;
+                // todo log
+            }
+
+            return totalInserted;
         }
 
         private static int PrepareParameterSqlInserts(IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData, Dictionary<string, string> uniqueColumns, Dictionary<string, List<string>> sqlInserts)
@@ -142,15 +218,14 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                     headerSb.Append($"insert into {ParameterValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
 
                     var valueSb = new StringBuilder();
-                    valueSb.Append($"({row.Epoch + row.Timestamp},'{streamRows.Key}'");
+                    valueSb.Append($"({row.Epoch + row.Timestamp},'{streamRows.Key.ToUpper()}'");
 
                     if (row.TagValues != null && row.TagValues.Count > 0)
                     {
-                        for (var index = 0; index < row.TagValues.Count; index++)
+                        foreach (var kPair in row.TagValues)
                         {
-                            var kPair = row.TagValues[index];
                             if (string.IsNullOrEmpty(kPair.Value)) continue;
-                            var name = string.Format(TagFormat, kPair.Key);
+                            var name = string.Format(TagFormat, kPair.Key.ToUpper());
                             if (name.Equals(StreamIdColumn, StringComparison.InvariantCultureIgnoreCase)) continue;
 
                             valueSb.Append(",");
@@ -206,7 +281,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                         }
                     }
 
-                    if (numericValueCount == 0 && stringValueCount == 0) continue; // non-persistable values only
+                    if (numericValueCount == 0 && stringValueCount == 0) continue; // non persistable values only
 
                     headerSb.Append(") values");
                     valueSb.Append(")");
@@ -227,7 +302,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
             return totalValues;
         }
 
-        private async Task VerifyColumns(Dictionary<string, string> columnsToHave, HashSet<string> existingColumns, string tableToVerify)
+        private void VerifyColumns(Dictionary<string, string> columnsToHave, HashSet<string> existingColumns, string tableToVerify)
         {
             var columnsToAdd = columnsToHave.Keys.Except(existingColumns, StringComparer.InvariantCultureIgnoreCase).ToList();
             if (columnsToAdd.Count == 0) return;
@@ -237,47 +312,51 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                 switch (columnsToHave[col])
                 {
                     case "string":
-                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} VARCHAR(MAX)");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} VARCHAR(16777216)");
                         break;
                     case "tag":
-                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} VARCHAR(512)");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} VARCHAR(512)");
                         break;
                     case "number":
-                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {tableToVerify} ADD {col} FLOAT8");
+                        if (existingColumns.Add(col)) sqlStatements.Add($"ALTER TABLE {InformationSchema}.{tableToVerify} ADD {col} FLOAT8");
                         break;
                 }
             }
 
-            if (sqlStatements.Count == 0) return; // this is really just safe coding, not likely to ever happen
-            await this.client.BatchExecuteStatementAsync(new BatchExecuteStatementRequest() {  Database = redshiftConfiguration.DatabaseName, Sqls = sqlStatements});
+            if (sqlStatements.Count == 0) return;
+            // this is really just safe coding, not likely to ever happen
+
+            var recordsAffected = ExecuteSqlList(sqlStatements);
+            // todo log
+            
         }
 
-        public async Task WriteTelemetryEvent(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData)
+        public Task WriteTelemetryEvent(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData)
         {
             var sqlInserts = new Dictionary<string, List<string>>();
             
             var uniqueColumns = new Dictionary<string, string>();
 
-            var totalVals = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts);
-            this.logger.LogTrace($"Saving {totalVals} event values to Redshift db");
+            var totalValues = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts);
+            this.logger.LogTrace($"Saving {totalValues} event values to Snowflake db");
 
-            await VerifyColumns(uniqueColumns, eventColumns, EventValuesTableName);
+            VerifyColumns(uniqueColumns, eventColumns, EventValuesTableName);
 
             var sqlInsertStatements = new List<string>();
             foreach (var statementPair in sqlInserts)
             {
                 var sb = new StringBuilder();
-                sb.Append(statementPair.Key);
+                sb.Append(statementPair.Key.ToUpper());
                 sb.Append(" ");
                 foreach (var line in statementPair.Value)
                 {
-                    if (sb.Length > RedShiftMaxQueryLength)
+                    if (sb.Length > MaxQueryLength)
                     {
                         sb.Remove(sb.Length - 1, 1);
                         sqlInsertStatements.Add(sb.ToString());
                         
                         sb = new StringBuilder();
-                        sb.Append(statementPair.Key);
+                        sb.Append(statementPair.Key.ToUpper());
                         sb.Append(" ");                        
                     }
                     sb.Append(line);
@@ -288,12 +367,12 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                 sqlInsertStatements.Add(sb.ToString());
             }
             
-            await this.client.BatchExecuteStatementAsync(new BatchExecuteStatementRequest() {  Database = redshiftConfiguration.DatabaseName, Sqls = sqlInsertStatements});
+            ExecuteSqlList(sqlInsertStatements);
             
-            this.logger.LogTrace($"Saved {totalVals} event values to Redshift db");
-
+            this.logger.LogTrace($"Saved {totalValues} event values to Snowflake db");
+            
+            return Task.CompletedTask;
         }
-        
         
         private static int PrepareEventSqlInserts(IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData, Dictionary<string, string> uniqueColumns, Dictionary<string, List<string>> sqlInserts)
         {
@@ -303,17 +382,17 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                 foreach (var row in streamRows.Value)
                 {
                     var headerSb = new StringBuilder();
-                    headerSb.Append($"insert into {EventValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
+                    headerSb.Append($"insert into {InformationSchema}.{EventValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
 
                     var valueSb = new StringBuilder();
-                    valueSb.Append($"({row.Timestamp},'{streamRows.Key}'");
+                    valueSb.Append($"({row.Timestamp},'{streamRows.Key.ToUpper()}'");
 
                     if (row.TagValues != null && row.TagValues.Count > 0)
                     {
                         foreach(var kPair in row.TagValues)
                         {
                             if (string.IsNullOrEmpty(kPair.Value)) continue;
-                            var name = string.Format(TagFormat, kPair.Key);
+                            var name = string.Format(TagFormat, kPair.Key.ToUpper());
                             if (name.Equals(StreamIdColumn, StringComparison.InvariantCultureIgnoreCase)) continue;
 
                             valueSb.Append(",");
@@ -351,6 +430,11 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
             }
 
             return totalValues;
+        }
+
+        public void Dispose()
+        {
+            snowflakeDbConnection.Close();
         }
     }
 }

@@ -6,17 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.RedshiftDataAPIService" Version="3.7.5.15" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.6.0" />  
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.6" />
+    <PackageReference Include="Snowflake.Data" Version="2.0.11" />
     <PackageReference Include="System.Linq.Async" Version="4.0.0" />
     <PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Quix.Redshift.Domain\Quix.Redshift.Domain.csproj" />
+    <ProjectReference Include="..\Quix.Snowflake.Domain\Quix.Snowflake.Domain.csproj" />
   </ItemGroup>
 
 </Project>
