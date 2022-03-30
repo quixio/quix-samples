@@ -12,7 +12,7 @@ The code sample uses the following environment variables:
 
 - **input**: This is the input topic for raw data.
 - **output**: This is the output topic for the windowed data.
-- **Parameters**: The stream's parameter to perform the window function upon.
+- **Parameters**: The stream's parameter to perform the window function upon. Add them as: "ParameterA", "ParameterB".
 
 
 ## Docs
