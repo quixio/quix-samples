@@ -1,7 +1,7 @@
 # Interpolating function
 
 This Python project performs linear interpolations over a selected parameter list. 
-- It calculates the time delta between the last data received. 
+- It calculates the time delta between the last data parameters received. 
 - It calculates the average of the last two parameters received.
 
 ![graph](Interpolation.png?raw=true)
