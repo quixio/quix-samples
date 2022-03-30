@@ -26,10 +26,10 @@ namespace Quix.Redshift.Writer.Helpers
     public class QuixConfigHelper
     {
         private readonly BrokerConfiguration brokerConfiguration;
-        private ILogger logger;
-        private string token;
-        private Uri apiUrl;
-        private HttpClient httpClient;
+        private readonly ILogger logger;
+        private readonly string token;
+        private readonly Uri apiUrl;
+        private readonly HttpClient httpClient;
         private const string WorkspaceIdEnvironmentKey = "Quix__Workspace__Id";
         private const string PortalApiEnvironmentKey = "Quix__Portal__Api";
         private const string SdkTokenKey = "Quix__Sdk__Token";
@@ -48,7 +48,8 @@ namespace Quix.Redshift.Writer.Helpers
             var envUri = Environment.GetEnvironmentVariable(PortalApiEnvironmentKey)?.ToLowerInvariant().TrimEnd('/');
             if (string.IsNullOrWhiteSpace(envUri))
             {
-                throw new InvalidConfigurationException($"Token must be given as an argument or set in {envUri} environment variable.");
+                envUri = "https://portal-api.platform.quix.ai";
+                logger.LogInformation($"Defaulting Portal Api to {envUri}");
             }
             logger.LogTrace("Using {0} endpoint for portal, configured from env var {1}", envUri, PortalApiEnvironmentKey);
             this.apiUrl = new Uri(envUri);

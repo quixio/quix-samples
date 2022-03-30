@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.4-20220326.1" />
+      <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.5-20220330.2" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0-preview.6.20305.6" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.6.20305.6" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0-preview.6.20305.6" />
