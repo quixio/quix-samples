@@ -1,0 +1,50 @@
+{
+    "libraryItemId": "555f7253-22c3-41a4-a5e9-9f8ec084f879",
+    "name": "Realtime dashboard",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Destination"]
+    },
+    "shortDescription": "Template of how to build realtime dashboard with Dash.",
+	"DefaultFile": "in_memory_view.py",
+	"EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "Name of the input topic to listen to."
+        },
+		{
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Name of the output topic to write to.",
+            "DefaultValue" : "transform"
+        },
+		{
+            "Name" : "storage_version",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Version of state. Bump up this variable to reset the state.",
+            "DefaultValue" : "1.0"
+        },
+		{
+            "Name" : "parameters",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The streams parameter list to calculate the view on.",
+            "DefaultValue" : "transform"
+        },
+		{
+            "Name" : "group_by",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Name of the tag to group data with.",
+            "DefaultValue" : "transform"
+        }
+    ]    
+}
