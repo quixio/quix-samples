@@ -1,15 +1,15 @@
 {
 "libraryItemId": "c53e98ac-4953-4211-9541-d6364ceecbd6",
-    "name": "Rolling Window",
+    "name": "Interpolation",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"]
     },
-    "shortDescription": "Performs rolling window function.",
-    "longDescription": "Performs rolling window function. Predetermined is moving average. Window can be defined as a time period or as a number of observations",
-	"DefaultFile": "rolling_function.py",
+    "shortDescription": "Performs interpolation function.",
+    "longDescription": "Performs interpolation function: calculates time delta and parameter average for the last parameter points",
+	"DefaultFile": "interpolating_function.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
