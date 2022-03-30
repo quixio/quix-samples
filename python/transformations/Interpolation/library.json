@@ -30,7 +30,7 @@
             "Required": false
         },
         {
-            "Name" : "ParameterName",
+            "Name" : "Parameters",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
             "Description" : "The stream's parameter list to calculate the interpolation on",
