@@ -1,7 +1,6 @@
-from quixstreaming import ParameterData, QuixStreamingClient, StreamReader,InputTopic, OutputTopic
+from quixstreaming import ParameterData,InputTopic, OutputTopic
 import pandas as pd
-import os
-from cross-stream-statefull-processing import CrossStreamStatefullProcessing
+from cross_stream_statefull_processing import CrossStreamStatefullProcessing
 
 class InMemoryView(CrossStreamStatefullProcessing):
 
@@ -19,7 +18,7 @@ class InMemoryView(CrossStreamStatefullProcessing):
         data_df = data.to_panda_frame()
         data_df["TAG__streamId"] = stream_id
 
-        df = self.state.append(data_df[["time", "EngineRPM", "TAG__streamId"]) \
+        df = self.state.append(data_df[["time", "EngineRPM", "TAG__streamId"]]) \
                     .groupby("TAG__streamId") \
                     .agg({'time': 'first', 'EngineRPM': 'sum'}) \
                     .reset_index()
