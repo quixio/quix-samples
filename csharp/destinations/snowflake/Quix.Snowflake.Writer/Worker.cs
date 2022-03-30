@@ -1,19 +1,21 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Quix.Redshift.Application.Streaming;
-using Quix.Redshift.Application.TimeSeries;
-using Quix.Redshift.Writer.Helpers;
+using Quix.Snowflake.Application.Streaming;
+using Quix.Snowflake.Application.TimeSeries;
+using Quix.Snowflake.Writer.Configuration;
+using Quix.Snowflake.Writer.Helpers;
 using Quix.Sdk.Process;
 using Quix.Sdk.Process.Kafka;
 using Quix.Sdk.Process.Models;
 
-namespace Quix.Redshift.Writer
+namespace Quix.Snowflake.Writer
 {
     public class Worker : BackgroundService
     {
