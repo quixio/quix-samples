@@ -1,0 +1,31 @@
+{
+    "libraryItemId": "0983e721-5c85-4f87-8859-51e12e137ee3",
+    "name": "Python Empty template",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "Popular subjects": ["Quick Start"]
+    },
+    "shortDescription": "An empty template for Python applications",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"DefaultFile": "main.py",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic to read data from",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic to write data to",
+            "DefaultValue" : "output-topic",
+            "Required": true
+        }
+    ]    
+}
