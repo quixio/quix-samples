@@ -1,0 +1,25 @@
+# Interpolating function
+
+This Python project performs linear interpolations over a selected parameter list. 
+- It calculates the time delta between the last data received. 
+- It calculates the average of the last two parameters received.
+
+![graph](Interpolation.png?raw=true)
+
+## Environment variables
+
+The code sample uses the following environment variables:
+
+- **input**: This is the input topic for raw data.
+- **output**: This is the output topic for the windowed data.
+- **ParameterName**: The stream's parameter to perform the window function upon.
+
+
+## Docs
+Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+
+## How to run
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+
+Alternatively, you can learn how to set up your local environment [here](https://quix.ai/docs/sdk/python-setup.html).
+
