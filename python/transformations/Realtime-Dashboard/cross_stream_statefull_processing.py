@@ -1,13 +1,12 @@
-from quixstreaming import InputTopic, OutputTopic, StreamReader, ParameterData, EventData
+from quixstreaming import InputTopic, StreamReader, ParameterData, EventData
 from quixstreaming import LocalFileStorage
 import os
 import pickle
 
 class CrossStreamStatefullProcessing:
 
-    def __init__(self, input_topic: InputTopic, output_topic: OutputTopic):
+    def __init__(self, input_topic: InputTopic):
         self.input_topic = input_topic
-        self.output_topic = output_topic
 
         self.state = None
 
@@ -52,21 +51,12 @@ class CrossStreamStatefullProcessing:
 
     def read_stream(self, input_stream: StreamReader):
         print("New stream read:" + input_stream.stream_id)
-
-        def parameter_data_handler(data: ParameterData):
-            self.on_parameter_data_handler(input_stream.stream_id)
-
-        def events_data_handler(data: ParameterData):
-            self.on_parameter_data_handler(input_stream.stream_id)
-
-        input_stream.parameters.on_read += parameter_data_handler
-        input_stream.events.on_read += events_data_handler
+        input_stream.parameters.on_read += self.on_parameter_data_handler
 
 
-    def on_parameter_data_handler(self, stream_id: str, data: ParameterData):
+    def on_parameter_data_handler(self, data: ParameterData):
         return
    
-    def on_event_data_handler(self,stream_id: str, data: EventData):
+    def on_event_data_handler(self, data: EventData):
         return
         
-

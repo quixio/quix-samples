@@ -52,13 +52,20 @@ class CrossStreamStatefullProcessing:
 
     def read_stream(self, input_stream: StreamReader):
         print("New stream read:" + input_stream.stream_id)
-        input_stream.parameters.on_read += self.on_parameter_data_handler
+
+        def parameter_data_handler(data: ParameterData):
+            self.on_parameter_data_handler(input_stream.stream_id, data)
+
+        def events_data_handler(data: ParameterData):
+            self.on_parameter_data_handler(input_stream.stream_id, data)
+
+        input_stream.parameters.on_read += parameter_data_handler
+        input_stream.events.on_read += events_data_handler
 
 
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_parameter_data_handler(self, stream_id: str, data: ParameterData):
         return
    
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self,stream_id: str, data: EventData):
         return
         
-

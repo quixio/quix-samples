@@ -31,20 +31,6 @@
             "InputType" : "FreeText",
             "Description" : "Version of state. Bump up this variable to reset the state.",
             "DefaultValue" : "1.0"
-        },
-		{
-            "Name" : "parameters",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "The streams parameter list to calculate the view on.",
-            "DefaultValue" : "transform"
-        },
-		{
-            "Name" : "group_by",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "Name of the tag to group data with.",
-            "DefaultValue" : "transform"
         }
     ]    
 }

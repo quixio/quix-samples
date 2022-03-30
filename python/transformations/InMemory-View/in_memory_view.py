@@ -7,8 +7,7 @@ class InMemoryView(CrossStreamStatefullProcessing):
 
     def __init__(self, input_topic: InputTopic, output_topic: OutputTopic):
         super().__init__(input_topic, output_topic)
-        self.parameters = os.environ["parameters"].split(",")
-        self.group_by = os.environ["group_by"]
+
 
     def init_state(self):
         self.set_state(pd.DataFrame())
@@ -20,19 +19,14 @@ class InMemoryView(CrossStreamStatefullProcessing):
         data_df = data.to_panda_frame()
         data_df["TAG__streamId"] = stream_id
 
-        print(data_df.columns)
+        df = self.state.append(data_df[["time", "EngineRPM", "TAG__streamId"]) \
+                    .groupby("TAG__streamId") \
+                    .agg({'time': 'first', 'EngineRPM': 'sum'}) \
+                    .reset_index()
 
-        aggregation = {'time': 'first'}
+        self.set_state(df)
 
+        print(df[["time", "EngineRPM", "TAG__streamId"]])
 
-            df = self.state.append(data_df[["time", "EngineRPM", "TAG__streamId"]) \
-                        .groupby("TAG__streamId") \
-                        .agg({'time': 'first', 'EngineRPM': 'sum'}) \
-                        .reset_index()
-
-            self.set_state(df)
-
-            print(df[["time", "EngineRPM", "TAG__streamId"]])
-
-            self.output_topic.get_or_create_stream("view").parameters.write(df)
+        self.output_topic.get_or_create_stream("view").parameters.write(df)
             
