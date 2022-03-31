@@ -12,8 +12,6 @@ The code sample uses the following environment variables:
 
 - **input**: This is the input topic for numeric data.
 - **output**: This is the output topic for alerts.
-- **ParameterName**: The parameter name to track
-- **PercentagePointsAlert**: Percentage points of increase/decrease for the alert to activate e.g. 10 is 10%, 20 is 20%, etc.
 
 ## Docs
 

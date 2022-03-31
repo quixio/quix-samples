@@ -1,11 +1,11 @@
-from quixstreaming import ParameterData,InputTopic, OutputTopic
+from quixstreaming import ParameterData,InputTopic, StreamReader, OutputTopic
 import pandas as pd
-from cross_stream_statefull_processing import CrossStreamStatefullProcessing
+from helpers import StatefullProcessing
 
-class InMemoryView(CrossStreamStatefullProcessing):
+class QuixFunction(StatefullProcessing):
 
-    def __init__(self, input_topic: InputTopic, output_topic: OutputTopic):
-        super().__init__(input_topic, output_topic)
+    def __init__(self, input_topic: InputTopic, input_stream: StreamReader, output_topic: OutputTopic):
+        super().__init__(input_topic, input_stream, output_topic)
 
 
     def init_state(self):
@@ -13,10 +13,10 @@ class InMemoryView(CrossStreamStatefullProcessing):
 
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, stream_id: str, data: ParameterData):
+    def on_parameter_data_handler(self, data: ParameterData):
 
         data_df = data.to_panda_frame()
-        data_df["TAG__streamId"] = stream_id
+        data_df["TAG__streamId"] = self.input_stream.stream_id
 
         df = self.state.append(data_df[["time", "EngineRPM", "TAG__streamId"]]) \
                     .groupby("TAG__streamId") \
