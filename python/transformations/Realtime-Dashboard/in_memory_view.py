@@ -24,6 +24,8 @@ class InMemoryView(CrossStreamStatefullProcessing):
             .groupby("TAG__" + self.group_by) \
             .last() \
             .reset_index()
+
+        print(df)
         
         self.set_state(df)
         
