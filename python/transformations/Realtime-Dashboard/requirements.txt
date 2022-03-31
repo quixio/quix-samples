@@ -1,0 +1,5 @@
+quixstreaming==0.4.5a202203301950
+werkzeug==2.0.1
+dash==2.2.0
+dash_bootstrap_components
+requests
