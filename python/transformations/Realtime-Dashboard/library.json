@@ -19,13 +19,6 @@
             "Description" : "Name of the input topic to listen to."
         },
 		{
-            "Name" : "output",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "OutputTopic",
-            "Description" : "Name of the output topic to write to.",
-            "DefaultValue" : "transform"
-        },
-		{
             "Name" : "storage_version",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",

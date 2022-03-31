@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Template of how to build in memory view.",
-	"DefaultFile": "in_memory_view.py",
+	"DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 

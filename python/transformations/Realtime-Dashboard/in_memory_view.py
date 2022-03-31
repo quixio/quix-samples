@@ -1,11 +1,14 @@
 from quixstreaming import ParameterData, InputTopic
 import pandas as pd
-from cross_stream_statefull_processing import CrossStreamStatefullProcessing
+from helpers import CrossStreamStatefullProcessing
+import os
 
 class InMemoryView(CrossStreamStatefullProcessing):
 
     def __init__(self, input_topic: InputTopic):
         super().__init__(input_topic)
+
+        self.group_by = os.environ["group_by"]
 
 
     def init_state(self):
@@ -18,7 +21,7 @@ class InMemoryView(CrossStreamStatefullProcessing):
         data_df = data.to_panda_frame()
 
         df = pd.concat([self.state, data_df]) \
-            .groupby("TAG__rider") \
+            .groupby("TAG__" + self.group_by) \
             .last() \
             .reset_index()
         
