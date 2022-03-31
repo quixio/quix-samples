@@ -45,9 +45,6 @@ class CrossStreamStatefullProcessing:
         if self.state is not None:
             self.storage.set("dashboard", pickle.dumps(self.state))
 
-    def start(self):
-        self.input_topic.start_reading()
-
 
     def read_stream(self, input_stream: StreamReader):
         print("New stream read:" + input_stream.stream_id)
