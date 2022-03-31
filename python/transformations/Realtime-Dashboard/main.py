@@ -11,14 +11,6 @@ client = QuixStreamingClient()
 input_topic = client.open_input_topic(os.environ["input"], "dashboard")
 in_memory_view = InMemoryView(input_topic)
 
-
-def quix_consumer():
-    in_memory_view.start()
-    App.run()
-
-t1 = threading.Thread(target=quix_consumer)
-t1.start()
-
 external_stylesheets = [dbc.themes.FLATLY]
 
 app = Dash(external_stylesheets=external_stylesheets)
@@ -41,6 +33,10 @@ def update_data(n_intervals):
 def update_columns(n_intervals):
     return [{"name": i, "id": i} for i in in_memory_view.state.columns]
 
+def web_server():  
+    app.run_server(debug=False, host="0.0.0.0", port=80)
 
-#App.run()
-app.run_server(debug=True, host="0.0.0.0", port=80)
+t1 = threading.Thread(target=web_server)
+t1.start()
+
+App.run()
