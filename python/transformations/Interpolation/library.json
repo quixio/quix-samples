@@ -33,7 +33,7 @@
             "Name" : "Parameters",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "The streams parameter list to calculate the interpolation on",
+            "Description" : "The streams parameter list to calculate the interpolation on. Add them as: ParameterA,ParameterB,ParameterC,etc.",
             "DefaultValue" : "ParameterA",
 	        "Required": true
         }

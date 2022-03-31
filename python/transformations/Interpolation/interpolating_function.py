@@ -7,7 +7,7 @@ class InterpolatingFunction:
     def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
         self.input_stream = input_stream
         self.output_stream = output_stream
-        self.parameters = [os.environ["Parameters"]]
+        self.parameters = os.environ["Parameters"].split(",")
         self.last_timestamp = None
         self.last_parameters_value = None
 
@@ -23,8 +23,7 @@ class InterpolatingFunction:
         df = data.to_panda_frame()
 
         # Check if all items exist in the dataframe
-        if all(item in self.parameters for item in df.columns) == False:
-            print(df.columns)
+        if all(item in df.columns for item in self.parameters) == False:
             return
 
         # Iterate over dataframe
