@@ -6,15 +6,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Quix.Snowflake.Application.Metadata;
 using Quix.Snowflake.Application.Streaming;
 using Quix.Snowflake.Application.TimeSeries;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
+using Quix.Snowflake.Domain.Repositories;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
 using Quix.Snowflake.Infrastructure.TimeSeries.Models;
 using Quix.Snowflake.Infrastructure.TimeSeries.Repositories;
 using Quix.Snowflake.Writer.Configuration;
 using Quix.Snowflake.Writer.Helpers;
+using Quix.Telemetry.Domain.Metadata.Repositories;
+using Quix.TelemetryWriter.Application.Metadata;
 using Serilog;
 
 namespace Quix.Snowflake.Writer
@@ -95,6 +99,18 @@ namespace Quix.Snowflake.Writer
                     s.GetRequiredService<TopicId>(),
                     batchSize);
             });
+            
+            // Metadata Context
+            services.AddSingleton<IStreamRepository, StreamRepository>();
+            services.AddSingleton<IParameterRepository, ParameterRepository>();
+            services.AddSingleton<IParameterGroupRepository, ParameterGroupRepository>();
+            services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<IEventGroupRepository, EventGroupRepository>();
+            services.AddSingleton<IParameterPersistingService, ParameterPersistingService>();
+            services.AddSingleton<IEventPersistingService, EventPersistingService>();
+            services.AddSingleton<IMetadataBufferedPersistingService, MetadataBufferedPersistingService>();
+            var idleTimeMs = Math.Max(60000, context.Configuration.GetValue<int>("StreamIdleTimeMs"));
+            services.AddSingleton(y=> new StreamIdleTime(idleTimeMs));
         }
         
         internal static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)
