@@ -106,7 +106,7 @@ try:
     def get_stream(headers, output_stream):
         global run
 
-        TwitterFunction.__init__(output_stream)
+        twitter_function = TwitterFunction(output_stream)
 
         while run:
             try:
@@ -134,7 +134,7 @@ try:
                             # we will store the tag in quix too so get the rules used to obtain this data
                             matching_rules = json_response["matching_rules"]
 
-                            TwitterFunction.data_handler(matching_rules, data)
+                            twitter_function.data_handler(matching_rules, data)
 
             except ChunkedEncodingError:
                 # if we get a ChunkedEncodingError error sleep then try again
