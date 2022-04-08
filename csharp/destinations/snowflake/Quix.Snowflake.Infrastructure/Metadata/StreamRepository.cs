@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
+using Quix.Snowflake.Infrastructure.Shared;
 
 namespace Quix.Snowflake.Infrastructure.Metadata
 {
@@ -11,14 +15,27 @@ namespace Quix.Snowflake.Infrastructure.Metadata
     
     public class StreamRepository : IStreamRepository
     {
-        public StreamRepository()
+        private readonly IDbConnection dbConnection;
+
+        public StreamRepository(IDbConnection dbConnection,
+            ILogger<StreamRepository> logger)
         {
-            
+            this.dbConnection = dbConnection;
         }
         
         public Task Save(TelemetryStream stream)
         {
-            throw new System.NotImplementedException();
+            // assuming shape of table is known
+            
+            StringBuilder sqlStringBuilder = new StringBuilder();
+            sqlStringBuilder.Append($"INSERT INTO PUBLIC.Streams (Id, Name, Topic) ");
+            sqlStringBuilder.Append($"VALUES ('{stream.StreamId}', '{stream.Name}', '{stream.Topic}')");
+            
+            
+            SnowflakeQuery.ExecuteSnowFlakeNonQuery(dbConnection, "");
+            
+            
+            return Task.CompletedTask;
         }
 
         public Task Update(string streamId, TelemetryStream update)

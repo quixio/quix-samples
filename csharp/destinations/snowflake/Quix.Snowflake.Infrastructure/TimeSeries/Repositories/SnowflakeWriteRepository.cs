@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.TimeSeries.Models;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
+using Quix.Snowflake.Infrastructure.Shared;
 using Quix.Snowflake.Infrastructure.TimeSeries.Models;
 using Snowflake.Data.Client;
 
@@ -46,32 +47,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             if (snowflakeConfiguration == null) throw new ArgumentNullException(nameof(snowflakeConfiguration));
         }
 
-        private IDataReader ExecuteSnowflakeRead(string sql)
-        {
-            IDbCommand cmd = snowflakeDbConnection.CreateCommand();
-            cmd.CommandText = sql;
-            return cmd.ExecuteReader();
-        }
-
-        private int ExecuteSnowFlakeNonQuery(string sql)
-        {
-            try
-            {
-                IDbCommand cmd = snowflakeDbConnection.CreateCommand();
-                cmd.CommandText = sql;
-                return cmd.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
         private bool TableExists(string table)
         {
             var checkForTableSql = $"SELECT EXISTS (SELECT * FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table}')";
-            var existingTablesReader = ExecuteSnowflakeRead(checkForTableSql);
+            var existingTablesReader = SnowflakeQuery.ExecuteSnowflakeRead(snowflakeDbConnection, checkForTableSql);
             
             while (existingTablesReader.Read())
             {
@@ -108,7 +87,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{requiredTable}'";
-                var existingColumnNameReader = ExecuteSnowflakeRead(sql);
+                var existingColumnNameReader = SnowflakeQuery.ExecuteSnowflakeRead(snowflakeDbConnection, sql);
                 
                 while (existingColumnNameReader.Read())
                 {
@@ -196,7 +175,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             var totalInserted = 0;
             foreach (var sqlInsertStatement in sqlInsertStatements)
             {
-                var recordsAffected = ExecuteSnowFlakeNonQuery(sqlInsertStatement);
+                var recordsAffected = SnowflakeQuery.ExecuteSnowFlakeNonQuery(snowflakeDbConnection, sqlInsertStatement);
                 totalInserted += recordsAffected;
                 // todo log
             }
