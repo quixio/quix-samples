@@ -3,11 +3,9 @@ using System.Diagnostics;
 
 namespace Quix.Snowflake.Domain.Models
 {
-    [DebuggerDisplay("{eventId}, {Name}")]
-    //[BsonIgnoreExtraElements]
+    [DebuggerDisplay("{EventId}, {Name}")]
     public class TelemetryEvent : IEquatable<TelemetryEvent>
     {
-      //  [BsonConstructor]
         internal TelemetryEvent()
         {
         }
@@ -16,37 +14,24 @@ namespace Quix.Snowflake.Domain.Models
         {
             this.StreamId = streamId ?? throw new ArgumentNullException(nameof(streamId));
         }
-        
-        /// <summary>
-        /// To be used only be Mongo lib, do not assign value to it manually.
-        /// Used to uniquely reference the parameter even if other supposedly unique parameters are not unique enough (like buggy persistence)
-        /// </summary>
-        //[BsonId]
-        //public BsonObjectId BsonObjectId { get; set; }
 
         public string EventId { get; set; }
 
-        //[BsonIgnoreIfNull]
         public string Name { get; set; }
 
-        //[BsonIgnoreIfNull]
         public string StreamId { get; private set; }
         
-        //[BsonIgnoreIfNull]
         public string Description { get; set; }
-        //[BsonIgnoreIfNull]
         public string CustomProperties { get; set; }
         
         /// <summary>
         /// The level of the event. Defaults to <see cref="TelemetryEventLevel.Information"/>
         /// </summary>
-        //[BsonRepresentation(BsonType.String)]
         public TelemetryEventLevel Level { get; set; } = TelemetryEventLevel.Information;
         
         /// <summary>
         /// Location within the event tree. The Location of the event is equivalent to the path of the parent group
         /// </summary>
-        //[BsonIgnoreIfNull]
         public string Location { get;set; }
 
         public override int GetHashCode()
@@ -98,7 +83,6 @@ namespace Quix.Snowflake.Domain.Models
             this.StreamIds = streamIds;
         }
         
-        //[BsonIgnore]
         public string[] StreamIds { get; set; }
     }
 

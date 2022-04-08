@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Quix.Sdk.Process.Models;
 using Quix.Snowflake.Domain.Models;
-using Quix.Telemetry.Domain.Metadata.Models;
 
 namespace Quix.Snowflake.Application.Metadata
 {

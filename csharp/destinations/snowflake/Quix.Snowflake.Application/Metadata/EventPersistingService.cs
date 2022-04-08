@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Quix.Sdk.Process.Models;
+using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
-using Quix.Snowflake.Infrastructure.Shared.Extensions;
 
 namespace Quix.Snowflake.Application.Metadata
 {
@@ -71,7 +71,7 @@ namespace Quix.Snowflake.Application.Metadata
         private async Task PersistEventChanges(Dictionary<string, PendingStreamUpdates> streamUpdates, List<string> uncachedStreamEventIds, Dictionary<string, Dictionary<string, string>> eventLocationLookup)
         {
             
-            var eventRequests = new List<TelemetryEvent>();
+            var eventRequests = new List<WriteModel<TelemetryEvent>>();
             
             await this.CacheEventsForStreams(uncachedStreamEventIds, eventRequests);
 
@@ -122,21 +122,20 @@ namespace Quix.Snowflake.Application.Metadata
                                 telemetryEvent.Location = location;
                             }
 
-                            eventRequests.Add(telemetryEvent);
+                            eventRequests.Add(new InsertOneModel<TelemetryEvent>(telemetryEvent));
                             telemetryEvents[eventDefinition.Id] = telemetryEvent;
                             eventCreateCounter++;
                             continue;
                         }
 
-                        var updateDefinitions = new List<TelemetryEvent>();
+                        var updateDefinitions = new List<UpdateDefinition<TelemetryEvent>>();
 
                         void UpdateProperty<T>(Expression<Func<TelemetryEvent, T>> selector, T newVal, TelemetryEvent cachedEvent)
                         {
                             var func = selector.Compile();
                             var oldVal = func(cachedEvent);
                             if (newVal == null || (oldVal != null && oldVal.Equals(newVal))) return;
-                            //todo mongo stuff
-                            //updateDefinitions.Add(Builders<TelemetryEvent>.Update.Set(selector, newVal));
+                            updateDefinitions.Add(Builders<TelemetryEvent>.Update.Set(selector, newVal));
                             var body = selector.Body;
                             if (body is UnaryExpression unaryExpression)
                             {
@@ -163,11 +162,10 @@ namespace Quix.Snowflake.Application.Metadata
 
                         if (updateDefinitions.Count == 0) continue;
                         
-                        //todo mongo stuff
-                        //var eqStream = Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
-                        //var eqEventId = Builders<TelemetryEvent>.Filter.Eq(y => y.EventId, telemetryEvent.EventId);
-                        //var filter = Builders<TelemetryEvent>.Filter.And(eqStream, eqEventId);
-                        //eventRequests.Add(new UpdateOneModel<TelemetryEvent>(filter, Builders<TelemetryEvent>.Update.Combine(updateDefinitions)));
+                        var eqStream = Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
+                        var eqEventId = Builders<TelemetryEvent>.Filter.Eq(y => y.EventId, telemetryEvent.EventId);
+                        var filter = Builders<TelemetryEvent>.Filter.And(eqStream, eqEventId);
+                        eventRequests.Add(new UpdateOneModel<TelemetryEvent>(filter, Builders<TelemetryEvent>.Update.Combine(updateDefinitions)));
                         eventUpdateCounter++;
                     }
                 }
@@ -187,7 +185,7 @@ namespace Quix.Snowflake.Application.Metadata
                                 Level = TelemetryEventLevel.Information
                             };
 
-                            eventRequests.Add(telemetryEvent);
+                            eventRequests.Add(new InsertOneModel<TelemetryEvent>(telemetryEvent));
                             telemetryEvents[eventId] = telemetryEvent;
                             eventCreateCounter++;
                         }
@@ -249,10 +247,10 @@ namespace Quix.Snowflake.Application.Metadata
             }
         }
 
-        private async Task CacheEventsForStreams(List<string> uncachedStreamEventIds, List<TelemetryEvent> eventRequests)
+        private async Task CacheEventsForStreams(List<string> uncachedStreamEventIds, List<WriteModel<TelemetryEvent>> eventRequests)
         {
             var eventsLoadSw = Stopwatch.StartNew();
-            var events = await this.eventRepository.GetAll().Where(y => uncachedStreamEventIds.Contains(y.StreamId)).ToListAsync();
+            var events = this.eventRepository.GetAll().Where(y => uncachedStreamEventIds.Contains(y.StreamId)).ToList();
             eventsLoadSw.Stop();
             var loadedStreamsFromDbForEvents = 0;
 
@@ -291,8 +289,7 @@ namespace Quix.Snowflake.Application.Metadata
 
                         foreach (var telemetryEvent in delete)
                         {
-                            //todo mongo stuff
-                            //eventRequests.Add(new DeleteOneModel<TelemetryEvent>(Builders<TelemetryEvent>.Filter.Eq(y => y.BsonObjectId, telemetryEvent.BsonObjectId)));
+                            eventRequests.Add(new DeleteOneModel<TelemetryEvent>(Builders<TelemetryEvent>.Filter.And(Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, telemetryEvent.StreamId), Builders<TelemetryEvent>.Filter.Eq(y => y.EventId, telemetryEvent.EventId))));
                         }
 
                         this.cachedTelemetryEvents[telemetryStreamEvents.Key] = telemetryStreamEvents.Select(y => y).Except(delete).ToDictionary(y => y.EventId, y => y);
@@ -315,7 +312,7 @@ namespace Quix.Snowflake.Application.Metadata
 
         private async Task<Dictionary<string, Dictionary<string, string>>> PersistEventGroupChanges(Dictionary<string, PendingStreamUpdates> streamUpdates, List<string> uncachedStreamEventIds)
         {
-            var eventGroupRequests = new List<TelemetryEventGroup>();
+            var eventGroupRequests = new List<WriteModel<TelemetryEventGroup>>();
 
             await this.CacheGroupsForStreams(uncachedStreamEventIds, eventGroupRequests);
 
@@ -344,13 +341,13 @@ namespace Quix.Snowflake.Application.Metadata
                     {
                         telemetryEventGroup = incomingGroup;
 
-                        eventGroupRequests.Add(telemetryEventGroup);
+                        eventGroupRequests.Add(new InsertOneModel<TelemetryEventGroup>(telemetryEventGroup));
                         telemetryEventGroups[incomingGroup.Path] = telemetryEventGroup;
                         eventGroupCreateCounter++;
                         continue;
                     }
 
-                    var updateDefinitions = new List<TelemetryEventGroup>();
+                    var updateDefinitions = new List<UpdateDefinition<TelemetryEventGroup>>();
 
                     void UpdateProperty<T>(Expression<Func<TelemetryEventGroup, T>> selector, T newVal, TelemetryEventGroup cachedEvent)
                     {
@@ -358,8 +355,7 @@ namespace Quix.Snowflake.Application.Metadata
                         var oldVal = func(cachedEvent);
                         if (newVal != null && (oldVal == null || !oldVal.Equals(newVal)))
                         {
-                            //todo mongo stuff
-                            //updateDefinitions.Add(Builders<TelemetryEventGroup>.Update.Set(selector, newVal));
+                            updateDefinitions.Add(Builders<TelemetryEventGroup>.Update.Set(selector, newVal));
                             var body = selector.Body;
                             if (body is UnaryExpression unaryExpression)
                             {
@@ -378,12 +374,10 @@ namespace Quix.Snowflake.Application.Metadata
 
                     if (updateDefinitions.Count != 0)
                     {
-                        //todo mongo stuff
-
-                        // var eqStream = Builders<TelemetryEventGroup>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
-                        // var eqEventId = Builders<TelemetryEventGroup>.Filter.Eq(y => y.Path, telemetryEventGroup.Path);
-                        // var filter = Builders<TelemetryEventGroup>.Filter.And(eqStream, eqEventId);
-                        // eventGroupRequests.Add(new UpdateOneModel<TelemetryEventGroup>(filter, Builders<TelemetryEventGroup>.Update.Combine(updateDefinitions)));
+                        var eqStream = Builders<TelemetryEventGroup>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
+                        var eqEventId = Builders<TelemetryEventGroup>.Filter.Eq(y => y.Path, telemetryEventGroup.Path);
+                        var filter = Builders<TelemetryEventGroup>.Filter.And(eqStream, eqEventId);
+                        eventGroupRequests.Add(new UpdateOneModel<TelemetryEventGroup>(filter, Builders<TelemetryEventGroup>.Update.Combine(updateDefinitions)));
                         eventGroupUpdateCounter++;
                     }
                 }
@@ -405,10 +399,10 @@ namespace Quix.Snowflake.Application.Metadata
             return locationLookup;
         }
 
-        private async Task CacheGroupsForStreams(List<string> uncachedStreamEventIds, List<TelemetryEventGroup> eventGroupRequests)
+        private async Task CacheGroupsForStreams(List<string> uncachedStreamEventIds, List<WriteModel<TelemetryEventGroup>> eventGroupRequests)
         {
             var eventGroupsLoadSw = Stopwatch.StartNew();
-            var eventGroups = await this.eventGroupRepository.GetAll().Where(y => uncachedStreamEventIds.Contains(y.StreamId)).ToListAsync();
+            var eventGroups = this.eventGroupRepository.GetAll().Where(y => uncachedStreamEventIds.Contains(y.StreamId)).ToList();
             eventGroupsLoadSw.Stop();
             var loadedStreamsFromDbForGroups = 0;
 
@@ -445,10 +439,7 @@ namespace Quix.Snowflake.Application.Metadata
 
                         foreach (var telemetryEvent in delete)
                         {
-                            //todo mongo stuff
-                            
-                            // eventGroupRequests.Add(
-                            //     new DeleteOneModel<TelemetryEventGroup>(Builders<TelemetryEventGroup>.Filter.Eq(y => y.BsonObjectId, telemetryEvent.BsonObjectId)));
+                            eventGroupRequests.Add(new DeleteOneModel<TelemetryEventGroup>(Builders<TelemetryEventGroup>.Filter.And(Builders<TelemetryEventGroup>.Filter.Eq(y => y.StreamId, telemetryEvent.StreamId), Builders<TelemetryEventGroup>.Filter.Eq(y => y.Path, telemetryEvent.Path))));
                         }
 
                         this.cachedTelemetryEventGroups[telemetryStreamEventGroups.Key] = telemetryStreamEventGroups.Select(y => y).Except(delete).ToDictionary(y => y.Path, y => y);

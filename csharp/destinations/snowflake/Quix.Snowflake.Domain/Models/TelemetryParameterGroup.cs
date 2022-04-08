@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Quix.Telemetry.Domain.Metadata.Models
+namespace Quix.Snowflake.Domain.Models
 {
     [DebuggerDisplay("{Path}, {Name}")]
-    // [BsonIgnoreExtraElements]
     public class TelemetryParameterGroup : IEquatable<TelemetryParameterGroup>
     {
-        // [BsonConstructor]
         internal TelemetryParameterGroup()
         {
         }
@@ -16,23 +14,13 @@ namespace Quix.Telemetry.Domain.Metadata.Models
         {
             this.StreamId = streamId ?? throw new ArgumentNullException(nameof(streamId));
         }
-        
-        /// <summary>
-        /// To be used only be Mongo lib, do not assign value to it manually.
-        /// Used to uniquely reference the parameter group even if other supposedly unique parameters are not unique enough (like buggy persistence)
-        /// </summary>
-        // [BsonId]
-        // public BsonObjectId BsonObjectId { get; set; }
 
         public string StreamId { get; private set; }
 
-        // [BsonIgnoreIfNull]
         public string Name { get; set; }
 
-        // [BsonIgnoreIfNull]
         public string Description { get; set; }
 
-        // [BsonIgnoreIfNull]
         public string CustomProperties { get; set; }
         
         public int ChildrenCount { get; set; }

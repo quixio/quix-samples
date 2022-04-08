@@ -1,31 +1,18 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Quix.Telemetry.Domain.Metadata.Models;
-using Quix.Telemetry.Domain.Metadata.Repositories;
+using Microsoft.Extensions.Logging;
+using Quix.Snowflake.Domain.Models;
+using Quix.Snowflake.Domain.Repositories;
+using Quix.Snowflake.Infrastructure.Shared;
 
 namespace Quix.Snowflake.Infrastructure.Metadata
 {
-    public class ParameterGroupRepository : IParameterGroupRepository
+    public class ParameterGroupRepository : SnowflakeRepository<TelemetryParameterGroup>, IParameterGroupRepository
     {
-        public Task Save(ICollection<TelemetryParameterGroup> parameterGroups)
+        public ParameterGroupRepository(IDbConnection dbConnection, ILoggerFactory loggerFactory) : base(dbConnection, loggerFactory.CreateLogger<ParameterGroupRepository>())
         {
-            throw new System.NotImplementedException();
-        }
-
-        public IQueryable<TelemetryParameterGroup> GetAll()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<long> DeleteAll(string streamId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task BulkWrite(IEnumerable<TelemetryParameterGroup> requests)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -8,14 +8,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Quix.Sdk.Process.Models;
-using Quix.Snowflake.Application.Metadata;
+using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
-using Quix.Snowflake.Infrastructure.Shared.Extensions;
-using Quix.Telemetry.Domain.Metadata.Models;
-using Quix.Telemetry.Domain.Metadata.Repositories;
 
-namespace Quix.TelemetryWriter.Application.Metadata
+namespace Quix.Snowflake.Application.Metadata
 {
     /*
      * NOTE:
@@ -74,7 +71,7 @@ namespace Quix.TelemetryWriter.Application.Metadata
         private async Task PersistParameterChanges(Dictionary<string, PendingStreamUpdates> streamUpdates, List<string> uncachedStreamParameterIds, Dictionary<string, Dictionary<string, string>> parameterLocationLookup)
         {
             
-            var paramRequests = new List<TelemetryParameter>();
+            var paramRequests = new List<WriteModel<TelemetryParameter>>();
             
             await this.CacheParametersForStreams(uncachedStreamParameterIds, paramRequests);
 
@@ -137,21 +134,20 @@ namespace Quix.TelemetryWriter.Application.Metadata
                                 }
                             }
 
-                            paramRequests.Add(telemetryParameter);
+                            paramRequests.Add(new InsertOneModel<TelemetryParameter>(telemetryParameter));
                             telemetryParameters[parameterDefinition.Id] = telemetryParameter;
                             paramCreateCounter++;
                             continue;
                         }
 
-                        var updateDefinitions = new List<TelemetryParameter>();
+                        var updateDefinitions = new List<UpdateDefinition<TelemetryParameter>>();
 
                         void UpdateProperty<T>(Expression<Func<TelemetryParameter, T>> selector, T newVal, TelemetryParameter cachedParam)
                         {
                             var func = selector.Compile();
                             var oldVal = func(cachedParam);
                             if (newVal == null || (oldVal != null && oldVal.Equals(newVal))) return;
-                            //TODO this is a mongo thing
-                            //updateDefinitions.Add(Builders<TelemetryParameter>.Update.Set(selector, newVal));
+                            updateDefinitions.Add(Builders<TelemetryParameter>.Update.Set(selector, newVal));
                             var body = selector.Body;
                             if (body is UnaryExpression unaryExpression)
                             {
@@ -192,11 +188,10 @@ namespace Quix.TelemetryWriter.Application.Metadata
 
                         if (updateDefinitions.Count == 0) continue;
                         
-                        // TODO mongo stuff
-                        // var eqStream = Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
-                        // var eqParamId = Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId);
-                        // var filter = Builders<TelemetryParameter>.Filter.And(eqStream, eqParamId);
-                        // paramRequests.Add(new UpdateOneModel<TelemetryParameter>(filter, Builders<TelemetryParameter>.Update.Combine(updateDefinitions)));
+                        var eqStream = Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
+                        var eqParamId = Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId);
+                        var filter = Builders<TelemetryParameter>.Filter.And(eqStream, eqParamId);
+                        paramRequests.Add(new UpdateOneModel<TelemetryParameter>(filter, Builders<TelemetryParameter>.Update.Combine(updateDefinitions)));
                         paramUpdateCounter++;
                     }
                 }
@@ -216,7 +211,7 @@ namespace Quix.TelemetryWriter.Application.Metadata
                                 Type = paramIdToTypePair.Value
                             };
 
-                            paramRequests.Add(telemetryParameter);
+                            paramRequests.Add(new InsertOneModel<TelemetryParameter>(telemetryParameter));
                             telemetryParameters[paramIdToTypePair.Key] = telemetryParameter;
                             paramCreateCounter++;
                             continue;
@@ -224,12 +219,11 @@ namespace Quix.TelemetryWriter.Application.Metadata
 
                         if (telemetryParameter.Type != ParameterType.Unknown) continue; // already not unknown
                         if (paramIdToTypePair.Value == ParameterType.Unknown) continue; // value is unknown ?? likely not possible, but better safe
-                        
-                        //TODO mongo stuff
-                        // var eqStream = Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
-                        // var eqParamId = Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId);
-                        // var filter = Builders<TelemetryParameter>.Filter.And(eqStream, eqParamId);
-                        // paramRequests.Add(new UpdateOneModel<TelemetryParameter>(filter, Builders<TelemetryParameter>.Update.Set(y => y.Type, paramIdToTypePair.Value)));
+                            
+                        var eqStream = Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
+                        var eqParamId = Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId);
+                        var filter = Builders<TelemetryParameter>.Filter.And(eqStream, eqParamId);
+                        paramRequests.Add(new UpdateOneModel<TelemetryParameter>(filter, Builders<TelemetryParameter>.Update.Set(y => y.Type, paramIdToTypePair.Value)));
                         paramUpdateCounter++;
                     }
 
@@ -289,10 +283,10 @@ namespace Quix.TelemetryWriter.Application.Metadata
             }
         }
 
-        private async Task CacheParametersForStreams(List<string> uncachedStreamParameterIds, List<TelemetryParameter> paramRequests)
+        private async Task CacheParametersForStreams(List<string> uncachedStreamParameterIds, List<WriteModel<TelemetryParameter>> paramRequests)
         {
             var parametersLoadSw = Stopwatch.StartNew();
-            var parameters = await this.parameterRepository.GetAll().Where(y => uncachedStreamParameterIds.Contains(y.StreamId)).ToListAsync();
+            var parameters = this.parameterRepository.GetAll().Where(y => uncachedStreamParameterIds.Contains(y.StreamId)).ToList();
             parametersLoadSw.Stop();
             var loadedStreamsFromDbForParams = 0;
 
@@ -333,8 +327,7 @@ namespace Quix.TelemetryWriter.Application.Metadata
 
                         foreach (var telemetryParameter in delete)
                         {
-                            //todo mongo stuff
-                            //paramRequests.Add(new DeleteOneModel<TelemetryParameter>(Builders<TelemetryParameter>.Filter.Eq(y => y.BsonObjectId, telemetryParameter.BsonObjectId)));
+                            paramRequests.Add(new DeleteOneModel<TelemetryParameter>(Builders<TelemetryParameter>.Filter.And(Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, telemetryParameter.StreamId), Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId))));
                         }
 
                         this.cachedTelemetryParameters[telemetryStreamParams.Key] = telemetryStreamParams.Select(y => y).Except(delete).ToDictionary(y => y.ParameterId, y => y);
@@ -357,7 +350,7 @@ namespace Quix.TelemetryWriter.Application.Metadata
 
         private async Task<Dictionary<string, Dictionary<string, string>>> PersistParameterGroupChanges(Dictionary<string, PendingStreamUpdates> streamUpdates, List<string> uncachedStreamParameterIds)
         {
-            var paramGroupRequests = new List<TelemetryParameterGroup>();
+            var paramGroupRequests = new List<WriteModel<TelemetryParameterGroup>>();
 
             await this.CacheGroupsForStreams(uncachedStreamParameterIds, paramGroupRequests);
 
@@ -386,13 +379,13 @@ namespace Quix.TelemetryWriter.Application.Metadata
                     {
                         telemetryParameterGroup = incomingGroup;
 
-                        paramGroupRequests.Add(telemetryParameterGroup);
+                        paramGroupRequests.Add(new InsertOneModel<TelemetryParameterGroup>(telemetryParameterGroup));
                         telemetryParameterGroups[incomingGroup.Path] = telemetryParameterGroup;
                         paramGroupCreateCounter++;
                         continue;
                     }
 
-                    var updateDefinitions = new List<TelemetryParameterGroup>();
+                    var updateDefinitions = new List<UpdateDefinition<TelemetryParameterGroup>>();
 
                     void UpdateProperty<T>(Expression<Func<TelemetryParameterGroup, T>> selector, T newVal, TelemetryParameterGroup cachedParam)
                     {
@@ -400,8 +393,7 @@ namespace Quix.TelemetryWriter.Application.Metadata
                         var oldVal = func(cachedParam);
                         if (newVal != null && (oldVal == null || !oldVal.Equals(newVal)))
                         {
-                            //todo mongo stuff
-                            //updateDefinitions.Add(Builders<TelemetryParameterGroup>.Update.Set(selector, newVal));
+                            updateDefinitions.Add(Builders<TelemetryParameterGroup>.Update.Set(selector, newVal));
                             var body = selector.Body;
                             if (body is UnaryExpression unaryExpression)
                             {
@@ -420,11 +412,10 @@ namespace Quix.TelemetryWriter.Application.Metadata
 
                     if (updateDefinitions.Count != 0)
                     {
-                        //todo mongo stuff
-                        // var eqStream = Builders<TelemetryParameterGroup>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
-                        // var eqParamId = Builders<TelemetryParameterGroup>.Filter.Eq(y => y.Path, telemetryParameterGroup.Path);
-                        // var filter = Builders<TelemetryParameterGroup>.Filter.And(eqStream, eqParamId);
-                        // paramGroupRequests.Add(new UpdateOneModel<TelemetryParameterGroup>(filter, Builders<TelemetryParameterGroup>.Update.Combine(updateDefinitions)));
+                        var eqStream = Builders<TelemetryParameterGroup>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
+                        var eqParamId = Builders<TelemetryParameterGroup>.Filter.Eq(y => y.Path, telemetryParameterGroup.Path);
+                        var filter = Builders<TelemetryParameterGroup>.Filter.And(eqStream, eqParamId);
+                        paramGroupRequests.Add(new UpdateOneModel<TelemetryParameterGroup>(filter, Builders<TelemetryParameterGroup>.Update.Combine(updateDefinitions)));
                         paramGroupUpdateCounter++;
                     }
                 }
@@ -446,10 +437,10 @@ namespace Quix.TelemetryWriter.Application.Metadata
             return locationLookup;
         }
 
-        private async Task CacheGroupsForStreams(List<string> uncachedStreamParameterIds, List<TelemetryParameterGroup> paramGroupRequests)
+        private async Task CacheGroupsForStreams(List<string> uncachedStreamParameterIds, List<WriteModel<TelemetryParameterGroup>> paramGroupRequests)
         {
             var parameterGroupsLoadSw = Stopwatch.StartNew();
-            var parameterGroups = await this.parameterGroupRepository.GetAll().Where(y => uncachedStreamParameterIds.Contains(y.StreamId)).ToListAsync();
+            var parameterGroups = this.parameterGroupRepository.GetAll().Where(y => uncachedStreamParameterIds.Contains(y.StreamId)).ToList();
             parameterGroupsLoadSw.Stop();
             var loadedStreamsFromDbForGroups = 0;
 
@@ -486,9 +477,8 @@ namespace Quix.TelemetryWriter.Application.Metadata
 
                         foreach (var telemetryParameter in delete)
                         {
-                            //todo mongo stuff
-                            // paramGroupRequests.Add(
-                            //     new DeleteOneModel<TelemetryParameterGroup>(Builders<TelemetryParameterGroup>.Filter.Eq(y => y.BsonObjectId, telemetryParameter.BsonObjectId)));
+                            paramGroupRequests.Add(
+                                new DeleteOneModel<TelemetryParameterGroup>(Builders<TelemetryParameterGroup>.Filter.And(Builders<TelemetryParameterGroup>.Filter.Eq(y => y.StreamId, telemetryParameter.StreamId), Builders<TelemetryParameterGroup>.Filter.Eq(y => y.Path, telemetryParameter.Path))));
                         }
 
                         this.cachedTelemetryParameterGroups[telemetryStreamParamGroups.Key] = telemetryStreamParamGroups.Select(y => y).Except(delete).ToDictionary(y => y.Path, y => y);

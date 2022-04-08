@@ -1,36 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
+using Quix.Snowflake.Infrastructure.Shared;
 
 namespace Quix.Snowflake.Infrastructure.Metadata
 {
-    public class EventRepository : IEventRepository
+    public class EventRepository : SnowflakeRepository<TelemetryEvent>, IEventRepository
     {
-        public Task Save(ICollection<TelemetryEvent> events)
+        public EventRepository(IDbConnection dbConnection, ILoggerFactory loggerFactory) : base(dbConnection, loggerFactory.CreateLogger<EventRepository>())
         {
-            throw new System.NotImplementedException();
-        }
-
-        public IQueryable<TelemetryEvent> GetAll()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<long> Delete(string streamId, ICollection<string> eventIds)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<long> DeleteAll(string streamId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task BulkWrite(IEnumerable<TelemetryEvent> requests)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

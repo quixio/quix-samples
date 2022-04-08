@@ -14,12 +14,11 @@ using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
 using Quix.Snowflake.Infrastructure.Metadata;
+using Quix.Snowflake.Infrastructure.Shared;
 using Quix.Snowflake.Infrastructure.TimeSeries.Models;
 using Quix.Snowflake.Infrastructure.TimeSeries.Repositories;
 using Quix.Snowflake.Writer.Configuration;
 using Quix.Snowflake.Writer.Helpers;
-using Quix.Telemetry.Domain.Metadata.Repositories;
-using Quix.TelemetryWriter.Application.Metadata;
 using Serilog;
 
 namespace Quix.Snowflake.Writer
@@ -81,6 +80,7 @@ namespace Quix.Snowflake.Writer
         {
             // Stream context
             services.AddScoped<StreamPersistingComponent>();
+            SnowflakeSchemaRegistry.Register();
             
             // TimeSeries Context
             services.AddSingleton<SnowflakeWriteRepository>(); // this nonsensical registration is done to use same

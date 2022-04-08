@@ -11,12 +11,9 @@ using Microsoft.Extensions.Logging;
 using Quix.Sdk.Process.Models;
 using Quix.Snowflake.Application.Helpers;
 using Quix.Snowflake.Application.Models;
+using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
-using Quix.Snowflake.Infrastructure.Shared.Extensions;
-using Quix.Snowflake.Infrastructure.TimeSeries.Repositories;
-using Quix.Telemetry.Domain.Metadata.Models;
-using Quix.TelemetryWriter.Application.Metadata;
 
 namespace Quix.Snowflake.Application.Metadata
 {
@@ -28,8 +25,7 @@ namespace Quix.Snowflake.Application.Metadata
         Task Buffer(string sourceStreamId, ParameterDefinitions parameterDefinitions);
         Task Buffer(string sourceStreamId, EventDefinitions eventDefinitions);
         Task Buffer(string sourceStreamId, StreamProperties streamProperties);
-        
-        //Task<DiscardRange> GetDiscardRange(string streamId, long timestamp);
+        Task<DiscardRange> GetDiscardRange(string streamId, long timestamp);
         
         void ClearBuffer(string[] sourceStreamIds);
         Task Save();
@@ -38,7 +34,6 @@ namespace Quix.Snowflake.Application.Metadata
     public class MetadataBufferedPersistingService : IMetadataBufferedPersistingService
     {
         private readonly ILogger<MetadataBufferedPersistingService> logger;
-        //private readonly IShutdownService shutdownService;
         private readonly IParameterPersistingService parameterPersistingService;
         private readonly IStreamRepository streamRepository;
         private readonly IEventPersistingService eventPersistingService;
@@ -80,7 +75,6 @@ namespace Quix.Snowflake.Application.Metadata
         
         public MetadataBufferedPersistingService(
             ILoggerFactory loggerFactory,
-            //IShutdownService shutdownService,
             IParameterPersistingService parameterPersistingService,
             IStreamRepository streamRepository,
             IEventPersistingService eventPersistingService,         
@@ -88,7 +82,6 @@ namespace Quix.Snowflake.Application.Metadata
             StreamIdleTime streamIdleTime)
         {
             this.logger = loggerFactory.CreateLogger<MetadataBufferedPersistingService>();
-            //this.shutdownService = shutdownService;
             this.parameterPersistingService = parameterPersistingService;
             this.streamRepository = streamRepository;
             this.eventPersistingService = eventPersistingService;
@@ -219,14 +212,6 @@ namespace Quix.Snowflake.Application.Metadata
                 catch (Exception ex)
                 {
                     this.logger.LogError(ex, errorMessage);
-                    if (counter > 10)
-                    {
-                        // Had enough exceptions. Lets try restarting the writer. (This would simply kill it in a non orchestrator environment where it is running as a service)
-                        this.logger.LogCritical("Exceeded maximum number of retries. Restarting application in order to try automatic self-heal.");
-                        
-                        // TODO do we need this?
-                        //this.shutdownService.StopApplication();
-                    }
                 }
 
                 counter++;
@@ -241,7 +226,7 @@ namespace Quix.Snowflake.Application.Metadata
             var streamsToNotLoad = this.cachedTelemetryStreams.Keys.ToList();
             
             var streamLoadSw = Stopwatch.StartNew();
-            var streams = await this.streamRepository.GetAll().Where(y => !streamsToNotLoad.Contains(y.StreamId) && y.Status == StreamStatus.Open && y.Topic == this.topicDisplayName).ToListAsync();
+            var streams = this.streamRepository.GetAll().Where(y => !streamsToNotLoad.Contains(y.StreamId) && y.Status == StreamStatus.Open && y.Topic == this.topicDisplayName).ToList();
             streamLoadSw.Stop();
             foreach (var telemetryStream in streams)
             {
@@ -321,7 +306,7 @@ namespace Quix.Snowflake.Application.Metadata
         private async Task<List<TelemetryStream>> CacheStreams(List<string> streamsToCache)
         {
             var streamsToLoad = streamsToCache.Except(this.cachedTelemetryStreams.Keys).ToList();
-            var streams = await this.streamRepository.GetAll().Where(y => streamsToLoad.Contains(y.StreamId)).ToListAsync();
+            var streams = this.streamRepository.GetAll().Where(y => streamsToLoad.Contains(y.StreamId)).ToList();
             foreach (var telemetryStream in streams)
             {
                 this.cachedTelemetryStreams[telemetryStream.StreamId] = telemetryStream;
@@ -347,7 +332,7 @@ namespace Quix.Snowflake.Application.Metadata
                 this.logger.LogTrace("Found all {0} streams in the db. Loaded in {1:g}", streamsCached.Count, streamLoadSw.Elapsed);
             }
 
-            var requests = new List<TelemetryStreamUpdate>();
+            var requests = new List<WriteModel<TelemetryStream>>();
             var updateCounter = 0;
             var createCounter = 0;
 
@@ -371,7 +356,7 @@ namespace Quix.Snowflake.Application.Metadata
                         Metadata = streamUpdate.Value.Metadata
                     };
                     
-                    requests.Add(telemetryStream);
+                    requests.Add(new InsertOneModel<TelemetryStream>(telemetryStream));
                     this.cachedTelemetryStreams[streamUpdate.Key] = telemetryStream;
                     createCounter++;
                     continue;
@@ -388,8 +373,7 @@ namespace Quix.Snowflake.Application.Metadata
                     if (telemetryStream.Status != StreamStatus.Open && inactiveStatuses.Contains(telemetryStream.Status))
                     {
                         reopenedStreams++;
-                        // todo mongo stuff
-                        // requests.Add(new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y=> y.StreamId, streamUpdate.Key), Builders<TelemetryStream>.Update.Set(y=> y.Status, StreamStatus.Open)));
+                        requests.Add(new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y=> y.StreamId, streamUpdate.Key), Builders<TelemetryStream>.Update.Set(y=> y.Status, StreamStatus.Open)));
                         updateCounter++;
                     }
                     continue;
@@ -401,7 +385,7 @@ namespace Quix.Snowflake.Application.Metadata
                     reopenedStreams++;
                 }
                 
-                var updateDefinitions = new List<TelemetryStream>();
+                var updateDefinitions = new List<UpdateDefinition<TelemetryStream>>();
 
                 void UpdateProperty<T>(Expression<Func<TelemetryStream, T>> selector, T newVal, TelemetryStream cachedStream)
                 {
@@ -409,8 +393,7 @@ namespace Quix.Snowflake.Application.Metadata
                     var oldVal = func(cachedStream);
                     if (newVal != null && (oldVal == null || !oldVal.Equals(newVal)))
                     {
-                        // todo mongo stuff
-                        //updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(selector, newVal));
+                        updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(selector, newVal));
                         var body = selector.Body;
                         if (body is UnaryExpression unaryExpression)
                         {
@@ -426,9 +409,7 @@ namespace Quix.Snowflake.Application.Metadata
                 UpdateProperty(s => s.End, streamUpdate.Value.End, telemetryStream);
                 streamUpdate.Value.Start = streamUpdate.Value.Start == null ? (long?) null : Math.Min(streamUpdate.Value.Start.Value, telemetryStream.Start ?? long.MaxValue);
                 UpdateProperty(s => s.Start, streamUpdate.Value.Start, telemetryStream);
-                
-                // todo mongo stuff
-                //if (durBefore != telemetryStream.Duration) updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(s=> s.Duration, telemetryStream.Duration)); // computed field, need to force like this
+                if (durBefore != telemetryStream.Duration) updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(s=> s.Duration, telemetryStream.Duration)); // computed field, need to force like this
                 
                 UpdateProperty(s => s.Name, streamUpdate.Value.Name, telemetryStream);
                 UpdateProperty(s => s.Location, streamUpdate.Value.Location, telemetryStream);
@@ -449,35 +430,17 @@ namespace Quix.Snowflake.Application.Metadata
                 if (streamUpdate.Value.Metadata != null && (telemetryStream.Metadata == null || !streamUpdate.Value.Metadata.SequenceEqual(telemetryStream.Metadata)))
                 {
                     telemetryStream.Metadata = streamUpdate.Value.Metadata;
-                    // todo mongo stuff
                     updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(y => y.Metadata, telemetryStream.Metadata));
                 }
                 if (streamUpdate.Value.Parents != null && (telemetryStream.Parents == null || !streamUpdate.Value.Parents.SequenceEqual(telemetryStream.Parents)))
                 {
                     telemetryStream.Parents = streamUpdate.Value.Parents;
-                    // todo mongo stuff
-                    
-                    
                     updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(y => y.Parents, telemetryStream.Parents));
-                    var ts = new TelemetryStream(telemetryStream.StreamId)
-                    {
-                        Parents = telemetryStream.Parents
-                    };
-                    updateDefinitions.Add(ts);
                 }
                 
                 if (updateDefinitions.Count != 0)
                 {
-                    // todo mongo stuff
-                    //requests.Add(new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y=> y.StreamId, streamUpdate.Key), Builders<TelemetryStream>.Update.Combine(updateDefinitions)));
-
-                    foreach (var updateDefinition in updateDefinitions)
-                    {
-                        var telemetryStreamUpdate = new TelemetryStreamUpdate(UpdateType.UpdateMany, streamUpdate.Key);
-                        telemetryStreamUpdate.TelemetryStream = updateDefinition;
-                        requests.Add(telemetryStreamUpdate);
-                    }
-                    
+                    requests.Add(new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y=> y.StreamId, streamUpdate.Key), Builders<TelemetryStream>.Update.Combine(updateDefinitions)));
                     updateCounter++;
                 }
             }
@@ -663,28 +626,27 @@ namespace Quix.Snowflake.Application.Metadata
             return Task.CompletedTask;
         }
 
-        //TODO I think were unlikely to need the discard range.
-        // public async Task<DiscardRange> GetDiscardRange(string streamId, long timestamp)
-        // {
-        //     if (this.discardRange.TryGetValue(streamId, out var discardDataDetails)) return discardDataDetails;
-        //
-        //     await this.CacheStreams(new List<string> {streamId});
-        //
-        //     if (this.cachedTelemetryStreams.TryGetValue(streamId, out var stream))
-        //     {
-        //         if (stream.Start != null) timestamp = stream.Start.Value;
-        //     }
-        //
-        //     var epoch = new DateTime(1970, 1, 1);
-        //     var timestampAsDate = epoch + new TimeSpan(timestamp / 100);
-        //     var discardRange = new DiscardRange()
-        //     {
-        //         DiscardAfter = (timestampAsDate.AddYears(2) - epoch).Ticks * 100, // time + 2 years as nano
-        //         DiscardBefore = (timestampAsDate.AddDays(-1) - epoch).Ticks * 100 // time -1 day as nano (to allow for minor back-filling)
-        //     };
-        //     this.discardRange[streamId] = discardRange;
-        //     return discardRange;
-        // }
+        public async Task<DiscardRange> GetDiscardRange(string streamId, long timestamp)
+        {
+            if (this.discardRange.TryGetValue(streamId, out var discardDataDetails)) return discardDataDetails;
+
+            await this.CacheStreams(new List<string> {streamId});
+
+            if (this.cachedTelemetryStreams.TryGetValue(streamId, out var stream))
+            {
+                if (stream.Start != null) timestamp = stream.Start.Value;
+            }
+
+            var epoch = new DateTime(1970, 1, 1);
+            var timestampAsDate = epoch + new TimeSpan(timestamp / 100);
+            var discardRange = new DiscardRange()
+            {
+                DiscardAfter = (timestampAsDate.AddYears(2) - epoch).Ticks * 100, // time + 2 years as nano
+                DiscardBefore = (timestampAsDate.AddDays(-1) - epoch).Ticks * 100 // time -1 day as nano (to allow for minor back-filling)
+            };
+            this.discardRange[streamId] = discardRange;
+            return discardRange;
+        }
 
         public Task Save()
         {
@@ -766,17 +728,4 @@ namespace Quix.Snowflake.Application.Metadata
             }
         }
     }
-
-    // internal class Builders<T>
-    // {
-    //     public class Update
-    //     {
-    //         public static TelemetryStream Set(Func<object, T> target, object newValue)
-    //         {
-    //             target.Invoke(newValue);
-    //             return new TelemetryStream();
-    //
-    //         }
-    //     }
-    // }
 }

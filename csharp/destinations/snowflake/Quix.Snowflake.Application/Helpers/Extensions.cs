@@ -24,12 +24,5 @@ namespace Quix.Snowflake.Application.Helpers
                 return hash;
             }
         }
-
-        public static TelemetryStream Set<T>(Func<object, T> target, object newValue)
-        {
-            target.Invoke(newValue);
-            return new TelemetryStream();
-
-        }
     }
 }

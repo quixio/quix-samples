@@ -5,10 +5,8 @@ using System.Linq;
 namespace Quix.Snowflake.Domain.Models
 {
     [DebuggerDisplay("{ParameterId}, {Name}")]
-    //[BsonIgnoreExtraElements]
     public class TelemetryParameter : IEquatable<TelemetryParameter>
     {
-      //  [BsonConstructor]
         internal TelemetryParameter()
         {
         }
@@ -18,46 +16,29 @@ namespace Quix.Snowflake.Domain.Models
             this.StreamId = streamId ?? throw new ArgumentNullException(nameof(streamId));
         }
 
-        /// <summary>
-        /// To be used only be Mongo lib, do not assign value to it manually.
-        /// Used to uniquely reference the parameter even if other supposedly unique parameters are not unique enough (like buggy persistence)
-        /// </summary>
-        //[BsonId]
-        //public BsonObjectId BsonObjectId { get; set; }
-
         public string ParameterId { get; set; }
 
-        //[BsonIgnoreIfNull]
         public string Name { get; set; }
 
-        //[BsonIgnoreIfNull]
         public string StreamId { get; private set; }
         
-        //[BsonIgnoreIfNull]
         public string Description { get; set; }
 
-        //[BsonIgnoreIfNull]
         public double? MinimumValue { get; set; }
 
-        // [BsonIgnoreIfNull]
         public double? MaximumValue { get; set; }
 
-        // [BsonIgnoreIfNull]
         public string Unit { get; set; }
 
-        // [BsonIgnoreIfNull]
         public string Format { get; set; }
 
-        // [BsonIgnoreIfNull]
         public string CustomProperties { get; set; }
         
         /// <summary>
         /// Location within the parameter tree. The Location of the parameter is equivalent to the path of the parent group
         /// </summary>
-        // [BsonIgnoreIfNull]
         public string Location { get;set; }
         
-        // [BsonRepresentation(BsonType.String)]
         public ParameterType Type { get; set; }
 
         public override int GetHashCode()
@@ -130,29 +111,5 @@ namespace Quix.Snowflake.Domain.Models
         /// Binary parameter type
         /// </summary>
         Binary = 3
-    }
-
-    public class TelemetryParametersGrouped : TelemetryParameter
-    {
-        private ParameterType[] interType;
-
-        public TelemetryParametersGrouped(string[] streamIds)
-        {
-            this.StreamIds = streamIds;
-        }
-        
-        // [BsonIgnore]
-        public string[] StreamIds { get; set; }
-
-        // [BsonIgnore]
-        public ParameterType[] InterType
-        {
-            get => this.interType;
-            set
-            {
-                this.interType = value ?? Array.Empty<ParameterType>();
-                this.Type = this.interType.GroupBy(x=> x).OrderBy(x=> x.Count()).FirstOrDefault(x => x.Key != ParameterType.Unknown)?.Key ?? ParameterType.Unknown;
-            }
-        }
     }
 }

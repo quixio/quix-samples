@@ -4,10 +4,8 @@ using System.Diagnostics;
 namespace Quix.Snowflake.Domain.Models
 {
     [DebuggerDisplay("{Path}, {Name}")]
-    //[BsonIgnoreExtraElements]
     public class TelemetryEventGroup : IEquatable<TelemetryEventGroup>
     {
-//        [BsonConstructor]
         internal TelemetryEventGroup()
         {
         }
@@ -17,22 +15,12 @@ namespace Quix.Snowflake.Domain.Models
             this.StreamId = streamId ?? throw new ArgumentNullException(nameof(streamId));
         }
 
-        /// <summary>
-        /// To be used only be Mongo lib, do not assign value to it manually.
-        /// Used to uniquely reference the parameter even if other supposedly unique parameters are not unique enough (like buggy persistence)
-        /// </summary>
-        //      [BsonId]
-        //  public BsonObjectId BsonObjectId { get; set; }
-
         public string StreamId { get; private set; }
 
-        //    [BsonIgnoreIfNull]
         public string Name { get; set; }
 
-//        [BsonIgnoreIfNull]
         public string Description { get; set; }
 
-        //      [BsonIgnoreIfNull]
         public string CustomProperties { get; set; }
 
         public int ChildrenCount { get; set; }
@@ -47,7 +35,6 @@ namespace Quix.Snowflake.Domain.Models
         /// Location within the event tree. The Location of the event group is equivalent to the location of the parent group location + /parent group id
         /// Example: If parent event group location is root ("/") and parent event group id is "Body" then location will be "/Body"
         /// </summary>
-        //    [BsonIgnoreIfNull]
         public string Location { get; set; }
 
         public override int GetHashCode()
