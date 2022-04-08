@@ -347,7 +347,7 @@ namespace Quix.Snowflake.Application.Metadata
                 this.logger.LogTrace("Found all {0} streams in the db. Loaded in {1:g}", streamsCached.Count, streamLoadSw.Elapsed);
             }
 
-            var requests = new List<TelemetryStream>();
+            var requests = new List<TelemetryStreamUpdate>();
             var updateCounter = 0;
             var createCounter = 0;
 
@@ -450,19 +450,34 @@ namespace Quix.Snowflake.Application.Metadata
                 {
                     telemetryStream.Metadata = streamUpdate.Value.Metadata;
                     // todo mongo stuff
-                    //updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(y => y.Metadata, telemetryStream.Metadata));
+                    updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(y => y.Metadata, telemetryStream.Metadata));
                 }
                 if (streamUpdate.Value.Parents != null && (telemetryStream.Parents == null || !streamUpdate.Value.Parents.SequenceEqual(telemetryStream.Parents)))
                 {
                     telemetryStream.Parents = streamUpdate.Value.Parents;
                     // todo mongo stuff
-                    //updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(y => y.Parents, telemetryStream.Parents));
+                    
+                    
+                    updateDefinitions.Add(Builders<TelemetryStream>.Update.Set(y => y.Parents, telemetryStream.Parents));
+                    var ts = new TelemetryStream(telemetryStream.StreamId)
+                    {
+                        Parents = telemetryStream.Parents
+                    };
+                    updateDefinitions.Add(ts);
                 }
                 
                 if (updateDefinitions.Count != 0)
                 {
                     // todo mongo stuff
                     //requests.Add(new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y=> y.StreamId, streamUpdate.Key), Builders<TelemetryStream>.Update.Combine(updateDefinitions)));
+
+                    foreach (var updateDefinition in updateDefinitions)
+                    {
+                        var telemetryStreamUpdate = new TelemetryStreamUpdate(UpdateType.UpdateMany, streamUpdate.Key);
+                        telemetryStreamUpdate.TelemetryStream = updateDefinition;
+                        requests.Add(telemetryStreamUpdate);
+                    }
+                    
                     updateCounter++;
                 }
             }
@@ -751,4 +766,17 @@ namespace Quix.Snowflake.Application.Metadata
             }
         }
     }
+
+    // internal class Builders<T>
+    // {
+    //     public class Update
+    //     {
+    //         public static TelemetryStream Set(Func<object, T> target, object newValue)
+    //         {
+    //             target.Invoke(newValue);
+    //             return new TelemetryStream();
+    //
+    //         }
+    //     }
+    // }
 }

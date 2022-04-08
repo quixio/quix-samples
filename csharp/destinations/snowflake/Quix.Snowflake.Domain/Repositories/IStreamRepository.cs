@@ -28,7 +28,7 @@ namespace Quix.Snowflake.Domain.Repositories
         /// Bulk write capable of updating/inserting/deleting multiple things at a time
         /// </summary>
         /// <param name="insertRequests">The request to execute</param>
-        Task BulkWrite(IEnumerable<TelemetryStream> insertRequests);
+        Task BulkWrite(IEnumerable<TelemetryStreamUpdate> insertRequests);
         
         /// <summary>
         /// Deletes a stream by streamId

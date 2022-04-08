@@ -4,6 +4,31 @@ using System.Diagnostics;
 
 namespace Quix.Snowflake.Domain.Models
 {
+    public enum UpdateType
+    {
+        Insert,
+        Update,
+        Delete,
+        //Replace, //todo needed??
+        UpdateMany
+    }
+    
+    public class TelemetryStreamUpdate
+    {
+        public TelemetryStreamUpdate(UpdateType updateType, string streamIdFilter = null, string parameterIdFilter = null)
+        {
+            UpdateType = updateType;
+            StreamIdFilter = streamIdFilter;
+            ParameterIdFilter = parameterIdFilter;
+        }
+
+        public string StreamIdFilter { get; private set; }
+        public string ParameterIdFilter { get; private set; }
+        
+        public TelemetryStream TelemetryStream { get; set; }
+        public UpdateType UpdateType { get; private set; }
+    }
+    
     [DebuggerDisplay("{StreamId}, {Name}")]
     public class TelemetryStream
     {

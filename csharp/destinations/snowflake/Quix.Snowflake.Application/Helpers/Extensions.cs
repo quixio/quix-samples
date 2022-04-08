@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using Mono.Unix.Native;
+using Quix.Snowflake.Domain.Models;
 
 namespace Quix.Snowflake.Application.Helpers
 {
@@ -19,6 +23,13 @@ namespace Quix.Snowflake.Application.Helpers
 
                 return hash;
             }
+        }
+
+        public static TelemetryStream Set<T>(Func<object, T> target, object newValue)
+        {
+            target.Invoke(newValue);
+            return new TelemetryStream();
+
         }
     }
 }
