@@ -13,6 +13,7 @@ using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
+using Quix.Snowflake.Infrastructure.Metadata;
 using Quix.Snowflake.Infrastructure.TimeSeries.Models;
 using Quix.Snowflake.Infrastructure.TimeSeries.Repositories;
 using Quix.Snowflake.Writer.Configuration;

@@ -3,9 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
-using Quix.Telemetry.Domain.Metadata.Models;
 
-namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
+namespace Quix.Snowflake.Infrastructure.Metadata
 {
     
     //TODO need to implement this.

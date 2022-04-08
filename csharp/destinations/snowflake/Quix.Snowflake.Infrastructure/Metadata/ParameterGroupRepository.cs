@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Quix.Telemetry.Domain.Metadata.Models;
 using Quix.Telemetry.Domain.Metadata.Repositories;
 
-namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
+namespace Quix.Snowflake.Infrastructure.Metadata
 {
     public class ParameterGroupRepository : IParameterGroupRepository
     {

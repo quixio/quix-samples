@@ -1,24 +1,24 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
 
-namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
+namespace Quix.Snowflake.Infrastructure.Metadata
 {
-    public class EventGroupRepository : IEventGroupRepository
+    public class ParameterRepository : IParameterRepository
     {
-        public Task Save(ICollection<TelemetryEventGroup> eventGroups)
+        public Task Save(ICollection<TelemetryParameter> parameters)
         {
             throw new System.NotImplementedException();
         }
 
-        public IQueryable<TelemetryEventGroup> GetAll()
+        public IQueryable<TelemetryParameter> GetAll()
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<long> Delete(string streamId, ICollection<string> groupPaths)
+        public Task<long> Delete(string streamId, ICollection<string> parameterIds)
         {
             throw new System.NotImplementedException();
         }
@@ -28,7 +28,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task BulkWrite(IEnumerable<TelemetryEventGroup> requests)
+        public Task BulkWrite(IEnumerable<TelemetryParameter> requests)
         {
             throw new System.NotImplementedException();
         }

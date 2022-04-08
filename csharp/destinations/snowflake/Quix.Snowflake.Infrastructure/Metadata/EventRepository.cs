@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
 
-namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
+namespace Quix.Snowflake.Infrastructure.Metadata
 {
     public class EventRepository : IEventRepository
     {
