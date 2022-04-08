@@ -5,7 +5,7 @@ In order to use it locally, navigate to this folder in a terminal with Docker in
 ```
 docker build . --tag quixpythonbaseimage
 ```
-Once you did this, your project docker files should be able to build successfully when they reference `quixpythonbaseimage`.
+Once you do this, your project docker files should be able to build successfully when they reference `quixpythonbaseimage`.
 
 # FAQ
 1.
