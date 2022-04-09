@@ -29,14 +29,28 @@ public class UnitTest1
         SnowflakeSchemaRegistry.Register();
         var repo = CreateStreamRepo();
 
+        var stream = new TelemetryStream("baseStream");
+
         var streamUpdates = new List<WriteModel<TelemetryStream>>()
         {
-            new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y => y.End, 123), Builders<TelemetryStream>.Update.Set(y => y.Location, "adb")),
-            new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y => y.StreamId, "asdf"), Builders<TelemetryStream>.Update.Set(y => y.End, 123)),
-            new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y => y.StreamId, "asdf"), Builders<TelemetryStream>.Update.Combine(Builders<TelemetryStream>.Update.Set(y => y.End, 123), Builders<TelemetryStream>.Update.Set(y => y.Start, 121))),
-            new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y => y.StreamId, "asdf"), Builders<TelemetryStream>.Update.Set(y => y.Status, StreamStatus.Aborted)),
-            new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y => y.StreamId, "asdf"), Builders<TelemetryStream>.Update.Set(y => y.Parents, new List<string> {"a", "b"})),
-            new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.And(Builders<TelemetryStream>.Filter.Eq(y => y.StreamId, "asdf"),Builders<TelemetryStream>.Filter.Eq(y => y.Name, "stuff")), Builders<TelemetryStream>.Update.Set(y => y.Metadata, new Dictionary<string, string>() {{"a", "2"}, {"b", "2"}}))
+            new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Set(y => y.Location, "adb")),
+            new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Set(y => y.End, 123)),
+            new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Combine(Builders<TelemetryStream>.Update.Set(y => y.End, 123), Builders<TelemetryStream>.Update.Set(y => y.Start, 121))),
+            new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Set(y => y.Status, StreamStatus.Aborted)),
+            new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Set(y => y.Parents, new List<string> {"a", "b"})),
+            new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Set(y => y.Metadata, new Dictionary<string, string>() {{"a", "2"}, {"b", "2"}})),
+            new DeleteManyModel<TelemetryStream>(Builders<TelemetryStream>.Filter.And(Builders<TelemetryStream>.Filter.Eq(y => y.StreamId, "asdf"),Builders<TelemetryStream>.Filter.Eq(y => y.Name, "stuff"))),
+            new InsertOneModel<TelemetryStream>(new TelemetryStream("somestream")
+            {
+                End = 123,
+                Location = "test",
+                Metadata = new Dictionary<string, string>()
+                {
+                    {"a", "1"},
+                    {"b", "2"}
+                },
+                Parents = new List<string>() { "parent1", "parent2"}
+            })
         };
 
         // Act
@@ -51,13 +65,14 @@ public class UnitTest1
         // Arrange
         SnowflakeSchemaRegistry.Register();
         var repo = CreateEventRepo();
+        var tEvent = new TelemetryEvent("mystreamId");
 
         var streamUpdates = new List<WriteModel<TelemetryEvent>>()
         {
-            new UpdateOneModel<TelemetryEvent>(Builders<TelemetryEvent>.Filter.Eq(y => y.Name, "oldname"), Builders<TelemetryEvent>.Update.Set(y => y.Name, "newname")),
-            new UpdateOneModel<TelemetryEvent>(Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, "asdf"), Builders<TelemetryEvent>.Update.Set(y => y.Level, TelemetryEventLevel.Error)),
-            new UpdateOneModel<TelemetryEvent>(Builders<TelemetryEvent>.Filter.And(Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, "asdf"),Builders<TelemetryEvent>.Filter.Eq(y => y.EventId, "evid")), Builders<TelemetryEvent>.Update.Set(y => y.Level, TelemetryEventLevel.Error)),
-            new UpdateOneModel<TelemetryEvent>(Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, "asdf"), Builders<TelemetryEvent>.Update.Combine(Builders<TelemetryEvent>.Update.Set(y => y.Description, "har"), Builders<TelemetryEvent>.Update.Set(y => y.Location, "/new"))),
+            new UpdateOneModel<TelemetryEvent>(tEvent, Builders<TelemetryEvent>.Update.Set(y => y.Name, "newname")),
+            new UpdateOneModel<TelemetryEvent>(tEvent, Builders<TelemetryEvent>.Update.Set(y => y.Level, TelemetryEventLevel.Error)),
+            new UpdateOneModel<TelemetryEvent>(tEvent, Builders<TelemetryEvent>.Update.Set(y => y.Level, TelemetryEventLevel.Error)),
+            new UpdateOneModel<TelemetryEvent>(tEvent, Builders<TelemetryEvent>.Update.Combine(Builders<TelemetryEvent>.Update.Set(y => y.Description, "har"), Builders<TelemetryEvent>.Update.Set(y => y.Location, "/new"))),
         };
 
         // Act

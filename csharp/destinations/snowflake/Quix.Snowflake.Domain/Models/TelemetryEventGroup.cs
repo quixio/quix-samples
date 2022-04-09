@@ -14,6 +14,11 @@ namespace Quix.Snowflake.Domain.Models
         {
             this.StreamId = streamId ?? throw new ArgumentNullException(nameof(streamId));
         }
+        
+        /// <summary>
+        /// Using as the primary key to avoid use of composite keys
+        /// </summary>
+        public string ObjectId { get; set; } = Guid.NewGuid().ToString("N");
 
         public string StreamId { get; private set; }
 

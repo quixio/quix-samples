@@ -15,6 +15,11 @@ namespace Quix.Snowflake.Domain.Models
             this.StreamId = streamId ?? throw new ArgumentNullException(nameof(streamId));
         }
 
+        /// <summary>
+        /// Using as the primary key to avoid use of composite keys
+        /// </summary>
+        public string ObjectId { get; set; } = Guid.NewGuid().ToString("N");
+
         public string EventId { get; set; }
 
         public string Name { get; set; }
@@ -74,16 +79,6 @@ namespace Quix.Snowflake.Domain.Models
                 && Equals(this.Level, other.Level)
                 && string.Equals(this.Location, other.Location);
         }
-    }
-
-    public class TelemetryEventsGrouped : TelemetryEvent
-    {
-        public TelemetryEventsGrouped(string[] streamIds)
-        {
-            this.StreamIds = streamIds;
-        }
-        
-        public string[] StreamIds { get; set; }
     }
 
     public enum TelemetryEventLevel

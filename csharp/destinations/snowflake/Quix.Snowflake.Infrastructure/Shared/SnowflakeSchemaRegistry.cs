@@ -36,11 +36,19 @@ namespace Quix.Snowflake.Infrastructure.Shared
 
             SnowflakeSchemaRegistry.RegisterModel<TelemetryEvent>(modelRegistrations)
                 .SetTableName("EventDetails")
-                .SetPrimaryKey(y => y.EventId);
+                .SetPrimaryKey(y => y.ObjectId);
             
             SnowflakeSchemaRegistry.RegisterModel<TelemetryParameter>(modelRegistrations)
                 .SetTableName("ParameterDetails")
-                .SetPrimaryKey(y => y.ParameterId);
+                .SetPrimaryKey(y => y.ObjectId);
+            
+            SnowflakeSchemaRegistry.RegisterModel<TelemetryEventGroup>(modelRegistrations)
+                .SetTableName("EventGroupDetails")
+                .SetPrimaryKey(y => y.ObjectId);
+
+            SnowflakeSchemaRegistry.RegisterModel<TelemetryParameterGroup>(modelRegistrations)
+                .SetTableName("ParameterGroupDetails")
+                .SetPrimaryKey(y => y.ObjectId);
             
             Registry = Build(modelRegistrations);
         }
@@ -137,11 +145,29 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 throw new NotImplementedException();
                 // Not sure how to handle
             }
+
+            if (this.ForeignMemberType.IsPrimitive || this.ForeignMemberType == typeof(string))
+            {
+                this.ColumnMemberInfos = null;
+            }
+            else
+            {
+                var propertiesOrFields = this.ForeignMemberType.GetMembers(BindingFlags.Public | BindingFlags.Instance)
+                    .Where(y => y.MemberType == MemberTypes.Field || y.MemberType == MemberTypes.Property).ToList();
+                if (propertiesOrFields.Any(y =>
+                    {
+                        var type = Utils.GetMemberInfoType(y);
+                        return typeof(IEnumerable).IsAssignableFrom(type) && typeof(string) != type;
+                    })) throw new Exception("Foreign table to a foreign table is not supported");
+                this.ColumnMemberInfos = propertiesOrFields;
+            }
         }
+
+        public IReadOnlyList<MemberInfo> ColumnMemberInfos { get; }
 
         public Type ForeignMemberType { get; }
 
-        public object ForeignTableName { get;  }
+        public string ForeignTableName { get;  }
 
         public MemberInfo ForeignMemberInfo { get;  }
         public string KeyInForeignTable { get; }
@@ -154,7 +180,11 @@ namespace Quix.Snowflake.Infrastructure.Shared
             this.TableName = tableName;
             this.PrimaryKeyMemberInfo = primaryKeyMemberInfo;
             this.ForeignTables = new ReadOnlyDictionary<MemberInfo, SnowflakeForeignTableSchema>(foreignTables);
+            var propertiesOrFields = primaryKeyMemberInfo.DeclaringType.GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(y=> y.MemberType == MemberTypes.Field || y.MemberType == MemberTypes.Property).Except(foreignTables.Keys).ToList();
+            this.ColumnMemberInfos = propertiesOrFields;
         }
+
+        public IReadOnlyList<MemberInfo> ColumnMemberInfos { get; }
 
         public IReadOnlyDictionary<MemberInfo, SnowflakeForeignTableSchema> ForeignTables { get; }
 

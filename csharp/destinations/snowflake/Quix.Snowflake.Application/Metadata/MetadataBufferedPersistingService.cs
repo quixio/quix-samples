@@ -373,7 +373,7 @@ namespace Quix.Snowflake.Application.Metadata
                     if (telemetryStream.Status != StreamStatus.Open && inactiveStatuses.Contains(telemetryStream.Status))
                     {
                         reopenedStreams++;
-                        requests.Add(new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y=> y.StreamId, streamUpdate.Key), Builders<TelemetryStream>.Update.Set(y=> y.Status, StreamStatus.Open)));
+                        requests.Add(new UpdateOneModel<TelemetryStream>(telemetryStream, Builders<TelemetryStream>.Update.Set(y=> y.Status, StreamStatus.Open)));
                         updateCounter++;
                     }
                     continue;
@@ -440,7 +440,7 @@ namespace Quix.Snowflake.Application.Metadata
                 
                 if (updateDefinitions.Count != 0)
                 {
-                    requests.Add(new UpdateOneModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y=> y.StreamId, streamUpdate.Key), Builders<TelemetryStream>.Update.Combine(updateDefinitions)));
+                    requests.Add(new UpdateOneModel<TelemetryStream>(telemetryStream, Builders<TelemetryStream>.Update.Combine(updateDefinitions)));
                     updateCounter++;
                 }
             }

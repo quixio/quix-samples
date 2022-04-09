@@ -1,10 +1,10 @@
 namespace Quix.Snowflake.Domain.Common
 {
-    public class DeleteOneModel<TModel> : WriteModel<TModel>
+    public class DeleteManyModel<TModel> : WriteModel<TModel>
     {
         public readonly FilterDefinition<TModel> Filter;
 
-        public DeleteOneModel(FilterDefinition<TModel> filter)
+        public DeleteManyModel(FilterDefinition<TModel> filter)
         {
             this.Filter = filter;
         }

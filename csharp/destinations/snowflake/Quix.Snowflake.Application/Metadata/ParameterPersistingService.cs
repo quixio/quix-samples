@@ -190,8 +190,7 @@ namespace Quix.Snowflake.Application.Metadata
                         
                         var eqStream = Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
                         var eqParamId = Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId);
-                        var filter = Builders<TelemetryParameter>.Filter.And(eqStream, eqParamId);
-                        paramRequests.Add(new UpdateOneModel<TelemetryParameter>(filter, Builders<TelemetryParameter>.Update.Combine(updateDefinitions)));
+                        paramRequests.Add(new UpdateOneModel<TelemetryParameter>(telemetryParameter, Builders<TelemetryParameter>.Update.Combine(updateDefinitions)));
                         paramUpdateCounter++;
                     }
                 }
@@ -222,8 +221,7 @@ namespace Quix.Snowflake.Application.Metadata
                             
                         var eqStream = Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
                         var eqParamId = Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId);
-                        var filter = Builders<TelemetryParameter>.Filter.And(eqStream, eqParamId);
-                        paramRequests.Add(new UpdateOneModel<TelemetryParameter>(filter, Builders<TelemetryParameter>.Update.Set(y => y.Type, paramIdToTypePair.Value)));
+                        paramRequests.Add(new UpdateOneModel<TelemetryParameter>(telemetryParameter, Builders<TelemetryParameter>.Update.Set(y => y.Type, paramIdToTypePair.Value)));
                         paramUpdateCounter++;
                     }
 
@@ -327,7 +325,7 @@ namespace Quix.Snowflake.Application.Metadata
 
                         foreach (var telemetryParameter in delete)
                         {
-                            paramRequests.Add(new DeleteOneModel<TelemetryParameter>(Builders<TelemetryParameter>.Filter.And(Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, telemetryParameter.StreamId), Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId))));
+                            paramRequests.Add(new DeleteManyModel<TelemetryParameter>(Builders<TelemetryParameter>.Filter.And(Builders<TelemetryParameter>.Filter.Eq(y => y.StreamId, telemetryParameter.StreamId), Builders<TelemetryParameter>.Filter.Eq(y => y.ParameterId, telemetryParameter.ParameterId))));
                         }
 
                         this.cachedTelemetryParameters[telemetryStreamParams.Key] = telemetryStreamParams.Select(y => y).Except(delete).ToDictionary(y => y.ParameterId, y => y);
@@ -387,10 +385,10 @@ namespace Quix.Snowflake.Application.Metadata
 
                     var updateDefinitions = new List<UpdateDefinition<TelemetryParameterGroup>>();
 
-                    void UpdateProperty<T>(Expression<Func<TelemetryParameterGroup, T>> selector, T newVal, TelemetryParameterGroup cachedParam)
+                    void UpdateProperty<T>(Expression<Func<TelemetryParameterGroup, T>> selector, T newVal, TelemetryParameterGroup cachedParamGroup)
                     {
                         var func = selector.Compile();
-                        var oldVal = func(cachedParam);
+                        var oldVal = func(cachedParamGroup);
                         if (newVal != null && (oldVal == null || !oldVal.Equals(newVal)))
                         {
                             updateDefinitions.Add(Builders<TelemetryParameterGroup>.Update.Set(selector, newVal));
@@ -401,7 +399,7 @@ namespace Quix.Snowflake.Application.Metadata
                             }
 
                             var prop = (PropertyInfo) ((MemberExpression) body).Member;
-                            prop.SetValue(cachedParam, newVal, null);
+                            prop.SetValue(cachedParamGroup, newVal, null);
                         }
                     }
 
@@ -414,8 +412,7 @@ namespace Quix.Snowflake.Application.Metadata
                     {
                         var eqStream = Builders<TelemetryParameterGroup>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
                         var eqParamId = Builders<TelemetryParameterGroup>.Filter.Eq(y => y.Path, telemetryParameterGroup.Path);
-                        var filter = Builders<TelemetryParameterGroup>.Filter.And(eqStream, eqParamId);
-                        paramGroupRequests.Add(new UpdateOneModel<TelemetryParameterGroup>(filter, Builders<TelemetryParameterGroup>.Update.Combine(updateDefinitions)));
+                        paramGroupRequests.Add(new UpdateOneModel<TelemetryParameterGroup>(telemetryParameterGroup, Builders<TelemetryParameterGroup>.Update.Combine(updateDefinitions)));
                         paramGroupUpdateCounter++;
                     }
                 }
@@ -478,7 +475,7 @@ namespace Quix.Snowflake.Application.Metadata
                         foreach (var telemetryParameter in delete)
                         {
                             paramGroupRequests.Add(
-                                new DeleteOneModel<TelemetryParameterGroup>(Builders<TelemetryParameterGroup>.Filter.And(Builders<TelemetryParameterGroup>.Filter.Eq(y => y.StreamId, telemetryParameter.StreamId), Builders<TelemetryParameterGroup>.Filter.Eq(y => y.Path, telemetryParameter.Path))));
+                                new DeleteManyModel<TelemetryParameterGroup>(Builders<TelemetryParameterGroup>.Filter.And(Builders<TelemetryParameterGroup>.Filter.Eq(y => y.StreamId, telemetryParameter.StreamId), Builders<TelemetryParameterGroup>.Filter.Eq(y => y.Path, telemetryParameter.Path))));
                         }
 
                         this.cachedTelemetryParameterGroups[telemetryStreamParamGroups.Key] = telemetryStreamParamGroups.Select(y => y).Except(delete).ToDictionary(y => y.Path, y => y);

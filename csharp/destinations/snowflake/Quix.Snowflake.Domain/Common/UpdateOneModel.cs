@@ -2,12 +2,12 @@ namespace Quix.Snowflake.Domain.Common
 {
     public class UpdateOneModel<TModel> : WriteModel<TModel>
     {
-        public readonly FilterDefinition<TModel> Filter;
+        public readonly TModel ModelToUpdate;
         public readonly UpdateDefinition<TModel> Update;
 
-        public UpdateOneModel(FilterDefinition<TModel> filter, UpdateDefinition<TModel> update)
+        public UpdateOneModel(TModel modelToUpdate, UpdateDefinition<TModel> update)
         {
-            this.Filter = filter;
+            ModelToUpdate = modelToUpdate;
             this.Update = update;
         }
     }

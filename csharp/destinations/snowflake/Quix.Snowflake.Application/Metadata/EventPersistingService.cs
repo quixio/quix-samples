@@ -164,8 +164,7 @@ namespace Quix.Snowflake.Application.Metadata
                         
                         var eqStream = Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
                         var eqEventId = Builders<TelemetryEvent>.Filter.Eq(y => y.EventId, telemetryEvent.EventId);
-                        var filter = Builders<TelemetryEvent>.Filter.And(eqStream, eqEventId);
-                        eventRequests.Add(new UpdateOneModel<TelemetryEvent>(filter, Builders<TelemetryEvent>.Update.Combine(updateDefinitions)));
+                        eventRequests.Add(new UpdateOneModel<TelemetryEvent>(telemetryEvent, Builders<TelemetryEvent>.Update.Combine(updateDefinitions)));
                         eventUpdateCounter++;
                     }
                 }
@@ -289,7 +288,7 @@ namespace Quix.Snowflake.Application.Metadata
 
                         foreach (var telemetryEvent in delete)
                         {
-                            eventRequests.Add(new DeleteOneModel<TelemetryEvent>(Builders<TelemetryEvent>.Filter.And(Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, telemetryEvent.StreamId), Builders<TelemetryEvent>.Filter.Eq(y => y.EventId, telemetryEvent.EventId))));
+                            eventRequests.Add(new DeleteManyModel<TelemetryEvent>(Builders<TelemetryEvent>.Filter.And(Builders<TelemetryEvent>.Filter.Eq(y => y.StreamId, telemetryEvent.StreamId), Builders<TelemetryEvent>.Filter.Eq(y => y.EventId, telemetryEvent.EventId))));
                         }
 
                         this.cachedTelemetryEvents[telemetryStreamEvents.Key] = telemetryStreamEvents.Select(y => y).Except(delete).ToDictionary(y => y.EventId, y => y);
@@ -349,10 +348,10 @@ namespace Quix.Snowflake.Application.Metadata
 
                     var updateDefinitions = new List<UpdateDefinition<TelemetryEventGroup>>();
 
-                    void UpdateProperty<T>(Expression<Func<TelemetryEventGroup, T>> selector, T newVal, TelemetryEventGroup cachedEvent)
+                    void UpdateProperty<T>(Expression<Func<TelemetryEventGroup, T>> selector, T newVal, TelemetryEventGroup cachedEventGroup)
                     {
                         var func = selector.Compile();
-                        var oldVal = func(cachedEvent);
+                        var oldVal = func(cachedEventGroup);
                         if (newVal != null && (oldVal == null || !oldVal.Equals(newVal)))
                         {
                             updateDefinitions.Add(Builders<TelemetryEventGroup>.Update.Set(selector, newVal));
@@ -363,7 +362,7 @@ namespace Quix.Snowflake.Application.Metadata
                             }
 
                             var prop = (PropertyInfo) ((MemberExpression) body).Member;
-                            prop.SetValue(cachedEvent, newVal, null);
+                            prop.SetValue(cachedEventGroup, newVal, null);
                         }
                     }
 
@@ -376,8 +375,7 @@ namespace Quix.Snowflake.Application.Metadata
                     {
                         var eqStream = Builders<TelemetryEventGroup>.Filter.Eq(y => y.StreamId, streamUpdate.Key);
                         var eqEventId = Builders<TelemetryEventGroup>.Filter.Eq(y => y.Path, telemetryEventGroup.Path);
-                        var filter = Builders<TelemetryEventGroup>.Filter.And(eqStream, eqEventId);
-                        eventGroupRequests.Add(new UpdateOneModel<TelemetryEventGroup>(filter, Builders<TelemetryEventGroup>.Update.Combine(updateDefinitions)));
+                        eventGroupRequests.Add(new UpdateOneModel<TelemetryEventGroup>(telemetryEventGroup, Builders<TelemetryEventGroup>.Update.Combine(updateDefinitions)));
                         eventGroupUpdateCounter++;
                     }
                 }
@@ -439,7 +437,7 @@ namespace Quix.Snowflake.Application.Metadata
 
                         foreach (var telemetryEvent in delete)
                         {
-                            eventGroupRequests.Add(new DeleteOneModel<TelemetryEventGroup>(Builders<TelemetryEventGroup>.Filter.And(Builders<TelemetryEventGroup>.Filter.Eq(y => y.StreamId, telemetryEvent.StreamId), Builders<TelemetryEventGroup>.Filter.Eq(y => y.Path, telemetryEvent.Path))));
+                            eventGroupRequests.Add(new DeleteManyModel<TelemetryEventGroup>(Builders<TelemetryEventGroup>.Filter.And(Builders<TelemetryEventGroup>.Filter.Eq(y => y.StreamId, telemetryEvent.StreamId), Builders<TelemetryEventGroup>.Filter.Eq(y => y.Path, telemetryEvent.Path))));
                         }
 
                         this.cachedTelemetryEventGroups[telemetryStreamEventGroups.Key] = telemetryStreamEventGroups.Select(y => y).Except(delete).ToDictionary(y => y.Path, y => y);

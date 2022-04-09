@@ -29,6 +29,13 @@ namespace Quix.Snowflake.Domain.Common
             }
         }
 
+        public static object GetFieldOrPropValue(MemberInfo member, object instance)
+        {
+            return member.MemberType == MemberTypes.Field
+                ? ((FieldInfo)member).GetValue(instance)
+                : ((PropertyInfo)member).GetValue(instance);
+        }
+
         public static string UnPluralize(string plural)
         {
             if (!plural.EndsWith("s")) return plural;
