@@ -106,6 +106,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
         private void ExecuteStatement(string statement)
         {
             if (string.IsNullOrWhiteSpace(statement)) return;
+            var timer = InaccurateSharedTimer.Instance.Subscribe(10, () => this.logger.LogInformation("Executing metadata Snowflake statement is taking longer (10+ seconds) than expected..."));
             this.logger.LogTrace("Executing Snowflake statement:{0}{1}", Environment.NewLine, statement);
             var sw = Stopwatch.StartNew();
             try
@@ -116,6 +117,10 @@ namespace Quix.Snowflake.Infrastructure.Shared
             {
                 this.logger.LogError("Failed to execute Snowflake statement:{0}{1}", Environment.NewLine, statement);
                 throw;
+            }
+            finally
+            {
+                timer.Dispose();
             }
 
             sw.Stop();

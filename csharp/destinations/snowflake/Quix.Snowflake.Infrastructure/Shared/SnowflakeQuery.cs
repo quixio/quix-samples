@@ -18,6 +18,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
             {
                 IDbCommand cmd = dbConnection.CreateCommand();
                 cmd.CommandText = sql;
+                cmd.CommandTimeout = 30;
                 return cmd.ExecuteNonQuery();
             }
             catch (Exception e)

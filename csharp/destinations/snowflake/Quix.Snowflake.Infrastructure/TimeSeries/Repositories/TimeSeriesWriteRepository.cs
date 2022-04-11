@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.TimeSeries.Models;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
 using Quix.Snowflake.Infrastructure.Shared;
@@ -477,6 +478,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         private void ExecuteStatement(string statement)
         {
             if (string.IsNullOrWhiteSpace(statement)) return;
+            var timer = InaccurateSharedTimer.Instance.Subscribe(10, () => this.logger.LogInformation("Executing data write Snowflake statement is taking longer (10+ seconds) than expected..."));
             //this.logger.LogTrace("Executing Snowflake statement:{0}{1}", Environment.NewLine, statement);
             var sw = Stopwatch.StartNew();
             try
@@ -487,6 +489,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             {
                 this.logger.LogError("Failed to execute Snowflake statement:{0}{1}", Environment.NewLine, statement);
                 throw;
+            }
+            finally
+            {
+                timer.Dispose();
             }
 
             sw.Stop();
