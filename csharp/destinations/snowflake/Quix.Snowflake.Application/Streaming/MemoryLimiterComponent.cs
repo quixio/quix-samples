@@ -23,6 +23,7 @@ namespace Quix.Snowflake.Application.Streaming
         private bool disposed = false;
         private const int TimerInterval = 50; // 50 ms
         private Process process = System.Diagnostics.Process.GetCurrentProcess();
+        private DateTime nextForcedGCAllowedAt = DateTime.MinValue;
 
         public MemoryLimiterComponent(ILogger<MemoryLimiterComponent> logger, int absoluteMaxMegabyteLimit, int memoryLimitPercentage)
         {
@@ -42,7 +43,18 @@ namespace Quix.Snowflake.Application.Streaming
             }
             else
             {
-                if (!this.disposed) this.timer.Change(TimerInterval, Timeout.Infinite);
+                if (!this.disposed)
+                {
+                    if (nextForcedGCAllowedAt < DateTime.UtcNow)
+                    {
+                        nextForcedGCAllowedAt = DateTime.UtcNow.AddSeconds(15);
+                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                        GC.WaitForPendingFinalizers();
+                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                    }
+
+                    this.timer.Change(TimerInterval, Timeout.Infinite);
+                }
             }
         }
 
