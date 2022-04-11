@@ -88,7 +88,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 
                 while (existingColumnNameReader.Read())
                 {
-                    parameterColumns.Add(existingColumnNameReader.GetString(0));    
+                    columns.Add(existingColumnNameReader.GetString(0));    
                 }
                 
                 this.logger.LogInformation($"Table {requiredTable} verified");
