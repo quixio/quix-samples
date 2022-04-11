@@ -85,9 +85,9 @@ namespace Quix.Snowflake.Application.TimeSeries
             };
             
             var saveTakingLongTimer = new System.Timers.Timer();
-            timer.AutoReset = false;
-            timer.Interval = 10000;
-            timer.Elapsed += (s, a) =>
+            saveTakingLongTimer.AutoReset = false;
+            saveTakingLongTimer.Interval = 10000;
+            saveTakingLongTimer.Elapsed += (s, a) =>
             {
                 this.logger.LogDebug("Saving parameter values is taking longer than expected...");
             };
@@ -212,9 +212,9 @@ namespace Quix.Snowflake.Application.TimeSeries
             };
             
             var saveTakingLongTimer = new System.Timers.Timer();
-            timer.AutoReset = false;
-            timer.Interval = 10000;
-            timer.Elapsed += (s, a) =>
+            saveTakingLongTimer.AutoReset = false;
+            saveTakingLongTimer.Interval = 10000;
+            saveTakingLongTimer.Elapsed += (s, a) =>
             {
                 this.logger.LogDebug("Saving event values is taking longer than expected...");
             };
