@@ -135,7 +135,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
             var sw = Stopwatch.StartNew();
             var reader = SnowflakeDbConnection.QuerySnowflake(selectStatement);
             sw.Stop();
-            this.logger.LogDebug("Executed Snowflake query statement in {0}:G: {1}", sw.Elapsed, selectStatement);
+            this.logger.LogDebug("Executed Snowflake query statement in {0:g}: {1}", sw.Elapsed, selectStatement);
             var result = ParseModels<T>(reader, primaryfieldMap, this.schema.TypeMapFrom).ToList();
             
             // TODO set foreign table values ... Would reduce the updates on first encounter, but after that it is cached anyway...
