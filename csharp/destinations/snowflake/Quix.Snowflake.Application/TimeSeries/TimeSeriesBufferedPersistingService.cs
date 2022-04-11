@@ -84,6 +84,15 @@ namespace Quix.Snowflake.Application.TimeSeries
                 }
             };
             
+            var saveTakingLongTimer = new System.Timers.Timer();
+            timer.AutoReset = false;
+            timer.Interval = 10000;
+            timer.Elapsed += (s, a) =>
+            {
+                this.logger.LogDebug("Saving parameter values is taking longer than expected...");
+            };
+
+            
             var batch = new StreamParameterDataForWrite[this.maxBatchSize]; // reuse array and avoid always resizing a list to fit new elements
             while(true)
             {
@@ -134,8 +143,10 @@ namespace Quix.Snowflake.Application.TimeSeries
                     if (batchSize > 0)
                     {
                         var sw = Stopwatch.StartNew();
+                        saveTakingLongTimer.Start();
                         await this.SendBatch(batch, batchIndex, batchSize);
                         sw.Stop();
+                        saveTakingLongTimer.Stop();
 
                         if (isCommitQueue)  this.logger.LogDebug("Saved {0} parameter values for topic {1} as part of a commit in {2:g}", batchSize, this.topicId, sw.Elapsed);
                         else this.logger.LogDebug("Saved {0} parameter values for topic {1} in {2:g}.", batchSize, this.topicId, sw.Elapsed);
@@ -198,6 +209,14 @@ namespace Quix.Snowflake.Application.TimeSeries
                     timer.Stop();
                     mre.Release();
                 }
+            };
+            
+            var saveTakingLongTimer = new System.Timers.Timer();
+            timer.AutoReset = false;
+            timer.Interval = 10000;
+            timer.Elapsed += (s, a) =>
+            {
+                this.logger.LogDebug("Saving event values is taking longer than expected...");
             };
             
             var batch = new StreamEventDataForWrite[this.maxBatchSize]; // reuse array and avoid always resizing a list to fit new elements
@@ -270,12 +289,14 @@ namespace Quix.Snowflake.Application.TimeSeries
                                     streamEvents.Rows.GroupBy(@event => @event.Timestamp).SelectMany(Convert)).Select(converted =>
                                     new KeyValuePair<string, IEnumerable<EventDataRow>>(streamIdToEvents.Key, converted)));
 
+                        saveTakingLongTimer.Start();
                         await this.timeSeriesWriteRepository.WriteTelemetryEvent(this.topicId, rows);
                         for (int i = 0; i < batchSize; i++)
                         {
                             batch[i] = null; // free it up, in case near future batches don't take as much
                         }
                         sw.Stop();
+                        saveTakingLongTimer.Stop();
 
                         if (isCommitQueue)  this.logger.LogDebug("Saved {0} event values for topic {1} as part of a commit in {2:g}", batchSize, this.topicId, sw.Elapsed);
                         else this.logger.LogDebug("Saved {0} event values for topic {1} in {2:g}.", batchSize, this.topicId, sw.Elapsed);
