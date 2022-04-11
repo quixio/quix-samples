@@ -32,6 +32,13 @@ namespace Quix.Snowflake.Domain.Models
     [DebuggerDisplay("{StreamId}, {Name}")]
     public class TelemetryStream
     {
+        /// <summary>
+        /// Purely here for deserialization purposes
+        /// </summary>
+        public TelemetryStream()
+        {
+        }
+        
         public TelemetryStream(string streamId)
         {
             this.StreamId = streamId ?? throw new ArgumentNullException(nameof(streamId));

@@ -11,11 +11,7 @@ namespace Quix.Snowflake.Domain.Repositories
     /// </summary>
     public interface IParameterRepository
     {
-        /// <summary>
-        /// Gets all parameters as queryable for further filtering
-        /// </summary>
-        /// <returns>Queryable telemetry parameters</returns>
-        IQueryable<TelemetryParameter> GetAll();
+        Task<IList<TelemetryParameter>> Get(FilterDefinition<TelemetryParameter> filter);
         
         /// <summary>
         /// Bulk write capable of updating/inserting/deleting multiple things at a time

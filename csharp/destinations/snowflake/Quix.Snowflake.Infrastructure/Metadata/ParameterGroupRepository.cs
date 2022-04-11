@@ -11,7 +11,7 @@ namespace Quix.Snowflake.Infrastructure.Metadata
 {
     public class ParameterGroupRepository : SnowflakeRepository<TelemetryParameterGroup>, IParameterGroupRepository
     {
-        public ParameterGroupRepository(IDbConnection dbConnection, ILoggerFactory loggerFactory) : base(dbConnection, loggerFactory.CreateLogger<ParameterGroupRepository>())
+        public ParameterGroupRepository(IDbConnection snowflakeDbConnection, ILoggerFactory loggerFactory) : base(snowflakeDbConnection, loggerFactory.CreateLogger<ParameterGroupRepository>())
         {
         }
     }

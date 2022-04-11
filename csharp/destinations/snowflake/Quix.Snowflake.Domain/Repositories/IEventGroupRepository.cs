@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
@@ -15,7 +14,7 @@ namespace Quix.Snowflake.Domain.Repositories
         /// Gets all event groups as queryable for further filtering
         /// </summary>
         /// <returns>Queryable telemetry event groups</returns>
-        IQueryable<TelemetryEventGroup> GetAll();
+        Task<IList<TelemetryEventGroup>> Get(FilterDefinition<TelemetryEventGroup> filter);
         
         /// <summary>
         /// Bulk write capable of updating/inserting/deleting multiple things at a time

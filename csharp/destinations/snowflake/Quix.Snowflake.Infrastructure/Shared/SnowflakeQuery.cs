@@ -3,16 +3,16 @@ using System.Data;
 
 namespace Quix.Snowflake.Infrastructure.Shared
 {
-    public class SnowflakeQuery
+    public static class SnowflakeQueryExtensions
     {
-        public static IDataReader ExecuteSnowflakeRead(IDbConnection dbConnection, string sql)
+        public static IDataReader QuerySnowflake(this IDbConnection dbConnection, string sql)
         {
             IDbCommand cmd = dbConnection.CreateCommand();
             cmd.CommandText = sql;
             return cmd.ExecuteReader();
         }
 
-        public static int ExecuteSnowFlakeNonQuery(IDbConnection dbConnection, string sql)
+        public static int ExecuteSnowflakeStatement(this IDbConnection dbConnection, string sql)
         {
             try
             {

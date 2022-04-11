@@ -6,7 +6,10 @@ namespace Quix.Snowflake.Domain.Models
     [DebuggerDisplay("{Path}, {Name}")]
     public class TelemetryParameterGroup : IEquatable<TelemetryParameterGroup>
     {
-        internal TelemetryParameterGroup()
+        /// <summary>
+        /// Purely here for deserialization purposes
+        /// </summary>
+        public TelemetryParameterGroup()
         {
         }
 

@@ -23,10 +23,42 @@
 		  "Required": true
 		},
 		{
-		  "Name": "Snowflake__ConnectionString",
+		  "Name": "Snowflake__Locator",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The locator be found under Admin/Accounts or in the URL",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "Snowflake__Region",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "Check your snowflake url or readme for details to acquire the region",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "Snowflake__Database",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The name of the database to persist to",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "Snowflake__User",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The username of the user the sink should use to interact with the database",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "Snowflake__Password",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "HiddenText",
-		  "Description": "The Snowflake database connection string",
+		  "Description": "The password of the user",
 		  "DefaultValue": "",
 		  "Required": true
 		}

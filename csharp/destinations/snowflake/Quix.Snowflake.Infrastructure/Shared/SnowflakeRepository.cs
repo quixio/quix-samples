@@ -3,34 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Quix.Snowflake.Domain.Common;
-using Quix.Snowflake.Domain.Models;
 
 namespace Quix.Snowflake.Infrastructure.Shared
 {
-    public abstract class SnowflakeRepository<T>
+    public abstract class SnowflakeRepository<T> where T : new()
     {
-        protected readonly IDbConnection dbConnection;
+        protected readonly IDbConnection SnowflakeDbConnection;
         protected readonly ILogger logger;
         private readonly SnowflakeModelSchema schema;
+        private const string InformationSchema = "PUBLIC"; // Maybe this could come from config ?
 
-        protected SnowflakeRepository(IDbConnection dbConnection, ILogger logger)
+        protected SnowflakeRepository(IDbConnection snowflakeDbConnection, ILogger logger)
         {
-            this.dbConnection = dbConnection;
+            this.SnowflakeDbConnection = snowflakeDbConnection;
             this.logger = logger;
             this.schema = this.ValidateSchema();
-        }
-
-        private SnowflakeModelSchema ValidateSchema()
-        {
-            if (!SnowflakeSchemaRegistry.Registry.TryGetValue(typeof(T), out var snowflakeModelSchema)) throw new Exception($"Type {typeof(T)} has no snowflake schema registration");
-            // TODO could do automatic validation of tables there etc
-            return snowflakeModelSchema;
+            Initialize();
         }
 
         public Task BulkWrite(IEnumerable<WriteModel<T>> writeModels)
@@ -49,32 +44,95 @@ namespace Quix.Snowflake.Infrastructure.Shared
                         break;
                     case InsertOneModel<T> insertDefinition:
                         statements.AddRange(GenerateInsertStatement(insertDefinition));
-                        break;                        
+                        break;
                 }
             }
 
             var squashedStatements = SquashStatements(statements);
 
-            var sb = new StringBuilder();
-            var first = true;
             foreach (var statement in squashedStatements)
             {
-                if (!first) sb.AppendLine(";");
-                first = false;
-                sb.Append(statement);
-            }
+                this.logger.LogDebug("Executing Snowflake query: {1}", statement);
+                SnowflakeDbConnection.ExecuteSnowflakeStatement(statement);
 
-            var updateStatement = sb.ToString();
-            // TODO do something with it
-            this.logger.LogInformation("Snowflake queries:{0}{1}", Environment.NewLine, updateStatement);
+            }
             return Task.CompletedTask;
+        }
+
+        public Task<IList<T>> Get(FilterDefinition<T> filter)
+        {
+            var filterStatement = GenerateFilterStatement(filter, false);
+            if (!string.IsNullOrWhiteSpace(filterStatement)) filterStatement = $" WHERE {filterStatement}";
+            
+            // Primary Table
+            var primaryfieldMap = this.schema.ColumnMemberInfos.ToDictionary(y => y, GetColumName).ToList(); // Guarantee AN order
+            var columns = string.Join(", ", primaryfieldMap.Select(y=> y.Value));
+            var selectStatement = $"SELECT {columns} FROM {this.schema.TableName}{filterStatement}";
+            this.logger.LogDebug("Snowflake query statement: {0}", selectStatement);
+            var reader = SnowflakeDbConnection.QuerySnowflake(selectStatement);
+            var result = ParseModels<T>(reader, primaryfieldMap, this.schema.TypeMapFrom).ToList();
+            
+            // TODO set foreign table values ... Would reduce the updates on first encounter, but after that it is cached anyway...
+
+            return Task.FromResult(result as IList<T>);
+        }
+
+        private IEnumerable<K> ParseModels<K>(IDataReader reader, List<KeyValuePair<MemberInfo, string>> keyValuePairs, Dictionary<MemberInfo, Dictionary<object, object>> memberMap) where K : new()
+        {
+            var values = new object[keyValuePairs.Count];
+            
+            while (reader.Read())
+            {
+                var model = new K();
+                reader.GetValues(values);
+                var counter = 0;
+                foreach (var field in keyValuePairs)
+                {
+                    var value = values[counter];
+                    if (memberMap != null && memberMap.TryGetValue(field.Key, out var map))
+                    {
+                        value = map[value];
+                    }
+
+                    if (value == DBNull.Value) value = null;
+                    try
+                    {
+                        Utils.SetFieldOrPropValue(field.Key, model, value);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (value == null) logger.LogError("Failed to set field {0} to value {1}", field.Key.Name, value);
+                        else
+                        {
+                            var valType = value.GetType();
+                            var targetType = Utils.GetMemberInfoType(field.Key);
+                            if (valType == targetType)
+                            {
+                                logger.LogError("Failed to set field {0} to value {1}", field.Key.Name, value);
+                            }
+
+                            var asNullable = Nullable.GetUnderlyingType(targetType);
+                            if (asNullable != null) targetType = asNullable;
+
+                            value = Convert.ChangeType(value, targetType);
+                            Utils.SetFieldOrPropValue(field.Key, model, value);
+                        }
+
+                    }
+
+                    counter++;
+                }
+                yield return model;
+            }
         }
 
         private IEnumerable<string> GenerateDeleteStatement(DeleteManyModel<T> deleteDefinition)
         {
             var filterStatement = GenerateFilterStatement(deleteDefinition.Filter, true);
             List<KeyValuePair<MemberInfo, SnowflakeForeignTableSchema>> foreignTablesInvolved;
-            foreignTablesInvolved = !string.IsNullOrWhiteSpace(filterStatement) ? this.schema.ForeignTables.Where(y => filterStatement.Contains($" {y.Value.ForeignTableName}.")).ToList() : new List<KeyValuePair<MemberInfo, SnowflakeForeignTableSchema>>();
+            foreignTablesInvolved = !string.IsNullOrWhiteSpace(filterStatement)
+                ? this.schema.ForeignTables.Where(y => filterStatement.Contains($" {y.Value.ForeignTableName}.")).ToList()
+                : new List<KeyValuePair<MemberInfo, SnowflakeForeignTableSchema>>();
 
             if (this.schema.ForeignTables.Any(y => filterStatement.Contains($" {y.Value.ForeignTableName}.")))
             {
@@ -103,7 +161,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
                     sb.Append(" = ");
                     sb.Append(this.schema.TableName);
                     sb.Append(".");
-                    sb.Append(this.schema.PrimaryKeyMemberInfo.Name);
+                    sb.Append(GetColumName(this.schema.PrimaryKeyMemberInfo));
                 }
 
                 yield return sb.ToString();
@@ -121,10 +179,11 @@ namespace Quix.Snowflake.Infrastructure.Shared
             {
                 if (string.IsNullOrWhiteSpace(filterStatement))
                 {
-                    yield return $"DELETE FROM {pair.Value.ForeignTableName} USING {this.schema.TableName} WHERE {pair.Value.ForeignTableName}.{pair.Value.KeyInForeignTable} = {this.schema.TableName}.{this.schema.PrimaryKeyMemberInfo.Name}";
+                    yield return $"DELETE FROM {pair.Value.ForeignTableName} USING {this.schema.TableName} WHERE {pair.Value.ForeignTableName}.{pair.Value.KeyInForeignTable} = {this.schema.TableName}.{GetColumName(this.schema.PrimaryKeyMemberInfo)}";
                     continue;
                 }
-                yield return $"DELETE FROM {pair.Value.ForeignTableName} USING (select {this.schema.PrimaryKeyMemberInfo.Name} as {this.schema.PrimaryKeyMemberInfo.Name} from {this.schema.TableName} WHERE {filterStatement}) as {this.schema.TableName} WHERE {pair.Value.ForeignTableName}.{pair.Value.KeyInForeignTable} = {this.schema.TableName}.{this.schema.PrimaryKeyMemberInfo.Name}";
+
+                yield return $"DELETE FROM {pair.Value.ForeignTableName} USING (select {GetColumName(this.schema.PrimaryKeyMemberInfo)} as {GetColumName(this.schema.PrimaryKeyMemberInfo)} from {this.schema.TableName} WHERE {filterStatement}) as {this.schema.TableName} WHERE {pair.Value.ForeignTableName}.{pair.Value.KeyInForeignTable} = {this.schema.TableName}.{GetColumName(this.schema.PrimaryKeyMemberInfo)}";
             }
         }
 
@@ -133,7 +192,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
             var updateRegex = new Regex("^UPDATE (.+) SET (.+) WHERE (.+)$", RegexOptions.Compiled);
             string previousStatement = null;
             Match previousMatch = null;
-            
+
             foreach (var statement in statements)
             {
                 var result = updateRegex.Match(statement);
@@ -164,49 +223,65 @@ namespace Quix.Snowflake.Infrastructure.Shared
                         }
                     }
                 }
+
                 previousMatch = result;
                 previousStatement = statement;
             }
+
             yield return previousStatement;
         }
-        
-                
+
+
         private IEnumerable<string> GenerateUpdateStatement(UpdateOneModel<T> model)
         {
             return GenerateUpdateModelStatement(model.ModelToUpdate, model.Update);
         }
-        
+
         private IEnumerable<string> GenerateUpdateModelStatement(T primaryModel, UpdateDefinition<T> updateDefinition, string mainTableFilter = null)
         {
-            var filter = mainTableFilter ?? $"{this.schema.PrimaryKeyMemberInfo.Name} = {GenerateSqlValueText(Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, primaryModel))}";
+            var filter = mainTableFilter ?? $"{GetColumName(this.schema.PrimaryKeyMemberInfo)} = {GenerateSqlValueText(Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, primaryModel))}";
             switch (updateDefinition)
             {
                 case SetUpdateDefinition<T> setUpdateDefinition:
-                    var memberExpression = Utils.GetMemberExpression(setUpdateDefinition.Selector);
+                    MemberExpression memberExpression = null;
+                    try
+                    {
+                        memberExpression = Utils.GetMemberExpression(setUpdateDefinition.Selector);
+                    }
+                    catch (Exception ex)
+                    {
+                        
+                    }
+
                     if (!this.schema.ForeignTables.TryGetValue(memberExpression.Member, out var foreignTable))
                     {
                         var filterToUse = string.IsNullOrWhiteSpace(filter) ? filter : " WHERE " + filter;
-                        yield return $"UPDATE {schema.TableName} SET {memberExpression.Member.Name} = {GenerateSqlValueText(setUpdateDefinition.Value)}{filterToUse}";
+                        yield return $"UPDATE {schema.TableName} SET {GetColumName(memberExpression.Member)} = {GenerateSqlValueText(setUpdateDefinition.Value)}{filterToUse}";
                         yield break;
                     }
 
                     var fullFilter = mainTableFilter ?? $"{this.schema.TableName}.{filter}";
                     if (!string.IsNullOrWhiteSpace(fullFilter)) fullFilter = " AND " + fullFilter;
-                    yield return $"DELETE FROM {foreignTable.ForeignTableName} using {this.schema.TableName} where {foreignTable.ForeignTableName}.{foreignTable.KeyInForeignTable} = {this.schema.TableName}.{this.schema.PrimaryKeyMemberInfo.Name}{fullFilter}";
-                    yield return GenerateForeignTableInsertStatement(foreignTable, setUpdateDefinition.Value as IEnumerable, Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, primaryModel));
+                    yield return
+                        $"DELETE FROM {foreignTable.ForeignTableName} using {this.schema.TableName} where {foreignTable.ForeignTableName}.{foreignTable.KeyInForeignTable} = {this.schema.TableName}.{GetColumName(this.schema.PrimaryKeyMemberInfo)}{fullFilter}";
+                    
+                    var vals =  GenerateForeignTableInsertStatement(foreignTable, setUpdateDefinition.Value as IEnumerable, Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, primaryModel));
+                    if (!string.IsNullOrWhiteSpace(vals)) yield return vals;
                     yield break;
                 case MultipleUpdateDefinition<T> setUpdateDefinition:
-                    foreach (var statement in setUpdateDefinition.UpdateDefinitions.SelectMany(updateDefinition => GenerateUpdateModelStatement(primaryModel, updateDefinition, mainTableFilter)))
+                    foreach (var statement in setUpdateDefinition.UpdateDefinitions.SelectMany(updateDefinition =>
+                                 GenerateUpdateModelStatement(primaryModel, updateDefinition, mainTableFilter)))
                     {
                         yield return statement;
                     }
+
                     yield break;
                 default:
-                    throw new NotImplementedException($"The update definition type {updateDefinition.GetType()} is not supported");                
+                    throw new NotImplementedException($"The update definition type {updateDefinition.GetType()} is not supported");
             }
         }
-        
-        
+
+
         private string GenerateFilterStatement(FilterDefinition<T> filter, bool includeTable)
         {
             if (filter == null) return string.Empty;
@@ -216,24 +291,38 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 case EqFilterDefinition<T> eqFilter:
                     var memberExpression = Utils.GetMemberExpression(eqFilter.Selector);
                     return GetMemberExpressionNameForColumn(memberExpression.Member, includeTable) + " = " + GenerateSqlValueText(eqFilter.Value);
-                    break;
                 case AndFilterDefinition<T> andFilter:
-                    return string.Join(" AND ", andFilter.FilterDefinitions.Select(y=> GenerateFilterStatement(y, includeTable)));
-                    break;                
+                    return string.Join(" AND ", andFilter.FilterDefinitions.Select(y => GenerateFilterStatement(y, includeTable)));
+                case InFilterDefinition<T> inFilter:
+                    var vals = GenerateValueListStatement(inFilter.Values);
+                    if (string.IsNullOrWhiteSpace(vals)) return "FALSE";
+                    memberExpression = Utils.GetMemberExpression(inFilter.Selector);
+                    return $"{GetMemberExpressionNameForColumn(memberExpression.Member, includeTable)} IN ({vals})";
+                case NotFilterDefinition<T> notFilter:
+                    switch (notFilter.Filter)
+                    {
+                        case InFilterDefinition<T>:
+                            return $"NOT {GenerateFilterStatement(notFilter.Filter, includeTable)}";
+                        case EqFilterDefinition<T>:
+                            var statement = GenerateFilterStatement(notFilter.Filter, includeTable);
+                            var firstEq = statement.IndexOf(" = ");
+                            statement = statement.Substring(0, firstEq) + " != " + statement.Substring(firstEq + 3);
+                            return statement;
+                    }
+
+                    return $"NOT ({GenerateFilterStatement(notFilter.Filter, includeTable)})";
                 default:
                     throw new NotImplementedException($"The filter type {filter.GetType()} is not supported");
             }
-            // TODO
-            throw new NotImplementedException();
         }
 
         private string GetMemberExpressionNameForColumn(MemberInfo memberInfo, bool includeTable)
         {
-            if (!includeTable) return memberInfo.Name;
-            if (memberInfo.DeclaringType == typeof(T)) return $"{this.schema.TableName}.{memberInfo.Name}";
+            if (!includeTable) return GetColumName(memberInfo);
+            if (memberInfo.DeclaringType == typeof(T)) return $"{this.schema.TableName}.{GetColumName(memberInfo)}";
             if (!this.schema.ForeignTables.TryGetValue(memberInfo, out var foreignTable)) throw new Exception("Missing foreign table to build name expression");
             throw new NotImplementedException("Foreign table conditions are not yet properly supported");
-            return $"{foreignTable.ForeignTableName}.{memberInfo.Name}";
+            return $"{foreignTable.ForeignTableName}.{GetColumName(memberInfo)}";
         }
 
 
@@ -281,29 +370,40 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 values.Add(value);
                 if (!first) sb.Append(", ");
                 first = false;
-                sb.Append(schemaColumnMemberInfo.Name);
+                sb.Append(GetColumName(schemaColumnMemberInfo));
             }
-            
+
             sb.Append(") VALUES (");
-            
-            first = true;
+            GenerateValueListStatement(values, sb);
+            sb.Append(")");
+            yield return sb.ToString();
+
+            // Add foreign elements
+            foreach (var pair in this.schema.ForeignTables)
+            {
+                var value = Utils.GetFieldOrPropValue(pair.Value.ForeignMemberInfo, model.Model);
+                if (value == null) continue;
+                var vals = GenerateForeignTableInsertStatement(pair.Value, value as IEnumerable, Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, model.Model));
+                if (!string.IsNullOrWhiteSpace(vals)) yield return vals;
+            }
+        }
+
+        private static void GenerateValueListStatement(IEnumerable values, StringBuilder sb)
+        {
+            var first = true;
             foreach (var value in values)
             {
                 if (!first) sb.Append(", ");
                 first = false;
                 sb.Append(GenerateSqlValueText(value));
             }
+        }
 
-            sb.Append(")");
-            yield return sb.ToString();
-            
-            // Add foreign elements
-            foreach (var pair in this.schema.ForeignTables)
-            {
-                var value = Utils.GetFieldOrPropValue(pair.Value.ForeignMemberInfo, model.Model);
-                if (value == null) continue;
-                yield return GenerateForeignTableInsertStatement(pair.Value, value as IEnumerable, Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, model.Model));
-            }
+        private static string GenerateValueListStatement(IEnumerable values)
+        {
+            var sb = new StringBuilder();
+            GenerateValueListStatement(values, sb);
+            return sb.ToString();
         }
 
         private string GenerateForeignTableInsertStatement(SnowflakeForeignTableSchema foreignTable, IEnumerable elements, object keyValueInForeignTable)
@@ -311,19 +411,20 @@ namespace Quix.Snowflake.Infrastructure.Shared
             var keyValue = GenerateSqlValueText(keyValueInForeignTable);
             if (foreignTable.ColumnMemberInfos == null)
             {
-                var columName = Utils.UnPluralize(foreignTable.ForeignMemberInfo.Name);
+                var columName = Utils.UnPluralize(GetColumName(foreignTable.ForeignMemberInfo));
                 var values = new List<string>();
                 foreach (var element in elements)
                 {
-                    var rowValues = new List<string> { keyValue, GenerateSqlValueText(element) };
-                    values.Add(string.Join(", ", rowValues));
+                    values.Add(GenerateValueListStatement(new[] { keyValue, element }));
                 }
+
+                if (values.Count == 0) return null;
 
                 return $"INSERT INTO {foreignTable.ForeignTableName} ({foreignTable.KeyInForeignTable}, {columName}) VALUES ({string.Join("), (", values)})";
             }
-            
+
             if (foreignTable.ColumnMemberInfos.Count == 0) throw new Exception($"Not able to save values for table {foreignTable.ForeignTableName} due to unhandled scenario");
-            var columnNames = foreignTable.ColumnMemberInfos.Select(y => y.Name).ToList();
+            var columnNames = foreignTable.ColumnMemberInfos.Select(GetColumName).ToList();
             var columnValues = new List<string>();
             foreach (var value in elements)
             {
@@ -334,15 +435,156 @@ namespace Quix.Snowflake.Infrastructure.Shared
                     if (typeof(IEnumerable).IsAssignableFrom(underlyingType) && typeof(string) != underlyingType) throw new Exception("Foreign table to a foreign table is not supported");
                     rowValues.Add(GenerateSqlValueText(Utils.GetFieldOrPropValue(propertiesOrField, value)));
                 }
+
                 columnValues.Add(string.Join(", ", rowValues));
             }
 
+            if (columnValues.Count == 0) return null;
+
             return $"INSERT INTO {foreignTable.ForeignTableName} ({foreignTable.KeyInForeignTable}, {string.Join(", ", columnNames)}) VALUES ({string.Join("), (", columnValues)})";
         }
-        
-        public IQueryable<T> GetAll()
+
+        private static string GetColumName(MemberInfo memberInfo)
         {
-            throw new System.NotImplementedException();
+            if (memberInfo == null) return null;
+            return ConvertToSnowflakeColumnName(memberInfo.Name);
         }
+        
+        private static string ConvertToSnowflakeColumnName(string name)
+        {
+            return $"\"{name.ToUpperInvariant()}\"";
+        }
+
+#region Initialize
+
+        private SnowflakeModelSchema ValidateSchema()
+        {
+            if (!SnowflakeSchemaRegistry.Registry.TryGetValue(typeof(T), out var snowflakeModelSchema))
+                throw new Exception($"Type {typeof(T)} has no snowflake schema registration");
+            return snowflakeModelSchema;
+        }
+
+        private void Initialize()
+        {
+            this.logger.LogDebug("Checking tables...");
+
+            // verify tables exist, if not create them
+            VerifyTables();
+
+            this.logger.LogInformation("Tables verified");
+        }
+
+        private bool TableExists(string table)
+        {
+            var checkForTableSql = $"SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table.ToUpperInvariant()}')";
+            var existingTablesReader = SnowflakeDbConnection.QuerySnowflake(checkForTableSql);
+
+            while (existingTablesReader.Read())
+            {
+                if (existingTablesReader.GetString(0) == "1")
+                    return true;
+            }
+
+            return false;
+        }
+
+        private void VerifyTables()
+        {
+            var expectedColumns = this.schema.ColumnMemberInfos.ToDictionary(GetColumName, y => MapDotnetTypeToSnowflakeType(Utils.GetMemberInfoType(y)));
+
+            VerifyTable(this.schema.TableName, expectedColumns, GetColumName(this.schema.ClusterKeyMemberInfo));
+
+            foreach (var foreignTableSchema in this.schema.ForeignTables)
+            {
+
+                var ftExpectedColumns = foreignTableSchema.Value.ColumnMemberInfos != null
+                        ? foreignTableSchema.Value.ColumnMemberInfos.ToDictionary(GetColumName, y => MapDotnetTypeToSnowflakeType(Utils.GetMemberInfoType(y)))
+                        : new Dictionary<string, string>() {{Utils.UnPluralize(GetColumName(foreignTableSchema.Value.ForeignMemberInfo)), MapDotnetTypeToSnowflakeType(foreignTableSchema.Value.ForeignMemberType)}};
+                ftExpectedColumns[ConvertToSnowflakeColumnName(foreignTableSchema.Value.KeyInForeignTable)] = MapDotnetTypeToSnowflakeType(Utils.GetMemberInfoType(this.schema.PrimaryKeyMemberInfo));
+
+                VerifyTable(foreignTableSchema.Value.ForeignTableName, ftExpectedColumns, ConvertToSnowflakeColumnName(foreignTableSchema.Value.KeyInForeignTable));
+            }
+        }
+
+        private void VerifyTable(string tableName, Dictionary<string, string> columnToTypes, string clusterColumn)
+        {
+            if (!TableExists(tableName))
+            {
+                // if not
+                // create the table
+                SnowflakeDbConnection.ExecuteSnowflakeStatement(
+                    $"CREATE TABLE {InformationSchema}.{tableName} ({string.Join(", ", columnToTypes.Select(y => $"{y.Key} {y.Value}"))})");
+
+                if (!string.IsNullOrEmpty(clusterColumn)) SnowflakeDbConnection.ExecuteSnowflakeStatement($"ALTER TABLE {InformationSchema}.{tableName} CLUSTER BY ({clusterColumn})");
+
+                this.logger.LogInformation($"Table {tableName} created");
+            }
+            else
+            {
+                // otherwise
+                // get the tables existing column names and add them to the list
+                var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{tableName.ToUpperInvariant()}'";
+                var existingColumnNameReader = SnowflakeDbConnection.QuerySnowflake(sql);
+
+                var cols = new List<string>();
+                while (existingColumnNameReader.Read())
+                {
+                    cols.Add(ConvertToSnowflakeColumnName(existingColumnNameReader.GetString(0)));
+                }
+
+                if (cols.Intersect(columnToTypes.Keys).OrderBy(y=> y).Count() != columnToTypes.Count)
+                    throw new NotImplementedException($"Table {tableName} does not have the expected columns");
+
+                this.logger.LogInformation($"Table {tableName} verified");
+            }
+        }
+
+        private string MapDotnetTypeToSnowflakeType(Type type)
+        {
+            if (type.IsGenericType)
+            {
+                var nullableType = Nullable.GetUnderlyingType(type);
+                if (nullableType != null) type = nullableType;
+            }
+            
+            if (typeof(Enum).IsAssignableFrom(type))
+            {
+                return "VARCHAR(100)";
+            }
+
+            if (typeof(string).IsAssignableFrom(type))
+            {
+                return "VARCHAR";
+            }
+
+            if (typeof(DateTime).IsAssignableFrom(type))
+            {
+                return "DATETIME";
+            }
+
+            if (typeof(bool).IsAssignableFrom(type))
+            {
+                return "BOOLEAN";
+            }
+
+            if (typeof(long).IsAssignableFrom(type))
+            {
+                return "NUMBER(" + long.MaxValue.ToString().Length + ",0)";
+            }
+            
+            if (typeof(Int32).IsAssignableFrom(type))
+            {
+                return "NUMBER(" + Int32.MaxValue.ToString().Length + ",0)";
+            }     
+            
+            if (typeof(double).IsAssignableFrom(type))
+            {
+                return "NUMBER";
+            }
+
+            throw new NotImplementedException($"Type {type.FullName} is not implemented for snowflake storage");
+        }
+
+#endregion
     }
 }

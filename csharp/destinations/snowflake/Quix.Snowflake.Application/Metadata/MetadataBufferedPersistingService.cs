@@ -226,7 +226,10 @@ namespace Quix.Snowflake.Application.Metadata
             var streamsToNotLoad = this.cachedTelemetryStreams.Keys.ToList();
             
             var streamLoadSw = Stopwatch.StartNew();
-            var streams = this.streamRepository.GetAll().Where(y => !streamsToNotLoad.Contains(y.StreamId) && y.Status == StreamStatus.Open && y.Topic == this.topicDisplayName).ToList();
+            var filter = Builders<TelemetryStream>.Filter.Eq(y => y.Status, StreamStatus.Open)
+                .And(Builders<TelemetryStream>.Filter.Eq(y => y.Topic, this.topicDisplayName))
+                .And(Builders<TelemetryStream>.Filter.In(y => y.StreamId, streamsToNotLoad).Not());
+            var streams = await this.streamRepository.Get(filter);
             streamLoadSw.Stop();
             foreach (var telemetryStream in streams)
             {
@@ -303,10 +306,12 @@ namespace Quix.Snowflake.Application.Metadata
         }
 
         /// <returns>The newly cached streams</returns>
-        private async Task<List<TelemetryStream>> CacheStreams(List<string> streamsToCache)
+        private async Task<IList<TelemetryStream>> CacheStreams(List<string> streamsToCache)
         {
             var streamsToLoad = streamsToCache.Except(this.cachedTelemetryStreams.Keys).ToList();
-            var streams = this.streamRepository.GetAll().Where(y => streamsToLoad.Contains(y.StreamId)).ToList();
+            if (streamsToLoad.Count == 0) return new List<TelemetryStream>();
+            var filter = Builders<TelemetryStream>.Filter.In(y => y.StreamId, streamsToLoad);
+            var streams = await this.streamRepository.Get(filter);
             foreach (var telemetryStream in streams)
             {
                 this.cachedTelemetryStreams[telemetryStream.StreamId] = telemetryStream;

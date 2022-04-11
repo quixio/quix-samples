@@ -36,19 +36,23 @@ namespace Quix.Snowflake.Infrastructure.Shared
 
             SnowflakeSchemaRegistry.RegisterModel<TelemetryEvent>(modelRegistrations)
                 .SetTableName("EventDetails")
-                .SetPrimaryKey(y => y.ObjectId);
+                .SetPrimaryKey(y => y.ObjectId)
+                .SetClusterKey(y => y.StreamId);
             
             SnowflakeSchemaRegistry.RegisterModel<TelemetryParameter>(modelRegistrations)
                 .SetTableName("ParameterDetails")
-                .SetPrimaryKey(y => y.ObjectId);
+                .SetPrimaryKey(y => y.ObjectId)
+                .SetClusterKey(y => y.StreamId);
             
             SnowflakeSchemaRegistry.RegisterModel<TelemetryEventGroup>(modelRegistrations)
                 .SetTableName("EventGroupDetails")
-                .SetPrimaryKey(y => y.ObjectId);
+                .SetPrimaryKey(y => y.ObjectId)
+                .SetClusterKey(y => y.StreamId);
 
             SnowflakeSchemaRegistry.RegisterModel<TelemetryParameterGroup>(modelRegistrations)
                 .SetTableName("ParameterGroupDetails")
-                .SetPrimaryKey(y => y.ObjectId);
+                .SetPrimaryKey(y => y.ObjectId)
+                .SetClusterKey(y => y.StreamId);
             
             Registry = Build(modelRegistrations);
         }
@@ -84,6 +88,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
             private string tableName;
             private MemberInfo primaryKeyMemberInfo;
             private Dictionary<MemberInfo, SnowflakeForeignTableSchema> foreignTables = new Dictionary<MemberInfo, SnowflakeForeignTableSchema>();
+            private MemberInfo clusterKeyInfo;
 
             public SnowflakeModelSchemaBuilder() : base(typeof(T))
             {
@@ -100,6 +105,19 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 }
 
                 this.primaryKeyMemberInfo = memberInfoExpression.Member;
+                return this;
+            }
+            
+            public SnowflakeModelSchemaBuilder<T> SetClusterKey<TK>(Expression<Func<T, TK>> keyExpression)
+            {
+                var memberInfoExpression = Utils.GetMemberExpression(keyExpression);
+                var type = Utils.GetMemberInfoType(memberInfoExpression.Member);
+                if (type != typeof(string) && type != typeof(int) && type != typeof(long))
+                {
+                    throw new NotImplementedException("Cluster key key must be string, int or long"); // no need to implement everything for now
+                }
+
+                this.clusterKeyInfo = memberInfoExpression.Member;
                 return this;
             }
 
@@ -120,7 +138,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
 
             public override SnowflakeModelSchema Build()
             {
-                return new SnowflakeModelSchema(tableName, primaryKeyMemberInfo, foreignTables);
+                return new SnowflakeModelSchema(tableName, primaryKeyMemberInfo, clusterKeyInfo, foreignTables);
             }
         }
     }
@@ -175,14 +193,34 @@ namespace Quix.Snowflake.Infrastructure.Shared
 
     internal class SnowflakeModelSchema
     {
-        public SnowflakeModelSchema(string tableName, MemberInfo primaryKeyMemberInfo, Dictionary<MemberInfo, SnowflakeForeignTableSchema> foreignTables)
+        public SnowflakeModelSchema(string tableName, MemberInfo primaryKeyMemberInfo, MemberInfo clusterKeyInfo, Dictionary<MemberInfo, SnowflakeForeignTableSchema> foreignTables)
         {
             this.TableName = tableName;
             this.PrimaryKeyMemberInfo = primaryKeyMemberInfo;
+            this.ClusterKeyMemberInfo = clusterKeyInfo;
             this.ForeignTables = new ReadOnlyDictionary<MemberInfo, SnowflakeForeignTableSchema>(foreignTables);
             var propertiesOrFields = primaryKeyMemberInfo.DeclaringType.GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(y=> y.MemberType == MemberTypes.Field || y.MemberType == MemberTypes.Property).Except(foreignTables.Keys).ToList();
             this.ColumnMemberInfos = propertiesOrFields;
+            this.TypeMapFrom = new Dictionary<MemberInfo, Dictionary<object, object>>();
+
+            foreach (var @enum in this.ColumnMemberInfos.Where(y => typeof(Enum).IsAssignableFrom(Utils.GetMemberInfoType(y))))
+            {
+                var map = new Dictionary<object, object>();
+                foreach (var value in Enum.GetValues(Utils.GetMemberInfoType(@enum)))
+                {
+                    map[value.ToString()] = value;
+                }
+
+                this.TypeMapFrom[@enum] = map;
+            }
         }
+
+        /// <summary>
+        /// The map to convert back from Snowflake result to dotnet value. Used primarily for enums at the moment
+        /// </summary>
+        public Dictionary<MemberInfo, Dictionary<object, object>> TypeMapFrom { get; set; }
+
+        public MemberInfo ClusterKeyMemberInfo { get; }
 
         public IReadOnlyList<MemberInfo> ColumnMemberInfos { get; }
 

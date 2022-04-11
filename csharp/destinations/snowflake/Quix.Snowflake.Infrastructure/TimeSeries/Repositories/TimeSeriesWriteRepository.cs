@@ -5,11 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.TimeSeries.Models;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
 using Quix.Snowflake.Infrastructure.Shared;
-using Quix.Snowflake.Infrastructure.TimeSeries.Models;
 using Snowflake.Data.Client;
 
 namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
@@ -17,12 +15,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
     /// <summary>
     /// Implementation of <see cref="ITimeSeriesWriteRepository"/> for Snowflake
     /// </summary>
-    public class SnowflakeWriteRepository : ITimeSeriesWriteRepository, IRequiresSetup, IDisposable
+    public class TimeSeriesWriteRepository : ITimeSeriesWriteRepository, IDisposable
     {
-        private readonly ILogger<SnowflakeWriteRepository> logger;
-        private readonly SnowflakeConnectionConfiguration snowflakeConfiguration;
-
-        private SnowflakeDbConnection snowflakeDbConnection;
+        private readonly ILogger<TimeSeriesWriteRepository> logger;
+        private readonly IDbConnection snowflakeDbConnection;
         
         private const string ParameterValuesTableName = "PARAMETERVALUES";
         private const string EventValuesTableName = "EVENTVALUES";
@@ -38,19 +34,20 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         private readonly HashSet<string> parameterColumns = new HashSet<string>();
         private readonly HashSet<string> eventColumns = new HashSet<string>();
 
-        public SnowflakeWriteRepository(
-            ILogger<SnowflakeWriteRepository> logger,
-            SnowflakeConnectionConfiguration snowflakeConfiguration)
+        public TimeSeriesWriteRepository(
+            ILoggerFactory loggerFactory,
+            IDbConnection snowflakeDbConnection)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.snowflakeConfiguration = snowflakeConfiguration;
-            if (snowflakeConfiguration == null) throw new ArgumentNullException(nameof(snowflakeConfiguration));
+            this.logger = loggerFactory.CreateLogger<TimeSeriesWriteRepository>();
+            this.snowflakeDbConnection = snowflakeDbConnection;
+            if (snowflakeDbConnection == null) throw new ArgumentNullException(nameof(snowflakeDbConnection));
+            Initialize();
         }
 
         private bool TableExists(string table)
         {
             var checkForTableSql = $"SELECT EXISTS (SELECT * FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table}')";
-            var existingTablesReader = SnowflakeQuery.ExecuteSnowflakeRead(snowflakeDbConnection, checkForTableSql);
+            var existingTablesReader = snowflakeDbConnection.QuerySnowflake(checkForTableSql);
             
             while (existingTablesReader.Read())
             {
@@ -87,7 +84,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{requiredTable}'";
-                var existingColumnNameReader = SnowflakeQuery.ExecuteSnowflakeRead(snowflakeDbConnection, sql);
+                var existingColumnNameReader = snowflakeDbConnection.QuerySnowflake(sql);
                 
                 while (existingColumnNameReader.Read())
                 {
@@ -98,16 +95,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             }
         }
         
-        public Task Setup()
+        private void Initialize()
         {
             this.logger.LogDebug("Checking tables...");
-
-            snowflakeDbConnection = new SnowflakeDbConnection();
-            snowflakeDbConnection.ConnectionString = snowflakeConfiguration.ConnectionString;
             
-            snowflakeDbConnection.Open();
-            this.logger.LogInformation($"Connected to Snowflake database {snowflakeDbConnection.Database}");
-
             CheckDbConnection();
 
             // verify tables exist, if not create them
@@ -115,8 +106,6 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             VerifyTable(EventValuesTableName, eventColumns);
 
             this.logger.LogInformation("Tables verified");
-            
-            return Task.CompletedTask;
         }
 
         public Task WriteTelemetryData(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData)
@@ -175,7 +164,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             var totalInserted = 0;
             foreach (var sqlInsertStatement in sqlInsertStatements)
             {
-                var recordsAffected = SnowflakeQuery.ExecuteSnowFlakeNonQuery(snowflakeDbConnection, sqlInsertStatement);
+                var recordsAffected = snowflakeDbConnection.ExecuteSnowflakeStatement(sqlInsertStatement);
                 totalInserted += recordsAffected;
                 // todo log
             }

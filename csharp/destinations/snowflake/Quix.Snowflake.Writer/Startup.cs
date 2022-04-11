@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
@@ -20,6 +21,7 @@ using Quix.Snowflake.Infrastructure.TimeSeries.Repositories;
 using Quix.Snowflake.Writer.Configuration;
 using Quix.Snowflake.Writer.Helpers;
 using Serilog;
+using Snowflake.Data.Client;
 
 namespace Quix.Snowflake.Writer
 {
@@ -78,15 +80,23 @@ namespace Quix.Snowflake.Writer
 
         private static void ConfigureApplication(HostBuilderContext context, IServiceCollection services)
         {
+            // Snowflake
+            services.AddScoped<SnowflakeConnectionValidatorService>();
+            SnowflakeSchemaRegistry.Register();
+            services.AddSingleton(sc =>
+            {
+                var config = sc.GetRequiredService<SnowflakeConnectionConfiguration>();
+                var conn = new SnowflakeDbConnection();
+                conn.ConnectionString = config.ConnectionString;
+                return conn;
+            });
+            services.AddSingleton<IDbConnection>(sc => sc.GetRequiredService<SnowflakeDbConnection>()); // using IDbConnection at some places for mocking purposes
+            
             // Stream context
             services.AddScoped<StreamPersistingComponent>();
-            SnowflakeSchemaRegistry.Register();
-            
+
             // TimeSeries Context
-            services.AddSingleton<SnowflakeWriteRepository>(); // this nonsensical registration is done to use same
-                                                               // singleton instance for both of the following interface types
-            services.AddSingleton<ITimeSeriesWriteRepository>(sp => sp.GetRequiredService<SnowflakeWriteRepository>()); 
-            services.AddSingleton<IRequiresSetup>(sp => sp.GetRequiredService<SnowflakeWriteRepository>());
+            services.AddSingleton<ITimeSeriesWriteRepository, TimeSeriesWriteRepository>();
 
             services.AddSingleton<QuixConfigHelper>();
             services.AddSingleton((sp) => new TopicId(sp.GetRequiredService<QuixConfigHelper>().GetConfiguration().GetAwaiter().GetResult().topicId));
@@ -141,17 +151,14 @@ namespace Quix.Snowflake.Writer
         {
             try
             {
-                var services = serviceProvider.GetServices<IRequiresSetup>();
-                foreach (var requiresSetup in services)
-                {
-                    requiresSetup.Setup();
-                }
+                var conn = serviceProvider.GetRequiredService<SnowflakeConnectionValidatorService>();
+                conn.Validate();
                 Console.WriteLine("CONNECTED!");
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ERROR: {0}", ex.Message);
-                Environment.ExitCode = -1;
+                Environment.Exit(-1);
             }
 
         }

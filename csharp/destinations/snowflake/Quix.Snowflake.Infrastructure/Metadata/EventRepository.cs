@@ -11,7 +11,7 @@ namespace Quix.Snowflake.Infrastructure.Metadata
 {
     public class EventRepository : SnowflakeRepository<TelemetryEvent>, IEventRepository
     {
-        public EventRepository(IDbConnection dbConnection, ILoggerFactory loggerFactory) : base(dbConnection, loggerFactory.CreateLogger<EventRepository>())
+        public EventRepository(IDbConnection snowflakeDbConnection, ILoggerFactory loggerFactory) : base(snowflakeDbConnection, loggerFactory.CreateLogger<EventRepository>())
         {
         }
     }

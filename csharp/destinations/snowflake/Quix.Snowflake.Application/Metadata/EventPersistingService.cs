@@ -248,9 +248,17 @@ namespace Quix.Snowflake.Application.Metadata
 
         private async Task CacheEventsForStreams(List<string> uncachedStreamEventIds, List<WriteModel<TelemetryEvent>> eventRequests)
         {
-            var eventsLoadSw = Stopwatch.StartNew();
-            var events = this.eventRepository.GetAll().Where(y => uncachedStreamEventIds.Contains(y.StreamId)).ToList();
-            eventsLoadSw.Stop();
+            IList<TelemetryEvent> events;
+            var eventsLoadSw = new Stopwatch();
+            if (uncachedStreamEventIds.Count > 0)
+            {
+                eventsLoadSw.Restart();
+                var filter = Builders<TelemetryEvent>.Filter.In(y => y.StreamId, uncachedStreamEventIds);
+                events = await this.eventRepository.Get(filter);
+                eventsLoadSw.Stop();
+            }
+            else events = new List<TelemetryEvent>();
+
             var loadedStreamsFromDbForEvents = 0;
 
             foreach (var telemetryStreamEvents in events.GroupBy(y => y.StreamId))
@@ -399,9 +407,17 @@ namespace Quix.Snowflake.Application.Metadata
 
         private async Task CacheGroupsForStreams(List<string> uncachedStreamEventIds, List<WriteModel<TelemetryEventGroup>> eventGroupRequests)
         {
-            var eventGroupsLoadSw = Stopwatch.StartNew();
-            var eventGroups = this.eventGroupRepository.GetAll().Where(y => uncachedStreamEventIds.Contains(y.StreamId)).ToList();
-            eventGroupsLoadSw.Stop();
+            IList<TelemetryEventGroup> eventGroups;
+            var eventGroupsLoadSw = new Stopwatch();
+            if (uncachedStreamEventIds.Count > 0)
+            {
+                eventGroupsLoadSw.Restart();
+                var filter = Builders<TelemetryEventGroup>.Filter.In(y => y.StreamId, uncachedStreamEventIds);
+                eventGroups = await this.eventGroupRepository.Get(filter);
+                eventGroupsLoadSw.Stop();
+            }
+            else eventGroups = new List<TelemetryEventGroup>();
+
             var loadedStreamsFromDbForGroups = 0;
 
             foreach (var telemetryStreamEventGroups in eventGroups.GroupBy(y => y.StreamId))

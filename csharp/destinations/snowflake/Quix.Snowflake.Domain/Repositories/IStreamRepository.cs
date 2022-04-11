@@ -17,10 +17,6 @@ namespace Quix.Snowflake.Domain.Repositories
         /// <param name="insertRequests">The request to execute</param>
         Task BulkWrite(IEnumerable<WriteModel<TelemetryStream>> insertRequests);
 
-        /// <summary>
-        /// Gets all streams as queryable for further filtering
-        /// </summary>
-        /// <returns>Queryable telemetry streams</returns>
-        IQueryable<TelemetryStream> GetAll();
+        Task<IList<TelemetryStream>> Get(FilterDefinition<TelemetryStream> filter);
     }
 }

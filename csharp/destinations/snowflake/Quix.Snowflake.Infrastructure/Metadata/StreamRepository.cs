@@ -9,7 +9,7 @@ namespace Quix.Snowflake.Infrastructure.Metadata
     public class StreamRepository : SnowflakeRepository<TelemetryStream>, IStreamRepository
     {
 
-        public StreamRepository(IDbConnection dbConnection, ILoggerFactory loggerFactory) : base(dbConnection, loggerFactory.CreateLogger<StreamRepository>())
+        public StreamRepository(IDbConnection snowflakeDbConnection, ILoggerFactory loggerFactory) : base(snowflakeDbConnection, loggerFactory.CreateLogger<StreamRepository>())
         {
         }
     }

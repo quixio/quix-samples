@@ -7,7 +7,10 @@ namespace Quix.Snowflake.Domain.Models
     [DebuggerDisplay("{ParameterId}, {Name}")]
     public class TelemetryParameter : IEquatable<TelemetryParameter>
     {
-        internal TelemetryParameter()
+        /// <summary>
+        /// Purely here for deserialization purposes
+        /// </summary>
+        public TelemetryParameter()
         {
         }
 

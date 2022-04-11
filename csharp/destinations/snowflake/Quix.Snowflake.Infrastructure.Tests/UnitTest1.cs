@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
@@ -23,7 +22,7 @@ public class UnitTest1
     }
     
     [Fact]
-    public async Task StreamRepositoryQuickTests()
+    public async Task StreamRepository_BulkWrite_QuickTests()
     {
         // Arrange
         SnowflakeSchemaRegistry.Register();
@@ -39,7 +38,7 @@ public class UnitTest1
             new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Set(y => y.Status, StreamStatus.Aborted)),
             new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Set(y => y.Parents, new List<string> {"a", "b"})),
             new UpdateOneModel<TelemetryStream>(stream, Builders<TelemetryStream>.Update.Set(y => y.Metadata, new Dictionary<string, string>() {{"a", "2"}, {"b", "2"}})),
-            new DeleteManyModel<TelemetryStream>(Builders<TelemetryStream>.Filter.And(Builders<TelemetryStream>.Filter.Eq(y => y.StreamId, "asdf"),Builders<TelemetryStream>.Filter.Eq(y => y.Name, "stuff"))),
+            new DeleteManyModel<TelemetryStream>(Builders<TelemetryStream>.Filter.Eq(y => y.StreamId, "asdf").And(Builders<TelemetryStream>.Filter.Eq(y => y.Name, "stuff"))),
             new InsertOneModel<TelemetryStream>(new TelemetryStream("somestream")
             {
                 End = 123,
@@ -55,6 +54,25 @@ public class UnitTest1
 
         // Act
         await repo.BulkWrite(streamUpdates);
+
+        // Assert
+    }
+    
+    [Fact]
+    public async Task StreamRepository_Get_QuickTests()
+    {
+        // Arrange
+        SnowflakeSchemaRegistry.Register();
+        var repo = CreateStreamRepo();
+
+        var displayName = "test";
+        var streamsToNotLoad = new List<string>() { "stream1", "stream2", "stream3" };
+
+        var filter = Builders<TelemetryStream>.Filter.Eq(y => y.Status, StreamStatus.Open)
+            .And(Builders<TelemetryStream>.Filter.Eq(y => y.Topic, displayName).Not())
+            .And(Builders<TelemetryStream>.Filter.In(y => y.StreamId, streamsToNotLoad).Not());
+        // Act
+        await repo.Get(filter);
 
         // Assert
     }

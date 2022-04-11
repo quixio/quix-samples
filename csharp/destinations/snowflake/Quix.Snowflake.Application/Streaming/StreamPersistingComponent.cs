@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Quix.Snowflake.Application.TimeSeries;
@@ -51,6 +52,7 @@ namespace Quix.Snowflake.Application.Streaming
 
         private async Task OnParameterDataReceived(ParameterDataRaw arg)
         {
+            var discardRange = await this.metadataBufferedPersistingService.GetDiscardRange(this.StreamProcess.StreamId, arg.Epoch + arg.Timestamps.Min());
             await metadataBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
             await this.timeSeriesBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
         }

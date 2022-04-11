@@ -15,7 +15,7 @@ namespace Quix.Snowflake.Domain.Repositories
         /// Gets all events as queryable for further filtering
         /// </summary>
         /// <returns>Queryable telemetry events</returns>
-        IQueryable<TelemetryEvent> GetAll();
+        Task<IList<TelemetryEvent>> Get(FilterDefinition<TelemetryEvent> filter);
         
         /// <summary>
         /// Bulk write capable of updating/inserting/deleting multiple things at a time

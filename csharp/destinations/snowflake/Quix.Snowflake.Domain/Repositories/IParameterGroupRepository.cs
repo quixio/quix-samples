@@ -15,7 +15,7 @@ namespace Quix.Snowflake.Domain.Repositories
         /// Gets all parameter groups as queryable for further filtering
         /// </summary>
         /// <returns>Queryable telemetry parameter groups</returns>
-        IQueryable<TelemetryParameterGroup> GetAll();
+        Task<IList<TelemetryParameterGroup>> Get(FilterDefinition<TelemetryParameterGroup> filter);
         
         /// <summary>
         /// Bulk write capable of updating/inserting/deleting multiple things at a time

@@ -6,7 +6,10 @@ namespace Quix.Snowflake.Domain.Models
     [DebuggerDisplay("{Path}, {Name}")]
     public class TelemetryEventGroup : IEquatable<TelemetryEventGroup>
     {
-        internal TelemetryEventGroup()
+        /// <summary>
+        /// Purely here for deserialization purposes
+        /// </summary>
+        public TelemetryEventGroup()
         {
         }
 

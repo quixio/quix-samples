@@ -283,9 +283,17 @@ namespace Quix.Snowflake.Application.Metadata
 
         private async Task CacheParametersForStreams(List<string> uncachedStreamParameterIds, List<WriteModel<TelemetryParameter>> paramRequests)
         {
-            var parametersLoadSw = Stopwatch.StartNew();
-            var parameters = this.parameterRepository.GetAll().Where(y => uncachedStreamParameterIds.Contains(y.StreamId)).ToList();
-            parametersLoadSw.Stop();
+            IList<TelemetryParameter> parameters;
+            var parametersLoadSw = new Stopwatch();
+            if (uncachedStreamParameterIds.Count > 0)
+            {
+                parametersLoadSw.Restart();
+                var filter = Builders<TelemetryParameter>.Filter.In(y => y.StreamId, uncachedStreamParameterIds);
+                parameters = await this.parameterRepository.Get(filter);
+                parametersLoadSw.Stop();
+            }
+            else parameters = new List<TelemetryParameter>();
+            
             var loadedStreamsFromDbForParams = 0;
 
             foreach (var telemetryStreamParams in parameters.GroupBy(y => y.StreamId))
@@ -436,9 +444,17 @@ namespace Quix.Snowflake.Application.Metadata
 
         private async Task CacheGroupsForStreams(List<string> uncachedStreamParameterIds, List<WriteModel<TelemetryParameterGroup>> paramGroupRequests)
         {
-            var parameterGroupsLoadSw = Stopwatch.StartNew();
-            var parameterGroups = this.parameterGroupRepository.GetAll().Where(y => uncachedStreamParameterIds.Contains(y.StreamId)).ToList();
-            parameterGroupsLoadSw.Stop();
+            IList<TelemetryParameterGroup> parameterGroups;
+            var parameterGroupsLoadSw = new Stopwatch();
+            if (uncachedStreamParameterIds.Count > 0)
+            {
+                parameterGroupsLoadSw.Restart();
+                var filter = Builders<TelemetryParameterGroup>.Filter.In(y => y.StreamId, uncachedStreamParameterIds);
+                parameterGroups = await this.parameterGroupRepository.Get(filter);
+                parameterGroupsLoadSw.Stop();
+            }
+            else parameterGroups = new List<TelemetryParameterGroup>();
+            
             var loadedStreamsFromDbForGroups = 0;
 
             foreach (var telemetryStreamParamGroups in parameterGroups.GroupBy(y => y.StreamId))
