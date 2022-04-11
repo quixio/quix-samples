@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -19,6 +20,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
         protected readonly ILogger logger;
         private readonly SnowflakeModelSchema schema;
         private const string InformationSchema = "PUBLIC"; // Maybe this could come from config ?
+        private const int MaxQueryByteSize = 1024 * 1024 * 8 - 1024*64; // 1 MB, -64 KB for safety margin
 
         protected SnowflakeRepository(IDbConnection snowflakeDbConnection, ILogger logger)
         {
@@ -50,13 +52,74 @@ namespace Quix.Snowflake.Infrastructure.Shared
 
             var squashedStatements = SquashStatements(statements);
 
-            foreach (var statement in squashedStatements)
-            {
-                this.logger.LogDebug("Executing Snowflake query: {1}", statement);
-                SnowflakeDbConnection.ExecuteSnowflakeStatement(statement);
-
-            }
+            ExecuteStatements(squashedStatements);
             return Task.CompletedTask;
+        }
+
+        private void ExecuteStatements(IEnumerable<string> statements)
+        {
+            var totalStatementSize = 0;
+            var sb = new StringBuilder();
+            var first = true;
+            var begin = "BEGIN\n";
+            var end = ";\nEND";
+            var beginEndLength = Encoding.UTF8.GetByteCount(begin) + Encoding.UTF8.GetByteCount(end);
+            var separator = ";\n"; // \n so it is somewhat human readable in console
+            var separatorSize = Encoding.UTF8.GetByteCount(separator);
+            var segmentCount = 0;
+            foreach (var statement in statements)
+            {
+                var statementSize = Encoding.UTF8.GetByteCount(statement);
+                if (!first)
+                {
+                    sb.Append(separator);
+                    statementSize += separatorSize;
+
+                    // check if we would be over the limit with the new statement
+                    if (statementSize + totalStatementSize + beginEndLength > MaxQueryByteSize)
+                    {
+                        // if so, send it already
+                        sb.Insert(0, begin);
+                        sb.Append(end);
+                        ExecuteStatement(sb.ToString());
+                        sb.Clear();
+                        totalStatementSize = 0;
+                        segmentCount = 0;
+                        first = true;
+                    }
+                }
+                else first = false;
+
+                sb.Append(statement);
+                totalStatementSize += statementSize;
+                segmentCount++;
+            }
+
+            if (segmentCount > 1)
+            {
+                sb.Insert(0, begin);
+                sb.Append(end);
+            }
+            ExecuteStatement(sb.ToString());
+        }
+
+        private void ExecuteStatement(string statement)
+        {
+            if (string.IsNullOrWhiteSpace(statement)) return;
+            this.logger.LogTrace("Executing Snowflake statement:{0}{1}", Environment.NewLine, statement);
+            var sw = Stopwatch.StartNew();
+            try
+            {
+                SnowflakeDbConnection.ExecuteSnowflakeStatement(statement);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError("Failed to execute Snowflake statement:{0}{1}", Environment.NewLine, statement);
+                throw;
+            }
+
+            sw.Stop();
+            this.logger.LogDebug("Executed Snowflake statement in {0:g}:{1}{2}", sw.Elapsed, Environment.NewLine, statement);
         }
 
         public Task<IList<T>> Get(FilterDefinition<T> filter)
@@ -68,8 +131,11 @@ namespace Quix.Snowflake.Infrastructure.Shared
             var primaryfieldMap = this.schema.ColumnMemberInfos.ToDictionary(y => y, GetColumName).ToList(); // Guarantee AN order
             var columns = string.Join(", ", primaryfieldMap.Select(y=> y.Value));
             var selectStatement = $"SELECT {columns} FROM {this.schema.TableName}{filterStatement}";
-            this.logger.LogDebug("Snowflake query statement: {0}", selectStatement);
+            this.logger.LogTrace("Snowflake query statement: {0}", selectStatement);
+            var sw = Stopwatch.StartNew();
             var reader = SnowflakeDbConnection.QuerySnowflake(selectStatement);
+            sw.Stop();
+            this.logger.LogDebug("Executed Snowflake query statement in {0}:G: {1}", sw.Elapsed, selectStatement);
             var result = ParseModels<T>(reader, primaryfieldMap, this.schema.TypeMapFrom).ToList();
             
             // TODO set foreign table values ... Would reduce the updates on first encounter, but after that it is cached anyway...
@@ -77,13 +143,13 @@ namespace Quix.Snowflake.Infrastructure.Shared
             return Task.FromResult(result as IList<T>);
         }
 
-        private IEnumerable<K> ParseModels<K>(IDataReader reader, List<KeyValuePair<MemberInfo, string>> keyValuePairs, Dictionary<MemberInfo, Dictionary<object, object>> memberMap) where K : new()
+        private IEnumerable<TK> ParseModels<TK>(IDataReader reader, List<KeyValuePair<MemberInfo, string>> keyValuePairs, Dictionary<MemberInfo, Dictionary<object, object>> memberMap) where TK : new()
         {
             var values = new object[keyValuePairs.Count];
             
             while (reader.Read())
             {
-                var model = new K();
+                var model = new TK();
                 reader.GetValues(values);
                 var counter = 0;
                 foreach (var field in keyValuePairs)
