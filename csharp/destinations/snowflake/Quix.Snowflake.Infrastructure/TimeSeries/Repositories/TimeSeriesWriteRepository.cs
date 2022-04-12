@@ -75,7 +75,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 var sqlInsertStatements = new List<string>
                 {
                     $"CREATE TABLE {InformationSchema}.{requiredTable} ({TimeStampColumn} BIGINT, {StreamIdColumn} VARCHAR(256))",
-                    $"ALTER TABLE {InformationSchema}.{requiredTable} CLUSTER BY (timestamp)"
+                    //$"ALTER TABLE {InformationSchema}.{requiredTable} CLUSTER BY (timestamp)" // not clustering for now, as timestamp at nanosec precision introduces bad clustering
                 };
                 
                 //var recordsAffected = ExecuteSnowFlakeNonQuery(sql);
