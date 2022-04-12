@@ -5,18 +5,19 @@ namespace Quix.Snowflake.Infrastructure.Shared
 {
     public static class SnowflakeQueryExtensions
     {
-        public static IDataReader QuerySnowflake(this IDbConnection dbConnection, string sql)
+        public static void QuerySnowflake(this IDbConnection dbConnection, string sql, Action<IDataReader> readerAction)
         {
-            IDbCommand cmd = dbConnection.CreateCommand();
+            using var cmd = dbConnection.CreateCommand();
             cmd.CommandText = sql;
-            return cmd.ExecuteReader();
+            using var reader = cmd.ExecuteReader();
+            readerAction(reader);
         }
 
         public static int ExecuteSnowflakeStatement(this IDbConnection dbConnection, string sql)
         {
             try
             {
-                IDbCommand cmd = dbConnection.CreateCommand();
+                using var cmd = dbConnection.CreateCommand();
                 cmd.CommandText = sql;
                 cmd.CommandTimeout = 30;
                 return cmd.ExecuteNonQuery();

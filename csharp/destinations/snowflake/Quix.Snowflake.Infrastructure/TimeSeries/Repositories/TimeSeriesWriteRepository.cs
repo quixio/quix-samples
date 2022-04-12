@@ -55,15 +55,18 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         private bool TableExists(string table)
         {
             var checkForTableSql = $"SELECT EXISTS (SELECT * FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table}')";
-            var existingTablesReader = snowflakeDbConnection.QuerySnowflake(checkForTableSql);
-            
-            while (existingTablesReader.Read())
+            var exists = false;
+            snowflakeDbConnection.QuerySnowflake(checkForTableSql, existingTablesReader =>
             {
-                if (existingTablesReader.GetString(0) == "1")
-                    return true;
-            }
+                while (existingTablesReader.Read())
+                {
+                    if (existingTablesReader.GetString(0) != "1") continue;
+                    exists = true;
+                    return;
+                }
+            });
 
-            return false;
+            return exists;
         }
         
         private void VerifyTable(string requiredTable, HashSet<string> columns)
@@ -92,12 +95,13 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{requiredTable}'";
-                var existingColumnNameReader = snowflakeDbConnection.QuerySnowflake(sql);
-                
-                while (existingColumnNameReader.Read())
+                snowflakeDbConnection.QuerySnowflake(sql, existingColumnNameReader =>
                 {
-                    columns.Add(existingColumnNameReader.GetString(0));    
-                }
+                    while (existingColumnNameReader.Read())
+                    {
+                        columns.Add(existingColumnNameReader.GetString(0));
+                    }
+                });
                 
                 this.logger.LogInformation($"Table {requiredTable} verified");
             }

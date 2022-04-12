@@ -150,11 +150,14 @@ namespace Quix.Snowflake.Infrastructure.Shared
             var selectStatement = $"SELECT {columns} FROM {this.schema.TableName}{filterStatement}";
             this.logger.LogTrace("Snowflake query statement: {0}", selectStatement);
             var sw = Stopwatch.StartNew();
-            var reader = SnowflakeDbConnection.QuerySnowflake(selectStatement);
-            sw.Stop();
-            this.logger.LogDebug("Executed Snowflake query statement in {0:g}: {1}", sw.Elapsed, selectStatement);
-            var result = ParseModels<T>(reader, primaryfieldMap, this.schema.TypeMapFrom).ToList();
-            
+            List<T> result = null;
+            SnowflakeDbConnection.QuerySnowflake(selectStatement, reader =>
+            {
+                sw.Stop();
+                this.logger.LogDebug("Executed Snowflake query statement in {0:g}: {1}", sw.Elapsed, selectStatement);
+                result = ParseModels<T>(reader, primaryfieldMap, this.schema.TypeMapFrom).ToList();
+            });
+
             // TODO set foreign table values ... Would reduce the updates on first encounter, but after that it is cached anyway...
 
             return Task.FromResult(result as IList<T>);
@@ -560,15 +563,17 @@ namespace Quix.Snowflake.Infrastructure.Shared
         private bool TableExists(string table)
         {
             var checkForTableSql = $"SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table.ToUpperInvariant()}')";
-            var existingTablesReader = SnowflakeDbConnection.QuerySnowflake(checkForTableSql);
-
-            while (existingTablesReader.Read())
+            var exists = false;
+            SnowflakeDbConnection.QuerySnowflake(checkForTableSql, existingTablesReader =>
             {
-                if (existingTablesReader.GetString(0) == "1")
-                    return true;
-            }
+                while (existingTablesReader.Read())
+                {
+                    if (existingTablesReader.GetString(0) == "1")
+                        exists = true;
+                }
+            });
 
-            return false;
+            return exists;
         }
 
         private void VerifyTables()
@@ -607,16 +612,17 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{tableName.ToUpperInvariant()}'";
-                var existingColumnNameReader = SnowflakeDbConnection.QuerySnowflake(sql);
-
-                var cols = new List<string>();
-                while (existingColumnNameReader.Read())
+                SnowflakeDbConnection.QuerySnowflake(sql, existingColumnNameReader =>
                 {
-                    cols.Add(ConvertToSnowflakeColumnName(existingColumnNameReader.GetString(0)));
-                }
 
-                if (cols.Intersect(columnToTypes.Keys).OrderBy(y=> y).Count() != columnToTypes.Count)
-                    throw new NotImplementedException($"Table {tableName} does not have the expected columns");
+                    var cols = new List<string>();
+                    while (existingColumnNameReader.Read())
+                    {
+                        cols.Add(ConvertToSnowflakeColumnName(existingColumnNameReader.GetString(0)));
+                    }
+                    if (cols.Intersect(columnToTypes.Keys).OrderBy(y=> y).Count() != columnToTypes.Count) throw new NotImplementedException($"Table {tableName} does not have the expected columns");
+                });
+                
 
                 this.logger.LogInformation($"Table {tableName} verified");
             }
