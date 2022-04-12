@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.Extensions.Logging;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.TimeSeries.Models;
@@ -478,9 +479,21 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         private void ExecuteStatement(string statement)
         {
             if (string.IsNullOrWhiteSpace(statement)) return;
-            var timer = InaccurateSharedTimer.Instance.Subscribe(10, () => this.logger.LogInformation("Executing data write Snowflake statement is taking longer (10+ seconds) than expected..."));
             //this.logger.LogTrace("Executing Snowflake statement:{0}{1}", Environment.NewLine, statement);
             var sw = Stopwatch.StartNew();
+            IDisposable timer = null;
+
+            void setTimer()
+            {
+                timer = InaccurateSharedTimer.Instance.Subscribe(10, () =>
+                {
+                    this.logger.LogInformation("Executing data write Snowflake statement is taking longer ({0:g}) than expected...", sw.Elapsed);
+                    timer.Dispose();
+                    setTimer();
+                });
+            }
+            setTimer();
+
             try
             {
                 snowflakeDbConnection.ExecuteSnowflakeStatement(statement);
