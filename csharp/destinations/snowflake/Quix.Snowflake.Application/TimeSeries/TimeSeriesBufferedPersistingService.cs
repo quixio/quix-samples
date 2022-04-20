@@ -83,7 +83,7 @@ namespace Quix.Snowflake.Application.TimeSeries
                     mre.Release();
                 }
             };
-            
+
             var batch = new StreamParameterDataForWrite[this.maxBatchSize]; // reuse array and avoid always resizing a list to fit new elements
             while(true)
             {
@@ -470,8 +470,8 @@ namespace Quix.Snowflake.Application.TimeSeries
         {
             if (sourceStreamIds == null || sourceStreamIds.Length == 0) return;
             // Doing locks here, so we can make sure the collection is not getting expanded or added to out of order while we're shifting through it
-            lock (this.eventQueueLock)
             lock (this.paramQueueLock)
+            lock (this.eventQueueLock)                
             {
                 if (!this.eventQueue.IsEmpty)
                 {

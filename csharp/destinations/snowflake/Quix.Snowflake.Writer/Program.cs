@@ -7,8 +7,6 @@ namespace Quix.Snowflake.Writer
     {
         public static void Main(string[] args)
         {
-            //SnowflakeWriteRepository.foo();
-            
             var built = CreateHostBuilder(args).Build();
             Startup.AfterBuild(built.Services);
             built.Run();

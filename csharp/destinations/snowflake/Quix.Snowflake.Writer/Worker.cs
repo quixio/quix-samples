@@ -14,6 +14,7 @@ using Quix.Snowflake.Writer.Helpers;
 using Quix.Sdk.Process;
 using Quix.Sdk.Process.Kafka;
 using Quix.Sdk.Process.Models;
+using Quix.Snowflake.Application.Metadata;
 
 namespace Quix.Snowflake.Writer
 {
@@ -22,23 +23,26 @@ namespace Quix.Snowflake.Writer
 
         private readonly ILogger<Worker> logger;
         private readonly IServiceProvider serviceProvider;
+        private readonly IMetadataBufferedPersistingService metadataBufferedPersistingService;
         private readonly ITimeSeriesBufferedPersistingService timeSeriesBufferedPersistingService;
         private readonly QuixConfigHelper quixConfigHelper;
 
         public Worker(ILogger<Worker> logger,
             IServiceProvider serviceProvider,
+            IMetadataBufferedPersistingService metadataBufferedPersistingService,
             ITimeSeriesBufferedPersistingService timeSeriesBufferedPersistingService,
             QuixConfigHelper quixConfigHelper)
         {
             this.logger = logger;
             this.serviceProvider = serviceProvider;
+            this.metadataBufferedPersistingService = metadataBufferedPersistingService;
             this.timeSeriesBufferedPersistingService = timeSeriesBufferedPersistingService;
             this.quixConfigHelper = quixConfigHelper;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            this.logger.LogInformation("Register codecs");
+            this.logger.LogInformation("Registering codecs");
             CodecRegistry.Register();
 
             this.logger.LogInformation("Creating Kafka Reader");
@@ -51,8 +55,9 @@ namespace Quix.Snowflake.Writer
             {
                 var sw = Stopwatch.StartNew();
                 this.logger.LogTrace("Saving to database the messages read so far.");
+                var taskMetadata = this.metadataBufferedPersistingService.Save();
                 var taskTimeSeries = this.timeSeriesBufferedPersistingService.Save();
-                Task.WaitAll(taskTimeSeries); // Very important. The save has to complete within this callback
+                Task.WaitAll(taskMetadata, taskTimeSeries); // Very important. The save has to complete within this callback
                 this.logger.LogDebug("Saved to database the messages read so far in {0:g}.", sw.Elapsed);
             };
             
@@ -73,6 +78,7 @@ namespace Quix.Snowflake.Writer
             kafkaReader.OnStreamsRevoked += streams =>
             {
                 var streamIds = streams.Select(y => y.StreamId).ToArray();
+                this.metadataBufferedPersistingService.ClearBuffer(streamIds);
                 this.timeSeriesBufferedPersistingService.ClearBuffer(streamIds);
             };
 
@@ -81,6 +87,7 @@ namespace Quix.Snowflake.Writer
                 this.logger.LogError(e, "Kafka reader exception");
             };
 
+            this.logger.LogInformation("Created Kafka Reader");
             kafkaReader.Start();
 
             try

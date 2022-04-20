@@ -34,6 +34,8 @@ namespace Quix.Snowflake.Writer.Helpers
         private const string WorkspaceIdEnvironmentKey = "Quix__Workspace__Id";
         private const string PortalApiEnvironmentKey = "Quix__Portal__Api";
         private const string SdkTokenKey = "Quix__Sdk__Token";
+        private (KafkaReaderConfiguration config, string topicId) config;
+        
 
         public QuixConfigHelper(ILoggerFactory loggerFactory, HttpClient httpClient, BrokerConfiguration brokerConfiguration)
         {
@@ -58,6 +60,11 @@ namespace Quix.Snowflake.Writer.Helpers
         
         public async Task<(KafkaReaderConfiguration config, string topicId)> GetConfiguration()
         {
+            if (config != default)
+            {
+                return config;
+            }
+            
             var sw = Stopwatch.StartNew();
             var ws = await this.GetWorkspaceFromConfiguration(this.brokerConfiguration.TopicName);
             var client = await this.GetKafkaReaderConfigurationForWorkspace(ws);
@@ -68,7 +75,8 @@ namespace Quix.Snowflake.Writer.Helpers
             var topicId = await this.ValidateTopicExistence(ws, this.brokerConfiguration.TopicName);
             sw.Stop();
             this.logger.LogTrace("Validated topic {0} in {1}.", this.brokerConfiguration.TopicName, sw.Elapsed);
-            return (client, topicId);
+            config = (client, topicId); 
+            return config;
         }
 
         /// <returns>TopicID</returns>

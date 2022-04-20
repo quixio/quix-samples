@@ -1,42 +1,7 @@
-
-python/.idea/
-
-python/model/NY-Bikes-Predictions/.idea/
-
-.idea/
-
-python/read/Complete-Example/__pycache__/
-
-python/model/Fraud-Detection-Clean/__pycache__/
-
-python/read/Hello-Panda/__pycache__/
-
-python/model/Fraud-Detection-Predict/__pycache__/
-
-python/model/Fraud-Detection-Predict/certificates/quixdev-stevesstuff/ca.cert
-
-csharp/read/hello world/ReadHelloWorld/bin/Debug/netcoreapp3.0/certificates/quixdev-stevesstuff/ca.cert
-
-csharp/read/hello world/ReadHelloWorld/bin/Debug/netcoreapp3.0/
-
-csharp/read/hello world/ReadHelloWorld/obj/Debug/netcoreapp3.0/
-
-csharp/read/hello world/ReadHelloWorld/obj/
-
-csharp/read/complete example/ReadCompleteExample/obj/
-
-csharp/write/hello-world/WriteHelloWorld/obj/Debug/netcoreapp3.0/
-
-csharp/write/hello-world/WriteHelloWorld/obj/
-
-csharp/write/complete-example/WriteCompleteExample/obj/Debug/netcoreapp3.0/
-
-csharp/write/complete-example/WriteCompleteExample/obj/
-
-**/.DS_Store
-
-**/.vs/
-
 csharp/**/bin/
 
 csharp/**/obj/
+
+**/ca.cert
+
+**/.idea/
