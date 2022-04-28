@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Quix.Sdk.Process.Models;
-using Quix.Snowflake.Application.Models;
-using Quix.Snowflake.Domain.Models;
+using Quix.SqlServer.Application.Models;
+using Quix.SqlServer.Domain.Models;
 
-namespace Quix.Snowflake.Application.Helpers
+namespace Quix.SqlServer.Application.Helpers
 {
     public static class ModelExtensions
     {

@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Quix.Snowflake.Infrastructure\Quix.Snowflake.Infrastructure.csproj" />
+      <ProjectReference Include="..\Quix.SqlServer.Infrastructure\Quix.SqlServer.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

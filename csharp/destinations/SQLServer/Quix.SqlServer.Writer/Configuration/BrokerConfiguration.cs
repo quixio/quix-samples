@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Quix.Snowflake.Writer.Configuration
+namespace Quix.SqlServer.Writer.Configuration
 {
     [ExcludeFromCodeCoverage]
     public class BrokerConfiguration

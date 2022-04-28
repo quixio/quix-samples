@@ -1,4 +1,4 @@
-﻿namespace Quix.Snowflake.Writer.Helpers.QuixApi.Portal
+﻿namespace Quix.SqlServer.Writer.Helpers.QuixApi.Portal
 {
     /// <summary>
     /// Model describing the exception which occurred while executing a request

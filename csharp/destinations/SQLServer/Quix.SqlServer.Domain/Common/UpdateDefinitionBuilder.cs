@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Quix.Snowflake.Domain.Common
+namespace Quix.SqlServer.Domain.Common
 {
     public class UpdateDefinitionBuilder<TModel>
     {

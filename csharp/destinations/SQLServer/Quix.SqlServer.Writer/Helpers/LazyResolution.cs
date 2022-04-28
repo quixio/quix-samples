@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Quix.Snowflake.Writer.Helpers
+namespace Quix.SqlServer.Writer.Helpers
 {
     // source: https://thomaslevesque.com/2020/03/18/lazily-resolving-services-to-fix-circular-dependencies-in-net-core/
     public static class LazyResolution

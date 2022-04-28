@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Quix.Snowflake.Domain.Models
+namespace Quix.SqlServer.Domain.Models
 {
     public enum UpdateType
     {

@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Quix.Snowflake.Domain.Common
+namespace Quix.SqlServer.Domain.Common
 {
     public class Utils
     {

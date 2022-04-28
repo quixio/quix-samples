@@ -1,38 +1,35 @@
 using System;
-using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
-using Snowflake.Data.Client;
 
-namespace Quix.Snowflake.Infrastructure.Shared
+namespace Quix.SqlServer.Infrastructure.Shared
 {
-    public class SnowflakeConnectionValidatorService
+    public class SqlServerConnectionValidatorService
     {
         private readonly SqlConnection connection;
-        //private readonly SnowflakeDbConnection connection;
-        private readonly ILogger<SnowflakeConnectionValidatorService> logger;
+        //private readonly SqlServerDbConnection connection;
+        private readonly ILogger<SqlServerConnectionValidatorService> logger;
 
-        public SnowflakeConnectionValidatorService(SqlConnection connection, ILoggerFactory loggerFactory)
-        //public SnowflakeConnectionValidatorService(SnowflakeDbConnection connection, ILoggerFactory loggerFactory)
+        public SqlServerConnectionValidatorService(SqlConnection connection, ILoggerFactory loggerFactory)
+        //public SqlServerConnectionValidatorService(SqlServerDbConnection connection, ILoggerFactory loggerFactory)
         {
-            this.logger = loggerFactory.CreateLogger<SnowflakeConnectionValidatorService>();
+            this.logger = loggerFactory.CreateLogger<SqlServerConnectionValidatorService>();
             this.connection = connection;
         }
 
         public void Validate()
         {
-            this.logger.LogInformation($"Connecting to Snowflake database {connection.Database}");
+            this.logger.LogInformation($"Connecting to SqlServer database {connection.Database}");
             var openTask = Task.Run(() =>
             {
-                
                 connection.Open();
             });
             Task.WaitAny(openTask, Task.Delay(10000));
             if (openTask.IsFaulted) throw openTask.Exception ?? new Exception("Connection failed");
             if (!openTask.IsCompleted) throw new TimeoutException("Connection timed out"); 
-            this.logger.LogInformation($"Connected to Snowflake database {connection.Database}");
-            this.connection.ExecuteSnowflakeStatement("SELECT 1");
+            this.logger.LogInformation($"Connected to SqlServer database {connection.Database}");
+            this.connection.ExecuteSqlServerStatement("SELECT 1");
         }
     }
 }

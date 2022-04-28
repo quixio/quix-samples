@@ -9,13 +9,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Quix.Sdk.Process.Models;
-using Quix.Snowflake.Application.Helpers;
-using Quix.Snowflake.Application.Models;
-using Quix.Snowflake.Domain.Common;
-using Quix.Snowflake.Domain.Models;
-using Quix.Snowflake.Domain.Repositories;
+using Quix.SqlServer.Application.Helpers;
+using Quix.SqlServer.Application.Models;
+using Quix.SqlServer.Domain.Common;
+using Quix.SqlServer.Domain.Models;
+using Quix.SqlServer.Domain.Repositories;
 
-namespace Quix.Snowflake.Application.Metadata
+namespace Quix.SqlServer.Application.Metadata
 {
     public interface IMetadataBufferedPersistingService
     {
@@ -48,7 +48,7 @@ namespace Quix.Snowflake.Application.Metadata
         /// </summary>
         private ConcurrentQueue<StreamMetaDataItem> queue;
         private readonly object queueLock = new object();
-        private readonly Task workerTask;
+        private readonly Task SqlServerTask;
         
         /// <summary>
         /// (streamId - Stream) 
@@ -71,7 +71,7 @@ namespace Quix.Snowflake.Application.Metadata
         /// queue multiple saves can be triggered without having to wait for last to complete 
         /// </summary>
         private readonly ConcurrentQueue<CommitCollection> commitQueue = new ConcurrentQueue<CommitCollection>();
-        private Action ForceWakeWorkerMethod = () => { };
+        private Action ForceWakeSqlServerMethod = () => { };
         
         public MetadataBufferedPersistingService(
             ILoggerFactory loggerFactory,
@@ -88,10 +88,10 @@ namespace Quix.Snowflake.Application.Metadata
             this.streamIdleTime = streamIdleTime;
             this.topicDisplayName = topicDisplayName.Value;
             this.queue = new ConcurrentQueue<StreamMetaDataItem>();
-            this.workerTask = Task.Run(this.WorkerMethod);
+            this.SqlServerTask = Task.Run(this.SqlServerMethod);
         }
 
-        private async Task WorkerMethod()
+        private async Task SqlServerMethod()
         {
             int cooldownPeriodUpdatedStream = 20; // if we have a lot of streams (100+ to update per loop, then this should start to increase the delay based on load)
             int minCooldownPeriod = 2000; // however we still don't want to update too frequently
@@ -105,7 +105,7 @@ namespace Quix.Snowflake.Application.Metadata
                 mre.Release();
             };
 
-            ForceWakeWorkerMethod = () =>
+            ForceWakeSqlServerMethod = () =>
             {
                 if (timer.Enabled)
                 {
@@ -191,7 +191,7 @@ namespace Quix.Snowflake.Application.Metadata
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError(ex, "Exception in the Metadata WorkerMethod.");
+                    this.logger.LogError(ex, "Exception in the Metadata SqlServerMethod.");
                 }
             }
         }
@@ -673,7 +673,7 @@ namespace Quix.Snowflake.Application.Metadata
                 this.queue = new ConcurrentQueue<StreamMetaDataItem>();
             }
 
-            this.ForceWakeWorkerMethod();
+            this.ForceWakeSqlServerMethod();
 
             // TODO handle exception. At the moment it gets propagates up, but it pretty much un-does the whole commit queue
             return commitDoneTaskSource.Task.ContinueWith(t=>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Quix.Snowflake.Domain.TimeSeries.Models
+namespace Quix.SqlServer.Domain.TimeSeries.Models
 {
     public class ParameterDataRowForWrite
     {

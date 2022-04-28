@@ -11,18 +11,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Quix.Snowflake.Writer.Configuration;
-using Quix.Snowflake.Writer.Helpers.QuixApi.Portal;
-using Quix.Snowflake.Writer.Helpers.QuixApi.Portal.Requests;
 using Quix.Sdk.Process.Configuration;
 using Quix.Sdk.Process.Kafka;
 using Quix.Sdk.Streaming.Exceptions;
 using Quix.Sdk.Streaming.QuixApi;
 using Quix.Sdk.Transport.Fw;
+using Quix.SqlServer.Writer.Configuration;
+using Quix.SqlServer.Writer.Helpers.QuixApi.Portal;
+using Quix.SqlServer.Writer.Helpers.QuixApi.Portal.Requests;
 using Exception = System.Exception;
-using Workspace = Quix.Snowflake.Writer.Helpers.QuixApi.Portal.Workspace;
+using Workspace = Quix.SqlServer.Writer.Helpers.QuixApi.Portal.Workspace;
 
-namespace Quix.Snowflake.Writer.Helpers
+namespace Quix.SqlServer.Writer.Helpers
 {
     public class QuixConfigHelper
     {
@@ -189,7 +189,7 @@ namespace Quix.Snowflake.Writer.Helpers
                 throw new Exception("CommitAfterEveryCount can not be set to null to avoid deadlocks");
             }
 
-            return new KafkaReaderConfiguration(ws.Broker.Address, $"{ws.WorkspaceId}-writer.Snowflake", brokerProperties)
+            return new KafkaReaderConfiguration(ws.Broker.Address, $"{ws.WorkspaceId}-writer.SqlServer", brokerProperties)
             {
                 CommitOptions = new CommitOptions()
                 {

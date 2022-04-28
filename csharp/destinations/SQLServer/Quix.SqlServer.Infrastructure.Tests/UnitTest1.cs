@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging.Abstractions;
-using Quix.Snowflake.Domain.Common;
-using Quix.Snowflake.Domain.Models;
-using Quix.Snowflake.Infrastructure.Metadata;
-using Quix.Snowflake.Infrastructure.Shared;
+using Quix.SqlServer.Domain.Common;
+using Quix.SqlServer.Domain.Models;
+using Quix.SqlServer.Infrastructure.Metadata;
+using Quix.SqlServer.Infrastructure.Shared;
 using Xunit;
 
-namespace Quix.Snowflake.Infrastructure.Tests;
+namespace Quix.SqlServer.Infrastructure.Tests;
 
 public class UnitTest1
 {
@@ -25,7 +25,7 @@ public class UnitTest1
     public async Task StreamRepository_BulkWrite_QuickTests()
     {
         // Arrange
-        SnowflakeSchemaRegistry.Register();
+        SqlServerSchemaRegistry.Register();
         var repo = CreateStreamRepo();
 
         var stream = new TelemetryStream("baseStream");
@@ -62,7 +62,7 @@ public class UnitTest1
     public async Task StreamRepository_Get_QuickTests()
     {
         // Arrange
-        SnowflakeSchemaRegistry.Register();
+        SqlServerSchemaRegistry.Register();
         var repo = CreateStreamRepo();
 
         var displayName = "test";
@@ -81,7 +81,7 @@ public class UnitTest1
     public async Task EventRepositoryQuickTests()
     {
         // Arrange
-        SnowflakeSchemaRegistry.Register();
+        SqlServerSchemaRegistry.Register();
         var repo = CreateEventRepo();
         var tEvent = new TelemetryEvent("mystreamId");
 

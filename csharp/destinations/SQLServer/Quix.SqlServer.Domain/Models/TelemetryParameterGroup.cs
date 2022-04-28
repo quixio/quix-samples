@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Quix.Snowflake.Domain.Models
+namespace Quix.SqlServer.Domain.Models
 {
     [DebuggerDisplay("{Path}, {Name}")]
     public class TelemetryParameterGroup : IEquatable<TelemetryParameterGroup>

@@ -10,19 +10,19 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Snowflake.Domain.Common;
+using Quix.SqlServer.Domain.Common;
 
-namespace Quix.Snowflake.Infrastructure.Shared
+namespace Quix.SqlServer.Infrastructure.Shared
 {
-    public abstract class SnowflakeRepository<T> where T : new()
+    public abstract class SqlServerRepository<T> where T : new()
     {
         protected readonly IDbConnection DatabaseConnection;
         protected readonly ILogger logger;
-        private readonly SnowflakeModelSchema schema;
+        private readonly SqlServerModelSchema schema;
         private const string InformationSchema = "dbo"; // Maybe this could come from config ?
         private const int MaxQueryByteSize = 1024 * 1024 * 8 - 1024*64; // 1 MB, -64 KB for safety margin
 
-        protected SnowflakeRepository(IDbConnection databaseConnection, ILogger logger)
+        protected SqlServerRepository(IDbConnection databaseConnection, ILogger logger)
         {
             this.DatabaseConnection = databaseConnection;
             this.logger = logger;
@@ -113,21 +113,21 @@ namespace Quix.Snowflake.Infrastructure.Shared
             {
                 timer = InaccurateSharedTimer.Instance.Subscribe(10, () =>
                 {
-                    this.logger.LogInformation("Executing data write Snowflake statement is taking longer ({0:g}) than expected...", sw.Elapsed);
+                    this.logger.LogInformation("Executing data write SqlServer statement is taking longer ({0:g}) than expected...", sw.Elapsed);
                     timer.Dispose();
                     setTimer();
                 });
             }
             setTimer();
             
-            this.logger.LogTrace("Executing Snowflake statement:{0}{1}", Environment.NewLine, statement);
+            this.logger.LogTrace("Executing SqlServer statement:{0}{1}", Environment.NewLine, statement);
             try
             {
-                DatabaseConnection.ExecuteSnowflakeStatement(statement);
+                DatabaseConnection.ExecuteSqlServerStatement(statement);
             }
             catch (Exception ex)
             {
-                this.logger.LogError("Failed to execute Snowflake statement:{0}{1}", Environment.NewLine, statement);
+                this.logger.LogError("Failed to execute SqlServer statement:{0}{1}", Environment.NewLine, statement);
                 throw;
             }
             finally
@@ -136,7 +136,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
             }
 
             sw.Stop();
-            this.logger.LogDebug("Executed Snowflake statement in {0:g}:{1}{2}", sw.Elapsed, Environment.NewLine, statement);
+            this.logger.LogDebug("Executed SqlServer statement in {0:g}:{1}{2}", sw.Elapsed, Environment.NewLine, statement);
         }
 
         public Task<IList<T>> Get(FilterDefinition<T> filter)
@@ -148,13 +148,13 @@ namespace Quix.Snowflake.Infrastructure.Shared
             var primaryfieldMap = this.schema.ColumnMemberInfos.ToDictionary(y => y, GetColumName).ToList(); // Guarantee AN order
             var columns = string.Join(", ", primaryfieldMap.Select(y=> y.Value));
             var selectStatement = $"SELECT {columns} FROM {this.schema.TableName}{filterStatement}";
-            this.logger.LogTrace("Snowflake query statement: {0}", selectStatement);
+            this.logger.LogTrace("SqlServer query statement: {0}", selectStatement);
             var sw = Stopwatch.StartNew();
             List<T> result = null;
-            DatabaseConnection.QuerySnowflake(selectStatement, reader =>
+            DatabaseConnection.QuerySqlServer(selectStatement, reader =>
             {
                 sw.Stop();
-                this.logger.LogDebug("Executed Snowflake query statement in {0:g}: {1}", sw.Elapsed, selectStatement);
+                this.logger.LogDebug("Executed SqlServer query statement in {0:g}: {1}", sw.Elapsed, selectStatement);
                 result = ParseModels<T>(reader, primaryfieldMap, this.schema.TypeMapFrom).ToList();
             });
 
@@ -215,10 +215,10 @@ namespace Quix.Snowflake.Infrastructure.Shared
         private IEnumerable<string> GenerateDeleteStatement(DeleteManyModel<T> deleteDefinition)
         {
             var filterStatement = GenerateFilterStatement(deleteDefinition.Filter, true);
-            List<KeyValuePair<MemberInfo, SnowflakeForeignTableSchema>> foreignTablesInvolved;
+            List<KeyValuePair<MemberInfo, SqlServerForeignTableSchema>> foreignTablesInvolved;
             foreignTablesInvolved = !string.IsNullOrWhiteSpace(filterStatement)
                 ? this.schema.ForeignTables.Where(y => filterStatement.Contains($" {y.Value.ForeignTableName}.")).ToList()
-                : new List<KeyValuePair<MemberInfo, SnowflakeForeignTableSchema>>();
+                : new List<KeyValuePair<MemberInfo, SqlServerForeignTableSchema>>();
 
             if (this.schema.ForeignTables.Any(y => filterStatement.Contains($" {y.Value.ForeignTableName}.")))
             {
@@ -492,7 +492,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
             return sb.ToString();
         }
 
-        private string GenerateForeignTableInsertStatement(SnowflakeForeignTableSchema foreignTable, IEnumerable elements, object keyValueInForeignTable)
+        private string GenerateForeignTableInsertStatement(SqlServerForeignTableSchema foreignTable, IEnumerable elements, object keyValueInForeignTable)
         {
             var keyValue = GenerateSqlValueText(keyValueInForeignTable);
             if (foreignTable.ColumnMemberInfos == null)
@@ -533,21 +533,21 @@ namespace Quix.Snowflake.Infrastructure.Shared
         private static string GetColumName(MemberInfo memberInfo)
         {
             if (memberInfo == null) return null;
-            return ConvertToSnowflakeColumnName(memberInfo.Name);
+            return ConvertToSqlServerColumnName(memberInfo.Name);
         }
         
-        private static string ConvertToSnowflakeColumnName(string name)
+        private static string ConvertToSqlServerColumnName(string name)
         {
             return $"\"{name.ToUpperInvariant()}\"";
         }
 
 #region Initialize
 
-        private SnowflakeModelSchema ValidateSchema()
+        private SqlServerModelSchema ValidateSchema()
         {
-            if (!SnowflakeSchemaRegistry.Registry.TryGetValue(typeof(T), out var snowflakeModelSchema))
-                throw new Exception($"Type {typeof(T)} has no snowflake schema registration");
-            return snowflakeModelSchema;
+            if (!SqlServerSchemaRegistry.Registry.TryGetValue(typeof(T), out var SqlServerModelSchema))
+                throw new Exception($"Type {typeof(T)} has no SqlServer schema registration");
+            return SqlServerModelSchema;
         }
 
         private void Initialize()
@@ -564,7 +564,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
         {
             var checkForTableSql = $"SELECT coalesce((SELECT '1' FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table.ToUpperInvariant()}'), '0')";
             var exists = false;
-            DatabaseConnection.QuerySnowflake(checkForTableSql, existingTablesReader =>
+            DatabaseConnection.QuerySqlServer(checkForTableSql, existingTablesReader =>
             {
                 while (existingTablesReader.Read())
                 {
@@ -578,7 +578,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
 
         private void VerifyTables()
         {
-            var expectedColumns = this.schema.ColumnMemberInfos.ToDictionary(GetColumName, y => MapDotnetTypeToSnowflakeType(Utils.GetMemberInfoType(y)));
+            var expectedColumns = this.schema.ColumnMemberInfos.ToDictionary(GetColumName, y => MapDotnetTypeToSqlServerType(Utils.GetMemberInfoType(y)));
 
             VerifyTable(this.schema.TableName, expectedColumns, GetColumName(this.schema.ClusterKeyMemberInfo));
 
@@ -586,11 +586,11 @@ namespace Quix.Snowflake.Infrastructure.Shared
             {
 
                 var ftExpectedColumns = foreignTableSchema.Value.ColumnMemberInfos != null
-                        ? foreignTableSchema.Value.ColumnMemberInfos.ToDictionary(GetColumName, y => MapDotnetTypeToSnowflakeType(Utils.GetMemberInfoType(y)))
-                        : new Dictionary<string, string>() {{Utils.UnPluralize(GetColumName(foreignTableSchema.Value.ForeignMemberInfo)), MapDotnetTypeToSnowflakeType(foreignTableSchema.Value.ForeignMemberType)}};
-                ftExpectedColumns[ConvertToSnowflakeColumnName(foreignTableSchema.Value.KeyInForeignTable)] = MapDotnetTypeToSnowflakeType(Utils.GetMemberInfoType(this.schema.PrimaryKeyMemberInfo));
+                        ? foreignTableSchema.Value.ColumnMemberInfos.ToDictionary(GetColumName, y => MapDotnetTypeToSqlServerType(Utils.GetMemberInfoType(y)))
+                        : new Dictionary<string, string>() {{Utils.UnPluralize(GetColumName(foreignTableSchema.Value.ForeignMemberInfo)), MapDotnetTypeToSqlServerType(foreignTableSchema.Value.ForeignMemberType)}};
+                ftExpectedColumns[ConvertToSqlServerColumnName(foreignTableSchema.Value.KeyInForeignTable)] = MapDotnetTypeToSqlServerType(Utils.GetMemberInfoType(this.schema.PrimaryKeyMemberInfo));
 
-                VerifyTable(foreignTableSchema.Value.ForeignTableName, ftExpectedColumns, ConvertToSnowflakeColumnName(foreignTableSchema.Value.KeyInForeignTable));
+                VerifyTable(foreignTableSchema.Value.ForeignTableName, ftExpectedColumns, ConvertToSqlServerColumnName(foreignTableSchema.Value.KeyInForeignTable));
             }
         }
 
@@ -600,11 +600,11 @@ namespace Quix.Snowflake.Infrastructure.Shared
             {
                 // if not
                 // create the table
-                DatabaseConnection.ExecuteSnowflakeStatement(
+                DatabaseConnection.ExecuteSqlServerStatement(
                     $"CREATE TABLE {InformationSchema}{(InformationSchema != "" ? "." : "")}{tableName} ({string.Join(", ", columnToTypes.Select(y => $"{y.Key} {y.Value}"))})");
 
-                //todo?!?!?
-                //if (!string.IsNullOrEmpty(clusterColumn)) DatabaseConnection.ExecuteSnowflakeStatement($"ALTER TABLE {InformationSchema}{(InformationSchema != "" ? "." : "")}{tableName} CLUSTER BY ({clusterColumn})");
+                //todo do we need some kind of clustering
+                //if (!string.IsNullOrEmpty(clusterColumn)) DatabaseConnection.ExecuteSqlServerStatement($"ALTER TABLE {InformationSchema}{(InformationSchema != "" ? "." : "")}{tableName} CLUSTER BY ({clusterColumn})");
 
                 this.logger.LogInformation($"Table {tableName} created");
             }
@@ -613,13 +613,13 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{tableName.ToUpperInvariant()}'";
-                DatabaseConnection.QuerySnowflake(sql, existingColumnNameReader =>
+                DatabaseConnection.QuerySqlServer(sql, existingColumnNameReader =>
                 {
 
                     var cols = new List<string>();
                     while (existingColumnNameReader.Read())
                     {
-                        cols.Add(ConvertToSnowflakeColumnName(existingColumnNameReader.GetString(0)));
+                        cols.Add(ConvertToSqlServerColumnName(existingColumnNameReader.GetString(0)));
                     }
                     if (cols.Intersect(columnToTypes.Keys).OrderBy(y=> y).Count() != columnToTypes.Count) throw new NotImplementedException($"Table {tableName} does not have the expected columns");
                 });
@@ -629,7 +629,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
             }
         }
 
-        private string MapDotnetTypeToSnowflakeType(Type type)
+        private string MapDotnetTypeToSqlServerType(Type type)
         {
             if (type.IsGenericType)
             {
@@ -672,7 +672,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 return "float";
             }
 
-            throw new NotImplementedException($"Type {type.FullName} is not implemented for snowflake storage");
+            throw new NotImplementedException($"Type {type.FullName} is not implemented for SqlServer storage");
         }
 
 #endregion

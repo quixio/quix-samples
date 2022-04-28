@@ -1,4 +1,4 @@
-namespace Quix.Snowflake.Application.Metadata
+namespace Quix.SqlServer.Application.Metadata
 {
     public class StreamIdleTime
     {

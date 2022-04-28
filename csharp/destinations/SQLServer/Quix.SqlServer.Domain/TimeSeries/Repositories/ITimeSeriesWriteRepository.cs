@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Quix.Snowflake.Domain.TimeSeries.Models;
+using Quix.SqlServer.Domain.TimeSeries.Models;
 
-namespace Quix.Snowflake.Domain.TimeSeries.Repositories
+namespace Quix.SqlServer.Domain.TimeSeries.Repositories
 {
     /// <summary>
     /// Interface to persist Quix.Sdk.Process models into time series database.

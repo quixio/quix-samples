@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using Mono.Unix.Native;
-using Quix.Snowflake.Domain.Models;
 
-namespace Quix.Snowflake.Application.Helpers
+namespace Quix.SqlServer.Application.Helpers
 {
     public static class Extensions
     {

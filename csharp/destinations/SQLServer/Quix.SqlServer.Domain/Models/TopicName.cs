@@ -1,4 +1,4 @@
-namespace Quix.Snowflake.Domain.Models
+namespace Quix.SqlServer.Domain.Models
 {
     /// <summary>
     /// Name of the Topic. Unique within same Workspace.

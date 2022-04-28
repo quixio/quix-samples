@@ -1,4 +1,4 @@
-namespace Quix.Snowflake.Application.Models
+namespace Quix.SqlServer.Application.Models
 {
     public class DiscardRange
     {

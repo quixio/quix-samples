@@ -5,18 +5,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
 using Microsoft.Extensions.Logging;
-using Quix.Snowflake.Domain.Common;
-using Quix.Snowflake.Domain.TimeSeries.Models;
-using Quix.Snowflake.Domain.TimeSeries.Repositories;
-using Quix.Snowflake.Infrastructure.Shared;
-using Snowflake.Data.Client;
+using Quix.SqlServer.Domain.Common;
+using Quix.SqlServer.Domain.TimeSeries.Models;
+using Quix.SqlServer.Domain.TimeSeries.Repositories;
+using Quix.SqlServer.Infrastructure.Shared;
 
-namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
+namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
 {
     /// <summary>
-    /// Implementation of <see cref="ITimeSeriesWriteRepository"/> for Snowflake
+    /// Implementation of <see cref="ITimeSeriesWriteRepository"/> for SqlServer
     /// </summary>
     public class TimeSeriesWriteRepository : ITimeSeriesWriteRepository, IDisposable
     {
@@ -56,7 +54,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         {
             var checkForTableSql = $"SELECT coalesce((SELECT '1' FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table}'), '0')";
             var exists = false;
-            dbConnection.QuerySnowflake(checkForTableSql, existingTablesReader =>
+            dbConnection.QuerySqlServer(checkForTableSql, existingTablesReader =>
             {
                 while (existingTablesReader.Read())
                 {
@@ -82,7 +80,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                     //$"ALTER TABLE {InformationSchema}.{requiredTable} CLUSTER BY (timestamp)" // not clustering for now, as timestamp at nanosec precision introduces bad clustering
                 };
                 
-                //var recordsAffected = ExecuteSnowFlakeNonQuery(sql);
+                //var recordsAffected = ExecuteSqlServerNonQuery(sql);
                 ExecuteStatements(sqlInsertStatements);
                 
                 this.logger.LogInformation($"Table {requiredTable} created");
@@ -95,7 +93,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{requiredTable}'";
-                dbConnection.QuerySnowflake(sql, existingColumnNameReader =>
+                dbConnection.QuerySqlServer(sql, existingColumnNameReader =>
                 {
                     while (existingColumnNameReader.Read())
                     {
@@ -129,7 +127,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             var uniqueColumns = new Dictionary<string, string>();
 
             var totalValues = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts);
-            this.logger.LogTrace($"Saving {totalValues} parameter values to Snowflake db");
+            this.logger.LogTrace($"Saving {totalValues} parameter values to SqlServer db");
 
             VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
 
@@ -143,7 +141,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 i = sqlInserts.Take(1000);
             }
             
-            this.logger.LogTrace($"Saved {totalValues} parameter values to Snowflake db");
+            this.logger.LogTrace($"Saved {totalValues} parameter values to SqlServer db");
             
             return Task.CompletedTask;
         }
@@ -297,13 +295,13 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             var uniqueColumns = new Dictionary<string, string>();
 
             var totalValues = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts);
-            this.logger.LogTrace($"Saving {totalValues} event values to Snowflake db");
+            this.logger.LogTrace($"Saving {totalValues} event values to SqlServer db");
 
             VerifyColumns(uniqueColumns, eventColumns, EventValuesTableName);
 
             ExecuteStatements(sqlInserts);
             
-            this.logger.LogTrace($"Saved {totalValues} event values to Snowflake db");
+            this.logger.LogTrace($"Saved {totalValues} event values to SqlServer db");
             
             return Task.CompletedTask;
         }
@@ -512,7 +510,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         private void ExecuteStatement(string statement)
         {
             if (string.IsNullOrWhiteSpace(statement)) return;
-            //this.logger.LogTrace("Executing Snowflake statement:{0}{1}", Environment.NewLine, statement);
+            //this.logger.LogTrace("Executing SqlServer statement:{0}{1}", Environment.NewLine, statement);
             var sw = Stopwatch.StartNew();
             IDisposable timer = null;
 
@@ -520,7 +518,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             {
                 timer = InaccurateSharedTimer.Instance.Subscribe(10, () =>
                 {
-                    this.logger.LogInformation("Executing data write Snowflake statement is taking longer ({0:g}) than expected...", sw.Elapsed);
+                    this.logger.LogInformation("Executing data write SqlServer statement is taking longer ({0:g}) than expected...", sw.Elapsed);
                     timer.Dispose();
                     setTimer();
                 });
@@ -529,11 +527,11 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
 
             try
             {
-                dbConnection.ExecuteSnowflakeStatement(statement);
+                dbConnection.ExecuteSqlServerStatement(statement);
             }
             catch (Exception ex)
             {
-                this.logger.LogError("Failed to execute Snowflake statement:{0}{1}", Environment.NewLine, statement);
+                this.logger.LogError("Failed to execute SqlServer statement:{0}{1}", Environment.NewLine, statement);
                 throw;
             }
             finally
@@ -542,7 +540,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             }
 
             sw.Stop();
-            //this.logger.LogDebug("Executed Snowflake statement in {0:g}:{1}{2}", sw.Elapsed, Environment.NewLine, statement);
+            //this.logger.LogDebug("Executed SqlServer statement in {0:g}:{1}{2}", sw.Elapsed, Environment.NewLine, statement);
         }
     }
 }

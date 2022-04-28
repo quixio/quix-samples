@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Microsoft.Extensions.Logging;
-using Quix.Snowflake.Domain.Models;
-using Quix.Snowflake.Domain.Repositories;
-using Quix.Snowflake.Infrastructure.Shared;
+using Quix.SqlServer.Domain.Models;
+using Quix.SqlServer.Domain.Repositories;
+using Quix.SqlServer.Infrastructure.Shared;
 
-namespace Quix.Snowflake.Infrastructure.Metadata
+namespace Quix.SqlServer.Infrastructure.Metadata
 {
-    public class EventRepository : SnowflakeRepository<TelemetryEvent>, IEventRepository
+    public class EventRepository : SqlServerRepository<TelemetryEvent>, IEventRepository
     {
         public EventRepository(IDbConnection databaseConnection, ILoggerFactory loggerFactory) : base(databaseConnection, loggerFactory.CreateLogger<EventRepository>())
         {

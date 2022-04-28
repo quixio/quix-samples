@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Quix.Snowflake.Domain.Common
+namespace Quix.SqlServer.Domain.Common
 {
     public abstract class InFilterDefinition<TModel> : FilterDefinition<TModel>
     {

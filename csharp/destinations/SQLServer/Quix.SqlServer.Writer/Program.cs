@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Hosting;
-using Quix.Snowflake.Infrastructure.TimeSeries.Repositories;
 
-namespace Quix.Snowflake.Writer
+namespace Quix.SqlServer.Writer
 {
     public class Program
     {

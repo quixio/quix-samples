@@ -1,33 +1,31 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Quix.Snowflake.Application.Streaming;
-using Quix.Snowflake.Application.TimeSeries;
-using Quix.Snowflake.Writer.Configuration;
-using Quix.Snowflake.Writer.Helpers;
 using Quix.Sdk.Process;
 using Quix.Sdk.Process.Kafka;
 using Quix.Sdk.Process.Models;
-using Quix.Snowflake.Application.Metadata;
+using Quix.SqlServer.Application.Metadata;
+using Quix.SqlServer.Application.Streaming;
+using Quix.SqlServer.Application.TimeSeries;
+using Quix.SqlServer.Writer.Helpers;
 
-namespace Quix.Snowflake.Writer
+namespace Quix.SqlServer.Writer
 {
-    public class Worker : BackgroundService
+    public class SqlServer : BackgroundService
     {
 
-        private readonly ILogger<Worker> logger;
+        private readonly ILogger<SqlServer> logger;
         private readonly IServiceProvider serviceProvider;
         private readonly IMetadataBufferedPersistingService metadataBufferedPersistingService;
         private readonly ITimeSeriesBufferedPersistingService timeSeriesBufferedPersistingService;
         private readonly QuixConfigHelper quixConfigHelper;
 
-        public Worker(ILogger<Worker> logger,
+        public SqlServer(ILogger<SqlServer> logger,
             IServiceProvider serviceProvider,
             IMetadataBufferedPersistingService metadataBufferedPersistingService,
             ITimeSeriesBufferedPersistingService timeSeriesBufferedPersistingService,

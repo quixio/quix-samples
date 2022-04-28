@@ -9,7 +9,7 @@
         "Technology": ["SQL"]
     },
     "shortDescription": "Publish data to a SQL Database",
-	"DefaultFile": "Quix.SqlServer.Writer/Worker.cs",
+	"DefaultFile": "Quix.SqlServer.Writer/SqlServer.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "Quix.SqlServer.Writer/Quix.SqlServer.Writer.csproj",
 	"IconFile": "icon.png",
@@ -23,15 +23,15 @@
 		  "Required": true
 		},
 		{
-		  "Name": "Snowflake__Region",
+		  "Name": "SqlServer__Region",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "FreeText",
-		  "Description": "Check your snowflake url or readme for details to acquire the region",
+		  "Description": "Check your SqlServer url or readme for details to acquire the region",
 		  "DefaultValue": "",
 		  "Required": true
 		},
 		{
-		  "Name": "Snowflake__Database",
+		  "Name": "SqlServer__Database",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "FreeText",
 		  "Description": "The name of the database to persist to",
@@ -39,7 +39,7 @@
 		  "Required": true
 		},
 		{
-		  "Name": "Snowflake__User",
+		  "Name": "SqlServer__User",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "FreeText",
 		  "Description": "The username of the user the sink should use to interact with the database",
@@ -47,7 +47,7 @@
 		  "Required": true
 		},
 		{
-		  "Name": "Snowflake__Password",
+		  "Name": "SqlServer__Password",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "HiddenText",
 		  "Description": "The password of the user",

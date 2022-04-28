@@ -5,16 +5,16 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Quix.Snowflake.Domain.Common;
-using Quix.Snowflake.Domain.Models;
+using Quix.SqlServer.Domain.Common;
+using Quix.SqlServer.Domain.Models;
 
-namespace Quix.Snowflake.Infrastructure.Shared
+namespace Quix.SqlServer.Infrastructure.Shared
 {
-    public class SnowflakeSchemaRegistry
+    public class SqlServerSchemaRegistry
     {
         private static bool registered = false;
         private static object registerLock = new object();
-        internal static IReadOnlyDictionary<Type, SnowflakeModelSchema> Registry { get; private set; } = new Dictionary<Type, SnowflakeModelSchema>();
+        internal static IReadOnlyDictionary<Type, SqlServerModelSchema> Registry { get; private set; } = new Dictionary<Type, SqlServerModelSchema>();
 
 
         public static void Register()
@@ -26,30 +26,30 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 registered = true;
             }
             
-            var modelRegistrations = new List<SnowflakeModelSchemaBuilder>();
+            var modelRegistrations = new List<SqlServerModelSchemaBuilder>();
 
-            SnowflakeSchemaRegistry.RegisterModel<TelemetryStream>(modelRegistrations)
+            SqlServerSchemaRegistry.RegisterModel<TelemetryStream>(modelRegistrations)
                 .SetTableName("Streams")
                 .SetPrimaryKey(y => y.StreamId)
                 .SetForeignTable(y => y.Metadata, "StreamMetadata", "StreamId")
                 .SetForeignTable(y => y.Parents, "StreamParents", "StreamId");
 
-            SnowflakeSchemaRegistry.RegisterModel<TelemetryEvent>(modelRegistrations)
+            SqlServerSchemaRegistry.RegisterModel<TelemetryEvent>(modelRegistrations)
                 .SetTableName("EventDetails")
                 .SetPrimaryKey(y => y.ObjectId)
                 .SetClusterKey(y => y.StreamId);
             
-            SnowflakeSchemaRegistry.RegisterModel<TelemetryParameter>(modelRegistrations)
+            SqlServerSchemaRegistry.RegisterModel<TelemetryParameter>(modelRegistrations)
                 .SetTableName("ParameterDetails")
                 .SetPrimaryKey(y => y.ObjectId)
                 .SetClusterKey(y => y.StreamId);
             
-            SnowflakeSchemaRegistry.RegisterModel<TelemetryEventGroup>(modelRegistrations)
+            SqlServerSchemaRegistry.RegisterModel<TelemetryEventGroup>(modelRegistrations)
                 .SetTableName("EventGroupDetails")
                 .SetPrimaryKey(y => y.ObjectId)
                 .SetClusterKey(y => y.StreamId);
 
-            SnowflakeSchemaRegistry.RegisterModel<TelemetryParameterGroup>(modelRegistrations)
+            SqlServerSchemaRegistry.RegisterModel<TelemetryParameterGroup>(modelRegistrations)
                 .SetTableName("ParameterGroupDetails")
                 .SetPrimaryKey(y => y.ObjectId)
                 .SetClusterKey(y => y.StreamId);
@@ -58,44 +58,44 @@ namespace Quix.Snowflake.Infrastructure.Shared
         }
 
 
-        private static IReadOnlyDictionary<Type, SnowflakeModelSchema> Build(List<SnowflakeModelSchemaBuilder> snowFlakeModelRegistrationBuilders)
+        private static IReadOnlyDictionary<Type, SqlServerModelSchema> Build(List<SqlServerModelSchemaBuilder> SqlServerModelRegistrationBuilders)
         {
-            return new ReadOnlyDictionary<Type, SnowflakeModelSchema>(snowFlakeModelRegistrationBuilders.ToDictionary(y => y.Type, y => y.Build()));
+            return new ReadOnlyDictionary<Type, SqlServerModelSchema>(SqlServerModelRegistrationBuilders.ToDictionary(y => y.Type, y => y.Build()));
         }
         
 
-        private static SnowflakeModelSchemaBuilder<T> RegisterModel<T>(List<SnowflakeModelSchemaBuilder> snowFlakeModelRegistrationBuilders)
+        private static SqlServerModelSchemaBuilder<T> RegisterModel<T>(List<SqlServerModelSchemaBuilder> SqlServerModelRegistrationBuilders)
         {
-            var registration = new SnowflakeModelSchemaBuilder<T>();
-            snowFlakeModelRegistrationBuilders.Add(registration);
+            var registration = new SqlServerModelSchemaBuilder<T>();
+            SqlServerModelRegistrationBuilders.Add(registration);
             return registration;
         }
         
-        private abstract class SnowflakeModelSchemaBuilder
+        private abstract class SqlServerModelSchemaBuilder
         {
-            protected SnowflakeModelSchemaBuilder(Type type)
+            protected SqlServerModelSchemaBuilder(Type type)
             {
                 this.Type = type;
             }
             
-            public abstract SnowflakeModelSchema Build();
+            public abstract SqlServerModelSchema Build();
             
             public Type Type { get; }
         }
 
-        private class SnowflakeModelSchemaBuilder<T> : SnowflakeModelSchemaBuilder
+        private class SqlServerModelSchemaBuilder<T> : SqlServerModelSchemaBuilder
         {
             private string tableName;
             private MemberInfo primaryKeyMemberInfo;
-            private Dictionary<MemberInfo, SnowflakeForeignTableSchema> foreignTables = new Dictionary<MemberInfo, SnowflakeForeignTableSchema>();
+            private Dictionary<MemberInfo, SqlServerForeignTableSchema> foreignTables = new Dictionary<MemberInfo, SqlServerForeignTableSchema>();
             private MemberInfo clusterKeyInfo;
 
-            public SnowflakeModelSchemaBuilder() : base(typeof(T))
+            public SqlServerModelSchemaBuilder() : base(typeof(T))
             {
                 
             }
 
-            public SnowflakeModelSchemaBuilder<T> SetPrimaryKey<TK>(Expression<Func<T, TK>> keyExpression)
+            public SqlServerModelSchemaBuilder<T> SetPrimaryKey<TK>(Expression<Func<T, TK>> keyExpression)
             {
                 var memberInfoExpression = Utils.GetMemberExpression(keyExpression);
                 var type = Utils.GetMemberInfoType(memberInfoExpression.Member);
@@ -108,7 +108,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 return this;
             }
             
-            public SnowflakeModelSchemaBuilder<T> SetClusterKey<TK>(Expression<Func<T, TK>> keyExpression)
+            public SqlServerModelSchemaBuilder<T> SetClusterKey<TK>(Expression<Func<T, TK>> keyExpression)
             {
                 var memberInfoExpression = Utils.GetMemberExpression(keyExpression);
                 var type = Utils.GetMemberInfoType(memberInfoExpression.Member);
@@ -121,31 +121,31 @@ namespace Quix.Snowflake.Infrastructure.Shared
                 return this;
             }
 
-            public SnowflakeModelSchemaBuilder<T> SetTableName(string tableName)
+            public SqlServerModelSchemaBuilder<T> SetTableName(string tableName)
             {
                 this.tableName = tableName;
                 return this;
             }
             
-            public SnowflakeModelSchemaBuilder<T> SetForeignTable<TK>(Expression<Func<T, TK>> keyExpression, string tableName, string foreignKeyName) where TK : IEnumerable
+            public SqlServerModelSchemaBuilder<T> SetForeignTable<TK>(Expression<Func<T, TK>> keyExpression, string tableName, string foreignKeyName) where TK : IEnumerable
             {
                 var memberInfoExpression = Utils.GetMemberExpression(keyExpression);
                 var type = Utils.GetMemberInfoType(memberInfoExpression.Member);
                 if (type == typeof(string)) throw new Exception("Can't set foreign table for string");
-                foreignTables[memberInfoExpression.Member] = new SnowflakeForeignTableSchema(memberInfoExpression.Member, tableName, foreignKeyName);
+                foreignTables[memberInfoExpression.Member] = new SqlServerForeignTableSchema(memberInfoExpression.Member, tableName, foreignKeyName);
                 return this;
             }
 
-            public override SnowflakeModelSchema Build()
+            public override SqlServerModelSchema Build()
             {
-                return new SnowflakeModelSchema(tableName, primaryKeyMemberInfo, clusterKeyInfo, foreignTables);
+                return new SqlServerModelSchema(tableName, primaryKeyMemberInfo, clusterKeyInfo, foreignTables);
             }
         }
     }
 
-    internal class SnowflakeForeignTableSchema
+    internal class SqlServerForeignTableSchema
     {
-        public SnowflakeForeignTableSchema(MemberInfo foreignMemberInfo, string foreignTableName, string keyInForeignTable)
+        public SqlServerForeignTableSchema(MemberInfo foreignMemberInfo, string foreignTableName, string keyInForeignTable)
         {
             this.ForeignMemberInfo = foreignMemberInfo;
             this.ForeignTableName = foreignTableName;
@@ -191,14 +191,14 @@ namespace Quix.Snowflake.Infrastructure.Shared
         public string KeyInForeignTable { get; }
     }
 
-    internal class SnowflakeModelSchema
+    internal class SqlServerModelSchema
     {
-        public SnowflakeModelSchema(string tableName, MemberInfo primaryKeyMemberInfo, MemberInfo clusterKeyInfo, Dictionary<MemberInfo, SnowflakeForeignTableSchema> foreignTables)
+        public SqlServerModelSchema(string tableName, MemberInfo primaryKeyMemberInfo, MemberInfo clusterKeyInfo, Dictionary<MemberInfo, SqlServerForeignTableSchema> foreignTables)
         {
             this.TableName = tableName;
             this.PrimaryKeyMemberInfo = primaryKeyMemberInfo;
             this.ClusterKeyMemberInfo = clusterKeyInfo;
-            this.ForeignTables = new ReadOnlyDictionary<MemberInfo, SnowflakeForeignTableSchema>(foreignTables);
+            this.ForeignTables = new ReadOnlyDictionary<MemberInfo, SqlServerForeignTableSchema>(foreignTables);
             var propertiesOrFields = primaryKeyMemberInfo.DeclaringType.GetMembers(BindingFlags.Public | BindingFlags.Instance).Where(y=> y.MemberType == MemberTypes.Field || y.MemberType == MemberTypes.Property).Except(foreignTables.Keys).ToList();
             this.ColumnMemberInfos = propertiesOrFields;
             this.TypeMapFrom = new Dictionary<MemberInfo, Dictionary<object, object>>();
@@ -216,7 +216,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
         }
 
         /// <summary>
-        /// The map to convert back from Snowflake result to dotnet value. Used primarily for enums at the moment
+        /// The map to convert back from SqlServer result to dotnet value. Used primarily for enums at the moment
         /// </summary>
         public Dictionary<MemberInfo, Dictionary<object, object>> TypeMapFrom { get; set; }
 
@@ -224,7 +224,7 @@ namespace Quix.Snowflake.Infrastructure.Shared
 
         public IReadOnlyList<MemberInfo> ColumnMemberInfos { get; }
 
-        public IReadOnlyDictionary<MemberInfo, SnowflakeForeignTableSchema> ForeignTables { get; }
+        public IReadOnlyDictionary<MemberInfo, SqlServerForeignTableSchema> ForeignTables { get; }
 
         public MemberInfo PrimaryKeyMemberInfo { get; }
 

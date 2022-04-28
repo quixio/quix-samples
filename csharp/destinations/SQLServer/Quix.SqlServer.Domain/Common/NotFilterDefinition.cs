@@ -1,4 +1,4 @@
-namespace Quix.Snowflake.Domain.Common
+namespace Quix.SqlServer.Domain.Common
 {
     public class NotFilterDefinition<TModel> : FilterDefinition<TModel>
     {

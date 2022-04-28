@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Quix.Snowflake.Domain.Models
+namespace Quix.SqlServer.Domain.Models
 {
     /// <summary>
     /// Simple string value object with a single value representation.

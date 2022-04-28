@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Quix.Snowflake.Domain.Common;
-using Quix.Snowflake.Domain.Models;
+using Quix.SqlServer.Domain.Common;
+using Quix.SqlServer.Domain.Models;
 
-namespace Quix.Snowflake.Domain.Repositories
+namespace Quix.SqlServer.Domain.Repositories
 {
     /// <summary>
     /// Repository for persisting new <see cref="TelemetryParameter"/> and reading existing

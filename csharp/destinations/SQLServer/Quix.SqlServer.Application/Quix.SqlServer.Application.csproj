@@ -9,8 +9,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Quix.Snowflake.Domain\Quix.Snowflake.Domain.csproj" />
-      <ProjectReference Include="..\Quix.Snowflake.Infrastructure\Quix.Snowflake.Infrastructure.csproj" />
+      <ProjectReference Include="..\Quix.SqlServer.Domain\Quix.SqlServer.Domain.csproj" />
+      <ProjectReference Include="..\Quix.SqlServer.Infrastructure\Quix.SqlServer.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

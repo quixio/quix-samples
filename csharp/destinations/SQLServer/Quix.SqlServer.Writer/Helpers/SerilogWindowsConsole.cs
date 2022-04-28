@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Quix.Snowflake.Writer.Helpers
+namespace Quix.SqlServer.Writer.Helpers
 {
     internal static class SerilogWindowsConsole
     {

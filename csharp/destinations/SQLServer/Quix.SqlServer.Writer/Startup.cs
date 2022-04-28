@@ -8,23 +8,21 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Quix.Snowflake.Application.Metadata;
-using Quix.Snowflake.Application.Streaming;
-using Quix.Snowflake.Application.TimeSeries;
-using Quix.Snowflake.Domain.Common;
-using Quix.Snowflake.Domain.Models;
-using Quix.Snowflake.Domain.Repositories;
-using Quix.Snowflake.Domain.TimeSeries.Repositories;
-using Quix.Snowflake.Infrastructure.Metadata;
-using Quix.Snowflake.Infrastructure.Shared;
-using Quix.Snowflake.Infrastructure.TimeSeries.Models;
-using Quix.Snowflake.Infrastructure.TimeSeries.Repositories;
-using Quix.Snowflake.Writer.Configuration;
-using Quix.Snowflake.Writer.Helpers;
+using Quix.SqlServer.Application.Metadata;
+using Quix.SqlServer.Application.Streaming;
+using Quix.SqlServer.Application.TimeSeries;
+using Quix.SqlServer.Domain.Models;
+using Quix.SqlServer.Domain.Repositories;
+using Quix.SqlServer.Domain.TimeSeries.Repositories;
+using Quix.SqlServer.Infrastructure.Metadata;
+using Quix.SqlServer.Infrastructure.Shared;
+using Quix.SqlServer.Infrastructure.TimeSeries.Models;
+using Quix.SqlServer.Infrastructure.TimeSeries.Repositories;
+using Quix.SqlServer.Writer.Configuration;
+using Quix.SqlServer.Writer.Helpers;
 using Serilog;
-using Snowflake.Data.Client;
 
-namespace Quix.Snowflake.Writer
+namespace Quix.SqlServer.Writer
 {
     public class Startup
     {
@@ -49,7 +47,7 @@ namespace Quix.Snowflake.Writer
             ConfigureApplication(context, services);
 
             // Configure Components from this proj
-            services.AddHostedService<Worker>();
+            services.AddHostedService<SqlServer>();
             
             var gcMemoryInfo = GC.GetGCMemoryInfo();
             var maxTotalMemory = (int)(gcMemoryInfo.TotalAvailableMemoryBytes / 1024 / 1024);
@@ -70,9 +68,9 @@ namespace Quix.Snowflake.Writer
             var topicName = context.Configuration.GetValue<string>("Broker:TopicName");
             services.AddSingleton(new TopicName(topicName));
 
-            var snowflake = new SnowflakeConnectionConfiguration();
-            context.Configuration.Bind("Snowflake", snowflake);
-            services.AddTransient(s => snowflake);
+            var SqlServer = new SqlServerConnectionConfiguration();
+            context.Configuration.Bind("SqlServer", SqlServer);
+            services.AddTransient(s => SqlServer);
 
             var brokerSettings = new BrokerConfiguration();
             context.Configuration.Bind("Broker", brokerSettings);
@@ -81,19 +79,19 @@ namespace Quix.Snowflake.Writer
 
         private static void ConfigureApplication(HostBuilderContext context, IServiceCollection services)
         {
-            // Snowflake
-            services.AddScoped<SnowflakeConnectionValidatorService>();
-            SnowflakeSchemaRegistry.Register();
+            // SqlServer
+            services.AddScoped<SqlServerConnectionValidatorService>();
+            SqlServerSchemaRegistry.Register();
             services.AddSingleton(sc =>
             {
-                var config = sc.GetRequiredService<SnowflakeConnectionConfiguration>();
-                //var conn = new SnowflakeDbConnection();
+                var config = sc.GetRequiredService<SqlServerConnectionConfiguration>();
+                //var conn = new SqlServerDbConnection();
                 var conn = new SqlConnection();
                 conn.ConnectionString = config.ConnectionString;
                 return conn;
             });
             services.AddSingleton<IDbConnection>(sc => sc.GetRequiredService<SqlConnection>()); // using IDbConnection at some places for mocking purposes
-            // services.AddSingleton<IDbConnection>(sc => sc.GetRequiredService<SnowflakeDbConnection>()); // using IDbConnection at some places for mocking purposes
+            // services.AddSingleton<IDbConnection>(sc => sc.GetRequiredService<SqlServerDbConnection>()); // using IDbConnection at some places for mocking purposes
             
             // Stream context
             services.AddScoped<StreamPersistingComponent>();
@@ -104,7 +102,7 @@ namespace Quix.Snowflake.Writer
             services.AddSingleton<QuixConfigHelper>();
             services.AddSingleton((sp) => new TopicId(sp.GetRequiredService<QuixConfigHelper>().GetConfiguration().GetAwaiter().GetResult().topicId));
             
-            var batchSize = context.Configuration.GetValue<int>("Snowflake:BatchSize");
+            var batchSize = context.Configuration.GetValue<int>("SqlServer:BatchSize");
             services.AddSingleton<ITimeSeriesBufferedPersistingService, TimeSeriesBufferedPersistingService>(s =>
             {
                 return new TimeSeriesBufferedPersistingService(
@@ -154,7 +152,7 @@ namespace Quix.Snowflake.Writer
         {
             try
             {
-                var conn = serviceProvider.GetRequiredService<SnowflakeConnectionValidatorService>();
+                var conn = serviceProvider.GetRequiredService<SqlServerConnectionValidatorService>();
                 conn.Validate();
                 Console.WriteLine("CONNECTED!");
             }

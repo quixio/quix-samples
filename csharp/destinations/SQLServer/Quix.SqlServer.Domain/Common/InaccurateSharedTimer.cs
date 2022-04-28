@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Timers;
 
-namespace Quix.Snowflake.Domain.Common
+namespace Quix.SqlServer.Domain.Common
 {
     /// <summary>
     /// Purpose of this is to have semi-second accurate timer callback without using up a lot of threads

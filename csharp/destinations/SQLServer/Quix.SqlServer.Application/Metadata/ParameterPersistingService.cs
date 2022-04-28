@@ -8,11 +8,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Quix.Sdk.Process.Models;
-using Quix.Snowflake.Domain.Common;
-using Quix.Snowflake.Domain.Models;
-using Quix.Snowflake.Domain.Repositories;
+using Quix.SqlServer.Domain.Common;
+using Quix.SqlServer.Domain.Models;
+using Quix.SqlServer.Domain.Repositories;
 
-namespace Quix.Snowflake.Application.Metadata
+namespace Quix.SqlServer.Application.Metadata
 {
     /*
      * NOTE:

@@ -1,4 +1,4 @@
-﻿namespace Quix.Snowflake.Writer.Helpers.QuixApi.Portal
+﻿namespace Quix.SqlServer.Writer.Helpers.QuixApi.Portal
 {
     /// <summary>
     /// Describes properties of a topic

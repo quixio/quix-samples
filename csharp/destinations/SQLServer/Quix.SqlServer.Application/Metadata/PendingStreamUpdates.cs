@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Quix.Sdk.Process.Models;
-using Quix.Snowflake.Domain.Models;
+using Quix.SqlServer.Domain.Models;
 
-namespace Quix.Snowflake.Application.Metadata
+namespace Quix.SqlServer.Application.Metadata
 {
     public class PendingStreamUpdates
     {

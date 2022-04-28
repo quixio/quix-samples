@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Quix.Sdk.Process;
 using Quix.Sdk.Process.Models;
 
-namespace Quix.Snowflake.Application.Streaming
+namespace Quix.SqlServer.Application.Streaming
 {
     /// <summary>
     /// This component works by tracking the memory used by the application.

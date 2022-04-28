@@ -6,13 +6,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Snowflake.Application.Helpers;
-using Quix.Snowflake.Domain.Models;
-using Quix.Snowflake.Domain.TimeSeries.Models;
-using Quix.Snowflake.Domain.TimeSeries.Repositories;
 using Quix.Sdk.Process.Models;
+using Quix.SqlServer.Application.Helpers;
+using Quix.SqlServer.Domain.Models;
+using Quix.SqlServer.Domain.TimeSeries.Models;
+using Quix.SqlServer.Domain.TimeSeries.Repositories;
 
-namespace Quix.Snowflake.Application.TimeSeries
+namespace Quix.SqlServer.Application.TimeSeries
 {
     public interface ITimeSeriesBufferedPersistingService
     {
@@ -34,10 +34,10 @@ namespace Quix.Snowflake.Application.TimeSeries
         private readonly ConcurrentQueue<ParameterCommitItem> parameterCommitQueue = new ConcurrentQueue<ParameterCommitItem>();
         private readonly object paramQueueLock = new object();
         private readonly object eventQueueLock = new object();
-        private Action forceWakeParameterWorkerMethod = () => { };
-        private Action forceWakeEventWorkerMethod = () => { };
-        private readonly Task paramWorkerTask;
-        private readonly Task eventWorkerTask;
+        private Action forceWakeParameterSqlServerMethod = () => { };
+        private Action forceWakeEventSqlServerMethod = () => { };
+        private readonly Task paramSqlServerTask;
+        private readonly Task eventSqlServerTask;
         private readonly int maxBatchSize; // maximum
         private int queueCount = 0;
 
@@ -54,11 +54,11 @@ namespace Quix.Snowflake.Application.TimeSeries
             this.maxBatchSize = maxBatchSize;
             if (this.maxBatchSize <= 0) throw new ArgumentOutOfRangeException(nameof(maxBatchSize));
 
-            this.paramWorkerTask = Task.Run(this.ParamWorkerMethod);
-            this.eventWorkerTask = Task.Run(this.EventWorkerMethod);
+            this.paramSqlServerTask = Task.Run(this.ParamSqlServerMethod);
+            this.eventSqlServerTask = Task.Run(this.EventSqlServerMethod);
         }
 
-        private async Task ParamWorkerMethod()
+        private async Task ParamSqlServerMethod()
         {
             const int sleepDurationWhenNoWork = 2000;
             var mre = new SemaphoreSlim(0);
@@ -74,7 +74,7 @@ namespace Quix.Snowflake.Application.TimeSeries
                 Console.WriteLine("Timer disposed!");
             };
             
-            this.forceWakeParameterWorkerMethod = () =>
+            this.forceWakeParameterSqlServerMethod = () =>
             {
                 if (timer.Enabled)
                 {
@@ -160,7 +160,7 @@ namespace Quix.Snowflake.Application.TimeSeries
                 }
                 catch (System.Exception ex)
                 {
-                    this.logger.LogError(ex, "Data worker thread failed.");
+                    this.logger.LogError(ex, "Data SqlServer thread failed.");
                 }
             }
         }
@@ -178,7 +178,7 @@ namespace Quix.Snowflake.Application.TimeSeries
             }
         }
         
-        private async Task EventWorkerMethod()
+        private async Task EventSqlServerMethod()
         {
             const int sleepDurationWhenNoWork = 2000;
             
@@ -190,7 +190,7 @@ namespace Quix.Snowflake.Application.TimeSeries
                 mre.Release();
             };
             
-            this.forceWakeEventWorkerMethod = () =>
+            this.forceWakeEventSqlServerMethod = () =>
             {
                 if (timer.Enabled)
                 {
@@ -299,7 +299,7 @@ namespace Quix.Snowflake.Application.TimeSeries
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError(ex, "Event worker thread failed.");
+                    this.logger.LogError(ex, "Event SqlServer thread failed.");
                 }
             }
         }
@@ -517,11 +517,11 @@ namespace Quix.Snowflake.Application.TimeSeries
                     sw.Start();
 
                     this.eventQueue = new ConcurrentQueue<StreamEventDataForWrite>();
-                    this.forceWakeEventWorkerMethod();
+                    this.forceWakeEventSqlServerMethod();
                 }
                 var parameterCommitItem = new ParameterCommitItem(parameterCommitDoneTaskSource, this.paramQueue);
                 this.parameterCommitQueue.Enqueue(parameterCommitItem);
-                this.forceWakeParameterWorkerMethod();
+                this.forceWakeParameterSqlServerMethod();
 
                 this.paramQueue = new ConcurrentQueue<StreamParameterDataForWrite>();
             }

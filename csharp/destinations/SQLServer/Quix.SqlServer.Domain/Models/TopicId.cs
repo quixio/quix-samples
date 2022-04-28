@@ -1,4 +1,4 @@
-namespace Quix.Snowflake.Domain.Models
+namespace Quix.SqlServer.Domain.Models
 {
     public class TopicId : StringValueObject
     {

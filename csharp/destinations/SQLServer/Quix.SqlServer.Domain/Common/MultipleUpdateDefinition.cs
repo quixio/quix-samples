@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Quix.Snowflake.Domain.Common
+namespace Quix.SqlServer.Domain.Common
 {
     public class MultipleUpdateDefinition<TModel> : UpdateDefinition<TModel>
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 
-namespace Quix.Snowflake.Writer.Helpers.QuixApi
+namespace Quix.SqlServer.Writer.Helpers.QuixApi
 {
     /// <summary>
     /// API exception converted to a c# exception

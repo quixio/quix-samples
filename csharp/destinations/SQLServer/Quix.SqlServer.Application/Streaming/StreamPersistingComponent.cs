@@ -2,12 +2,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Snowflake.Application.TimeSeries;
 using Quix.Sdk.Process;
 using Quix.Sdk.Process.Models;
-using Quix.Snowflake.Application.Metadata;
+using Quix.SqlServer.Application.Metadata;
+using Quix.SqlServer.Application.TimeSeries;
 
-namespace Quix.Snowflake.Application.Streaming
+namespace Quix.SqlServer.Application.Streaming
 {
     public class StreamPersistingComponent : StreamComponent, IDisposable
     {
