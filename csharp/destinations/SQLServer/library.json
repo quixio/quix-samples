@@ -1,6 +1,6 @@
 {
     "libraryItemId": "47a799c9-2afc-49db-bd10-8b117e0b77ca",
-    "name": "SQL Connector - Sink",
+    "name": "SQL Database Sink",
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
@@ -23,11 +23,19 @@
 		  "Required": true
 		},
 		{
-		  "Name": "SqlServer__Region",
+		  "Name": "SqlServer__Server",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "FreeText",
-		  "Description": "Check your SqlServer url or readme for details to acquire the region",
+		  "Description": "The IP address or fully qualified domain name of your server",
 		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "SqlServer__Port",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The Port number to use for communication with the server",
+		  "DefaultValue": "1433",
 		  "Required": true
 		},
 		{
@@ -42,7 +50,7 @@
 		  "Name": "SqlServer__User",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "FreeText",
-		  "Description": "The username of the user the sink should use to interact with the database",
+		  "Description": "The username of the sink should use to interact with the database",
 		  "DefaultValue": "",
 		  "Required": true
 		},
@@ -50,7 +58,7 @@
 		  "Name": "SqlServer__Password",
 		  "Type": "EnvironmentVariable",
 		  "InputType": "HiddenText",
-		  "Description": "The password of the user",
+		  "Description": "The password for the user",
 		  "DefaultValue": "",
 		  "Required": true
 		}
