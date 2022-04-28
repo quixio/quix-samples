@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
@@ -6,16 +7,21 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Quix.Snowflake.Application.Metadata;
 using Quix.Snowflake.Application.Streaming;
 using Quix.Snowflake.Application.TimeSeries;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
+using Quix.Snowflake.Domain.Repositories;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
+using Quix.Snowflake.Infrastructure.Metadata;
+using Quix.Snowflake.Infrastructure.Shared;
 using Quix.Snowflake.Infrastructure.TimeSeries.Models;
 using Quix.Snowflake.Infrastructure.TimeSeries.Repositories;
 using Quix.Snowflake.Writer.Configuration;
 using Quix.Snowflake.Writer.Helpers;
 using Serilog;
+using Snowflake.Data.Client;
 
 namespace Quix.Snowflake.Writer
 {
@@ -74,14 +80,23 @@ namespace Quix.Snowflake.Writer
 
         private static void ConfigureApplication(HostBuilderContext context, IServiceCollection services)
         {
+            // Snowflake
+            services.AddScoped<SnowflakeConnectionValidatorService>();
+            SnowflakeSchemaRegistry.Register();
+            services.AddSingleton(sc =>
+            {
+                var config = sc.GetRequiredService<SnowflakeConnectionConfiguration>();
+                var conn = new SnowflakeDbConnection();
+                conn.ConnectionString = config.ConnectionString;
+                return conn;
+            });
+            services.AddSingleton<IDbConnection>(sc => sc.GetRequiredService<SnowflakeDbConnection>()); // using IDbConnection at some places for mocking purposes
+            
             // Stream context
             services.AddScoped<StreamPersistingComponent>();
-            
+
             // TimeSeries Context
-            services.AddSingleton<SnowflakeWriteRepository>(); // this nonsensical registration is done to use same
-                                                               // singleton instance for both of the following interface types
-            services.AddSingleton<ITimeSeriesWriteRepository>(sp => sp.GetRequiredService<SnowflakeWriteRepository>()); 
-            services.AddSingleton<IRequiresSetup>(sp => sp.GetRequiredService<SnowflakeWriteRepository>());
+            services.AddSingleton<ITimeSeriesWriteRepository, TimeSeriesWriteRepository>();
 
             services.AddSingleton<QuixConfigHelper>();
             services.AddSingleton((sp) => new TopicId(sp.GetRequiredService<QuixConfigHelper>().GetConfiguration().GetAwaiter().GetResult().topicId));
@@ -95,6 +110,18 @@ namespace Quix.Snowflake.Writer
                     s.GetRequiredService<TopicId>(),
                     batchSize);
             });
+            
+            // Metadata Context
+            services.AddSingleton<IStreamRepository, StreamRepository>();
+            services.AddSingleton<IParameterRepository, ParameterRepository>();
+            services.AddSingleton<IParameterGroupRepository, ParameterGroupRepository>();
+            services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<IEventGroupRepository, EventGroupRepository>();
+            services.AddSingleton<IParameterPersistingService, ParameterPersistingService>();
+            services.AddSingleton<IEventPersistingService, EventPersistingService>();
+            services.AddSingleton<IMetadataBufferedPersistingService, MetadataBufferedPersistingService>();
+            var idleTimeMs = Math.Max(60000, context.Configuration.GetValue<int>("StreamIdleTimeMs"));
+            services.AddSingleton(y=> new StreamIdleTime(idleTimeMs));
         }
         
         internal static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder builder)
@@ -124,17 +151,14 @@ namespace Quix.Snowflake.Writer
         {
             try
             {
-                var services = serviceProvider.GetServices<IRequiresSetup>();
-                foreach (var requiresSetup in services)
-                {
-                    requiresSetup.Setup();
-                }
+                var conn = serviceProvider.GetRequiredService<SnowflakeConnectionValidatorService>();
+                conn.Validate();
                 Console.WriteLine("CONNECTED!");
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ERROR: {0}", ex.Message);
-                Environment.ExitCode = -1;
+                Environment.Exit(-1);
             }
 
         }

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.Extensions.Logging;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.TimeSeries.Models;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
-using Quix.Snowflake.Infrastructure.TimeSeries.Models;
+using Quix.Snowflake.Infrastructure.Shared;
 using Snowflake.Data.Client;
 
 namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
@@ -16,12 +18,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
     /// <summary>
     /// Implementation of <see cref="ITimeSeriesWriteRepository"/> for Snowflake
     /// </summary>
-    public class SnowflakeWriteRepository : ITimeSeriesWriteRepository, IRequiresSetup, IDisposable
+    public class TimeSeriesWriteRepository : ITimeSeriesWriteRepository, IDisposable
     {
-        private readonly ILogger<SnowflakeWriteRepository> logger;
-        private readonly SnowflakeConnectionConfiguration snowflakeConfiguration;
-
-        private SnowflakeDbConnection snowflakeDbConnection;
+        private readonly ILogger<TimeSeriesWriteRepository> logger;
+        private readonly IDbConnection snowflakeDbConnection;
         
         private const string ParameterValuesTableName = "PARAMETERVALUES";
         private const string EventValuesTableName = "EVENTVALUES";
@@ -32,54 +32,41 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         private const string TagFormat = "TAG_{0}";
         private const string TimeStampColumn = "TIMESTAMP";
         private static readonly string StreamIdColumn = string.Format(TagFormat, "STREAMID");
-        private const int MaxQueryLength = 950000; // 1mb in theory, but better be safe
+        private const int MaxQueryByteSize = 1024 * 1024 * 8 - 1024*64; // 1 MB, -64 KB for safety margin
 
         private readonly HashSet<string> parameterColumns = new HashSet<string>();
         private readonly HashSet<string> eventColumns = new HashSet<string>();
 
-        public SnowflakeWriteRepository(
-            ILogger<SnowflakeWriteRepository> logger,
-            SnowflakeConnectionConfiguration snowflakeConfiguration)
+        public TimeSeriesWriteRepository(
+            ILoggerFactory loggerFactory,
+            IDbConnection snowflakeDbConnection)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.snowflakeConfiguration = snowflakeConfiguration;
-            if (snowflakeConfiguration == null) throw new ArgumentNullException(nameof(snowflakeConfiguration));
+            this.logger = loggerFactory.CreateLogger<TimeSeriesWriteRepository>();
+            this.snowflakeDbConnection = snowflakeDbConnection;
+            if (snowflakeDbConnection == null) throw new ArgumentNullException(nameof(snowflakeDbConnection));
+            Initialize();
         }
 
-        private IDataReader ExecuteSnowflakeRead(string sql)
+        public void Dispose()
         {
-            IDbCommand cmd = snowflakeDbConnection.CreateCommand();
-            cmd.CommandText = sql;
-            return cmd.ExecuteReader();
-        }
-
-        private int ExecuteSnowFlakeNonQuery(string sql)
-        {
-            try
-            {
-                IDbCommand cmd = snowflakeDbConnection.CreateCommand();
-                cmd.CommandText = sql;
-                return cmd.ExecuteNonQuery();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            snowflakeDbConnection.Close();
         }
 
         private bool TableExists(string table)
         {
             var checkForTableSql = $"SELECT EXISTS (SELECT * FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table}')";
-            var existingTablesReader = ExecuteSnowflakeRead(checkForTableSql);
-            
-            while (existingTablesReader.Read())
+            var exists = false;
+            snowflakeDbConnection.QuerySnowflake(checkForTableSql, existingTablesReader =>
             {
-                if (existingTablesReader.GetString(0) == "1")
-                    return true;
-            }
+                while (existingTablesReader.Read())
+                {
+                    if (existingTablesReader.GetString(0) != "1") continue;
+                    exists = true;
+                    return;
+                }
+            });
 
-            return false;
+            return exists;
         }
         
         private void VerifyTable(string requiredTable, HashSet<string> columns)
@@ -92,11 +79,11 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 var sqlInsertStatements = new List<string>
                 {
                     $"CREATE TABLE {InformationSchema}.{requiredTable} ({TimeStampColumn} BIGINT, {StreamIdColumn} VARCHAR(256))",
-                    $"ALTER TABLE {InformationSchema}.{requiredTable} CLUSTER BY (timestamp)"
+                    //$"ALTER TABLE {InformationSchema}.{requiredTable} CLUSTER BY (timestamp)" // not clustering for now, as timestamp at nanosec precision introduces bad clustering
                 };
                 
                 //var recordsAffected = ExecuteSnowFlakeNonQuery(sql);
-                ExecuteSqlList(sqlInsertStatements);
+                ExecuteStatements(sqlInsertStatements);
                 
                 this.logger.LogInformation($"Table {requiredTable} created");
                 
@@ -108,27 +95,22 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{requiredTable}'";
-                var existingColumnNameReader = ExecuteSnowflakeRead(sql);
-                
-                while (existingColumnNameReader.Read())
+                snowflakeDbConnection.QuerySnowflake(sql, existingColumnNameReader =>
                 {
-                    parameterColumns.Add(existingColumnNameReader.GetString(0));    
-                }
+                    while (existingColumnNameReader.Read())
+                    {
+                        columns.Add(existingColumnNameReader.GetString(0));
+                    }
+                });
                 
                 this.logger.LogInformation($"Table {requiredTable} verified");
             }
         }
         
-        public Task Setup()
+        private void Initialize()
         {
             this.logger.LogDebug("Checking tables...");
-
-            snowflakeDbConnection = new SnowflakeDbConnection();
-            snowflakeDbConnection.ConnectionString = snowflakeConfiguration.ConnectionString;
             
-            snowflakeDbConnection.Open();
-            this.logger.LogInformation($"Connected to Snowflake database {snowflakeDbConnection.Database}");
-
             CheckDbConnection();
 
             // verify tables exist, if not create them
@@ -136,8 +118,6 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             VerifyTable(EventValuesTableName, eventColumns);
 
             this.logger.LogInformation("Tables verified");
-            
-            return Task.CompletedTask;
         }
 
         public Task WriteTelemetryData(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData)
@@ -153,55 +133,17 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
 
             VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
 
-            var sqlInsertStatements = new List<string>();
-            foreach (var statementPair in sqlInserts)
-            {
-                var sb = new StringBuilder();
-                sb.Append(statementPair.Key.ToUpper());
-                sb.Append(" ");
-                foreach (var line in statementPair.Value)
-                {
-                    if (sb.Length > MaxQueryLength)
-                    {
-                        sb.Remove(sb.Length - 1, 1);
-                        sqlInsertStatements.Add(sb.ToString());
-                        
-                        sb = new StringBuilder();
-                        sb.Append(statementPair.Key.ToUpper());
-                        sb.Append(" ");                        
-                    }
-                    sb.Append(line);
-                    sb.Append(',');
-                }
-
-                sb.Remove(sb.Length - 1, 1);
-                sqlInsertStatements.Add(sb.ToString());
-            }
-
-            ExecuteSqlList(sqlInsertStatements);
+            ExecuteStatements(sqlInserts);
 
             this.logger.LogTrace($"Saved {totalValues} parameter values to Snowflake db");
             
             return Task.CompletedTask;
         }
-
+        
         private void CheckDbConnection()
         {
             if (snowflakeDbConnection.State != ConnectionState.Open)
                 throw new Exception("Database connection is not in the 'Open' state");
-        }
-
-        private int ExecuteSqlList(List<string> sqlInsertStatements)
-        {
-            var totalInserted = 0;
-            foreach (var sqlInsertStatement in sqlInsertStatements)
-            {
-                var recordsAffected = ExecuteSnowFlakeNonQuery(sqlInsertStatement);
-                totalInserted += recordsAffected;
-                // todo log
-            }
-
-            return totalInserted;
         }
 
         private static int PrepareParameterSqlInserts(IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData, Dictionary<string, string> uniqueColumns, Dictionary<string, List<string>> sqlInserts)
@@ -326,7 +268,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             if (sqlStatements.Count == 0) return;
             // this is really just safe coding, not likely to ever happen
 
-            var recordsAffected = ExecuteSqlList(sqlStatements);
+            ExecuteStatements(sqlStatements);
             // todo log
             
         }
@@ -342,32 +284,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
 
             VerifyColumns(uniqueColumns, eventColumns, EventValuesTableName);
 
-            var sqlInsertStatements = new List<string>();
-            foreach (var statementPair in sqlInserts)
-            {
-                var sb = new StringBuilder();
-                sb.Append(statementPair.Key.ToUpper());
-                sb.Append(" ");
-                foreach (var line in statementPair.Value)
-                {
-                    if (sb.Length > MaxQueryLength)
-                    {
-                        sb.Remove(sb.Length - 1, 1);
-                        sqlInsertStatements.Add(sb.ToString());
-                        
-                        sb = new StringBuilder();
-                        sb.Append(statementPair.Key.ToUpper());
-                        sb.Append(" ");                        
-                    }
-                    sb.Append(line);
-                    sb.Append(',');
-                }
-
-                sb.Remove(sb.Length - 1, 1);
-                sqlInsertStatements.Add(sb.ToString());
-            }
-            
-            ExecuteSqlList(sqlInsertStatements);
+            ExecuteStatements(sqlInserts);
             
             this.logger.LogTrace($"Saved {totalValues} event values to Snowflake db");
             
@@ -431,10 +348,172 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
 
             return totalValues;
         }
-
-        public void Dispose()
+        
+                /// <summary>
+        /// When the statement is made up of multiple statement header - statement lines (like a batch insert)
+        /// </summary>
+        /// <param name="statementPairs"></param>
+        private void ExecuteStatements(IEnumerable<KeyValuePair<string, List<string>>> statementPairs)
         {
-            snowflakeDbConnection.Close();
+            var totalStatementSize = 0;
+            var sb = new StringBuilder();
+            var begin = "BEGIN\n";
+            var end = ";\nEND";
+            var beginEndLength = Encoding.UTF8.GetByteCount(begin) + Encoding.UTF8.GetByteCount(end);
+            var pairSeparator = ";\n\n"; // \n so it is somewhat human readable in console
+            var pairSeparatorSize = Encoding.UTF8.GetByteCount(pairSeparator);
+            var headSeparator = "\n";
+            var headSeparatorSize = Encoding.UTF8.GetByteCount(headSeparator);
+            var lineSeparator = ",\n";
+            var lineSeparatorSize = Encoding.UTF8.GetByteCount(lineSeparator);
+            var segmentCount = 0;
+            var firstPair = true;
+            foreach (var statementPair in statementPairs)
+            {
+                var statementSize = 0;
+                var firstLine = true;
+                if (!firstPair)
+                {
+                    sb.Append(pairSeparator);
+                    statementSize += pairSeparatorSize;
+                } else firstPair = false;
+                
+                statementSize += Encoding.UTF8.GetByteCount(statementPair.Key);
+                sb.Append(statementPair.Key);
+                sb.Append(headSeparator);
+                statementSize += headSeparatorSize;
+                segmentCount++;
+                
+                foreach (var statement in statementPair.Value)
+                {
+                    if (!firstLine)
+                    {
+                        sb.Append(lineSeparator);
+                        statementSize += lineSeparatorSize;
+
+                        // check if we would be over the limit with the new statement
+                        if (statementSize + totalStatementSize + beginEndLength > MaxQueryByteSize)
+                        {
+                            // if so, send it already
+                            sb.Insert(0, begin);
+                            sb.Append(end);
+                            ExecuteStatement(sb.ToString());
+                            sb.Clear();
+                            
+                            totalStatementSize = 0;
+                            segmentCount = 0;
+                            
+                            statementSize = Encoding.UTF8.GetByteCount(statementPair.Key);
+                            sb.Append(pairSeparator);
+                            statementSize += pairSeparatorSize;
+                            sb.Append(statementPair.Key);
+                            sb.Append(headSeparator);
+                            statementSize += headSeparatorSize;                            
+                            segmentCount++;
+                            
+                            firstLine = true;
+                        }
+                    }
+                    else firstLine = false;
+
+                    sb.Append(statement);
+                    totalStatementSize += statementSize;
+                }          
+            }
+
+            if (segmentCount > 1)
+            {
+                sb.Insert(0, begin);
+                sb.Append(end);
+            }
+            ExecuteStatement(sb.ToString());
+        }
+        
+        /// <summary>
+        /// One liner statements
+        /// </summary>
+        /// <param name="statements"></param>
+        private void ExecuteStatements(IEnumerable<string> statements)
+        {
+            var totalStatementSize = 0;
+            var sb = new StringBuilder();
+            var first = true;
+            var begin = "BEGIN\n";
+            var end = ";\nEND";
+            var beginEndLength = Encoding.UTF8.GetByteCount(begin) + Encoding.UTF8.GetByteCount(end);
+            var separator = ";\n"; // \n so it is somewhat human readable in console
+            var separatorSize = Encoding.UTF8.GetByteCount(separator);
+            var segmentCount = 0;
+            foreach (var statement in statements)
+            {
+                var statementSize = Encoding.UTF8.GetByteCount(statement);
+                if (!first)
+                {
+                    sb.Append(separator);
+                    statementSize += separatorSize;
+
+                    // check if we would be over the limit with the new statement
+                    if (statementSize + totalStatementSize + beginEndLength > MaxQueryByteSize)
+                    {
+                        // if so, send it already
+                        sb.Insert(0, begin);
+                        sb.Append(end);
+                        ExecuteStatement(sb.ToString());
+                        sb.Clear();
+                        totalStatementSize = 0;
+                        segmentCount = 0;
+                        first = true;
+                    }
+                }
+                else first = false;
+
+                sb.Append(statement);
+                totalStatementSize += statementSize;
+                segmentCount++;
+            }
+
+            if (segmentCount > 1)
+            {
+                sb.Insert(0, begin);
+                sb.Append(end);
+            }
+            ExecuteStatement(sb.ToString());
+        }
+        
+        private void ExecuteStatement(string statement)
+        {
+            if (string.IsNullOrWhiteSpace(statement)) return;
+            //this.logger.LogTrace("Executing Snowflake statement:{0}{1}", Environment.NewLine, statement);
+            var sw = Stopwatch.StartNew();
+            IDisposable timer = null;
+
+            void setTimer()
+            {
+                timer = InaccurateSharedTimer.Instance.Subscribe(10, () =>
+                {
+                    this.logger.LogInformation("Executing data write Snowflake statement is taking longer ({0:g}) than expected...", sw.Elapsed);
+                    timer.Dispose();
+                    setTimer();
+                });
+            }
+            setTimer();
+
+            try
+            {
+                snowflakeDbConnection.ExecuteSnowflakeStatement(statement);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError("Failed to execute Snowflake statement:{0}{1}", Environment.NewLine, statement);
+                throw;
+            }
+            finally
+            {
+                timer.Dispose();
+            }
+
+            sw.Stop();
+            //this.logger.LogDebug("Executed Snowflake statement in {0:g}:{1}{2}", sw.Elapsed, Environment.NewLine, statement);
         }
     }
 }

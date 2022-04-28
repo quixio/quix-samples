@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quix.Snowflake.Writer", "Qu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quix.Snowflake.Application", "Quix.Snowflake.Application\Quix.Snowflake.Application.csproj", "{E67009EA-8FA5-4DFE-B8F0-5FCF62134E38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quix.Snowflake.Infrastructure.Tests", "Quix.Snowflake.Infrastructure.Tests\Quix.Snowflake.Infrastructure.Tests.csproj", "{FEEB2F9D-1239-40DB-B6E7-A40557FE7DB4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E67009EA-8FA5-4DFE-B8F0-5FCF62134E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E67009EA-8FA5-4DFE-B8F0-5FCF62134E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E67009EA-8FA5-4DFE-B8F0-5FCF62134E38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEEB2F9D-1239-40DB-B6E7-A40557FE7DB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEEB2F9D-1239-40DB-B6E7-A40557FE7DB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEEB2F9D-1239-40DB-B6E7-A40557FE7DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEEB2F9D-1239-40DB-B6E7-A40557FE7DB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

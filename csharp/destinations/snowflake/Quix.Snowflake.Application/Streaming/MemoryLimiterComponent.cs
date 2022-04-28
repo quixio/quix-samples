@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using Quix.Sdk.Process;
@@ -21,6 +22,8 @@ namespace Quix.Snowflake.Application.Streaming
         private readonly int memoryThreshold;
         private bool disposed = false;
         private const int TimerInterval = 50; // 50 ms
+        private Process process = System.Diagnostics.Process.GetCurrentProcess();
+        private DateTime nextForcedGCAllowedAt = DateTime.MinValue;
 
         public MemoryLimiterComponent(ILogger<MemoryLimiterComponent> logger, int absoluteMaxMegabyteLimit, int memoryLimitPercentage)
         {
@@ -40,7 +43,18 @@ namespace Quix.Snowflake.Application.Streaming
             }
             else
             {
-                if (!this.disposed) this.timer.Change(TimerInterval, Timeout.Infinite);
+                if (!this.disposed)
+                {
+                    if (nextForcedGCAllowedAt < DateTime.UtcNow)
+                    {
+                        nextForcedGCAllowedAt = DateTime.UtcNow.AddSeconds(15);
+                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                        GC.WaitForPendingFinalizers();
+                        GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+                    }
+
+                    this.timer.Change(TimerInterval, Timeout.Infinite);
+                }
             }
         }
 
@@ -63,7 +77,7 @@ namespace Quix.Snowflake.Application.Streaming
         private bool IsWithinMemoryLimit()
         {
             if (this.disposed) return true; //disposing, let it flow
-            var mbTaken = GC.GetTotalMemory(false) / 1024 / 1024;
+            var mbTaken = process.WorkingSet64 / 1024 / 1024;
             this.logger.LogTrace("Memory {0}/{1} MB", mbTaken, this.memoryThreshold);
             return mbTaken < this.memoryThreshold;
         }

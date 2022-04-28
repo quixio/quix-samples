@@ -5,6 +5,18 @@
     /// </summary>
     public class SnowflakeConnectionConfiguration
     {
-        public string ConnectionString { get; set; }
+        public string Locator { get; set; }
+        public string Region { get; set; }
+        public string User { get; set; }
+        public string Password { get; set; }
+        public string Database { get; set; }
+        
+        public string ConnectionString
+        {
+            get
+            {
+                return $"account={Locator}.{Region};user={User};password={Password};db={Database}";
+            }
+        }
     }
 }
