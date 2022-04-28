@@ -12,7 +12,8 @@
 	"DefaultFile": "azureiot/Program.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "azureIot.csproj",
-    "Variables": [ 
+	"IconFile": "icon.png",
+	"Variables": [ 
         {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
