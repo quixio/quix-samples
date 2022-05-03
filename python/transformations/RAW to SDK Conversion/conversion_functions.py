@@ -1,4 +1,4 @@
-from quixstreaming import StreamWriter, ParameterData
+from quixstreaming import StreamWriter, ParameterData, StreamProperties
 import json
 from datetime import datetime
 
@@ -16,6 +16,36 @@ class ConversionFunctions:
         self.output_topic = output_topic
 
     @staticmethod
+    def write_tags_to_stream(stream: StreamWriter, tags: dict[str, str]):
+        stream.events \
+            .add_timestamp(datetime.utcnow()) \
+            .add_tags(tags) \
+            .write()
+
+    @staticmethod
+    def write_streamproperties_to_stream(stream: StreamWriter, properties: StreamProperties):
+        stream.events \
+            .add_timestamp(datetime.utcnow()) \
+            .add_tags(properties) \
+            .write()
+
+    @staticmethod
+    def write_parametergroups_to_stream(stream: StreamWriter, parameter_groups):
+        pass
+        # stream.events \
+        #     .add_timestamp(datetime.utcnow()) \
+        #     .add_tags(tags) \
+        #     .write()
+
+    @staticmethod
+    def write_eventgroups_to_stream(stream: StreamWriter, event_groups):
+        pass
+        # stream.events \
+        #     .add_timestamp(datetime.utcnow()) \
+        #     .add_tags(tags) \
+        #     .write()
+
+    @staticmethod
     def write_event_to_stream(stream, name, data_string):
         stream.events \
             .add_timestamp(datetime.utcnow()) \
@@ -23,7 +53,7 @@ class ConversionFunctions:
             .write()
 
     @staticmethod
-    def write_param_data(data, stream):
+    def write_parameterdata_to_stream(stream, data):
         json_data_object = json.loads(data)
         timestamps = json_data_object["Timestamps"]
 
@@ -95,25 +125,29 @@ class ConversionFunctions:
                 name = m["name"]
                 print(name, data)
 
-                # CloseStream is never json, so just write the event now
-                if name == "CloseStream":
-                    self.write_event_to_stream(stream, name, "Stream Closed")
-                else:
-                    # check for empty or just white space..
-                    # if we have something then lets see if its good json
-                    if data and data.strip():
-                        # load as json
-                        json_object = json_load(data)
+                # check for empty or just white space
+                # if we have something then lets see if its good json
+                if data and data.strip():
+                    # load as json
+                    json_object = json_load(data)
 
-                        # if it's not good json..
-                        if not json_object:
-                            # write what we have (data variable) to an event
-                            self.write_event_to_stream(stream, name, str(data))
+                    # if it's not good json
+                    if not json_object:
+                        # write what we have (data variable) to an event
+                        self.write_event_to_stream(stream, name, str(data))
+                    else:
+                        # if json is valid ParameterData write ParameterData
+                        if name == "ParameterData":
+                            self.write_parameterdata_to_stream(stream, json_object)
+                        elif name == "Tags":
+                            self.write_tags_to_stream(stream, json_object)
+                        elif name == "StreamProperties":
+                            self.write_streamproperties_to_stream(stream, json_object)
+                        elif name == "ParameterGroups":
+                            self.write_parametergroups_to_stream(stream, json_object)
+                        elif name == "EventGroups":
+                            self.write_eventgroups_to_stream(stream, json_object)
 
-                        if json_object:
-                            # if json is valid ParameterData write ParameterData
-                            if name == "ParameterData":
-                                self.write_param_data(data, stream)
-                            else:
-                                # otherwise, send the json object as the payload
-                                self.write_event_to_stream(stream, name, str(json_object))
+                        else:
+                            # otherwise, send the json object as the payload
+                            self.write_event_to_stream(stream, name, str(json_object))
