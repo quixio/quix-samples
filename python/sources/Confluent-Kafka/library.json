@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Source"],
 		"Technology": ["Confluent"]
     },
-    "shortDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge",
+    "shortDescription": "Subscribe to your Confluent Kafka topic with this bridge",
     "longDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge<br/>If you already have a Confluent Kafka topic, you can connect it to Quix with this simple bridge.",
     "DefaultFile": "quix_functions.py",
 	"EntryPoint": "build/dockerfile",

@@ -8,7 +8,7 @@
 		"Pipeline Stage": ["Destination"],
 		"Technology": ["Confluent"]
 	},
-	"shortDescription": "Connect your Quix topic to a Confluent Kafka topic with this bridge",
+	"shortDescription": "Publish to your Confluent Kafka topic with this bridge",
 	"DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "main.py",
