@@ -1,6 +1,6 @@
 {
 	"libraryItemId": "c6d55693-390d-46fa-8ec4-d58843bcc5fb",
-	"name": "Confluent Kafka Connector",
+	"name": "Confluent Kafka Destination",
 	"language": "Python",
 	"tags": {
 		"Complexity": ["Easy"],
