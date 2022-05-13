@@ -1,7 +1,6 @@
 # RSS Data Filtering
 
-This Python project is part of the RSS processing pipeline. The project filters and augments the 
-raw RSS data.
+This Python project is part of the RSS processing pipeline. The project filters and augments the raw RSS data.
 
 The other projects in the solution are:
 - RSS Data Source - The data source component of the pipeline.
