@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Technology": ["RSS"]
+	"Technology": ["RSS"]
     },
     "shortDescription": "Integrate an RSS feed into your Quix pipeline",
     "DefaultFile": "quix_functions.py",
