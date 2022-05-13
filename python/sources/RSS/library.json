@@ -1,0 +1,41 @@
+{
+    "libraryItemId": "bcf19a92-aaac-4598-9498-080732930e18",
+    "name": "RSS Data Source",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Integrate an RSS feed into your Quix pipeline",
+    "DefaultFile": "quix_functions.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for the data",
+            "DefaultValue" : "rss-data",
+            "Required": true
+        },
+        {
+            "Name" : "rss_url",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The URL of the RSS feed to consume",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ],
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}
