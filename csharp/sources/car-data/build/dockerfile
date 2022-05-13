@@ -7,4 +7,4 @@ RUN dotnet build ./CarDataGenerator/CarDataGenerator.csproj -o /buildoutput
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-bionic
 WORKDIR /app
 COPY --from=build /buildoutput .
-ENTRYPOINT dotnet CarDataGeneratorConnector.dll
+ENTRYPOINT dotnet CarDataGenerator.dll
