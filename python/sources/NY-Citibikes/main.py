@@ -1,74 +1,64 @@
 from quixstreaming import QuixStreamingClient
-from quixstreaming.app import App
-from datetime import datetime
-from datetime import timezone
-from ny_bikes_API import get_agg_data
+from datetime import datetime, timezone
+import requests
 import traceback
-from threading import Thread
+import pandas as pd
 import os
-
-# should the main loop run?
-run = True
 
 # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
 
-# Open the output topic where to write data out
+# Open the output topic and create the stream
 print("Opening output topic")
 output_topic = client.open_output_topic(os.environ["output"])
 
-# CREATE A STREAM: collection of data that belong to a single session of a single source.
-output_stream = output_topic.create_stream("NY-Real-Time-Bikes")
-# Give the stream human readable name. This name will appear in Live views and Data Explorer.
-output_stream.properties.name = "New York Total Bikes Real Time"
-# Save stream in specific folder in data catalogue to help organize your data.
-output_stream.properties.location = "/NY_Real_Time"
+while True:
+    try:
+        # Current timestamp
+        current_time_i = datetime.now(timezone.utc)
 
+        # Perform API request for NY bikes data
+        response = requests.get('https://gbfs.citibikenyc.com/gbfs/en/station_status.json')
+        json_response = response.json()
 
-def get_data():
+        # Create total dataframe
+        df = pd.DataFrame()
 
-    while run:
-        try:
-            # Current timestamp
-            current_time_i = datetime.now(timezone.utc)
+        # Iterate over stations
+        for station in json_response['data']['stations']:
+            # Create station_i dataframe
+            df_i = pd.DataFrame({
+                'timestamp': [current_time_i],
+                'id': [int(station['station_id'])],
+                'num_bikes_available': [int(station['num_bikes_available'])],
+                'num_docks_available': [int(station['num_docks_available'])],
+                'num_ebikes_available': [int(station['num_ebikes_available'])],
+                'total_num_bikes_available': [int(station['num_bikes_available']) + int(station['num_ebikes_available'])]})
 
-            # ToL API Request
-            df_i_agg = get_agg_data()
-            total_bikes = df_i_agg.loc[0, 'num_bikes_available'] + df_i_agg.loc[0, 'num_ebikes_available']
+            # Access station_i topic and write df_i
+            output_stream_i = output_topic.get_or_create_stream("NYBikes-StationID-{}".format(station['station_id']))
+            output_stream_i.parameters.write(df_i)
 
-            # Write bikes data to the output stream
-            output_stream.parameters.buffer.add_timestamp(current_time_i) \
-                .add_value('total_num_bikes_available', total_bikes) \
-                .add_value('num_docks_available', df_i_agg.loc[0, 'num_docks_available']) \
-                .write()
+            # Add data from station i to total df
+            df = df.append(df_i)
 
-            # How long did the Request and transformation take
-            current_time_j = datetime.now(timezone.utc)
-            int_sec = int((current_time_j - current_time_i).seconds)
-            print(current_time_i, current_time_j, int_sec, ' bikes: ', total_bikes)
+        # Aggregated for all stations
+        cols_list = ['num_bikes_available', 'num_docks_available', 'num_ebikes_available', 'total_num_bikes_available']
+        df = df[cols_list].sum().reset_index().set_index('index').T
+        df["Timestamp"] = current_time_i
 
-        except Exception:
-            print(traceback.format_exc())
+        # Access station_i topic and write df_i
+        output_stream = output_topic.get_or_create_stream("All-Stations-NY-Bikes")
+        output_stream.parameters.write(df)
 
+        # How long did the Request and transformation take
+        current_time_j = datetime.now(timezone.utc)
+        int_sec = int((current_time_j - current_time_i).seconds)
+        print(current_time_i, current_time_j, int_sec, ' bikes: ', df['total_num_bikes_available'].iloc[0])
 
-def before_shutdown():
-    global run
+    except Exception:
+        print(traceback.format_exc())
 
-    # Stop the main loop
-    run = False
-
-
-def main():
-    thread = Thread(target=get_data)
-    thread.start()
-
-    App.run(before_shutdown=before_shutdown)
-
-    # wait for worker thread to end
-    thread.join()
-
-    print("Exiting")
-
-
-if __name__ == "__main__":
-    main()
+print("Closing stream")
+output_stream.close()
+print("Done!")
