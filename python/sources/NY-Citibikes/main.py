@@ -63,9 +63,7 @@ def get_data():
             output_stream.parameters.write(df)
 
             # How long did the Request and transformation take
-            current_time_j = datetime.now(timezone.utc)
-            int_sec = int((current_time_j - current_time_i).seconds)
-            print(current_time_i, current_time_j, int_sec, ' bikes: ', df['total_num_bikes_available'].iloc[0])
+            print(current_time_i, 'NY bikes: ', df['total_num_bikes_available'].iloc[0])
 
         except Exception:
             print(traceback.format_exc())
