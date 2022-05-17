@@ -1,0 +1,75 @@
+{
+    "libraryItemId": "47a799c9-2afc-49db-bd10-8b117e0b77ca",
+    "name": "SQL Database Sink",
+    "language": "C#",
+    "tags": {
+        "Complexity": ["Advanced"],
+		"SDK Usage": ["Read SDK"],
+        "Pipeline Stage": ["Destination"],
+        "Technology": ["SQL"]
+    },
+    "shortDescription": "Publish data to a SQL Database",
+	"DefaultFile": "Quix.SqlServer.Writer/SqlServer.cs",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "Quix.SqlServer.Writer/Quix.SqlServer.Writer.csproj",
+	"IconFile": "icon.png",
+    "Variables": [
+		{
+		  "Name": "Broker__TopicName",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "InputTopic",
+		  "Description": "Name of the input topic to read from",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "SqlServer__Server",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The IP address or fully qualified domain name of your server",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "SqlServer__Port",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The Port number to use for communication with the server",
+		  "DefaultValue": "1433",
+		  "Required": true
+		},
+		{
+		  "Name": "SqlServer__Database",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The name of the database to persist to",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "SqlServer__User",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "FreeText",
+		  "Description": "The username of the sink should use to interact with the database",
+		  "DefaultValue": "",
+		  "Required": true
+		},
+		{
+		  "Name": "SqlServer__Password",
+		  "Type": "EnvironmentVariable",
+		  "InputType": "HiddenText",
+		  "Description": "The password for the user",
+		  "DefaultValue": "",
+		  "Required": true
+		}
+    ],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 400,
+		"MemoryInMb": 800,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": true
+	}
+}
