@@ -1,4 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader
+from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader, AutoOffsetReset
 from quixstreaming.app import App
 from quix_function import QuixFunction
 import os
@@ -10,7 +10,7 @@ client = QuixStreamingClient()
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
 
-input_topic = client.open_input_topic(os.environ["input"], "slack-sink")
+input_topic = client.open_input_topic(os.environ["input"], auto_offset_reset=AutoOffsetReset.Latest)
 output_topic = client.open_output_topic(os.environ["output"])
 
 

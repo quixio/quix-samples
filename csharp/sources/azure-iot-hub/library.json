@@ -23,10 +23,10 @@
             "Required": true
         },
 		{
-            "Name" : "eventHubsEndpoint",
+            "Name" : "connectionString",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "The eventhub endpoint",
+            "Description" : "The eventhub connection string.",
             "DefaultValue" : "",
             "Required": true
         },
@@ -35,22 +35,6 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
             "Description" : "The eventhub name",
-            "DefaultValue" : "",
-            "Required": true
-        },
-		{
-            "Name" : "iotSasKeyName",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "The IoT Sas Key Name",
-            "DefaultValue" : "",
-            "Required": true
-        },
-		{
-            "Name" : "iotSasKey",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "The IoT Sas Key",
             "DefaultValue" : "",
             "Required": true
         }
