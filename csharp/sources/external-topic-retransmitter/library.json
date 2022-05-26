@@ -1,0 +1,74 @@
+{
+    "libraryItemId": "410584b6-72b9-4552-8f97-e205e8c412ca",
+    "name": "External Topic Retransmitter",
+    "language": "C#",
+    "tags": {
+      "Complexity": ["Easy"],
+      "SDK Usage": ["Read/Write SDK"],
+      "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Clone topics external to your workspace",
+    "longDescription": "Service which reads from an external topic and writes the content into a topic in current workspace.",
+	  "defaultFile": "Program.cs",
+    "entryPoint": "build/dockerfile",
+    "runEntryPoint": "Retransmitter.csproj",
+    "variables": [
+      {
+        "Name": "Source__Workspace__SdkToken",
+        "Type": "EnvironmentVariable",
+        "InputType": "HiddenText",
+        "Description": "The SDK token with permission to read from the source topic",
+        "DefaultValue": "",
+        "Required": true
+      },
+      {
+        "Name": "Source__Workspace__Topic",
+        "Type": "EnvironmentVariable",
+        "InputType": "FreeText",
+        "Description": "The name or id of the source topic",
+        "DefaultValue": "",
+        "Required": true
+      },
+      {
+        "Name": "Output__Topic",
+        "Type": "EnvironmentVariable",
+        "InputType": "OutputTopic",
+        "Description": "The topic to write the data to",
+        "DefaultValue": "",
+        "Required": true
+      },    
+      {
+        "Name": "Source__UseConsumerGroup",
+        "Type": "EnvironmentVariable",
+        "InputType": "FreeText",
+        "Description": "Whether consumer group should be used",
+        "DefaultValue": "true",
+        "Required": true
+      },
+      {
+        "Name": "Source__ConsumerGroup",
+        "Type": "EnvironmentVariable",
+        "InputType": "FreeText",
+        "Description": "The consumer group to use. Defaults to Quix__Deployment__Id",
+        "DefaultValue": "",
+        "Required": false
+      },
+      {
+        "Name": "Source__Offset",
+        "Type": "EnvironmentVariable",
+        "InputType": "FreeText",
+        "Description": "The offset to use. Valid values: latest, earliest",
+        "DefaultValue": "latest",
+        "Required": true
+      }
+    ],
+    "DeploySettings":
+    {
+      "DeploymentType": "Service",
+      "CpuMillicores": 500,
+      "MemoryInMb": 500,
+      "Replicas": 1,
+      "PublicAccess": false,
+      "ValidateConnection": false
+    }
+}
