@@ -14,10 +14,8 @@ namespace azureIot
         private static async Task ReceiveMessagesFromDeviceAsync(CancellationToken cancellationToken)
         {
             var outputTopicName = Environment.GetEnvironmentVariable("output");
-            var endpoint = Environment.GetEnvironmentVariable("eventHubsEndpoint");
+            var connectionString = Environment.GetEnvironmentVariable("connectionString");
             var hubName = Environment.GetEnvironmentVariable("eventHubName");
-            var sasKeyName = Environment.GetEnvironmentVariable("iotSasKeyName");
-            var sasKey = Environment.GetEnvironmentVariable("iotSasKey");
 
             
             // Create a client which holds generic details for creating input and output topics
@@ -26,23 +24,14 @@ namespace azureIot
             // Create an output topic where to write data out
             using var outputTopic = client.OpenOutputTopic(outputTopicName);
 
-            // Event Hub-compatible endpoint
-            // az iot hub show --query properties.eventHubEndpoints.events.endpoint --name {your IoT Hub name}
-            var eventHubsCompatibleEndpoint = endpoint;
-
-            // Event Hub-compatible name
             // az iot hub show --query properties.eventHubEndpoints.events.path --name {your IoT Hub name}
             var eventHubName = hubName;
 
-            // az iot hub policy show --name service --query primaryKey --hub-name {your IoT Hub name}
-            var iotHubSasKeyName = sasKeyName;
-            var iotHubSasKey = sasKey;
 
             // If you chose to copy the "Event Hub-compatible endpoint" from the "Built-in endpoints" section
             // of your IoT Hub instance in the Azure portal, you can set the connection string to that value
             // directly and remove the call to "BuildEventHubsConnectionString".
-            string connectionString =
-                BuildEventHubsConnectionString(eventHubsCompatibleEndpoint, iotHubSasKeyName, iotHubSasKey);
+            string connectionString = connectionString;
 
             // Create the consumer using the default consumer group using a direct connection to the service.
             // Information on using the client with a proxy can be found in the README for this quick start, here:
@@ -114,18 +103,22 @@ namespace azureIot
         {
             Console.WriteLine("IoT Hub Quickstarts - Read device to cloud messages. Ctrl-C to exit.\n");
             using var cancellationSource = new CancellationTokenSource();
-            
+
+            var receiveWorker = Task.Run(async () =>
+            {
+                await ReceiveMessagesFromDeviceAsync(cancellationSource.Token);
+
+            });
+
+
             App.Run(beforeShutdown:() =>
             {
+                Console.WriteLine("Shutting down...");
                 cancellationSource.Cancel();
+                receiveWorker.Wait();
             });
             
-            await ReceiveMessagesFromDeviceAsync(cancellationSource.Token);
+            Console.WriteLine("Application terminated.");
         }
-
-        private static string BuildEventHubsConnectionString(string eventHubsEndpoint,
-            string iotHubSharedKeyName,
-            string iotHubSharedKey) =>
-            $"Endpoint={eventHubsEndpoint};SharedAccessKeyName={iotHubSharedKeyName};SharedAccessKey={iotHubSharedKey}";
     }
 }
