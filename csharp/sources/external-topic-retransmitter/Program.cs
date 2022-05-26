@@ -1,6 +1,8 @@
 using System;
+using System.Threading;
 using Quix.Sdk.Process.Kafka;
 using Quix.Sdk.Streaming;
+using Quix.Sdk.Streaming.Raw;
 
 namespace Retransmitter
 {
@@ -11,17 +13,31 @@ namespace Retransmitter
         /// </summary>
         static void Main(string[] args)
         {
-            GetConfiguration(out var sourceWorkspaceSdkToken,
-                out var sourceTopicIdOrName,
-                out var consumerGroup,
-                out var autoOffsetReset,
-                out var outputTopic);
-            
-            var sourceClient = new QuixStreamingClient(sourceWorkspaceSdkToken, false);
-            var sourceTopic = sourceClient.OpenRawInputTopic(sourceTopicIdOrName, consumerGroup, autoOffsetReset);
+            QuixStreamingClient sourceClient;
+            IRawInputTopic sourceTopic;
+            QuixStreamingClient targetClient; // reading SDK token from environment variables
+            IRawOutputTopic targetTopic;
+            try
+            {
+                GetConfiguration(out var sourceWorkspaceSdkToken,
+                    out var sourceTopicIdOrName,
+                    out var consumerGroup,
+                    out var autoOffsetReset,
+                    out var outputTopic);
 
-            var targetClient = new QuixStreamingClient(); // reading SDK token from environment variables
-            var targetTopic = targetClient.OpenRawOutputTopic(outputTopic);
+                sourceClient = new QuixStreamingClient(sourceWorkspaceSdkToken, false);
+                sourceTopic = sourceClient.OpenRawInputTopic(sourceTopicIdOrName, consumerGroup, autoOffsetReset);
+
+                targetClient = new QuixStreamingClient();
+                targetTopic = targetClient.OpenRawOutputTopic(outputTopic);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"ERROR: {ex}"); 
+                Thread.Sleep(-1); // this is here so the service doesn't automatically restart instantly until end of times
+                return;
+            }
+            System.Console.WriteLine("CONNECTED!");
 
             long packageRead = 0;
             DateTime nextPrint = DateTime.UtcNow.AddSeconds(5);
