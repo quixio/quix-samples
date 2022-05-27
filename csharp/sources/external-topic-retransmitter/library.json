@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
       "Complexity": ["Easy"],
-      "SDK Usage": ["Read/Write SDK"],
+      "SDK Usage": ["Read/Write SDK"], 
       "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Clone topic external to your workspace",
