@@ -85,9 +85,14 @@ namespace Retransmitter
             Console.WriteLine($"Source__UseConsumerGroup: {useConsumerGroup}");
             if (useConsumerGroup)
             {
-                consumerGroup = Environment.GetEnvironmentVariable("Source__ConsumerGroup") ??
-                                Environment.GetEnvironmentVariable("Quix__Deployment__Id") ?? "false";
-                Console.WriteLine($"Consumer group: {consumerGroup}");
+                consumerGroup = Environment.GetEnvironmentVariable("Source__ConsumerGroup");
+                if (string.IsNullOrWhiteSpace(consumerGroup)) consumerGroup = Environment.GetEnvironmentVariable("Quix__Deployment__Id");
+                if (string.IsNullOrWhiteSpace(consumerGroup))
+                {
+                    Console.WriteLine($"Consumer group could not be picked up from configuration. Set either Source__ConsumerGroup or Quix__Deployment__Id");
+                    consumerGroup = null;
+                }
+                else Console.WriteLine($"Consumer group: {consumerGroup}");
             }
             else consumerGroup = null;
             
