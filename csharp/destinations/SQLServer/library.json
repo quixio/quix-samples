@@ -9,7 +9,7 @@
         "Technology": ["SQL"]
     },
     "shortDescription": "Publish data to a SQL Database",
-	"DefaultFile": "Quix.SqlServer.Writer/SqlServer.cs",
+	"DefaultFile": "Quix.SqlServer.Writer/Worker.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "Quix.SqlServer.Writer/Quix.SqlServer.Writer.csproj",
 	"IconFile": "icon.png",
