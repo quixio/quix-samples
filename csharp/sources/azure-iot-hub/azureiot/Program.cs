@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs.Consumer;
+using Newtonsoft.Json;
 using Quix.Sdk.Streaming;
 
 namespace azureIot
