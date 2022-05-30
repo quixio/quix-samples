@@ -12,7 +12,6 @@ namespace azureIot
     public class AzureIoTMessagePayload
     {
         public string Data { get; set; }
-        
         public IReadOnlyDictionary<string, object> SystemProperties{ get; set; }
         public IDictionary<string, object> Properties{ get; set; }
     }
