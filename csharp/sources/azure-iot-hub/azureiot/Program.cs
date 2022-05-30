@@ -17,7 +17,6 @@ namespace azureIot
             var connectionString = Environment.GetEnvironmentVariable("connectionString");
             var hubName = Environment.GetEnvironmentVariable("eventHubName");
 
-            
             // Create a client which holds generic details for creating input and output topics
             var client = new Quix.Sdk.Streaming.QuixStreamingClient();
             
@@ -102,7 +101,6 @@ namespace azureIot
                 await ReceiveMessagesFromDeviceAsync(cancellationSource.Token);
 
             });
-
 
             App.Run(beforeShutdown:() =>
             {
