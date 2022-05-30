@@ -57,26 +57,25 @@ namespace azureIot
                     //
                     await foreach (PartitionEvent partitionEvent in consumer.ReadEventsAsync(cancellationToken))
                     {
-                        foreach (var prop in partitionEvent.Data.Properties)
-                        {
-                            stream.Properties.Metadata[prop.Key] = prop.Value.ToString();
-                        }
-
-                        foreach (var prop in partitionEvent.Data.SystemProperties)
-                        {
-                            stream.Properties.Metadata[prop.Key] = prop.Value.ToString();
-                        }
-
                         Console.WriteLine("Message received on partition {0}:", partitionEvent.Partition.PartitionId);
 
                         var data = Encoding.UTF8.GetString(partitionEvent.Data.Body.ToArray());
-
-                        stream.Events
+                        
+                        var message = new AzureIoTMessagePayload
+                        {
+                            Data = data,
+                            SystemProperties = partitionEvent.Data.SystemProperties,
+                            Properties = partitionEvent.Data.Properties
+                        };
+                        
+                        
+                        outputTopic.GetOrCreateStream($"{hubName} - Partition {partitionEvent.Partition.PartitionId}")
+                            .Events
                             .AddTimestamp(partitionEvent.Data.EnqueuedTime.ToUniversalTime().DateTime)
-                            .AddValue("message", data)
+                            .AddValue("message", JsonConvert.SerializeObject(message).ToString())
                             .Write();
 
-                        Console.WriteLine("\t{0}:", data);
+                        Console.WriteLine("\t{0}:", JsonConvert.SerializeObject(message).ToString());
 
                         Console.WriteLine("Application properties (set by device):");
                     }
