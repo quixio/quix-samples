@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs.Consumer;
+using Newtonsoft.Json;
 using Quix.Sdk.Streaming;
 
 namespace azureIot
 {
+    public class AzureIoTMessagePayload
+    {
+        public string Data { get; set; }
+        public IReadOnlyDictionary<string, object> SystemProperties{ get; set; }
+        public IDictionary<string, object> Properties{ get; set; }
+    }
+
     class Program
     {
         // Asynchronously create a PartitionReceiver for a partition and then start
@@ -17,7 +26,6 @@ namespace azureIot
             var connectionString = Environment.GetEnvironmentVariable("connectionString");
             var hubName = Environment.GetEnvironmentVariable("eventHubName");
 
-            
             // Create a client which holds generic details for creating input and output topics
             var client = new Quix.Sdk.Streaming.QuixStreamingClient();
             
@@ -57,26 +65,25 @@ namespace azureIot
                     //
                     await foreach (PartitionEvent partitionEvent in consumer.ReadEventsAsync(cancellationToken))
                     {
-                        foreach (var prop in partitionEvent.Data.Properties)
-                        {
-                            stream.Properties.Metadata[prop.Key] = prop.Value.ToString();
-                        }
-
-                        foreach (var prop in partitionEvent.Data.SystemProperties)
-                        {
-                            stream.Properties.Metadata[prop.Key] = prop.Value.ToString();
-                        }
-
                         Console.WriteLine("Message received on partition {0}:", partitionEvent.Partition.PartitionId);
 
                         var data = Encoding.UTF8.GetString(partitionEvent.Data.Body.ToArray());
-
-                        stream.Events
+                        
+                        var message = new AzureIoTMessagePayload
+                        {
+                            Data = data,
+                            SystemProperties = partitionEvent.Data.SystemProperties,
+                            Properties = partitionEvent.Data.Properties
+                        };
+                        
+                        
+                        outputTopic.GetOrCreateStream($"{hubName} - Partition {partitionEvent.Partition.PartitionId}")
+                            .Events
                             .AddTimestamp(partitionEvent.Data.EnqueuedTime.ToUniversalTime().DateTime)
-                            .AddValue("message", data)
+                            .AddValue("message", JsonConvert.SerializeObject(message).ToString())
                             .Write();
 
-                        Console.WriteLine("\t{0}:", data);
+                        Console.WriteLine("\t{0}:", JsonConvert.SerializeObject(message).ToString());
 
                         Console.WriteLine("Application properties (set by device):");
                     }
@@ -103,7 +110,6 @@ namespace azureIot
                 await ReceiveMessagesFromDeviceAsync(cancellationSource.Token);
 
             });
-
 
             App.Run(beforeShutdown:() =>
             {
