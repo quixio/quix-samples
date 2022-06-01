@@ -368,6 +368,8 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             var lineSeparatorSize = Encoding.UTF8.GetByteCount(lineSeparator);
             var segmentCount = 0;
             var firstPair = true;
+            var batch = 0;
+            
             foreach (var statementPair in statementPairs)
             {
                 var statementSize = 0;
@@ -386,6 +388,8 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 
                 foreach (var statement in statementPair.Value)
                 {
+                    var statementToExecute = statement;
+                    
                     if (!firstLine)
                     {
                         sb.Append(lineSeparator);
@@ -394,9 +398,16 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                         // check if we would be over the limit with the new statement
                         if (statementSize + totalStatementSize + beginEndLength > MaxQueryByteSize)
                         {
+                            logger.LogInformation("Total statements exceeds limit. Splitting into batches..");
+                            
                             // if so, send it already
                             sb.Insert(0, begin);
+                            
+                            if (sb[sb.Length-2] == ',') sb.Remove(sb.Length - 2, 1);
+                            
                             sb.Append(end);
+
+                            logger.LogInformation($"Executing insert statement batch {batch++}");
                             ExecuteStatement(sb.ToString());
                             sb.Clear();
                             
@@ -404,19 +415,25 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                             segmentCount = 0;
                             
                             statementSize = Encoding.UTF8.GetByteCount(statementPair.Key);
-                            sb.Append(pairSeparator);
+                            
                             statementSize += pairSeparatorSize;
                             sb.Append(statementPair.Key);
                             sb.Append(headSeparator);
+                            
                             statementSize += headSeparatorSize;                            
                             segmentCount++;
                             
                             firstLine = true;
                         }
                     }
-                    else firstLine = false;
+                    else
+                        firstLine = false;
 
-                    sb.Append(statement);
+                    sb.Append(statementToExecute);
+                    
+                    if (firstLine) 
+                        sb.Append(lineSeparator);
+
                     totalStatementSize += statementSize;
                 }          
             }
@@ -426,6 +443,8 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 sb.Insert(0, begin);
                 sb.Append(end);
             }
+
+            logger.LogInformation($"Executing insert statement batch {batch}");
             ExecuteStatement(sb.ToString());
         }
         
@@ -483,7 +502,6 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         private void ExecuteStatement(string statement)
         {
             if (string.IsNullOrWhiteSpace(statement)) return;
-            //this.logger.LogTrace("Executing Snowflake statement:{0}{1}", Environment.NewLine, statement);
             var sw = Stopwatch.StartNew();
             IDisposable timer = null;
 
@@ -513,7 +531,6 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             }
 
             sw.Stop();
-            //this.logger.LogDebug("Executed Snowflake statement in {0:g}:{1}{2}", sw.Elapsed, Environment.NewLine, statement);
         }
     }
 }
