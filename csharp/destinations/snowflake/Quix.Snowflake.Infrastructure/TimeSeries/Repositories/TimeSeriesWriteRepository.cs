@@ -4,14 +4,14 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Timers;
 using Microsoft.Extensions.Logging;
 using Quix.Snowflake.Domain.Common;
+using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.TimeSeries.Models;
 using Quix.Snowflake.Domain.TimeSeries.Repositories;
 using Quix.Snowflake.Infrastructure.Shared;
-using Snowflake.Data.Client;
 
 namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
 {
@@ -22,9 +22,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
     {
         private readonly ILogger<TimeSeriesWriteRepository> logger;
         private readonly IDbConnection snowflakeDbConnection;
-        
-        private const string ParameterValuesTableName = "PARAMETERVALUES";
-        private const string EventValuesTableName = "EVENTVALUES";
+        private readonly string topicDisplayName;
+
+        private const string ParameterValuesTableSuffix = "PARAMETERVALUES";
+        private const string EventValuesTableSuffix = "EVENTVALUES";
         private const string InformationSchema = "PUBLIC";
         private const string NumericParameterColumnFormat = "N_{0}";
         private const string StringParameterColumnFormat = "S_{0}";
@@ -36,14 +37,24 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
 
         private readonly HashSet<string> parameterColumns = new HashSet<string>();
         private readonly HashSet<string> eventColumns = new HashSet<string>();
+        private readonly string parameterValuesTableName;
+        private readonly string eventValuesTableName;
 
         public TimeSeriesWriteRepository(
             ILoggerFactory loggerFactory,
-            IDbConnection snowflakeDbConnection)
+            IDbConnection snowflakeDbConnection,
+            TopicName topicName)
         {
             this.logger = loggerFactory.CreateLogger<TimeSeriesWriteRepository>();
             this.snowflakeDbConnection = snowflakeDbConnection;
+            
             if (snowflakeDbConnection == null) throw new ArgumentNullException(nameof(snowflakeDbConnection));
+
+            this.topicDisplayName = Regex.Replace(topicName.Value, "[^\\w+]", "").ToUpper();
+            
+            this.parameterValuesTableName = $"{topicDisplayName}_{ParameterValuesTableSuffix}";
+            this.eventValuesTableName = $"{topicDisplayName}_{EventValuesTableSuffix}";
+            
             Initialize();
         }
 
@@ -79,10 +90,8 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 var sqlInsertStatements = new List<string>
                 {
                     $"CREATE TABLE {InformationSchema}.{requiredTable} ({TimeStampColumn} BIGINT, {StreamIdColumn} VARCHAR(256))",
-                    //$"ALTER TABLE {InformationSchema}.{requiredTable} CLUSTER BY (timestamp)" // not clustering for now, as timestamp at nanosec precision introduces bad clustering
                 };
                 
-                //var recordsAffected = ExecuteSnowFlakeNonQuery(sql);
                 ExecuteStatements(sqlInsertStatements);
                 
                 this.logger.LogInformation($"Table {requiredTable} created");
@@ -106,18 +115,18 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 this.logger.LogInformation($"Table {requiredTable} verified");
             }
         }
-        
+
         private void Initialize()
         {
             this.logger.LogDebug("Checking tables...");
-            
+
             CheckDbConnection();
 
             // verify tables exist, if not create them
-            VerifyTable(ParameterValuesTableName, parameterColumns);
-            VerifyTable(EventValuesTableName, eventColumns);
+            VerifyTable(parameterValuesTableName, parameterColumns);
+            VerifyTable(eventValuesTableName, eventColumns);
 
-            this.logger.LogInformation("Tables verified");
+        this.logger.LogInformation("Tables verified");
         }
 
         public Task WriteTelemetryData(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData)
@@ -128,10 +137,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             
             var uniqueColumns = new Dictionary<string, string>();
 
-            var totalValues = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts);
+            var totalValues = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts, parameterValuesTableName);
             this.logger.LogTrace($"Saving {totalValues} parameter values to Snowflake db");
 
-            VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
+            VerifyColumns(uniqueColumns, parameterColumns, parameterValuesTableName);
 
             ExecuteStatements(sqlInserts);
 
@@ -146,7 +155,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 throw new Exception("Database connection is not in the 'Open' state");
         }
 
-        private static int PrepareParameterSqlInserts(IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData, Dictionary<string, string> uniqueColumns, Dictionary<string, List<string>> sqlInserts)
+        private static int PrepareParameterSqlInserts(
+            IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData, 
+            Dictionary<string, string> uniqueColumns, Dictionary<string, List<string>> sqlInserts, 
+            string parameterValuesTableName)
         {
             var totalValues = 0;
             foreach (var streamRows in streamParameterData)
@@ -157,7 +169,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                     var stringValueCount = 0;
 
                     var headerSb = new StringBuilder();
-                    headerSb.Append($"insert into {ParameterValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
+                    headerSb.Append($"insert into {parameterValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
 
                     var valueSb = new StringBuilder();
                     valueSb.Append($"({row.Epoch + row.Timestamp},'{streamRows.Key.ToUpper()}'");
@@ -269,8 +281,6 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             // this is really just safe coding, not likely to ever happen
 
             ExecuteStatements(sqlStatements);
-            // todo log
-            
         }
 
         public Task WriteTelemetryEvent(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData)
@@ -279,10 +289,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             
             var uniqueColumns = new Dictionary<string, string>();
 
-            var totalValues = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts);
+            var totalValues = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts, eventValuesTableName);
             this.logger.LogTrace($"Saving {totalValues} event values to Snowflake db");
 
-            VerifyColumns(uniqueColumns, eventColumns, EventValuesTableName);
+            VerifyColumns(uniqueColumns, eventColumns, eventValuesTableName);
 
             ExecuteStatements(sqlInserts);
             
@@ -291,7 +301,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             return Task.CompletedTask;
         }
         
-        private static int PrepareEventSqlInserts(IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData, Dictionary<string, string> uniqueColumns, Dictionary<string, List<string>> sqlInserts)
+        private static int PrepareEventSqlInserts(
+            IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData, 
+            Dictionary<string, string> uniqueColumns, 
+            Dictionary<string, List<string>> sqlInserts, string eventValuesTableName)
         {
             var totalValues = 0;
             foreach (var streamRows in streamEventData)
@@ -299,7 +312,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                 foreach (var row in streamRows.Value)
                 {
                     var headerSb = new StringBuilder();
-                    headerSb.Append($"insert into {InformationSchema}.{EventValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
+                    headerSb.Append($"insert into {InformationSchema}.{eventValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
 
                     var valueSb = new StringBuilder();
                     valueSb.Append($"({row.Timestamp},'{streamRows.Key.ToUpper()}'");
