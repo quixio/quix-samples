@@ -16,9 +16,7 @@ class InMemoryView(CrossStreamStatefullProcessing):
 
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
-
-        data_df = data.to_panda_frame()
+    def on_pandas_frame_handler(self, data_df: pd.DataFrame):
 
         df = pd.concat([self.state, data_df]) \
             .groupby("TAG__" + self.group_by) \

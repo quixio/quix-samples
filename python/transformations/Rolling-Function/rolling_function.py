@@ -13,7 +13,7 @@ class RollingFunction:
         self.rolling_window = RollingWindow(os.environ["WindowType"], os.environ["WindowValue"])
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, df: pd.DataFrame):
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
 
         df['time'] = df['time'].apply(lambda x: pd.Timestamp(x))   # Correct time format to pd.Timestamp()
 

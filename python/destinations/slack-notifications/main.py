@@ -20,7 +20,7 @@ def read_stream(input_stream: StreamReader):
     quix_function = QuixFunction(webhook_url, input_stream)
         
     # React to new data received from input topic.
-    input_stream.parameters.on_read += quix_function.on_parameter_data_handler
+    input_stream.parameters.on_read_pandas += quix_function.on_pandas_frame_handler
     input_stream.events.on_read += quix_function.on_event_data_handler
 
 # Hook up events before initiating read to avoid losing out on any data

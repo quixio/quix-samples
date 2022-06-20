@@ -19,8 +19,7 @@ class InterpolatingFunction:
         self.output_stream.events.write(data)
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
-        df = data.to_panda_frame()
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
 
         # Check if all items exist in the dataframe
         if all(item in df.columns for item in self.parameters) == False:

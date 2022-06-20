@@ -19,7 +19,7 @@ class ThresholdAlert:
         print(data)
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
 
         # Get fresh data
         df = data.to_panda_frame()

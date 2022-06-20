@@ -2,6 +2,7 @@ from quixstreaming import InputTopic, StreamReader, ParameterData, EventData
 from quixstreaming import LocalFileStorage
 import os
 import pickle
+import pandas as pd
 
 class CrossStreamStatefullProcessing:
 
@@ -48,10 +49,10 @@ class CrossStreamStatefullProcessing:
 
     def read_stream(self, input_stream: StreamReader):
         print("New stream read:" + input_stream.stream_id)
-        input_stream.parameters.on_read += self.on_parameter_data_handler
+        input_stream.parameters.on_read_pandas += self.on_pandas_frame_handler
 
 
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
         return
    
     def on_event_data_handler(self, data: EventData):

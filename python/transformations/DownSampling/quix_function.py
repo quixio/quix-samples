@@ -8,9 +8,7 @@ class QuixFunction:
         self.output_stream = output_stream
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
-        # Input data frame
-        df = data.to_panda_frame()
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
 
         # add a date_time column and populate using timestamps
         df['date_time'] = pd.to_datetime(df['time'])

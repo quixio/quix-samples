@@ -32,7 +32,7 @@ def read_stream(input_stream: StreamReader):
 
     # React to new data received from input topics buffer.
     # Here we assign a callback to be called when data arrives.
-    buffer.on_read += quix_function.on_parameter_data_handler
+    buffer.on_read_pandas += quix_function.on_pandas_frame_handler
 
     # When input stream closes, we close output stream as well.
     def on_stream_close(endType: StreamEndType):
