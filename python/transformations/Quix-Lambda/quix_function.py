@@ -1,4 +1,5 @@
 from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+import pandas as pd
 
 class QuixFunction:
     def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
@@ -14,10 +15,10 @@ class QuixFunction:
         self.output_stream.events.write(data)
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
-        print(data)
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
+        print(df)
 
         # Here transform your data.
 
-        self.output_stream.parameters.write(data)
+        self.output_stream.parameters.write(df)
 

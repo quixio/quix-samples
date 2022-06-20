@@ -1,4 +1,6 @@
-﻿namespace Quix.Snowflake.Infrastructure.TimeSeries.Models
+﻿using System;
+
+namespace Quix.Snowflake.Infrastructure.TimeSeries.Models
 {
     /// <summary>
     /// Snowflake database connection configuration.
@@ -11,12 +13,6 @@
         public string Password { get; set; }
         public string Database { get; set; }
         
-        public string ConnectionString
-        {
-            get
-            {
-                return $"account={Locator}.{Region};user={User};password={Password};db={Database}";
-            }
-        }
+        public string ConnectionString => $"account={Locator.Trim()}.{Region.Trim()};user={User.Trim()};password={Password.Trim()};db={Database.Trim()}";
     }
 }

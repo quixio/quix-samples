@@ -2,7 +2,7 @@ from quixstreaming import InputTopic, StreamReader, ParameterData, EventData, Ou
 from quixstreaming import LocalFileStorage
 import os
 import pickle
-
+import pandas as pd
 
 class StatefullProcessing:
     def __init__(self, input_topic: InputTopic, input_stream: StreamReader, output_topic: OutputTopic):
@@ -46,7 +46,7 @@ class StatefullProcessing:
         return
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
         return
 
 

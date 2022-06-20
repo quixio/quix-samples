@@ -2,6 +2,7 @@ from quixstreaming import ParameterData, EventData
 from twilio.rest import Client
 import time
 import os
+import pandas as pd
 
 class TwilioSink:
 
@@ -21,8 +22,7 @@ class TwilioSink:
         self._messages_sent = []  # Epochs of messages sent.
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
-        df = data.to_panda_frame()
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
         print(df)
         self._send_text_message(str(df))
 

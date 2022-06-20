@@ -26,7 +26,7 @@ def read_stream(input_stream: StreamReader):
     quix_function = RollingFunction(input_stream, output_stream)
         
     # React to new data received from input topic.
-    input_stream.parameters.on_read_pandas += quix_function.on_parameter_data_handler
+    input_stream.parameters.on_read_pandas += quix_function.on_pandas_frame_handler
 
     # When input stream closes, we close output stream as well. 
     def on_stream_close(end_type: StreamEndType):

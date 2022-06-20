@@ -10,7 +10,7 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.1.20120.4" />
-        <PackageReference Include="Quix.Sdk.Logging" Version="0.4.5-20220330.2" />
+        <PackageReference Include="Quix.Sdk.Logging" Version="0.4.7-20220620.1"/>
     </ItemGroup>
 
     <ItemGroup>

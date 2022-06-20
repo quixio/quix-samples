@@ -16,9 +16,8 @@ class QuixFunction:
         self.output_stream.events.write(data)
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
         
-        df = data.to_panda_frame()  # Input data frame
         output_df = pd.DataFrame()
         output_df["time"] = df["time"]
 

@@ -24,11 +24,11 @@ def read_stream(input_stream: StreamReader):
     output_stream.properties.parents.append(input_stream.stream_id)
 
     # handle the data in a function to simplify the example
-    quix_function = HuggingFaceModel(model_pipeline, input_stream, output_stream)
+    hugging_face_model = HuggingFaceModel(model_pipeline, input_stream, output_stream)
 
     # React to new data received from input topic.
-    input_stream.events.on_read += quix_function.on_event_data_handler
-    input_stream.parameters.on_read += quix_function.on_parameter_data_handler
+    input_stream.events.on_read += hugging_face_model.on_event_data_handler
+    input_stream.parameters.on_read += hugging_face_model.on_parameter_data_handler
 
     # When input stream closes, we close output stream as well.
     def on_stream_close(end_type: StreamEndType):
