@@ -1,4 +1,4 @@
-quixstreaming==0.4.5a202203301950
+quixstreaming==0.4.7a202206201538
 fire==0.4.0
 scikit-learn==0.24.2
 xgboost==1.4.2
