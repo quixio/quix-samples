@@ -23,7 +23,7 @@ def read_stream(new_stream: StreamReader):
     # handle the data in a function to simplify the example
     quix_function = QuixFunction()
 
-    buffer.on_read += quix_function.on_parameter_data_handler
+    buffer.on_read_pandas += quix_function.on_pandas_frame_handler
 
 
 # Hook up events before initiating read to avoid losing out on any data

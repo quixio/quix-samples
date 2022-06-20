@@ -22,10 +22,9 @@ class PercentageAlert:
         print(data)
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_pandas_frame_handler(self, df: pd.DataFrame):
 
         # Get fresh data
-        df = data.to_panda_frame()
         ti = pd.Timestamp(df.loc[0, 'time'])
         
         if self.parameter_name not in df.columns:

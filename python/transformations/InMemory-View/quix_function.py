@@ -13,9 +13,8 @@ class QuixFunction(StatefullProcessing):
 
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_pandas_frame_handler(self, data_df: pd.DataFrame):
 
-        data_df = data.to_panda_frame()
         data_df["TAG__streamId"] = self.input_stream.stream_id
 
         df = self.state.append(data_df[["time", "EngineRPM", "TAG__streamId"]]) \
