@@ -9,7 +9,7 @@ import os
 client = QuixStreamingClient()
 
 print("Opening input and output topics")
-input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
+input_topic = client.open_input_topic(os.environ["input"], "prometheus-sink")
 
 # Create summaries
 parameter_data_handler_processing_time = Summary('param_data_handler_seconds', 'Time spent processing parameter data')

@@ -35,7 +35,8 @@
 		"CpuMillicores": 200,
 		"MemoryInMb": 200,
 		"Replicas": 1,
-		"PublicAccess": false,
+		"PublicAccess": true,
+		"DeploymentUrlPrefix": "prometheus"
 		"ValidateConnection": false
 	}
 }
