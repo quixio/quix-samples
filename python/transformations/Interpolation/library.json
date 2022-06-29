@@ -42,7 +42,7 @@
 	{
 		"DeploymentType": "Service",
 		"CpuMillicores": 200,
-		"MemoryInMb": 200,
+		"MemoryInMb": 500,
 		"Replicas": 1,
 		"PublicAccess": false,
 		"ValidateConnection": false
