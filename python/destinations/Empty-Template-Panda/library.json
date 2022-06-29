@@ -1,6 +1,6 @@
 {
-    "libraryItemId": "e406d509-930e-4ae3-bfe8-57bfb8befe9d",
-    "name": "Hello World - Destination",
+    "libraryItemId": "258da76e-ca18-49f3-befd-73fdf034c149",
+    "name": "Pandas empty template - Destination",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Destination"],
         "Popular subjects": ["Quick Start"]
     },
-    "shortDescription": "The most basic and essential 'Hello World' read sample",
+    "shortDescription": "The most basic 'Hello World' read sample with Pandas",
     "DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

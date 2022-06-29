@@ -1,6 +1,6 @@
 {
 	"libraryItemId": "00ce6fbc-6044-4b97-bca9-0fb3d83cd510",
-	"name": "HiveMQ",
+	"name": "HiveMQ Connector - Destination",
 	"language": "Python",
 	"tags": {
 		"Complexity": ["Easy"],

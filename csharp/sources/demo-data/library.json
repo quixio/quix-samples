@@ -1,6 +1,6 @@
 {
     "libraryItemId": "7abe02e1-1e75-4783-864c-46b930b42afe",
-    "name": "Formula 1 Data",
+    "name": "Demo Data",
     "language": "C#",
     "tags": {
 		"SDK Usage": ["Write SDK"],
@@ -12,7 +12,6 @@
 	"DefaultFile": "Bridge.Console/Program.cs",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "Bridge.Console.csproj",
-	"IconFile": "icon.png",
     "Variables": [ 
         {
             "Name" : "Topic",
