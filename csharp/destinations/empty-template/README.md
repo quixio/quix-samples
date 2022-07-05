@@ -1,4 +1,4 @@
-# C# Hello world - destination
+# C# Empty template - destination
 The most basic and essential "hello world" read sample. The sample contained in this folder gives an example on how to connect to Kafka and detect the arrival of a new stream and read 'HelloWorld' parameter.
 
 ## Environment variables
