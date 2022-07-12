@@ -32,13 +32,11 @@ mqtt_functions = MQTTFunction(os.environ["mqtt_topic"], mqtt_client, output_stre
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
-    print("CONNACK received with code %s." % rc)
-
-    # handle the message in the 'connected' function
-    mqtt_functions.handle_mqtt_connected()
-
-    print("CONNECTED!")  # required for Quix to know this has connected
-
+    if rc == 0:
+        mqtt_functions.handle_mqtt_connected()
+        print("CONNECTED!") # required for Quix to know this has connected
+    else:
+        print("Connection refused. Error code: {}".format(rc))
 
 # print message, useful for checking if it was successful
 def on_message(client, userdata, msg):
