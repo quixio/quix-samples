@@ -1,21 +1,21 @@
-# HiveMQ
+# MQTT
 
-Publish data to HiveMQ
+Publish data to MQTT
 
 ## Requirements / Prerequisites
 
-You'll need to have a HiveMQ either locally or in the cloud
+You'll need to have a MQTT either locally or in the cloud
 
 ## Environment Variables
 
 The code sample uses the following environment variables:
 
 - **input**: Name of the input topic to listen to.
-- **hivemq_topic_root**: The root for messages in HiveMQ, this can be anything.
-- **hivemq_server**: The address of your HiveMQ server.
-- **hivemq_port**: The port of your HiveMQ instance.
-- **hivemq_username**: Your HiveMQ username.
-- **hivemq_password**: Your HiveMQ password.
+- **mqtt_topic_root**: The root for messages in MQTT, this can be anything.
+- **mqtt_server**: The address of your MQTT server.
+- **mqtt_port**: The port of your MQTT instance.
+- **mqtt_username**: Your MQTT username.
+- **mqtt_password**: Your MQTT password.
 
 ## Docs
 

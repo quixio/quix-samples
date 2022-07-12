@@ -1,21 +1,21 @@
-# HiveMQ
+# MQTT
 
-Easily publish data to Quix from a HiveMQ topic
+Easily publish data to Quix from a MQTT topic
 
 ## Requirements / Prerequisites
 
-You'll need to have a HiveMQ either locally or in the cloud
+You'll need to have a MQTT broker either locally or in the cloud
 
 ## Environment Variables
 
 The code sample uses the following environment variables:
 
 - **output**: Name of the output topic to publish to.
-- **hivemq_topic**: The HiveMQ topic to listen to. Can use wildcards e.g. MyTopic/#
-- **hivemq_server**: The address of your HiveMQ server.
-- **hivemq_port**: The port of your HiveMQ instance.
-- **hivemq_username**: Your HiveMQ username.
-- **hivemq_password**: Your HiveMQ password.
+- **mqtt_topic**: The MQTT topic to listen to. Can use wildcards e.g. MyTopic/#
+- **mqtt_server**: The address of your MQTT server.
+- **mqtt_port**: The port of your MQTT instance.
+- **mqtt_username**: Your MQTT username.
+- **mqtt_password**: Your MQTT password.
 
 ## Docs
 
