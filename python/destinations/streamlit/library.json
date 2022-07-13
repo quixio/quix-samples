@@ -1,0 +1,40 @@
+{
+	"libraryItemId": "a63000ab-b397-4b43-b42e-d54e1da7f627",
+	"name": "Streamlit Dashboard",
+	"language": "Python",
+	"tags": {
+		"Complexity": [
+			"Medium"
+		],
+		"SDK Usage": [
+			"Read SDK"
+		],
+		"Pipeline Stage": [
+			"Destination"
+		]
+	},
+	"shortDescription": "Streamlit real time dashboard",
+	"longDescription": "Streamlit real time dashboard. Use with the 'Demo Data' source from the Quix library.",
+	"DefaultFile": "streamlit_file.py",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"Variables": [
+		{
+			"Name": "input",
+			"Type": "EnvironmentVariable",
+			"InputType": "InputTopic",
+			"Description": "Name of the input topic to listen to.",
+			"Required": true
+		}
+	],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": true,
+		"DeploymentUrlPrefix": "streamlit",
+		"ValidateConnection": false
+	}
+}
