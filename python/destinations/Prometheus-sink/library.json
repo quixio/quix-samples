@@ -36,7 +36,7 @@
 		"MemoryInMb": 200,
 		"Replicas": 1,
 		"PublicAccess": true,
-		"DeploymentUrlPrefix": "prometheus",
+		"UrlPrefix": "prometheus",
 		"ValidateConnection": false
 	}
 }

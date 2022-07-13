@@ -39,6 +39,6 @@
 		"PublicAccess": false,
 		"ValidateConnection": true,
 		"PublicAccess": true,
-		"DeploymentUrlPrefix": "segment-webhook"
+		"UrlPrefix": "segment-webhook"
 	}
 }
