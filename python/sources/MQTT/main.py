@@ -36,7 +36,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
         mqtt_functions.handle_mqtt_connected()
         print("CONNECTED!") # required for Quix to know this has connected
     else:
-        print("Connection refused. Error code: {}".format(rc))
+        print("ERROR: Connection refused ({})".format(rc))
 
 # print message, useful for checking if it was successful
 def on_message(client, userdata, msg):
