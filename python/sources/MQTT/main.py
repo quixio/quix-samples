@@ -28,7 +28,7 @@ output_stream = output_topic.create_stream()
 output_stream.properties.name = "MQTT Data"  # Give the stream a human-readable name (for the data catalogue).
 output_stream.properties.location = "/mqtt data"  # Save stream in specific folder to organize your workspace.
 
-mqtt_functions = MQTTFunction(os.environ["mqtt_topic"], mqtt_client, output_stream)
+mqtt_functions = MQTTFunction(os.environ["mqtt_topic"], mqtt_client)
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):
