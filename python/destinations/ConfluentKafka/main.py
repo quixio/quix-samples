@@ -33,10 +33,10 @@ try:
         print("New input stream detected")
 
         # handle the data in a function to simplify the example
-        hivemq_function = QuixFunctions(output_topic)
+        quix_function = QuixFunctions(output_topic)
 
         # hookup the package received event handler
-        input_stream.on_package_received += hivemq_function.package_received_handler
+        input_stream.on_package_received += quix_function.package_received_handler
 
     # hookup the callback to handle new streams
     input_topic.on_stream_received += read_stream
