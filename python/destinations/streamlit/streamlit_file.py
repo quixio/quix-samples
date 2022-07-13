@@ -13,13 +13,7 @@ import pandas as pd  # read csv, df manipulation
 import streamlit as st  # 🎈 data web app development
 from streamlit.scriptrunner.script_run_context import add_script_run_ctx
 
-client = None
-if "LOCAL" in os.environ:
-    print("USING LOCAL CONFIG..")
-    client = QuixStreamingClient(token="sdk-c35ea65a30e74116a9bdfb0291ea18e0")
-    client.api_url = "https://portal-api.dev.quix.ai"
-else:
-    client = QuixStreamingClient()
+client = QuixStreamingClient()
 
 input_topic = client.open_input_topic(os.environ["input"], None, auto_offset_reset=AutoOffsetReset.Latest)
 
