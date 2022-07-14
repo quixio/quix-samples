@@ -9,8 +9,6 @@ The code sample uses the following environment variables:
 - **input**: Name of the input topic to listen to.
 - **output**: Name of the output topic to write to.
 - **storage_version**: Version of state. Bump up this variable to reset the state..
-- **parameters**: The streams parameter list to calculate the view on.
-- **group_by**: Name of the tag to group data with.
 
 
 ## Docs
