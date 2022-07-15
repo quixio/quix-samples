@@ -24,8 +24,8 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
         private readonly IDbConnection snowflakeDbConnection;
         private readonly string topicDisplayName;
 
-        private const string ParameterValuesTableSuffix = "PARAMETERVALUES";
-        private const string EventValuesTableSuffix = "EVENTVALUES";
+        private const string ParameterValuesTablePrefix = "PARAMETERVALUES";
+        private const string EventValuesTablePrefix = "EVENTVALUES";
         private const string InformationSchema = "PUBLIC";
         private const string NumericParameterColumnFormat = "N_{0}";
         private const string StringParameterColumnFormat = "S_{0}";
@@ -52,8 +52,8 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
 
             this.topicDisplayName = Regex.Replace(topicName.Value, "[^\\w+]", "").ToUpper();
             
-            this.parameterValuesTableName = $"{topicDisplayName}_{ParameterValuesTableSuffix}";
-            this.eventValuesTableName = $"{topicDisplayName}_{EventValuesTableSuffix}";
+            this.parameterValuesTableName = $"{ParameterValuesTablePrefix}_{topicDisplayName}";
+            this.eventValuesTableName = $"{EventValuesTablePrefix}_{topicDisplayName}";
             
             Initialize();
         }
