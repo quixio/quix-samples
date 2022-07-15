@@ -182,8 +182,10 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                             var name = string.Format(TagFormat, kPair.Key.ToUpper());
                             if (name.Equals(StreamIdColumn, StringComparison.InvariantCultureIgnoreCase)) continue;
 
+                            var val = EscapeQuotes(kPair.Value); 
+                            
                             valueSb.Append(",");
-                            valueSb.Append($"'{kPair.Value}'");
+                            valueSb.Append($"'{val}'");
                             
                             headerSb.Append(",");
                             headerSb.Append(name);
@@ -225,7 +227,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                             var value = row.StringValues[i];
 
                             valueSb.Append(",");
-                            valueSb.Append($"'{value}'");
+                            valueSb.Append($"'{EscapeQuotes(value)}'");
 
                             headerSb.Append(",");
                             headerSb.Append(name);
@@ -254,6 +256,11 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
             }
 
             return totalValues;
+        }
+
+        private static string EscapeQuotes(string val)
+        {
+            return val.Replace("'", "\\'");
         }
 
         private void VerifyColumns(Dictionary<string, string> columnsToHave, HashSet<string> existingColumns, string tableToVerify)
@@ -326,7 +333,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                             if (name.Equals(StreamIdColumn, StringComparison.InvariantCultureIgnoreCase)) continue;
 
                             valueSb.Append(",");
-                            valueSb.Append($"'{kPair.Value}'");
+                            valueSb.Append($"'{EscapeQuotes(kPair.Value)}'");
                             
                             headerSb.Append(",");
                             headerSb.Append(name);
@@ -335,7 +342,7 @@ namespace Quix.Snowflake.Infrastructure.TimeSeries.Repositories
                     }
 
                     var eventColumnName = string.Format(StringEventColumnFormat, row.EventId);
-                    var value = row.Value;
+                    var value = EscapeQuotes(row.Value);
 
                     valueSb.Append(",");
                     valueSb.Append($"'{value}'");
