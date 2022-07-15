@@ -5,6 +5,15 @@ import paho.mqtt.client as paho
 from paho import mqtt
 import os
 
+def mqtt_protocol_version():
+    if os.environ["mqtt_version"] == "3.1":
+        return paho.MQTTv31
+    if os.environ["mqtt_version"] == "3.1.1":
+        return paho.MQTTv311
+    if os.environ["mqtt_version"] == "5":
+        return paho.MQTTv5
+    raise ValueError('mqtt_version is invalid')
+
 mqtt_port = os.environ["mqtt_port"]
 if not mqtt_port.isnumeric():
     raise ValueError('mqtt_port must be a numeric value')
@@ -23,7 +32,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
     print("CONNECTED!")  # required for Quix to know this has connected
 
 
-mqtt_client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
+mqtt_client = paho.Client(client_id="", userdata=None, protocol=mqtt_protocol_version())
 mqtt_client.on_connect = on_connect
 mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 mqtt_client.username_pw_set(os.environ["mqtt_username"], os.environ["mqtt_password"])
