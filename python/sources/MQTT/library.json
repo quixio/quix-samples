@@ -3,10 +3,18 @@
 	"name": "MQTT Connector - Source",
 	"language": "Python",
 	"tags": {
-		"Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"],
-		"Pipeline Stage": ["Source"],
-		"Technology": ["MQTT"]
+		"Complexity": [
+			"Easy"
+		],
+		"SDK Usage": [
+			"Write SDK"
+		],
+		"Pipeline Stage": [
+			"Source"
+		],
+		"Technology": [
+			"MQTT"
+		]
 	},
 	"shortDescription": "Easily publish data to Quix from a MQTT topic",
 	"DefaultFile": "mqtt_function.py",
@@ -57,10 +65,17 @@
 			"InputType": "HiddenText",
 			"Description": "Your MQTT password",
 			"Required": true
+		},
+		{
+			"Name": "mqtt_version",
+			"Type": "EnvironmentVariable",
+			"InputType": "FreeText",
+			"Description": "MQTT protocol version: 3.1, 3.1.1, 5",
+			"DefaultValue": "3.1.1",
+			"Required": false
 		}
 	],
-	"DeploySettings":
-	{
+	"DeploySettings": {
 		"DeploymentType": "Service",
 		"CpuMillicores": 200,
 		"MemoryInMb": 200,
