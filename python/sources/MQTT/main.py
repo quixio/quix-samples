@@ -18,7 +18,7 @@ mqtt_port = os.environ["mqtt_port"]
 if not mqtt_port.isnumeric():
     raise ValueError('mqtt_port must be a numeric value')
 
-mqtt_client = paho.Client(client_id="", userdata=None, protocol=mqtt_protocol_version())
+mqtt_client = paho.Client(client_id=os.environ["Quix__Deployment__Name"], userdata=None, protocol=mqtt_protocol_version())
 # we'll be using tls
 mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
 mqtt_client.username_pw_set(os.environ["mqtt_username"], os.environ["mqtt_password"])
@@ -36,7 +36,7 @@ output_stream = output_topic.create_stream()
 output_stream.properties.name = "MQTT Data"  # Give the stream a human-readable name (for the data catalogue).
 output_stream.properties.location = "/mqtt data"  # Save stream in specific folder to organize your workspace.
 
-mqtt_functions = MQTTFunction(os.environ["mqtt_topic"], mqtt_client)
+mqtt_functions = MQTTFunction(os.environ["mqtt_topic"], mqtt_client, output_topic)
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect(client, userdata, flags, rc, properties=None):

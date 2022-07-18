@@ -1,12 +1,14 @@
 import paho.mqtt.client as paho
 from datetime import datetime
+from quixstreaming import OutputTopic
 
 
 class MQTTFunction:
 
-    def __init__(self, topic, mqtt_client: paho.Client):
+    def __init__(self, topic, mqtt_client: paho.Client, output_topic: OutputTopic):
         self.mqtt_client = mqtt_client
         self.topic = topic
+        self.output_topic = output_topic
 
     def handle_mqtt_connected(self):
         # once connection is confirmed, subscribe to the topic
