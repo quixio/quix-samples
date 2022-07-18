@@ -24,13 +24,6 @@
             "InputType" : "FreeText",
             "Description" : "Version of state. Bump up this variable to reset the state.",
             "DefaultValue" : "1.0"
-        },
-		{
-            "Name" : "group_by",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "Name of the tag to group data with.",
-            "DefaultValue" : "transform"
         }
     ]    
 }

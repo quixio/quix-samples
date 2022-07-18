@@ -5,3 +5,5 @@ csharp/**/obj/
 **/ca.cert
 
 **/.idea/
+
+**/.vscode/

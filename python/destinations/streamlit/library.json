@@ -1,6 +1,6 @@
 {
-	"libraryItemId": "8ba520a1-40f5-42e9-ab92-1f71ac717416",
-	"name": "Prometheus Sink",
+	"libraryItemId": "a63000ab-b397-4b43-b42e-d54e1da7f627",
+	"name": "Streamlit Dashboard",
 	"language": "Python",
 	"tags": {
 		"Complexity": [
@@ -11,13 +11,11 @@
 		],
 		"Pipeline Stage": [
 			"Destination"
-		],
-		"Technology": [
-			"Prometheus"
 		]
 	},
-	"shortDescription": "Prometheus metrics for a topic",
-	"DefaultFile": "main.py",
+	"shortDescription": "Streamlit real time dashboard",
+	"longDescription": "Streamlit real time dashboard. Use with the 'Demo Data' source from the Quix library.",
+	"DefaultFile": "streamlit_file.py",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "main.py",
 	"Variables": [
@@ -36,7 +34,7 @@
 		"MemoryInMb": 200,
 		"Replicas": 1,
 		"PublicAccess": true,
-		"UrlPrefix": "prometheus",
+		"UrlPrefix": "streamlit",
 		"ValidateConnection": false
 	}
 }

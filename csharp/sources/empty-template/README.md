@@ -1,4 +1,4 @@
-# C# Hello world - source
+# C# Empty template - source
 The sample contained in this folder gives an example on how to connect to Kafka and start a new stream with a few "HelloWorld" parameter values.
 
 ## Environment variables
