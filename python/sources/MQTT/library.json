@@ -71,8 +71,8 @@
 			"Type": "EnvironmentVariable",
 			"InputType": "FreeText",
 			"Description": "MQTT protocol version: 3.1, 3.1.1, 5",
-			"DefaultValue": "5",
-			"Required": false
+			"DefaultValue": "3.1.1",
+			"Required": true
 		}
 	],
 	"DeploySettings": {
