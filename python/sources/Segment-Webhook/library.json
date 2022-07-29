@@ -5,8 +5,8 @@
     "tags": {
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Technology": ["Segment", "Webhook"],
-		"Type": ["Tech connectors"]
+		"Type": ["Tech connectors"],
+		"Technology": ["Segment", "Webhook"]
     },
     "shortDescription": "Stream Segment event data into Quix",
 	"DefaultFile": "main.py",

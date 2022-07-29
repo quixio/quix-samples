@@ -12,10 +12,10 @@
 		"Pipeline Stage": [
 			"Source"
 		],
+		"Type": ["Tech connectors"],
 		"Technology": [
 			"MQTT"
-		],
-		"Type": ["Tech connectors"]
+		]
 	},
 	"shortDescription": "Easily publish data to Quix from a MQTT topic",
 	"DefaultFile": "mqtt_function.py",

@@ -6,8 +6,8 @@
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Technology": ["Ably"],
-		"Type": ["Tech connectors"]
+		"Type": ["Tech connectors"],
+        "Technology": ["Ably"]
     },
     "shortDescription": "Publish data to an Ably Channel",
 	"DefaultFile": "AblySink/Program.cs",

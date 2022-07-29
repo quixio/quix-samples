@@ -6,8 +6,8 @@
         "Complexity": ["Advanced"],
 		"SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Technology": ["Snowflake"],
-		"Type": ["Tech connectors"]
+		"Type": ["Tech connectors"],
+        "Technology": ["Snowflake"]
     },
     "shortDescription": "Publish data to Snowflake",
 	"DefaultFile": "Quix.Snowflake.Writer/Worker.cs",

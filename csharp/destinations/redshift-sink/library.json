@@ -6,8 +6,8 @@
         "Complexity": ["Advanced"],
 		"SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Technology": ["AWS", "Redshift"],
-		"Type": ["Tech connectors"]
+		"Type": ["Tech connectors"],
+        "Technology": ["AWS", "Redshift"]
     },
     "shortDescription": "Publish data to AWS Redshift",
 	"DefaultFile": "Quix.Redshift.Writer/Worker.cs",

@@ -6,8 +6,8 @@
         "Complexity": ["Advanced"],
 		"SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Technology": ["SQL"],
-		"Type": ["Tech connectors"]
+		"Type": ["Tech connectors"],
+        "Technology": ["SQL"]
     },
     "shortDescription": "Publish data to a SQL Database",
 	"DefaultFile": "Quix.SqlServer.Writer/Worker.cs",
