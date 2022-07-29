@@ -20,7 +20,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the Quix Topic that will receive the stream",
-            "DefaultValue" : "amazon-kinesis-data",
+            "DefaultValue" : "snowplow-data",
             "Required": true
         },
         {
