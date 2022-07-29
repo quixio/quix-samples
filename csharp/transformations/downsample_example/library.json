@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-        "Popular subjects": ["Quick Start"]
+        "Use Case": ["Quick Start"]
     },
     "shortDescription": "Downsample 100Hz parameter to 10Hz using the built in buffer",
 	"DefaultFile": "HelloWorldModel/Program.cs",
