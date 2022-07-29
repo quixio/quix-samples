@@ -5,7 +5,7 @@
     "tags": {
       "API Usage": [ "Writer API (HTTP)" ],
       "Complexity": [ "Easy" ],
-      "Use Case": ["Quick Start"]
+      "Popular subjects": ["Quick Start"]
     },
     "sampleTemplate": true,
     "shortDescription": "This sample shows how to use HTTP Writer API in the command-line",

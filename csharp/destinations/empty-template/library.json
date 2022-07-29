@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Use Case": ["Quick Start"]
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "The most basic and essential 'Hello World' read sample",
 	"DefaultFile": "ReadHelloWorld/Program.cs",

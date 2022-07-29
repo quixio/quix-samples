@@ -4,7 +4,7 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-        "Use Case": ["Quick Start"]
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "An empty template for Python applications",
 	"EntryPoint": "build/dockerfile",

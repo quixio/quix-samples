@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-        "Use Case": ["Onboarding"]
+        "Popular subjects": ["Onboarding"]
     },
     "shortDescription": "Filter data with this 'Hard Braking' model",
     "DefaultFile": "quix_function.py",

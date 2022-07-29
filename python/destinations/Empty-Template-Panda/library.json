@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Use Case": ["Quick Start"]
+        "Popular subjects": ["Quick Start"]
     },
     "shortDescription": "The most basic 'Hello World' read sample with Pandas",
     "DefaultFile": "quix_function.py",
