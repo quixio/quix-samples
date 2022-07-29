@@ -4,7 +4,8 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-        "Use Case": ["Quick Start"]
+        "Use Case": ["Quick Start"],
+		"Type": ["Basic Templates"]
     },
     "shortDescription": "An empty template for C# applications",
 	"EntryPoint": "build/dockerfile",
