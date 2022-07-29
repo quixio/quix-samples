@@ -9,7 +9,7 @@
         "Technology": ["Snowplow"]
     },
     "shortDescription": "Connect your Snowplow data to a Quix topic with this bridge",
-    "shortDescription": "Connect your Snowplow data to a Quix topic with this bridge<br/>This bridge is for AWS Kinesis backed Snowplow installations",
+    "longDescription": "Connect your Snowplow data to a Quix topic with this bridge<br/>This bridge is for AWS Kinesis backed Snowplow installations",
     "DefaultFile": "quix_functions.py",
 	"EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
