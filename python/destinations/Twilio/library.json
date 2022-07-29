@@ -14,7 +14,8 @@
 		],
 		"Technology": [
 			"Twilio"
-		]
+		],
+		"Type": ["Tech connectors"]
 	},
 	"shortDescription": "The most basic code example how to send data in Quix using Twilio",
 	"DefaultFile": "twilio_sink.py",

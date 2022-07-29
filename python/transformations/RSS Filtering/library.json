@@ -6,7 +6,8 @@
         "Complexity": ["Medium"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-		"Technology": ["RSS"]
+		"Technology": ["RSS"],
+		"Type": ["Tech connectors"]
     },
     "shortDescription": "Example of how to filter and enhance RSS data",
 	"DefaultFile": "quix_function.py",

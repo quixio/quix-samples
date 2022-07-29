@@ -14,7 +14,8 @@
 		],
 		"Technology": [
 			"Prometheus"
-		]
+		],
+		"Type": ["Tech connectors"]
 	},
 	"shortDescription": "Prometheus metrics for a topic",
 	"DefaultFile": "main.py",

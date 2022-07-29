@@ -15,7 +15,8 @@
 		"Technology": [
 			"Slack"
 		],
-		"Use Case": ["Onboarding"]
+		"Use Case": ["Onboarding"],
+		"Type": ["Tech connectors"]
 	},
 	"shortDescription": "Easily send notifications to Slack via webhooks",
 	"DefaultFile": "quix_function.py",

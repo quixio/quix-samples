@@ -14,7 +14,8 @@
 		],
 		"Technology": [
 			"MQTT"
-		]
+		],
+		"Type": ["Tech connectors"]
 	},
 	"shortDescription": "Easily publish data to a MQTT instance",
 	"DefaultFile": "mqtt_function.py",

@@ -6,7 +6,8 @@
         "Complexity": ["Easy"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Technology": ["Twitter"]
+        "Technology": ["Twitter"],
+		"Type": ["Tech connectors"]
     },
     "shortDescription": "Stream Twitter live messages to a Quix topic in real time",
     "DefaultFile": "twitter_function.py",
