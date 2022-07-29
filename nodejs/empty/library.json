@@ -4,7 +4,7 @@
     "language": "NodeJs",
     "tags": {
         "Complexity": ["Easy"],
-		"Type": ["Basic Templates"]
+		"Type": ["Basic templates"]
     },
     "shortDescription": "An empty template for NodeJs applications",
     "DefaultFile": "main.js",
