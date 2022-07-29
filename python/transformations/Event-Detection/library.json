@@ -6,6 +6,7 @@
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
+		"Type": ["Code samples"],
         "Use Case": ["Onboarding"]
     },
     "shortDescription": "Filter data with this 'Hard Braking' model",

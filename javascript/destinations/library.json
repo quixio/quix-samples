@@ -5,6 +5,7 @@
     "tags": {
         "Complexity": ["Easy"],
 		"API Usage": ["Reader API (Websockets)"],
+		"Type": ["Code samples"],
         "Use Case": ["Quick Start"]
     },
     "shortDescription": "Read data from a topic using our Websockets Reader API",
