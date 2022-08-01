@@ -4,20 +4,20 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Type": ["Tech connectors"],
-		"Technology": ["Confluent"]
+        "Type": ["Tech connectors"],
+        "Technology": ["Confluent"]
     },
     "shortDescription": "Subscribe to your Confluent Kafka topic with this bridge",
     "longDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge<br/>If you already have a Confluent Kafka topic, you can connect it to Quix with this simple bridge.",
     "DefaultFile": "quix_functions.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
-	"IconFile": "icon.png",
+    "IconFile": "icon.png",
     "Variables": [
         {
-			"Name" : "output",
+            "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the Quix Topic that will receive the stream",
@@ -57,13 +57,13 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
 }

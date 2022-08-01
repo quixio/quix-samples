@@ -4,13 +4,13 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Type": ["Tech connectors"]
+        "Type": ["Tech connectors"]
     },
     "shortDescription": "Write real-time currency data to a stream",
     "DefaultFile": "quix_functions.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -46,13 +46,13 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
 }

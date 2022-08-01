@@ -4,14 +4,14 @@
     "language": "NodeJs",
     "tags": {
         "Complexity": ["Advanced"],
-		"API Usage": ["Reader API (Websockets)", "Writer API (HTTP)"],
+        "API Usage": ["Reader API (Websockets)", "Writer API (HTTP)"],
         "Pipeline Stage": ["Source"],
-		"Type": ["Code samples"],
+        "Type": ["Code samples"],
         "Use Case": ["Sentiment Analysis"]
     },
     "shortDescription": "Chat application as an example of Quix APIs usage",
     "DefaultFile": "source/app/services/quix.service.ts",
-	"EntryPoint": "source/build/dockerfile",
+    "EntryPoint": "source/build/dockerfile",
     "Variables": [
         {
             "Name" : "messages",

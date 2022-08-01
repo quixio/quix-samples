@@ -4,14 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Type": ["Code samples"],
+        "Type": ["Code samples"],
         "Use Case": ["Fraud Detection"]
     },
     "shortDescription": "Write raw transaction data to a stream",
     "DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -23,13 +23,13 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Job",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Job",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
 }

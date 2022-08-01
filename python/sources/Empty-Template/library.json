@@ -4,14 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Use Case": ["Quick Start"],
-		"Type": ["Basic templates"]
+        "Type": ["Basic templates"]
     },
     "shortDescription": "The most basic and essential 'Hello World' source sample",
     "DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

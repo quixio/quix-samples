@@ -4,14 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
         "Use Case": ["Quick Start"],
-		"Type": ["Basic templates"]
+        "Type": ["Basic templates"]
     },
     "shortDescription": "Template of how to transform data between source and destination.",
-	"DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "quix_function.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {
@@ -20,7 +20,7 @@
             "InputType" : "InputTopic",
             "Description" : "Name of the input topic to listen to."
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",

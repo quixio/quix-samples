@@ -5,6 +5,7 @@
     "tags": {
       "Complexity": [ "Medium" ],
       "SDK Usage": [ "Read/Write SDK" ],
+      "Type": ["Code samples"],
       "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "This model detects object from the images inside topic",
@@ -27,7 +28,7 @@
             "Required": true
         }
     ],
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "main.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
     "DefaultFile": "main.py"
 }

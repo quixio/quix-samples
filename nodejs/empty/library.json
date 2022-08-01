@@ -4,11 +4,11 @@
     "language": "NodeJs",
     "tags": {
         "Complexity": ["Easy"],
-		"Type": ["Basic templates"]
+        "Type": ["Basic templates"]
     },
     "shortDescription": "An empty template for NodeJs applications",
     "DefaultFile": "main.js",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "Variables": [ 
         {
             "Name" : "input",

@@ -4,16 +4,16 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
-		"API Usage": ["Writer API (Websockets)", "Reader API (Websockets)"],
+        "API Usage": ["Writer API (Websockets)", "Reader API (Websockets)"],
         "Pipeline Stage": ["Source"],
-		"Type": ["Code samples"],
+        "Type": ["Code samples"],
         "Use Case": ["Mobility"]
     },
     "shortDescription": "Xamarin Android app for streaming data to Quix",
     "longDescription": "Use this app to track your movements using the phone's sensors (GPS, G-Force, Orientation etc), and connect external sensors (like HRM) via Bluetooth",
     "DefaultFile": "QuixTracker/MainPage.xaml.cs",
     "Variables": [
-	    {
+        {
             "Name" : "topic",
             "Type" : "Placeholder",
             "InputType" : "OutputTopic",

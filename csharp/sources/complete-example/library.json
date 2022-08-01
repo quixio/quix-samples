@@ -4,15 +4,15 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Write SDK"],
-		"Type": ["Code samples"],
+        "SDK Usage": ["Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "A complete example of how to write data into a topic",
     "longDescription": "This is a complete example in C# of how to write data into a topic and the usage of all the SDK methods",
-	"DefaultFile": "WriteCompleteExample/Program.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "WriteCompleteExample.csproj",
+    "DefaultFile": "WriteCompleteExample/Program.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "WriteCompleteExample.csproj",
     "Variables": [ 
         {
             "Name" : "output",

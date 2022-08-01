@@ -5,12 +5,12 @@
     "tags": {
         "Complexity": ["Easy"],
         "Use Case": ["Quick Start"],
-		"Type": ["Basic templates"]
+        "Type": ["Basic templates"]
     },
     "shortDescription": "An empty template for Python applications",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "main.py",
-	"DefaultFile": "main.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "DefaultFile": "main.py",
     "Variables": [ 
         {
             "Name" : "input",

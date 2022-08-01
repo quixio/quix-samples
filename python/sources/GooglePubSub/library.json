@@ -4,20 +4,20 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Type": ["Tech connectors"],
+        "Type": ["Tech connectors"],
         "Technology": ["Google"]
     },
     "shortDescription": "Subscribe to data in a Google Pub/Sub topic",
     "longDescription": "If you already have data in a Google Pub/Sub topic, you can connect to it to build your application in Quix.",
     "DefaultFile": "quix_functions.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
-	"IconFile": "icon.png",
+    "IconFile": "icon.png",
     "Variables": [
         {
-			"Name" : "output",
+            "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the Quix Topic that will receive the stream",
@@ -49,13 +49,13 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
 }

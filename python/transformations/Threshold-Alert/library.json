@@ -4,12 +4,12 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Generates an alert when certain numeric threshold is crossed",
-	"DefaultFile": "threshold_function.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "threshold_function.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -17,15 +17,15 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for raw data",
-			"Required" : true
+            "Required" : true
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for alerts",
             "DefaultValue" : "threshold-alert-output",
-			"Required" : true
+            "Required" : true
         },
         {
             "Name" : "parameterName",
@@ -33,7 +33,7 @@
             "InputType" : "FreeText",
             "Description" : "This is the stream's parameter to track",
             "DefaultValue" : "ParameterA",
-			"Required" : true
+            "Required" : true
         },
         {
             "Name" : "thresholdValue",
@@ -41,16 +41,16 @@
             "InputType" : "FreeText",
             "Description" : "This is the threshold's numerical value",
             "DefaultValue" : "100",
-			"Required" : true
+            "Required" : true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
 }

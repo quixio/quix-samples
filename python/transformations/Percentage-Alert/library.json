@@ -4,12 +4,12 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Generates an alert when certain percentage increase or decrease is achieved",
-	"DefaultFile": "percentage_function.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "percentage_function.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -17,15 +17,15 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for numeric data",
-	        "Required": true
+            "Required": true
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for alerts",
             "DefaultValue" : "alert-output-topic",
-	        "Required": true
+            "Required": true
         },
         {
             "Name" : "ParameterName",
@@ -33,7 +33,7 @@
             "InputType" : "FreeText",
             "Description" : "The parameter name to track",
             "DefaultValue" : "ParameterA",
-	        "Required": true
+            "Required": true
         },
         {
             "Name" : "PercentagePointsAlert",
@@ -41,16 +41,16 @@
             "InputType" : "FreeText",
             "Description" : "Percentage points of increase/decrease for the alert to activate.",
             "DefaultValue" : "10",
-	        "Required": true
+            "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
 }

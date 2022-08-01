@@ -4,13 +4,13 @@
     "language": "Python",
     "tags": { 
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read/Write SDK"],
-		"Type": ["Code samples"],
+        "SDK Usage": ["Read/Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Template of how to build in memory view.",
-	"DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "quix_function.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {
@@ -19,14 +19,14 @@
             "InputType" : "InputTopic",
             "Description" : "Name of the input topic to listen to."
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "Name of the output topic to write to.",
             "DefaultValue" : "transform"
         },
-		{
+        {
             "Name" : "storage_version",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
