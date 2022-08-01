@@ -4,57 +4,57 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Type": ["Tech connectors"],
+        "Type": ["Tech connectors"],
         "Technology": ["Ably"]
     },
     "shortDescription": "Subscribe to data in an Ably channel",
-	"DefaultFile": "AblyHubSource/Program.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "AblyHubSource/AblyHubSource.csproj",
-	"IconFile": "icon.png",
+    "DefaultFile": "AblyHubSource/Program.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "AblyHubSource/AblyHubSource.csproj",
+    "IconFile": "icon.png",
     "Variables": [ 
         {
-		  "Name": "output",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "OutputTopic",
-		  "Description": "Name of the output topic to write into",
-		  "DefaultValue": "ably-data",
-		  "Required": true
-		},
-		{
-		  "Name": "AblyToken",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The Ably API token to use",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "AblyChannel",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The Ably Channel to listen to",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "StreamId",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "A name for the data stream",
-		  "DefaultValue": "",
-		  "Required": true
-		}
+          "Name": "output",
+          "Type": "EnvironmentVariable",
+          "InputType": "OutputTopic",
+          "Description": "Name of the output topic to write into",
+          "DefaultValue": "ably-data",
+          "Required": true
+        },
+        {
+          "Name": "AblyToken",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The Ably API token to use",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "AblyChannel",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The Ably Channel to listen to",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "StreamId",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "A name for the data stream",
+          "DefaultValue": "",
+          "Required": true
+        }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
 }

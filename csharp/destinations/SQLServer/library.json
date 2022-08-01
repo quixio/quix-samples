@@ -4,73 +4,73 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
-		"SDK Usage": ["Read SDK"],
+        "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-		"Type": ["Tech connectors"],
+        "Type": ["Tech connectors"],
         "Technology": ["SQL"]
     },
     "shortDescription": "Publish data to a SQL Database",
-	"DefaultFile": "Quix.SqlServer.Writer/Worker.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "Quix.SqlServer.Writer/Quix.SqlServer.Writer.csproj",
-	"IconFile": "icon.png",
+    "DefaultFile": "Quix.SqlServer.Writer/Worker.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "Quix.SqlServer.Writer/Quix.SqlServer.Writer.csproj",
+    "IconFile": "icon.png",
     "Variables": [
-		{
-		  "Name": "Broker__TopicName",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "InputTopic",
-		  "Description": "Name of the input topic to read from",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "SqlServer__Server",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The IP address or fully qualified domain name of your server",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "SqlServer__Port",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The Port number to use for communication with the server",
-		  "DefaultValue": "1433",
-		  "Required": true
-		},
-		{
-		  "Name": "SqlServer__Database",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The name of the database to persist to",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "SqlServer__User",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The username of the sink should use to interact with the database",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "SqlServer__Password",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "HiddenText",
-		  "Description": "The password for the user",
-		  "DefaultValue": "",
-		  "Required": true
-		}
+        {
+          "Name": "Broker__TopicName",
+          "Type": "EnvironmentVariable",
+          "InputType": "InputTopic",
+          "Description": "Name of the input topic to read from",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "SqlServer__Server",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The IP address or fully qualified domain name of your server",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "SqlServer__Port",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The Port number to use for communication with the server",
+          "DefaultValue": "1433",
+          "Required": true
+        },
+        {
+          "Name": "SqlServer__Database",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The name of the database to persist to",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "SqlServer__User",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The username of the sink should use to interact with the database",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "SqlServer__Password",
+          "Type": "EnvironmentVariable",
+          "InputType": "HiddenText",
+          "Description": "The password for the user",
+          "DefaultValue": "",
+          "Required": true
+        }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 400,
-		"MemoryInMb": 800,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 400,
+        "MemoryInMb": 800,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
 }

@@ -4,13 +4,13 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Advanced"],
-		"SDK Usage": ["Read/Write SDK"],
-		"Type": ["Code samples"],
+        "SDK Usage": ["Read/Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Handle and transform input for the stream processing demo",
     "DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

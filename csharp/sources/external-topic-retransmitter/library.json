@@ -5,12 +5,12 @@
     "tags": {
       "Complexity": ["Easy"],
       "SDK Usage": ["Read/Write SDK"],
-	  "Type": ["Code samples"],
+      "Type": ["Code samples"],
       "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Clone topic external to your workspace",
     "longDescription": "Service which reads from an external topic and writes the content into a topic in current workspace.",
-	  "defaultFile": "Program.cs",
+      "defaultFile": "Program.cs",
     "entryPoint": "build/dockerfile",
     "runEntryPoint": "Retransmitter.csproj",
     "variables": [

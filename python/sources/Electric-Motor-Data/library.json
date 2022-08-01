@@ -4,13 +4,13 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"],
-		"Type": ["Code samples"],
+        "SDK Usage": ["Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Live data from a permanent magnet synchronous motor (PMSM)",
     "DefaultFile": "functions.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -22,13 +22,13 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Job",
-		"CpuMillicores": 200,
-		"MemoryInMb": 400,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Job",
+        "CpuMillicores": 200,
+        "MemoryInMb": 400,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
 }

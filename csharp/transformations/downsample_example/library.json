@@ -4,15 +4,15 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-		"Type": ["Code samples"],
+        "Type": ["Code samples"],
         "Use Case": ["Quick Start"]
     },
     "shortDescription": "Downsample 100Hz parameter to 10Hz using the built in buffer",
-	"DefaultFile": "HelloWorldModel/Program.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "HelloWorldModel.csproj",
+    "DefaultFile": "HelloWorldModel/Program.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "HelloWorldModel.csproj",
     "Variables": [ 
         {
             "Name" : "input",
@@ -22,7 +22,7 @@
             "DefaultValue" : "",
             "Required": true
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",

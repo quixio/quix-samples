@@ -4,12 +4,12 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Subscribe to sensor data from your Netatmo devices",
     "DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

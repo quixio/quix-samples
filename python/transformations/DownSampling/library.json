@@ -4,29 +4,29 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Down sample data from 100hz to 10hz",
     "DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {
-		  "Name": "input",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "InputTopic",
-		  "Description": "This is the input topic to read data from",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "output",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "OutputTopic",
-		  "Description": "This is the output topic to write data to",
-		  "DefaultValue": "output-topic",
-		  "Required": true
-		}
+          "Name": "input",
+          "Type": "EnvironmentVariable",
+          "InputType": "InputTopic",
+          "Description": "This is the input topic to read data from",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "output",
+          "Type": "EnvironmentVariable",
+          "InputType": "OutputTopic",
+          "Description": "This is the output topic to write data to",
+          "DefaultValue": "output-topic",
+          "Required": true
+        }
     ]    
 }
