@@ -4,12 +4,13 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"],
+        "Type": ["Code samples"]
     },
     "shortDescription": "Filter Reddit posts contains a specific word",
-	"DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "quix_function.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -17,15 +18,15 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for raw data",
-			"Required" : true
+            "Required" : true
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for filtered data",
             "DefaultValue" : "",
-			"Required" : true
+            "Required" : true
         },
         {
             "Name" : "subreddit",
@@ -33,7 +34,7 @@
             "InputType" : "FreeText",
             "Description" : "The subreddit this filter will work with",
             "DefaultValue" : "",
-			"Required" : true
+            "Required" : true
         },
         {
             "Name" : "titlecontainsword",
@@ -41,16 +42,16 @@
             "InputType" : "FreeText",
             "Description" : "The word to filter on",
             "DefaultValue" : "",
-			"Required" : true
+            "Required" : true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
 }
