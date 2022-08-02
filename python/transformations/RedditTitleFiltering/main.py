@@ -6,6 +6,9 @@ import os
 subreddit = os.environ["subreddit"].lower()
 title_contains_word = os.environ["titlecontainsword"]
 
+version = os.environ["Quix__Project__Git__CommitRef"]
+print("Version: " + version)
+
 # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
 
