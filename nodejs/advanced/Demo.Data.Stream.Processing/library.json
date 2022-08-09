@@ -4,11 +4,12 @@
     "language": "NodeJs",
     "tags": {
         "Complexity": ["Advanced"],
-		"API Usage": ["Reader API (Websockets)", "Writer API (HTTP)"]
+        "Type": ["Code samples"],
+        "API Usage": ["Reader API (Websockets)", "Writer API (HTTP)"]
     },
     "shortDescription": "The Web and Phone UI applications for the Stream Processing Demo",
-	"DefaultFile": "main.js",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "main.js",
+    "EntryPoint": "build/dockerfile",
     "Variables": [ 
         {
             "Name" : "gamedata",
@@ -18,7 +19,7 @@
             "DefaultValue" : "gamedata",
             "Required": true
         },
-		{
+        {
             "Name" : "game_input",
             "Type" : "Placeholder",
             "InputType" : "InputTopic",

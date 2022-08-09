@@ -4,12 +4,13 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-        "Popular subjects": ["Quick Start"]
+        "Use Case": ["Quick Start"],
+        "Type": ["Basic templates"]
     },
     "shortDescription": "An empty template for C# applications",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "Service.csproj",
-	"DefaultFile": "Program.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "Service.csproj",
+    "DefaultFile": "Program.cs",
     "Variables": [ 
         {
             "Name" : "input",

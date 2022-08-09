@@ -3,13 +3,14 @@
     "name": "Car Data Generator",
     "language": "C#",
     "tags": {
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Stream telemetry car data generated from a simple simulation algorithm",
-	"DefaultFile": "CarDataGenerator/Program.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "CarDataGenerator/CarDataGenerator.csproj",
+    "DefaultFile": "CarDataGenerator/Program.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "CarDataGenerator/CarDataGenerator.csproj",
     "Variables": [ 
         {
             "Name" : "Topic",
@@ -19,7 +20,7 @@
             "DefaultValue" : "car-data",
             "Required": true
         },
-		{
+        {
             "Name" : "DataFrequency",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
@@ -28,13 +29,13 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Job",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Job",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
 }

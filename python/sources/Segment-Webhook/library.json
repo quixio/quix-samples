@@ -3,15 +3,16 @@
     "name": "Segment Webhook",
     "language": "Python",
     "tags": {
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-		"Technology": ["Segment", "Webhook"]
+        "Type": ["Tech connectors"],
+        "Technology": ["Segment", "Webhook"]
     },
     "shortDescription": "Stream Segment event data into Quix",
-	"DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "main.py",
-	"IconFile": "icon.jpg",
+    "DefaultFile": "main.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "IconFile": "icon.jpg",
     "Variables": [ 
         {
             "Name" : "output",
@@ -21,7 +22,7 @@
             "DefaultValue" : "segment-data",
             "Required": true
         },
-		{
+        {
             "Name" : "shared_secret",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
@@ -30,15 +31,15 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true,
-		"PublicAccess": true,
-		"UrlPrefix": "segment-webhook"
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true,
+        "PublicAccess": true,
+        "UrlPrefix": "segment-webhook"
+    }
 }

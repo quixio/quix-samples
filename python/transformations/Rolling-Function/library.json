@@ -4,13 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Performs rolling window function.",
     "longDescription": "Performs rolling window function. Predetermined is moving average. Window can be defined as a time period or as a number of observations",
-	"DefaultFile": "rolling_function.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "rolling_function.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {
@@ -18,9 +19,9 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for raw data",
-	        "Required": true
+            "Required": true
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
@@ -34,16 +35,16 @@
             "InputType" : "FreeText",
             "Description" : "The stream's parameter to perform the window function upon",
             "DefaultValue" : "ParameterA",
-	        "Required": true
+            "Required": true
         },
-		{
+        {
             "Name" : "WindowType",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
             "Description" : "Rolling window length type (None, Number of Observations, Time Period)",
             "DefaultValue" : "Time Period"
         },
-		{
+        {
             "Name" : "WindowValue",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
@@ -51,13 +52,13 @@
             "DefaultValue" : "1min"
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	} 
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    } 
 }

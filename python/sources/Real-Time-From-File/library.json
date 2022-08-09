@@ -4,12 +4,13 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Easily write data from a CSV file into a stream respecting the original timedeltas",
     "DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

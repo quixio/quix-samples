@@ -5,6 +5,7 @@
     "tags": {
       "Complexity": [ "Medium" ],
       "API Usage": [ "Writer API (HTTP)" ],
+      "Type": ["Code samples"],
       "Pipeline Stage": ["Source"]
     },
     "shortDescription": "This project contains webpage which is able to capture image from your webcam",
@@ -18,7 +19,7 @@
             "Required": true
         }
     ],
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "main.js",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.js",
     "DefaultFile": "main.js"
 }

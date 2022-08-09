@@ -4,12 +4,13 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Replay currency exchange rates of September 2021 as if they happened today",
     "DefaultFile": "functions.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -21,13 +22,13 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Job",
-		"CpuMillicores": 200,
-		"MemoryInMb": 300,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	} 
+    "DeploySettings":
+    {
+        "DeploymentType": "Job",
+        "CpuMillicores": 200,
+        "MemoryInMb": 300,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    } 
 }

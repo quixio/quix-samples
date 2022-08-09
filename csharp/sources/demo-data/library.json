@@ -3,15 +3,15 @@
     "name": "Demo Data",
     "language": "C#",
     "tags": {
-		"SDK Usage": ["Write SDK"],
+        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Popular subjects": ["Quick Start", "Onboarding"]
+        "Use Case": ["Quick Start", "Onboarding"]
     },
     "shortDescription": "Stream F1 Telemetry Data into a Quix topic from a recorded game session",
-	"longDescription": "Stream F1 Telemetry Data into a Quix topic from a recorded game session. <br/>You’ll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
-	"DefaultFile": "Bridge.Console/Program.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "Bridge.Console.csproj",
+    "longDescription": "Stream F1 Telemetry Data into a Quix topic from a recorded game session. <br/>You’ll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
+    "DefaultFile": "Bridge.Console/Program.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "Bridge.Console.csproj",
     "Variables": [ 
         {
             "Name" : "Topic",
@@ -22,13 +22,13 @@
             "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Job",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Job",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
 }

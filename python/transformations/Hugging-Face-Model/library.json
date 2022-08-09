@@ -4,14 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
         "Use Case": ["Sentiment Analysis"],
-        "Popular subjects": ["Machine Learning"]
+        "Use Case": ["Machine Learning"]
     },
     "shortDescription": "Deploy a Hugging Face model that generates predictions based on the input data",
     "DefaultFile": "hugging_face_model.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -20,15 +20,15 @@
             "InputType" : "InputTopic",
             "Description" : "This is the raw data input topic",
             "DefaultValue" : "",
-	        "Required": true
+            "Required": true
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output for the hugging face model score",
             "DefaultValue" : "hugging-face-output",
-	        "Required": true
+            "Required": true
         },
         {
             "Name" : "HuggingFaceModel",
@@ -36,7 +36,7 @@
             "InputType" : "FreeText",
             "Description" : "Name of the Hugging Face model to be used",
             "DefaultValue" : "distilbert-base-uncased-finetuned-sst-2-english",
-	        "Required": true
+            "Required": true
         },
         {
             "Name" : "TextColumnName",
@@ -44,16 +44,16 @@
             "InputType" : "FreeText",
             "Description" : "For the table structured input, specify name of the column where input text is located.",
             "DefaultValue" : "text",
-	        "Required": false
+            "Required": false
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 1000,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 1000,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
 }

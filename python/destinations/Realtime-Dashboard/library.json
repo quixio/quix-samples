@@ -4,12 +4,13 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Read SDK"],
+        "SDK Usage": ["Read SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Destination"]
     },
     "shortDescription": "Template of how to build realtime dashboard with Dash.",
-	"DefaultFile": "in_memory_view.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "in_memory_view.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {
@@ -18,7 +19,7 @@
             "InputType" : "InputTopic",
             "Description" : "Name of the input topic to listen to."
         },
-		{
+        {
             "Name" : "storage_version",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",

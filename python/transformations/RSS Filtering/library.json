@@ -4,13 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-		"Technology": ["RSS"]
+        "Type": ["Tech connectors"],
+        "Technology": ["RSS"]
     },
     "shortDescription": "Example of how to filter and enhance RSS data",
-	"DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "quix_function.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
@@ -18,15 +19,15 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
             "Description" : "This is the input topic for raw data",
-			"Required" : true
+            "Required" : true
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for filtered and updated data",
             "DefaultValue" : "filtered-rss",
-			"Required" : true
+            "Required" : true
         },
         {
             "Name" : "tag_filter",
@@ -34,16 +35,16 @@
             "InputType" : "FreeText",
             "Description" : "The comma separated list of tags to filter on",
             "DefaultValue" : "blockchain,web3,django,pandas,merge,flask,json,tree,matplotlib",
-			"Required" : true
+            "Required" : true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
 }

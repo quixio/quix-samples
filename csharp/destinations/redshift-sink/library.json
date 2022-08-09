@@ -4,64 +4,65 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
-		"SDK Usage": ["Read SDK"],
+        "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
+        "Type": ["Tech connectors"],
         "Technology": ["AWS", "Redshift"]
     },
     "shortDescription": "Publish data to AWS Redshift",
-	"DefaultFile": "Quix.Redshift.Writer/Worker.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "Quix.Redshift.Writer/Quix.Redshift.Writer.csproj",
-	"IconFile": "redshift.png",
+    "DefaultFile": "Quix.Redshift.Writer/Worker.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "Quix.Redshift.Writer/Quix.Redshift.Writer.csproj",
+    "IconFile": "redshift.png",
     "Variables": [ 
         {
-		  "Name": "input",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "InputTopic",
-		  "Description": "Name of the input topic to read from",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Redshift__AccessKeyId",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "HiddenText",
-		  "Description": "Access Key Id obtained from your AWS account",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Redshift__SecretAccessKey",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "HiddenText",
-		  "Description": "Secret Access Key obtained from your AWS account",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Redshift__Region",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The region of your Redshift database. E.g: us-east-1",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Redshift__DatabaseName",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The Redshift database to push data to",
-		  "DefaultValue": "",
-		  "Required": true
-		}
+          "Name": "input",
+          "Type": "EnvironmentVariable",
+          "InputType": "InputTopic",
+          "Description": "Name of the input topic to read from",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Redshift__AccessKeyId",
+          "Type": "EnvironmentVariable",
+          "InputType": "HiddenText",
+          "Description": "Access Key Id obtained from your AWS account",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Redshift__SecretAccessKey",
+          "Type": "EnvironmentVariable",
+          "InputType": "HiddenText",
+          "Description": "Secret Access Key obtained from your AWS account",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Redshift__Region",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The region of your Redshift database. E.g: us-east-1",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Redshift__DatabaseName",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The Redshift database to push data to",
+          "DefaultValue": "",
+          "Required": true
+        }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 800,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 800,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
 }

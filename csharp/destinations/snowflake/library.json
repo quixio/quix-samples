@@ -4,72 +4,73 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
-		"SDK Usage": ["Read SDK"],
+        "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
+        "Type": ["Tech connectors"],
         "Technology": ["Snowflake"]
     },
     "shortDescription": "Publish data to Snowflake",
-	"DefaultFile": "Quix.Snowflake.Writer/Worker.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "Quix.Snowflake.Writer/Quix.Snowflake.Writer.csproj",
-	"IconFile": "snowflake.jpg",
+    "DefaultFile": "Quix.Snowflake.Writer/Worker.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "Quix.Snowflake.Writer/Quix.Snowflake.Writer.csproj",
+    "IconFile": "snowflake.jpg",
     "Variables": [
-		{
-		  "Name": "Broker__TopicName",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "InputTopic",
-		  "Description": "Name of the input topic to read from",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Snowflake__Locator",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The locator be found under Admin/Accounts or in the URL",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Snowflake__Region",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "Check your snowflake url or readme for details to acquire the region",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Snowflake__Database",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The name of the database to persist to",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Snowflake__User",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "FreeText",
-		  "Description": "The username of the user the sink should use to interact with the database",
-		  "DefaultValue": "",
-		  "Required": true
-		},
-		{
-		  "Name": "Snowflake__Password",
-		  "Type": "EnvironmentVariable",
-		  "InputType": "HiddenText",
-		  "Description": "The password of the user",
-		  "DefaultValue": "",
-		  "Required": true
-		}
+        {
+          "Name": "Broker__TopicName",
+          "Type": "EnvironmentVariable",
+          "InputType": "InputTopic",
+          "Description": "Name of the input topic to read from",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Snowflake__Locator",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The locator be found under Admin/Accounts or in the URL",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Snowflake__Region",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Check your snowflake url or readme for details to acquire the region",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Snowflake__Database",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The name of the database to persist to",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Snowflake__User",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "The username of the user the sink should use to interact with the database",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "Snowflake__Password",
+          "Type": "EnvironmentVariable",
+          "InputType": "HiddenText",
+          "Description": "The password of the user",
+          "DefaultValue": "",
+          "Required": true
+        }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 400,
-		"MemoryInMb": 800,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": true
-	}
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 400,
+        "MemoryInMb": 800,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
 }

@@ -4,14 +4,15 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read SDK"],
+        "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Popular subjects": ["Quick Start"]
+        "Use Case": ["Quick Start"],
+        "Type": ["Basic templates"]
     },
     "shortDescription": "The most basic and essential 'Hello World' read sample",
-	"DefaultFile": "ReadHelloWorld/Program.cs",
-	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "ReadHelloWorld.csproj",
+    "DefaultFile": "ReadHelloWorld/Program.cs",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "ReadHelloWorld.csproj",
     "Variables": [ 
         {
             "Name" : "input",

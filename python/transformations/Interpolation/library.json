@@ -4,13 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Read/Write SDK"],
+        "SDK Usage": ["Read/Write SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Performs interpolation function.",
     "longDescription": "Performs interpolation function: calculates time delta and parameter average for the last parameter points",
-	"DefaultFile": "interpolating_function.py",
-	"EntryPoint": "build/dockerfile",
+    "DefaultFile": "interpolating_function.py",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {
@@ -21,7 +22,7 @@
             "DefaultValue": "input-topic",
             "Required": true
         },
-		{
+        {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
@@ -35,17 +36,17 @@
             "InputType" : "FreeText",
             "Description" : "The streams parameter list to calculate the interpolation on. Add them as: ParameterA,ParameterB,ParameterC,etc.",
             "DefaultValue" : "ParameterA",
-	        "Required": true
+            "Required": true
         }
     ],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 500,
-		"Replicas": 1,
-		"PublicAccess": false,
-		"ValidateConnection": false
-	} 
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 500,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    } 
 }
 

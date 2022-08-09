@@ -4,13 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Read SDK"],
+        "SDK Usage": ["Read SDK"],
+        "Type": ["Code samples"],
         "Pipeline Stage": ["Destination"]
     },
     "shortDescription": "A complete example of how to read data from a topic",
     "longDescription": "This is a complete example in Python of how to read data from a topic and the usage of all the SDK event handlers",
     "DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

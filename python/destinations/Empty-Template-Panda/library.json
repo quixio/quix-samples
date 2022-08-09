@@ -4,13 +4,14 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-		"SDK Usage": ["Read SDK"],
+        "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Popular subjects": ["Quick Start"]
+        "Use Case": ["Quick Start"],
+        "Type": ["Basic templates"]
     },
     "shortDescription": "The most basic 'Hello World' read sample with Pandas",
     "DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+    "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

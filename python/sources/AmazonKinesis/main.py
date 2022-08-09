@@ -1,4 +1,4 @@
-from quixstreaming import QuixStreamingClient
+from quixstreaming import QuixStreamingClient, EventData
 from quixstreaming.app import App
 from quix_functions import QuixFunctions
 import boto3
@@ -8,8 +8,10 @@ import time
 import threading
 import os
 
+
 # should the main loop keep running?
 run = True
+is_connected = False
 
 subscriber = None
 subscription = None
@@ -34,12 +36,13 @@ def connect_to_amazon():
 
 
 def get_kinesis_data():
+    global is_connected
 
     if quix_stream is None:
         print("Not connected to Quix")
         return False
 
-    quix_functions = QuixFunctions(output_topic)
+    quix_functions = QuixFunctions(quix_stream)
 
     si = amazon_client.get_shard_iterator(
         StreamName=os.environ["aws_stream_name"],
@@ -48,16 +51,26 @@ def get_kinesis_data():
     )
 
     shard_iterator = si["ShardIterator"]
+
+    if not is_connected:
+        print("CONNECTED!")
+        is_connected = True
+
     while run:
         record_data = amazon_client.get_records(ShardIterator=shard_iterator)
         shard_iterator = record_data["NextShardIterator"]
 
-        print(record_data)
+        # print(record_data)
         if len(record_data["Records"]) > 0:
 
             for r in record_data["Records"]:
-                quix_functions.write_data(r["Data"])
+                d = r["Data"]
 
+                if isinstance(d, bytes):
+                    quix_functions.write_data(d.decode())
+                else:
+                    quix_functions.write_data(d)
+                
         behind = record_data["MillisBehindLatest"]
         if behind < 1000:
             time.sleep(1)
@@ -73,6 +86,7 @@ def connect_to_quix():
 
     print("Opening output topic")
     output_topic = quix_client.open_output_topic(os.environ["output"])
+
     quix_stream = output_topic.create_stream()
     quix_stream.properties.name = "{} - {}".format("Amazon Kinesis", datetime.utcnow().strftime("%d-%m-%Y %X"))
     quix_stream.properties.location = "/amazon_kinesis_data"
@@ -101,4 +115,3 @@ try:
 
 except:
     print("ERROR: {}".format(traceback.format_exc()))
-
