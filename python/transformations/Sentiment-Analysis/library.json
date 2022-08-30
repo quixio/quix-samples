@@ -27,7 +27,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output for the hugging face model score",
-            "DefaultValue" : "hugging-face-output",
+            "DefaultValue" : "sentiment",
             "Required": true
         }
     ],
