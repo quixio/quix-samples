@@ -1,0 +1,58 @@
+{
+    "libraryItemId": "a21dc781-39d3-44c7-b261-b2e4c1b06f63",
+    "name": "Fake Transaction Generator",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Medium"],
+        "SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Use Case": ["Quick Start", "Fraud"],
+        "Type": ["Code Samples", "Demos"]
+    },
+    "shortDescription": "Generate fake credit card transaction data, including fraudulent transactions",
+    "DefaultFile": "datagen.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "datagen.py",
+    "Variables": [
+        {
+            "Name" : "output_topic",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for the data",
+            "DefaultValue" : "credit-card-transaction-data",
+            "Required": true
+        },
+        {
+            "Name" : "nb_customers",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Input the number of customers to generate transactions for (Min 5)",
+            "DefaultValue" : "5",
+            "Required": true
+        },
+        {
+            "Name" : "start_date",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Enter the start date for transactions. YYYY-MM-DD",
+            "DefaultValue" : "1990-01-01",
+            "Required": true
+        },
+        {
+            "Name" : "end_date",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Enter the end date for transactions. YYYY-MM-DD",
+            "DefaultValue" : "2020-01-01",
+            "Required": true
+        },
+        {
+            "Name" : "use_transaction_date",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Use the transaction date as the data timestamp? Yes/No, True/False, 1/0. False value will use date at run time.",
+            "DefaultValue" : "No",
+            "Required": true
+        }
+    ]    
+}
