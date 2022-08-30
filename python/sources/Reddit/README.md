@@ -7,7 +7,7 @@ You will need to create a Reddit App [here](https://www.reddit.com/prefs/apps).
 
 Steps:
 - Provide a name
-- Choose 'web app'
+- Choose 'script'
 - Provide a description
 - Provide a 'redirect uri'
 - Click 'create app'
