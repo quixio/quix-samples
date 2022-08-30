@@ -97,6 +97,12 @@ export class WebchatComponent implements OnInit {
     this.phone = this.route.snapshot.queryParams["phone"];
     this.email = this.route.snapshot.queryParams["email"];
 
+
+    this.quixService.readerConnectionPromise.catch(err => {
+      this.readerConnected = false;
+      console.log(err);
+    });
+
     this.quixService.readerConnection.onclose(e =>{
       this.readerConnected = false;
     });
@@ -106,9 +112,15 @@ export class WebchatComponent implements OnInit {
       this.readerConnected = false;
     });
 
-
     this.quixService.readerConnection.onreconnected(e =>{
       this.readerConnected = true;
+      this.connect();
+      console.log("Reconnected");
+    });
+
+    this.quixService.writerConnectionPromise.catch(err => {
+      this.writerConnected = false;
+      console.log(err);
     });
 
     this.quixService.writerConnection.onclose(e =>{
@@ -123,6 +135,8 @@ export class WebchatComponent implements OnInit {
 
     this.quixService.writerConnection.onreconnected(e =>{
       this.writerConnected = true;
+      this.connect();
+      console.log("Reconnected");
     });
 
     this.quixService.readerConnectionPromise.then(_ => {
@@ -145,6 +159,7 @@ export class WebchatComponent implements OnInit {
         else{
           message.sentiment = sentiment;
         }
+
 
 
 
@@ -181,6 +196,7 @@ export class WebchatComponent implements OnInit {
           });
         }
 
+        this.rate += 1;
 
 
 
@@ -213,10 +229,10 @@ export class WebchatComponent implements OnInit {
   }
 
   connect() {
-    this.quixService.readerConnection.invoke('SubscribeToEvent', '{placeholder:messages}', this.room, 'chat-message');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'sentiment');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'chat-message');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', '{placeholder:sentiment}', this.room + "-output", 'average_sentiment');
+    this.quixService.readerConnection.invoke('SubscribeToEvent', 'messages', this.room, 'chat-message');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', 'sentiment', this.room, 'sentiment');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', 'sentiment', this.room, 'chat-message');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', 'sentiment', this.room, 'average_sentiment');
 
     let host = window.location.host;
     this.value = `${window.location.protocol}//${host}/lobby?room=${this.room}`;

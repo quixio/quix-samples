@@ -27,14 +27,5 @@
             "Description" : "This is the secondary topic for sentiment score for messages. Use Hugging Face model library item to analyze messages sentiment.",
             "DefaultValue" : "sentiment"
         }
-    ],
-    "DeploySettings":
-    {
-        "DeploymentType": "Service",
-        "CpuMillicores": 200,
-        "MemoryInMb": 500,
-        "Replicas": 1,
-        "PublicAccess": false,
-        "ValidateConnection": false
-    }
+    ]
 }
