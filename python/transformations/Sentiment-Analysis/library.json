@@ -1,6 +1,6 @@
 {
     "libraryItemId": "d207b9ff-3d52-4adb-b99f-e5e46b2642e9",
-    "name": "Hugging Face model",
+    "name": "Sentiment analysis",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -9,8 +9,8 @@
         "Use Case": ["Sentiment Analysis"],
         "Use Case": ["Machine Learning"]
     },
-    "shortDescription": "Deploy a Hugging Face model that generates predictions based on the input data",
-    "DefaultFile": "hugging_face_model.py",
+    "shortDescription": "Deploy a Hugging Face model performs sentiment analysis",
+    "DefaultFile": "quix_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
@@ -29,29 +29,13 @@
             "Description" : "This is the output for the hugging face model score",
             "DefaultValue" : "hugging-face-output",
             "Required": true
-        },
-        {
-            "Name" : "HuggingFaceModel",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "Name of the Hugging Face model to be used",
-            "DefaultValue" : "distilbert-base-uncased-finetuned-sst-2-english",
-            "Required": true
-        },
-        {
-            "Name" : "TextColumnName",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "For the table structured input, specify name of the column where input text is located.",
-            "DefaultValue" : "text",
-            "Required": false
         }
     ],
     "DeploySettings":
     {
         "DeploymentType": "Service",
         "CpuMillicores": 200,
-        "MemoryInMb": 1000,
+        "MemoryInMb": 2000,
         "Replicas": 1,
         "PublicAccess": false,
         "ValidateConnection": false
