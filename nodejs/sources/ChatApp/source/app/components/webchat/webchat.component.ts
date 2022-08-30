@@ -79,7 +79,8 @@ export class WebchatComponent implements OnInit {
 
   constructor(private quixService: QuixService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   public async send(){
 
@@ -158,6 +159,8 @@ export class WebchatComponent implements OnInit {
         }
         else{
           message.sentiment = sentiment;
+          message.message = payload.stringValues["chat-message"][0];
+
         }
 
 
@@ -197,21 +200,6 @@ export class WebchatComponent implements OnInit {
         }
 
         this.rate += 1;
-
-
-
-        if (payload.numericValues["average_sentiment"]) {
-          this.sentiment = payload.numericValues["average_sentiment"][0];
-
-          let row = {
-
-            x: Date.now(),
-
-            y: this.sentiment
-          }
-
-          this.datasets[0].data.push(row as any)
-        }
 
         setTimeout(() => this.messagesDiv.nativeElement.scrollTop = this.messagesDiv.nativeElement.scrollHeight, 200);
         setTimeout(() => this.messagesDivMobile.nativeElement.scrollTop = this.messagesDivMobile.nativeElement.scrollHeight, 200);
