@@ -13,16 +13,24 @@ commit_settings = CommitOptions()
 commit_settings.auto_commit_enabled = False
 topic = client.open_input_topic(os.environ["input"], "s3-sink", commit_settings=commit_settings, auto_offset_reset=AutoOffsetReset.Latest)
 
+# name of the parameter that contains formatted data to save to s3
 param = os.environ["parameter"]
 bucket = os.environ["s3_bucket"]
 s3_folder = os.environ["s3_folder"]
+# if set to true, new folders will be created in s3 for each stream using stream id as name 
 s3_folder_per_stream = os.environ["s3_folder_per_stream"].lower() == "true"
+
+# files created in s3 will have this prefix
 prefix = os.environ["prefix"]
+# files created in s3 will have this suffix (intended for file extensions)
 suffix = os.environ["suffix"]
 
 mutex = Lock()
-tz = tz = timezone("Asia/Singapore")
+tz = tz = timezone(os.environ["timezone"])
+
+# maximum number of messages to wait for before uploading files to s3. 
 max_count = int(os.environ["batch_msg_count"])
+# maximum time interval to wait before an upload happens.
 max_interval = timedelta(seconds=int(os.environ["batch_time_interval"]))
 
 class Batch:
@@ -31,6 +39,14 @@ class Batch:
         self.start = start
         self.fname = fname
 
+# if batch mode is set to NONE, max_count and max_interval is ignored. When a message is received, parameter data
+# is written to a file and uploaded immediately.
+# if the batch mode is set to TIME, parameter data is written to a file for a period specified by max_interval before
+# uploading the file to s3.
+# if the batch mode is set to COUNT, parameter data in max_count number of messages is written to a file before
+# uploading to s3. For this count to be accurate, each message must only contain data for one timestamp.
+# if batch mode is set to TIME_OR_COUNT, parameter data is written to file until the max_interval or max_count is reached
+# (whichever comes first) before uploading to s3.
 BatchMode = Enum("BatchMode", "NONE TIME COUNT TIME_OR_COUNT")
 batch_mode = BatchMode.NONE
 if max_count > 0 and max_interval.total_seconds() > 0:
@@ -78,13 +94,14 @@ def is_new_batch(batch: Batch):
     if batch_mode == BatchMode.NONE:
         return True
     if batch_mode == BatchMode.TIME:
-        return interval >= max_interval;
+        return interval >= max_interval
     if batch_mode == BatchMode.COUNT:
         return batch.count >= max_count
     if batch_mode == BatchMode.TIME_OR_COUNT:
         return interval >= max_interval or batch.count >= max_count
     raise Exception("Unknown batch mode")
 
+# modify this function, if you prefer a different file naming logic.
 def file_name(start: datetime):
     return prefix + start.astimezone(tz).isoformat(timespec='milliseconds').replace(":", "").replace("+", "_plus_") + suffix + ".gz"
 

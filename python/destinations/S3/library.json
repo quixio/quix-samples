@@ -102,7 +102,7 @@
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Flag to save different streams to different S3 folders.",
-            "DefaultValue": "true",
+            "DefaultValue": "false",
             "Required": false
         },
         {
@@ -112,6 +112,14 @@
             "Description": "File suffix (e.g. file type extension)",
             "DefaultValue": ".csv",
             "Required": false
+        },
+        {
+            "Name": "timezone",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Timezone (e.g. Asia/Singapore) for orchestrating time-based batching and file naming.",
+            "DefaultValue": "",
+            "Required": true
         }
     ],
     "DeploySettings": {
