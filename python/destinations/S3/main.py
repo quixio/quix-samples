@@ -118,7 +118,6 @@ def save(stream_id: str, data: ParameterData):
                     for ts in data.timestamps:
                         if ts.parameters[param].string_value is not None:
                             fd.write(ts.parameters[param].string_value)
-                            fd.write('\n')
                             batch.count += 1
                 if is_new_batch(batch):
                     if batch.count > 0:
