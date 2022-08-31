@@ -11,23 +11,23 @@ fake = Factory.create('en_US')
 
 header = "category|merchant_name"
 category_list = ["gas_transport",
-                 "grocery_net",
-                 "grocery_pos",
-                 "pharmacy",
-                 "misc_net",
-                 "misc_pos",
-                 "shopping_net",
-                 "shopping_pos",
-                 "utilities",
-                 "entertainment",
-                 "food_dining",
-                 "health_fitness",
-                 "home",
-                 "kids_pets",
-                 "personal_care",
-                 "travel"]
+				 "grocery_net",
+				 "grocery_pos",
+				 "pharmacy",
+				 "misc_net",
+				 "misc_pos",
+				 "shopping_net",
+				 "shopping_pos",
+				 "utilities",
+				 "entertainment",
+				 "food_dining",
+				 "health_fitness",
+				 "home",
+				 "kids_pets",
+				 "personal_care",
+				 "travel"]
 print(header)
 
 for c in category_list:
-    for _ in range(0, n):
-        print(f"{c}|{fake.company()}")
+	for _ in range(0, n):
+		print(f"{c}|{fake.company()}")
