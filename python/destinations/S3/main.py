@@ -116,6 +116,7 @@ def save(stream_id: str, data: ParameterData):
                     print("Warn: data contains more than one timestamp: batch size may not be accurate")
                 with gzip.open(batch.fname, "at") as fd:
                     for ts in data.timestamps:
+                        # to save something other than string data (e.g. binary data), change access to the correct value type
                         if ts.parameters[param].string_value is not None:
                             fd.write(ts.parameters[param].string_value)
                             batch.count += 1
