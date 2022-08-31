@@ -155,6 +155,7 @@ export class WebchatComponent implements OnInit {
             timestamp: timestamp,
             name: payload.tagValues["name"],
             sentiment: sentiment,
+            message: payload.stringValues["chat-message"][0]
           });
         }
         else{
