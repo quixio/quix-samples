@@ -2,7 +2,11 @@ from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader, Auto
 from quixstreaming.app import App
 from quix_function import QuixFunction
 import os
+from transformers import pipeline
 
+
+input_label = 'tweet-text'
+classifier = pipeline('sentiment-analysis')
 
 # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
@@ -22,11 +26,11 @@ def read_stream(input_stream: StreamReader):
     output_stream.properties.parents.append(input_stream.stream_id)
 
     # handle the data in a function to simplify the example
-    quix_function = QuixFunction(input_stream, output_stream)
+    quix_function = QuixFunction(input_stream, output_stream, classifier)
         
     # React to new data received from input topic.
     input_stream.events.on_read += quix_function.on_event_data_handler
-    input_stream.parameters.on_read_pandas += quix_function.on_pandas_frame_handler
+    input_topic.on_committed += quix_function.on_committed
 
     # When input stream closes, we close output stream as well. 
     def on_stream_close(endType: StreamEndType):
