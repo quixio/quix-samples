@@ -1,21 +1,26 @@
-# MQTT
+# S3
 
 Publish data to MQTT
 
 ## Requirements / Prerequisites
 
-You'll need to have a MQTT either locally or in the cloud
+You'll need to have a S3 resource available on AWS and access credentials with permission to upload files to S3 buckets.
 
 ## Environment Variables
 
 The code sample uses the following environment variables:
 
 - **input**: Name of the input topic to listen to.
-- **mqtt_topic_root**: The root for messages in MQTT, this can be anything.
-- **mqtt_server**: The address of your MQTT server.
-- **mqtt_port**: The port of your MQTT instance.
-- **mqtt_username**: Your MQTT username.
-- **mqtt_password**: Your MQTT password.
+- **batch_time_interval**: Time interval in seconds to save data to S3 (set -1 to disable batching based on tme)
+- **batch_msg_count**: Message count in the batch (0 saves data as they arrive, -1 disables batching based on message count).
+- **parameter**: Name of the parameter to save to S3.
+- **aws_access_key_id**: AWS S3 access key id.
+- **aws_access_key**: AWS S3 access key
+- **s3_bucket**: AWS S3 bucket.
+- **s3_folder**: Name of the S3 folder to save to.
+- **s3_folder_per_stream**: Flag to save different streams to different S3 folders.
+- **prefix**: File name prefix.
+- **suffix**: File suffix (e.g. file type extension).
 
 ## Docs
 
