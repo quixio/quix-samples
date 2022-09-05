@@ -6,8 +6,7 @@
         "Complexity": ["Advanced"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Code samples"],
-        "Popular subjects": ["Racing"]
+        "Type": ["Code samples"]
     },
     "shortDescription": "Create a bridge to stream the game's telemetry to Quix",
     "longDescription": "Create a bridge to stream the local game's telemetry to Quix. Note that this bridge must be run locally on the same network as the game.",
