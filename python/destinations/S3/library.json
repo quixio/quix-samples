@@ -19,7 +19,7 @@
             "S3"
         ]
     },
-    "shortDescription": "Save data from Quix streams to AWS S3 buckets",
+    "shortDescription": "Publish Quix streams to AWS S3",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
@@ -128,6 +128,6 @@
         "MemoryInMb": 200,
         "Replicas": 1,
         "PublicAccess": false,
-        "ValidateConnection": true
+        "ValidateConnection": false
     }
 }

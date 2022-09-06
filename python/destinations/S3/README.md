@@ -1,6 +1,6 @@
-# S3
+# AWS S3 Sink
 
-Publish data to MQTT
+Publish data to S3.
 
 ## Requirements / Prerequisites
 
