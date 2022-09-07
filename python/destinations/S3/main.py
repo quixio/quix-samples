@@ -155,7 +155,7 @@ def stream_received_handler(stream: StreamReader):
 topic.on_stream_received += stream_received_handler
 
 def job():
-    print("Info: started batch job at " + str(datetime.now()))
+    print("Debug: started batch job at " + str(datetime.now()))
     for key in batches.keys():
         mutex.acquire()
         try:
@@ -173,7 +173,7 @@ def job():
     timer = Timer(interval, job)
     timer.daemon = True
     timer.start()
-    print("Info: scheduled next batch job to run at " + str(datetime.now() + timedelta(seconds=interval)))
+    print("Debug: scheduled next batch job to run at " + str(datetime.now() + timedelta(seconds=interval)))
 
 if batch_mode == BatchMode.TIME or batch_mode == BatchMode.TIME_OR_COUNT:
     job()
