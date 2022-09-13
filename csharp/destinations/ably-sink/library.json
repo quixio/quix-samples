@@ -1,6 +1,6 @@
 {
     "libraryItemId": "06a66e6d-38ba-40fe-8b0e-d1ce9ce84897",
-    "name": "Ably Connector - Sink",
+    "name": "Ably - Sink",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
