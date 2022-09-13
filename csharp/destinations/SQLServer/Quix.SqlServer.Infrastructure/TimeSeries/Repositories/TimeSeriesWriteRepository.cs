@@ -30,7 +30,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
         private const string StringParameterColumnFormat = "S_{0}";
         private const string StringEventColumnFormat = "{0}";
         private const string TagFormat = "TAG_{0}";
-        private const string TimeStampColumn = "TIMESTAMP";
+        private const string TimeStampColumn = "timestamp";
         private static readonly string StreamIdColumn = string.Format(TagFormat, "STREAMID");
         private const int MaxQueryByteSize = 512*1024 * 8 - 1024*64; // 1/2 MB, -64 KB for safety margin
 
@@ -89,7 +89,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                 // create the table
                 var sqlInsertStatements = new List<string>
                 {
-                    $"CREATE TABLE {InformationSchema}{(InformationSchema != "" ? "." : "")}{requiredTable} ({TimeStampColumn} BIGINT, {StreamIdColumn} VARCHAR(256))",
+                    $"CREATE TABLE {InformationSchema}{(InformationSchema != "" ? "." : "")}{requiredTable} ({TimeStampColumn} DATETIME, {StreamIdColumn} VARCHAR(256))",
                     //$"ALTER TABLE {InformationSchema}.{requiredTable} CLUSTER BY (timestamp)" // not clustering for now, as timestamp at nanosec precision introduces bad clustering
                 };
                 
@@ -182,7 +182,8 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                     headerSb.Append($"insert into {parameterValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
 
                     var valueSb = new StringBuilder();
-                    valueSb.Append($"({row.Epoch + row.Timestamp},'{streamRows.Key.ToUpper()}'");
+                    
+                    valueSb.Append($"('{DateTimeOffset.FromUnixTimeMilliseconds((row.Epoch + row.Timestamp)/1000000).ToUniversalTime().ToString("s", CultureInfo.InvariantCulture)}','{streamRows.Key.ToUpper()}'");
 
                     if (row.TagValues != null && row.TagValues.Count > 0)
                     {
