@@ -4,9 +4,11 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Quix.SqlServer.Domain.Common;
+using Quix.SqlServer.Domain.Models;
 using Quix.SqlServer.Domain.TimeSeries.Models;
 using Quix.SqlServer.Domain.TimeSeries.Repositories;
 using Quix.SqlServer.Infrastructure.Shared;
@@ -21,8 +23,8 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
         private readonly ILogger<TimeSeriesWriteRepository> logger;
         private readonly IDbConnection dbConnection;
         
-        private const string ParameterValuesTableName = "PARAMETERVALUES";
-        private const string EventValuesTableName = "EVENTVALUES";
+        private const string ParameterValuesTablePrefix = "PARAMETERVALUES";
+        private const string EventValuesTablePrefix = "EVENTVALUES";
         private const string InformationSchema = "dbo";
         private const string NumericParameterColumnFormat = "N_{0}";
         private const string StringParameterColumnFormat = "S_{0}";
@@ -34,14 +36,25 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
 
         private readonly HashSet<string> parameterColumns = new HashSet<string>();
         private readonly HashSet<string> eventColumns = new HashSet<string>();
+        private readonly string topicDisplayName;
+        private readonly string parameterValuesTableName;
+        private readonly string eventValuesTableName;
 
         public TimeSeriesWriteRepository(
             ILoggerFactory loggerFactory,
-            IDbConnection dbConnection)
+            IDbConnection dbConnection,
+            TopicName topicName)
         {
             this.logger = loggerFactory.CreateLogger<TimeSeriesWriteRepository>();
             this.dbConnection = dbConnection;
             if (dbConnection == null) throw new ArgumentNullException(nameof(dbConnection));
+            
+            this.topicDisplayName = Regex.Replace(topicName.Value, "[^\\w+]", "").ToUpper();
+            
+            this.parameterValuesTableName = $"{ParameterValuesTablePrefix}_{topicDisplayName}";
+            this.eventValuesTableName = $"{EventValuesTablePrefix}_{topicDisplayName}";
+
+            
             Initialize();
         }
 
@@ -112,8 +125,8 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             CheckDbConnection();
 
             // verify tables exist, if not create them
-            VerifyTable(ParameterValuesTableName, parameterColumns);
-            VerifyTable(EventValuesTableName, eventColumns);
+            VerifyTable(parameterValuesTableName, parameterColumns);
+            VerifyTable(eventValuesTableName, eventColumns);
 
             this.logger.LogInformation("Tables verified");
         }
@@ -126,10 +139,10 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             
             var uniqueColumns = new Dictionary<string, string>();
 
-            var totalValues = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts);
+            var totalValues = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts, parameterValuesTableName);
             this.logger.LogTrace($"Saving {totalValues} parameter values to SqlServer db");
 
-            VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
+            VerifyColumns(uniqueColumns, parameterColumns, parameterValuesTableName);
 
             var i = sqlInserts.Take(1000);
 
@@ -155,7 +168,8 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
         private static int PrepareParameterSqlInserts(
             IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData, 
             Dictionary<string, string> uniqueColumns, 
-            Dictionary<string, List<string>> sqlInserts)
+            Dictionary<string, List<string>> sqlInserts,
+            string parameterValuesTableName)
         {
             var totalValues = 0;
             foreach (var streamRows in streamParameterData)
@@ -166,7 +180,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                     var stringValueCount = 0;
 
                     var headerSb = new StringBuilder();
-                    headerSb.Append($"insert into {ParameterValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
+                    headerSb.Append($"insert into {parameterValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
 
                     var valueSb = new StringBuilder();
                     valueSb.Append($"({row.Epoch + row.Timestamp},'{streamRows.Key.ToUpper()}'");
@@ -179,8 +193,10 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                             var name = string.Format(TagFormat, kPair.Key.ToUpper());
                             if (name.Equals(StreamIdColumn, StringComparison.InvariantCultureIgnoreCase)) continue;
 
+                            var val = EscapeQuotes(kPair.Value); 
+
                             valueSb.Append(",");
-                            valueSb.Append($"'{kPair.Value}'");
+                            valueSb.Append($"'{val}'");
                             
                             headerSb.Append(",");
                             headerSb.Append(name);
@@ -222,7 +238,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                             var value = row.StringValues[i];
 
                             valueSb.Append(",");
-                            valueSb.Append($"'{value}'");
+                            valueSb.Append($"'{EscapeQuotes(value)}'");
 
                             headerSb.Append(",");
                             headerSb.Append(name);
@@ -253,6 +269,11 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             return totalValues;
         }
 
+        private static string EscapeQuotes(string val)
+        {
+            return val.Replace("'", "\\'");
+        }
+        
         private void VerifyColumns(Dictionary<string, string> columnsToHave, HashSet<string> existingColumns, string tableToVerify)
         {
             var columnsToAdd = columnsToHave.Keys.Except(existingColumns, StringComparer.InvariantCultureIgnoreCase).ToList();
@@ -288,16 +309,17 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             
         }
 
-        public Task WriteTelemetryEvent(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData)
+        public Task WriteTelemetryEvent(string topicId, 
+                            IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData)
         {
             var sqlInserts = new Dictionary<string, List<string>>();
             
             var uniqueColumns = new Dictionary<string, string>();
 
-            var totalValues = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts);
+            var totalValues = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts, eventValuesTableName);
             this.logger.LogTrace($"Saving {totalValues} event values to SqlServer db");
 
-            VerifyColumns(uniqueColumns, eventColumns, EventValuesTableName);
+            VerifyColumns(uniqueColumns, eventColumns, eventValuesTableName);
 
             ExecuteStatements(sqlInserts);
             
@@ -306,7 +328,10 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             return Task.CompletedTask;
         }
         
-        private static int PrepareEventSqlInserts(IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData, Dictionary<string, string> uniqueColumns, Dictionary<string, List<string>> sqlInserts)
+        private static int PrepareEventSqlInserts(IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData, 
+                                Dictionary<string, string> uniqueColumns, 
+                                Dictionary<string, List<string>> sqlInserts, 
+                                string eventValuesTableName)
         {
             var totalValues = 0;
             foreach (var streamRows in streamEventData)
@@ -314,7 +339,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                 foreach (var row in streamRows.Value)
                 {
                     var headerSb = new StringBuilder();
-                    headerSb.Append($"insert into {InformationSchema}{(InformationSchema != "" ? "." : "")}{EventValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
+                    headerSb.Append($"insert into {InformationSchema}{(InformationSchema != "" ? "." : "")}{eventValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
 
                     var valueSb = new StringBuilder();
                     valueSb.Append($"({row.Timestamp},'{streamRows.Key.ToUpper()}'");
@@ -328,7 +353,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                             if (name.Equals(StreamIdColumn, StringComparison.InvariantCultureIgnoreCase)) continue;
 
                             valueSb.Append(",");
-                            valueSb.Append($"'{kPair.Value}'");
+                            valueSb.Append($"'{EscapeQuotes(kPair.Value)}'");
                             
                             headerSb.Append(",");
                             headerSb.Append(name);
@@ -337,7 +362,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                     }
 
                     var eventColumnName = string.Format(StringEventColumnFormat, row.EventId);
-                    var value = row.Value;
+                    var value = EscapeQuotes(row.Value);
 
                     valueSb.Append(",");
                     valueSb.Append($"'{value}'");
@@ -410,50 +435,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                     Console.WriteLine($"Executing SQL statement [{sql}]");
                     ExecuteStatement(sql);
                 }
-                    
-                // foreach (var statement in statementPair.Value)
-                // {
-                //     if (!firstLine)
-                //     {
-                //         sb.Append(lineSeparator);
-                //         statementSize += lineSeparatorSize;
-                //
-                //         // check if we would be over the limit with the new statement
-                //         if (statementSize + totalStatementSize + beginEndLength > MaxQueryByteSize)
-                //         {
-                //             // if so, send it already
-                //             sb.Insert(0, begin);
-                //             sb.Append(end);
-                //             ExecuteStatement(sb.ToString());
-                //             sb.Clear();
-                //             
-                //             totalStatementSize = 0;
-                //             segmentCount = 0;
-                //             
-                //             statementSize = Encoding.UTF8.GetByteCount(statementPair.Key);
-                //             sb.Append(pairSeparator);
-                //             statementSize += pairSeparatorSize;
-                //             sb.Append(statementPair.Key);
-                //             sb.Append(headSeparator);
-                //             statementSize += headSeparatorSize;                            
-                //             segmentCount++;
-                //             
-                //             firstLine = true;
-                //         }
-                //     }
-                //     else firstLine = false;
-                //
-                //     sb.Append(statement);
-                //     totalStatementSize += statementSize;
-                // }          
             }
-
-            // if (segmentCount > 1)
-            // {
-            //     sb.Insert(0, begin);
-            //     sb.Append(end);
-            // }
-            // ExecuteStatement(sb.ToString());
         }
         
         /// <summary>

@@ -23,7 +23,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
                 }
                 using var cmd = dbConnection.CreateCommand();
                 cmd.CommandText = sql;
-                cmd.CommandTimeout = 30;
+                cmd.CommandTimeout = 60;
                 return cmd.ExecuteNonQuery();
             }
             catch (Exception e)
