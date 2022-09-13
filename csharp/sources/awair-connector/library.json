@@ -1,6 +1,6 @@
 {
     "libraryItemId": "36ee9d31-d789-49f8-a7b0-2001d9120690",
-    "name": "Awair Connector",
+    "name": "Awair Connector - Source",
     "language": "C#",
     "tags": {
       "Complexity": ["Medium"],

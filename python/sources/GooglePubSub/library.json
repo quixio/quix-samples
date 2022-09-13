@@ -1,6 +1,6 @@
 {
     "libraryItemId": "1bb04ae0-2c62-490a-ae77-8a7af00a8853",
-    "name": "Google Pub/Sub Connector",
+    "name": "Google Pub/Sub Connector - Source",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],

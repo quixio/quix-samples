@@ -1,6 +1,6 @@
 {
     "libraryItemId": "67c64064-e9ba-4551-8b75-2330d2e13e2e",
-    "name": "Slack Notifications",
+    "name": "Slack Notifications - Sink",
     "language": "Python",
     "tags": {
         "Complexity": [
