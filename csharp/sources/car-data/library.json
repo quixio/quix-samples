@@ -1,6 +1,6 @@
 {
     "libraryItemId": "6fd442fb-9e22-434c-84b8-34873e33bc95",
-    "name": "Car Data Generator",
+    "name": "Car Data Generator - Source",
     "language": "C#",
     "tags": {
         "SDK Usage": ["Write SDK"],

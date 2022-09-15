@@ -1,6 +1,6 @@
 {
     "libraryItemId": "dbfe14b4-b4f5-4c5d-afa8-9fa9b926489f",
-    "name": "Amazon Kinesis Connector",
+    "name": "Amazon Kinesis - Source",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
