@@ -11,7 +11,7 @@ class QuixFunction:
         pd.set_option('display.max_columns', 500)
         pd.set_option('display.width', 1000)
 
-    # Callback triggered for each new parameter data.
+    # Callback triggered for each new parameter data
     def on_pandas_frame_handler(self, df: pd.DataFrame):
 
         print(str(df))
@@ -20,7 +20,7 @@ class QuixFunction:
         slack_message = {"text": str(df)}
         requests.post(self.webhook_url, json=slack_message)
 
-    # Callback triggered for each new event.
+    # Callback triggered for each new event
     def on_event_data_handler(self, data: EventData):
         print(data)
 
