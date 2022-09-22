@@ -1,0 +1,133 @@
+{
+    "libraryItemId": "b9b314d9-ca6d-4990-b465-523d347b137c",
+    "name": "S3 Destination - Destination",
+    "language": "Python",
+    "tags": {
+        "Complexity": [
+            "Easy"
+        ],
+        "SDK Usage": [
+            "Read SDK"
+        ],
+        "Pipeline Stage": [
+            "Destination"
+        ],
+        "Type": [
+            "Tech connectors"
+        ],
+        "Technology": [
+            "S3"
+        ]
+    },
+    "shortDescription": "Publish Quix streams to AWS S3",
+    "DefaultFile": "main.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "IconFile": "icon.png",
+    "Variables": [
+        {
+            "Name": "input",
+            "Type": "EnvironmentVariable",
+            "InputType": "InputTopic",
+            "Description": "Input topic",
+            "DefaultValue": "",
+            "Required": true
+        },
+        {
+            "Name": "batch_time_interval",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Time interval in seconds to save data to S3 (set -1 to disable batching based on time)",
+            "DefaultValue": "3600",
+            "Required": false
+        },
+        {
+            "Name": "batch_msg_count",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Message count in the batch (0 saves data as they arrive, -1 disables batching based on message count)",
+            "DefaultValue": "0",
+            "Required": false
+        },
+        {
+            "Name": "parameter",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Name of the parameter to save to S3",
+            "DefaultValue": "",
+            "Required": true
+        },
+        {
+            "Name": "aws_access_key_id",
+            "Type": "EnvironmentVariable",
+            "InputType": "HiddenText",
+            "Description": "AWS S3 access key id",
+            "DefaultValue": "",
+            "Required": false
+        },
+        {
+            "Name": "aws_access_key",
+            "Type": "EnvironmentVariable",
+            "InputType": "HiddenText",
+            "Description": "AWS S3 access key",
+            "DefaultValue": "",
+            "Required": false
+        },
+        {
+            "Name": "s3_bucket",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "AWS S3 bucket name",
+            "DefaultValue": "",
+            "Required": true
+        },
+        {
+            "Name": "prefix",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "File name prefix",
+            "DefaultValue": "",
+            "Required": false
+        },
+        {
+            "Name": "s3_folder",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Name of the S3 folder to save to",
+            "DefaultValue": "",
+            "Required": false
+        },
+        {
+            "Name": "s3_folder_per_stream",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Flag to save different streams to different S3 folders.",
+            "DefaultValue": "false",
+            "Required": false
+        },
+        {
+            "Name": "suffix",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "File suffix (e.g. file type extension)",
+            "DefaultValue": ".csv",
+            "Required": false
+        },
+        {
+            "Name": "timezone",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Timezone (e.g. Asia/Singapore) for orchestrating time-based batching and file naming.",
+            "DefaultValue": "",
+            "Required": true
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}

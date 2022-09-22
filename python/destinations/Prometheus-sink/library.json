@@ -1,6 +1,6 @@
 {
     "libraryItemId": "8ba520a1-40f5-42e9-ab92-1f71ac717416",
-    "name": "Prometheus Sink",
+    "name": "Prometheus - Destination",
     "language": "Python",
     "tags": {
         "Complexity": [

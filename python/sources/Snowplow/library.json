@@ -1,6 +1,6 @@
 {
     "libraryItemId": "87731a49-ee78-4b74-8544-66ac4da07f73",
-    "name": "Snowplow (AWS)",
+    "name": "Snowplow (AWS) - Source",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],

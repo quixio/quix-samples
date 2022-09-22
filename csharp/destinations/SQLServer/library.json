@@ -1,6 +1,6 @@
 {
     "libraryItemId": "47a799c9-2afc-49db-bd10-8b117e0b77ca",
-    "name": "SQL Database Sink",
+    "name": "SQL Database - Destination",
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
