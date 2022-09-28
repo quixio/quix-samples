@@ -131,14 +131,13 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
 
             VerifyColumns(uniqueColumns, parameterColumns, ParameterValuesTableName);
 
-            var i = sqlInserts.Take(1000);
-
-            while (i.Any())
+            var inserts = sqlInserts.Take(1000);
+            var pos = 0;
+            while (inserts.Any())
             {
-                
-                
-                ExecuteStatements(i);
-                i = sqlInserts.Take(1000);
+                ExecuteStatements(inserts);
+                pos++;
+                inserts = sqlInserts.Skip(pos * 1000).Take(1000);
             }
             
             this.logger.LogTrace($"Saved {totalValues} parameter values to SqlServer db");
