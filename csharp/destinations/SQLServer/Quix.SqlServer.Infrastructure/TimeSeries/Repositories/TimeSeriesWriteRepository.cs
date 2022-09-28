@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -342,7 +343,8 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                     headerSb.Append($"insert into {InformationSchema}{(InformationSchema != "" ? "." : "")}{eventValuesTableName} ({TimeStampColumn},{StreamIdColumn}");
 
                     var valueSb = new StringBuilder();
-                    valueSb.Append($"({row.Timestamp},'{streamRows.Key.ToUpper()}'");
+                    
+                    valueSb.Append($"('{DateTimeOffset.FromUnixTimeMilliseconds((row.Timestamp)/1000000).ToUniversalTime().ToString("s", CultureInfo.InvariantCulture)}','{streamRows.Key.ToUpper()}'");
 
                     if (row.TagValues != null && row.TagValues.Count > 0)
                     {
@@ -489,7 +491,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             ExecuteStatement(sb.ToString());
         }
         
-        private void ExecuteStatement(string statement)
+        private void ExecuteStatement(string statement, bool retry = true)
         {
             if (string.IsNullOrWhiteSpace(statement)) return;
             //this.logger.LogTrace("Executing SqlServer statement:{0}{1}", Environment.NewLine, statement);
@@ -514,7 +516,25 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             catch (Exception ex)
             {
                 this.logger.LogError("Failed to execute SqlServer statement:{0}{1}", Environment.NewLine, statement);
-                throw;
+
+                if (!retry)
+                {
+                    throw;
+                }
+                else
+                {
+                    if (dbConnection.State == ConnectionState.Open)
+                    {
+                        this.logger.LogInformation("Cycling connection before retrying..");
+                        dbConnection.Close();
+                        dbConnection.Open();
+                    }
+
+                    //try 1 more time..
+                    ExecuteStatement(statement, false);
+                    
+                    this.logger.LogInformation("Retry succeeded");
+                }
             }
             finally
             {
