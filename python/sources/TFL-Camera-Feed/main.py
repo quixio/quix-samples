@@ -6,7 +6,6 @@ from quixstreaming import QuixStreamingClient
 
 
 client = QuixStreamingClient()
-frame_rate = int(os.environ["frame_rate"])
 api_key = os.environ["api_key"]
 
 # Change consumer group to a different constant if you want to run model locally.
