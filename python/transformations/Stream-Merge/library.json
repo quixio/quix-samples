@@ -1,0 +1,42 @@
+{
+	"libraryItemId": "f36c1fdd-b900-4ac5-808c-1ea1320471e7",
+	"name": "Stream merge",
+	"language": "Python",
+	"tags": {
+		"Complexity": ["Easy"],
+		"SDK Usage": ["Read/Write SDK"],
+		"Pipeline Stage": ["Transformation"],
+		"Use Case": ["Utility"]
+	},
+	"shortDescription": "Merge the streams from one topic into a single stream on another topic",
+	"DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"Variables": [
+		{
+			"Name" : "input",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "InputTopic",
+			"Description" : "Name of the source topic",
+			"DefaultValue" : "image-processed",
+			"Required": true
+		},
+		{
+			"Name" : "output",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "OutputTopic",
+			"Description" : "Name of the destination topic",
+			"DefaultValue" : "image-processed-merged",
+			"Required": true
+		}
+	],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 8000,
+		"MemoryInMb": 8000,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": false
+	}
+}

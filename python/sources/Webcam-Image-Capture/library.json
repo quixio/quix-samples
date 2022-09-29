@@ -1,0 +1,35 @@
+{
+	"libraryItemId": "ef23485d-e65d-4c21-abde-811957d3d0c6",
+	"name": "Webcam image capture",
+	"language": "Python",
+	"tags": {
+		"Complexity": ["Easy"],
+		"SDK Usage": ["Write SDK"],
+		"Pipeline Stage": ["Source"],
+		"Use Case": ["Mobility"]
+	},
+	"shortDescription": "Stream webcam images",
+	"DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"Variables": [
+		{
+			"Name" : "topic_raw",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "OutputTopic",
+			"Description" : "This is the output topic for webcam images",
+			"DefaultValue" : "image-raw",
+			"Required": true
+		}
+	],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": true,
+		"UrlPrefix": "webcam-capture",
+		"ValidateConnection": false
+	}
+}

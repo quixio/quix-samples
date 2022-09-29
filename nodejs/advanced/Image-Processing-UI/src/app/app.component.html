@@ -1,0 +1,31 @@
+
+
+  <agm-map #map [zoom]="5" maxZoom="25" [fitBounds]="false" [latitude]="lat" [longitude]="lng"
+           style=" height: 300px; width: 100%; max-width: 500px" (mapReady)="onMapReady($event)">
+<!--    <agm-marker [agmFitBounds]="false" *ngFor="let item of cameras | keyvalue"-->
+<!--                [latitude]="item.value.lat" [longitude]="item.value.lon"-->
+<!--                [title]="item.value.car.toString()"           iconUrl=""-->
+
+<!--    >-->
+
+<!--    </agm-marker>-->
+    
+  </agm-map>
+
+<table style="width: 100%; border-width: 1px; border-color: black; border-style: solid">
+  <tr>
+    <th>Session</th>
+    <th>Speed</th>
+    <th>Last recorder position</th>
+    <th>Wear</th>
+
+  </tr>
+  <tr  *ngFor="let item of vehicles | keyvalue">
+    <td>{{item.value.name}}</td>
+    <td><strong>{{item.value.speed| number : '1.0'}}</strong></td>
+    <td><small>{{item.value.lastPosition | date :'h:mm:ss'}}</small></td>
+    <td><small>{{item.value.wear }}</small></td>
+
+  </tr>
+</table>
+  <img [src]="last_image" width="320" height="320">

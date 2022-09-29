@@ -1,0 +1,154 @@
+<html>
+    <head></head>
+    <body>
+        <div id="errText" style="font-weight: bold; font-size: 20pt;"></div>
+        <div id="videoContainer"></div>
+        <div>
+            Devices: 
+            <select id="deviceSelect"></select>
+        </div>
+        <div>
+            Refresh:
+            <select id="refreshSelect">
+                <option value="0.25">0.25</option>
+                <option value="0.5">0.5</option>
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        <div>
+            last image:<span id="lastImage"></span>
+        </div> 
+
+        <script>
+
+            let pos_lat = 0;
+            let pos_lon = 0;
+
+            function sendToQuix(imageBase64){
+                return fetch("https://writer-<%= env.Quix__Workspace__Id; %>.dev.quix.ai/topics/<%= topic_name; %>/streams/input-image/parameters/data",{
+                    method: "POST",
+                    headers: {
+                        'Authorization': 'Bearer <%= env.Quix__Sdk__Token; %>',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({Timestamps: [new Date().getTime() * 1000000], StringValues: {"image":[imageBase64]},NumericValues: {"Latitude": [pos_lat],"Longitude": [pos_lon]}})
+                }).then(e=>e.text()).then(text => {console.log(text);});
+            }
+
+            function getScreenshot(videoEl, scale) {
+                scale = scale || 1;
+
+                const canvas = document.createElement("canvas");
+                canvas.width = videoEl.clientWidth * scale;
+                canvas.height = videoEl.clientHeight * scale;
+                canvas.getContext('2d').drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+
+                return canvas.toDataURL("image/png").substr("data:image/png;base64,".length);
+            }
+
+            function showPosition(position) {
+                console.log( "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude);
+
+                pos_lat = position.coords.latitude;
+                pos_lon = position.coords.longitude;
+            }
+
+            function init(  ) {
+
+                let video;
+
+                const refreshSelect = document.getElementById("refreshSelect");
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition)
+                } else {
+                    console.log("Geolocation is not supported by this browser.");
+                }
+                
+                function captureImage(){
+                    try{
+                        sendToQuix(getScreenshot(video));
+                        document.getElementById("lastImage").textContent = new Date().toLocaleString();
+                    }catch(e){
+                        console.error(e);
+                    }
+                    const timeout = parseInt(refreshSelect.options[refreshSelect.selectedIndex].value);
+                    setTimeout(captureImage, timeout*1000);
+                }
+
+                function initStream(deviceId){
+                    document.getElementById("videoContainer").innerHTML = "";
+
+                    video = document.createElement("video");
+                    video.setAttribute("width", "640");
+                    video.setAttribute("height", "480");
+                    video.setAttribute("autoplay", "autoplay");
+                    document.getElementById("videoContainer").appendChild(video);
+
+                    const constraints = { 
+                        // video: { deviceId: { exact: deviceId } }
+                        video: true
+                    };
+
+                    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+                        video.srcObject = stream;
+                    });
+                }
+
+                const canvas = document.createElement("canvas");
+
+                const deviceSelect = document.getElementById("deviceSelect");
+
+                navigator.mediaDevices.enumerateDevices()
+                    .then(function(devices) {
+                        
+                        var selectDevice = function(deviceId){
+                            initStream(deviceId);  
+                        };
+
+                        devices.forEach(function(device) {
+                            let el = document.createElement("option");
+                            // el.addEventListener("click", selectDevice.bind(null, device.deviceId));
+                            el.innerText = device.kind + ": " + device.label +
+                                        " id = " + device.deviceId; 
+                            deviceSelect.appendChild(el);
+                        });
+
+                        deviceSelect.addEventListener("change", function(event){
+                            const device = devices[event.target.selectedIndex];
+                            selectDevice(device.deviceId);
+                        });
+
+
+                        if(devices.length > 0){
+                            selectDevice(devices[0].deviceId);
+                        }
+
+                        captureImage();
+                    });
+            }
+
+            function showError( errText ){
+                alert( errText );
+                document.getElementById( "errText" ).innerText = errText;
+            }
+
+
+            function hasGetUserMedia() {
+                return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+            }
+            if (hasGetUserMedia()) {
+                // Good to go!
+                init();
+            } else {
+                const errText = "getUserMedia() is not supported by your browser";
+                showError(errText);
+                // alert("getUserMedia() is not supported by your browser");
+            }
+        </script>
+    </body>
+</html>
