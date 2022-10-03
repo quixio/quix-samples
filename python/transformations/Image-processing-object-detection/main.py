@@ -9,7 +9,7 @@ import os
 client = QuixStreamingClient()
 print("Starting")
 print("Opening input and output topics")
-input_topic = client.open_input_topic(os.environ.get("input"), "processing3", auto_offset_reset=AutoOffsetReset.Latest)
+input_topic = client.open_input_topic(os.environ.get("input"), "processing4", auto_offset_reset=AutoOffsetReset.Latest)
 output_topic = client.open_output_topic(os.environ.get("output"))
 image_processor = ImageProcessing()
 

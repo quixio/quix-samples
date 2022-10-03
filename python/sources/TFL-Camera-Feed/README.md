@@ -17,7 +17,6 @@ You need a [TFL (Transport For London)](https://api-portal.tfl.gov.uk/) account 
 This code sample uses the following environment variables:
 
 - **output**: This is the output topic for TFL camera images
-- **frame_rate**: The frame rate you want to use
 - **api_key**: Your TFL API Key
 
 ## Docs
