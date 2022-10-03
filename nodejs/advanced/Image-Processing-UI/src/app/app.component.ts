@@ -4,8 +4,9 @@ import {Component, OnInit } from '@angular/core';
 import {HubConnectionBuilder} from "@microsoft/signalr";
 import {ParameterData} from "./models/parameter-data";
 import {EnvironmentVariablesService} from "./services/environment-variables.service"
-import {forkJoin} from "rxjs";
-import { map } from 'rxjs/operators';
+import {combineLatest} from "rxjs";
+import {map} from 'rxjs/operators';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,8 @@ import { map } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit {
   title = 'mobile-tracker';
+
+  objectTypes = ['person', 'bicycle', 'car', 'motorbike', 'aeroplane', 'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'sofa', 'pottedplant', 'bed', 'diningtable', 'toilet', 'tvmonitor', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
   colors = [
       '#FFE8CC',
@@ -29,38 +32,30 @@ export class AppComponent implements OnInit {
   private workspaceId: string;
 
   vehicles: { [streamId: string]: VehicleItem } = {}
-  lat: number = 51.678418;
-  lng: number = 7.809007;
+  lat: number = 51.5072;
+  lng: number = -0.1000;
   public connected: boolean;
   public map: any;
   public reconnecting: boolean;
   public last_image: string;
-  public cameras = {}
+  public cameras = {};
+  private markers: any[] = new Array();
+  public showTokenWarning: boolean = false;
 
-  constructor(private envVarService: EnvironmentVariablesService) {}
+  constructor(private envVarService: EnvironmentVariablesService, private activatedRoute: ActivatedRoute,
+              private router: Router) {}
 
   ngOnInit(): void {
 
     console.log("INIT APP.Component");
 
-    this.token = this.envVarService.Token;
-    this.topic = this.envVarService.Topic;
-    this.workspaceId = this.envVarService.WorkspaceId;
-
-    console.log("1Token:" + this.token);
-    console.log("1Topic:" + this.topic);
-    console.log("1WS:" + this.workspaceId);
-
     // get all this stuff
-    let values$ = forkJoin(
+    let values$ = combineLatest(
         this.envVarService.GetToken(),
         this.envVarService.GetTopic(),
         this.envVarService.GetWorkspaceId(),
     ).pipe(
         map(([token, topic, wsId])=>{
-            console.log(token);
-            console.log(topic);
-            console.log(wsId);
           return {token, topic, wsId};
         })
     );
@@ -68,9 +63,63 @@ export class AppComponent implements OnInit {
     // when it arrives, connect to Quix
     values$.subscribe(x => {
         let url = this.envVarService.buildUrl(x.wsId)
-        this.ConnectToQuix(x.token, x.topic, url);
+        if(x.token == ""){
+            this.showTokenWarning = true;
+        }
+        this.ConnectToQuix(x.token, x.topic, url).then(_ => {
+            this.subscribeToData(x.topic);
+        });
     });
 
+    this.selectedObject = "car";
+  }
+
+  subscribeToData(quixTopic){
+      this.connection.on("ParameterDataReceived", (data: ParameterData) => {
+          if (data.stringValues["image"]) {
+              let imageBinary = data.stringValues["image"][0];
+              this.last_image = "data:image/png;base64," + imageBinary;
+          }
+
+          var mIcon = {
+              path: google.maps.SymbolPath.CIRCLE,
+              fillOpacity: 1,
+              fillColor: '#fff',
+              strokeOpacity: 1,
+              strokeWeight: 1,
+              strokeColor: '#333',
+              scale: 12
+          };
+          let cameraId = data.tagValues["parent_streamId"][0]
+
+          if (cameraId in this.cameras){
+              this.cameras[cameraId].label.text = data.numericValues[this.selectedObject][0].toString();
+              console.log("UPDATE");
+          }
+          else{
+              var gMarker = new google.maps.Marker({
+                  map: this.map,
+                  position: {
+                      lat: data.numericValues["lat"][0],
+                      lng: data.numericValues["lon"][0]
+                  },
+                  title: 'Number 123',
+                  icon: mIcon,
+                  label: {color: '#000', fontSize: '12px', fontWeight: '600',
+                      text:  data.numericValues[this.selectedObject][0].toString()}
+              });
+              this.markers.push(gMarker);
+              if(this.markers.length > 1000){
+                  this.markers.shift();
+              }
+          }
+          this.map.setma
+      });
+
+      this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "image");
+      this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "lat");
+      this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", this.selectedObject);
+      this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "lon");
   }
 
   onMapReady(map: any ) {
@@ -78,7 +127,12 @@ export class AppComponent implements OnInit {
   }
 
     connection = undefined;
-    ConnectToQuix(quixToken, quixTopic, readerUrl): void{
+    selectedObject: string = "";
+    ConnectToQuix(quixToken, quixTopic, readerUrl): Promise<void>{
+
+        if (this.connected){
+            return Promise.resolve();
+        }
 
         const options = {
             accessTokenFactory: () => quixToken
@@ -102,59 +156,39 @@ export class AppComponent implements OnInit {
             this.reconnecting = false;
         });
 
-        this.connection.start().then(() => {
+        return this.connection.start().then(() => {
             console.log("SignalR connected.");
 
             this.connected = true;
 
-            this.connection.on("ParameterDataReceived", (data: ParameterData) => {
-                let imageBinary = data.stringValues["image"][0];
-                //let buffer = new Buffer(imageBinary);
-                //let encoded = buffer.toString('base64')
-                this.last_image = "data:image/png;base64," + imageBinary;
-
-                var mIcon = {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    fillOpacity: 1,
-                    fillColor: '#fff',
-                    strokeOpacity: 1,
-                    strokeWeight: 1,
-                    strokeColor: '#333',
-                    scale: 12
-                };
-
-                let cameraId = data.tagValues["parent_streamId"][0]
-
-                if (cameraId in this.cameras){
-                    this.cameras[cameraId].label.text = data.numericValues["car"][0].toString();
-                    console.log("UPDATE");
-                }
-                else{
-                    var gMarker = new google.maps.Marker({
-                        map: this.map,
-                        position: {
-                            lat: data.numericValues["lat"][0],
-                            lng: data.numericValues["lon"][0]
-                        },
-                        title: 'Number 123',
-                        icon: mIcon,
-                        label: {color: '#000', fontSize: '12px', fontWeight: '600',
-                            text:  data.numericValues["car"][0].toString()}
-                    });
-                }
-
-                this.map.setma
-            });
-
-            //"image-proccessed-merged"
-            this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "image");
-            this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "lat");
-            this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "car");
-            this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "lon");
+            return
         });
     }
 
+    startStopButtonText: string = "Stop image feed";
+    showImages: boolean = true;
 
+    selectedObjectChanged(newObject) {
+        for (let i=0; i< this.markers.length; i++) {
+            this.markers[i].setMap(null);
+        }
+        this.connection.invoke("UnsubscribeFromParameter", this.topic, "image-feed", this.selectedObject);
+        this.connection.invoke("SubscribeToParameter", this.topic, "image-feed", newObject);
+    }
+
+    startStopButtonClick() {
+
+        if(this.showImages){
+            this.showImages = false;
+            this.startStopButtonText = "Start image feed";
+            this.connection.invoke("UnsubscribeFromParameter", this.topic, "image-feed", "image");
+        }
+        else {
+            this.showImages = true;
+            this.startStopButtonText = "Stop image feed";
+            this.connection.invoke("SubscribeToParameter", this.topic, "image-feed", "image");
+        }
+    }
 }
 
 export class VehicleItem {

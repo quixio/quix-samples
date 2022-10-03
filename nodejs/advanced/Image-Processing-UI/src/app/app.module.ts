@@ -4,19 +4,24 @@ import {AgmCoreModule} from "@agm/core";
 import {CommonModule} from "@angular/common";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpClientModule} from "@angular/common/http";
+import {RouterModule} from "@angular/router";
+import {AppRoutingModule} from "./app-routing.module";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    BrowserModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCSOdnwM7qZCxLt4G_uALn8_J4AGd9OCrQ'
-    })
-  ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BrowserModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyCSOdnwM7qZCxLt4G_uALn8_J4AGd9OCrQ'
+        }),
+        FormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

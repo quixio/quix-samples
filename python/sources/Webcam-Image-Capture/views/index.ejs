@@ -35,7 +35,7 @@
                         'Authorization': 'Bearer <%= env.Quix__Sdk__Token; %>',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({Timestamps: [new Date().getTime() * 1000000], StringValues: {"image":[imageBase64]},NumericValues: {"Latitude": [pos_lat],"Longitude": [pos_lon]}})
+                    body: JSON.stringify({Timestamps: [new Date().getTime() * 1000000], StringValues: {"image":[imageBase64]},NumericValues: {"lat": [pos_lat],"lon": [pos_lon]}})
                 }).then(e=>e.text()).then(text => {console.log(text);});
             }
 
