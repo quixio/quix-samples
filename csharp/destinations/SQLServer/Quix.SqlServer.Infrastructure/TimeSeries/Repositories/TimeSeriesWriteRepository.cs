@@ -27,13 +27,14 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
         private const string ParameterValuesTablePrefix = "PARAMETERVALUES";
         private const string EventValuesTablePrefix = "EVENTVALUES";
         private const string InformationSchema = "dbo";
-        private const string NumericParameterColumnFormat = "N_{0}";
-        private const string StringParameterColumnFormat = "S_{0}";
-        private const string StringEventColumnFormat = "{0}";
-        private const string TagFormat = "TAG_{0}";
+        private const string NumericParameterColumnFormat = "\"N_{0}\"";
+        private const string StringParameterColumnFormat = "\"S_{0}\"";
+        private const string StringEventColumnFormat = "\"{0}\"";
+        private const string TagFormat = "\"TAG_{0}\"";
         private const string TimeStampColumn = "timestamp";
         private static readonly string StreamIdColumn = string.Format(TagFormat, "STREAMID");
         private const int MaxQueryByteSize = 512*1024 * 8 - 1024*64; // 1/2 MB, -64 KB for safety margin
+        private const int MaxBatchSize = 500; // SQL server appears to have a limit of 1000 rows per batch
 
         private readonly HashSet<string> parameterColumns = new HashSet<string>();
         private readonly HashSet<string> eventColumns = new HashSet<string>();
@@ -111,7 +112,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
                 {
                     while (existingColumnNameReader.Read())
                     {
-                        columns.Add(existingColumnNameReader.GetString(0));
+                        columns.Add(ConvertToSqlServerColumnName(existingColumnNameReader.GetString(0)));
                     }
                 });
                 
@@ -119,6 +120,11 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             }
         }
         
+        private static string ConvertToSqlServerColumnName(string name)
+        {
+            return $"\"{name.ToUpperInvariant()}\"";
+        }
+
         private void Initialize()
         {
             this.logger.LogDebug("Checking tables...");
@@ -395,6 +401,51 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
         /// When the statement is made up of multiple statement header - statement lines (like a batch insert)
         /// </summary>
         /// <param name="statementPairs"></param>
+        // private void ExecuteStatements(IEnumerable<KeyValuePair<string, List<string>>> statementPairs)
+        // {
+        //     var totalStatementSize = 0;
+        //     var sb = new StringBuilder();
+        //     var begin = "BEGIN\n";
+        //     var end = ";\nEND";
+        //     var beginEndLength = Encoding.UTF8.GetByteCount(begin) + Encoding.UTF8.GetByteCount(end);
+        //     var pairSeparator = ";\n\n"; // \n so it is somewhat human readable in console
+        //     var pairSeparatorSize = Encoding.UTF8.GetByteCount(pairSeparator);
+        //     var headSeparator = "\n";
+        //     var headSeparatorSize = Encoding.UTF8.GetByteCount(headSeparator);
+        //     var lineSeparator = ",\n";
+        //     var lineSeparatorSize = Encoding.UTF8.GetByteCount(lineSeparator);
+        //     var segmentCount = 0;
+        //     var firstPair = true;
+        //     foreach (var statementPair in statementPairs)
+        //     {
+        //         var statementSize = 0;
+        //         var firstLine = true;
+        //         if (!firstPair)
+        //         {
+        //             sb.Append(pairSeparator);
+        //             statementSize += pairSeparatorSize;
+        //         } else firstPair = false;
+        //         
+        //         statementSize += Encoding.UTF8.GetByteCount(statementPair.Key);
+        //         sb.Append(statementPair.Key);
+        //         sb.Append(headSeparator);
+        //         statementSize += headSeparatorSize;
+        //         segmentCount++;
+        //
+        //         string GetCurrentHeader()
+        //         {
+        //             return statementPair.Key + headSeparator;
+        //         }
+        //
+        //         foreach (var statement in statementPair.Value)
+        //         {
+        //             var sql = GetCurrentHeader() + statement;
+        //             Console.WriteLine($"Executing SQL statement [{sql}]");
+        //             ExecuteStatement(sql);
+        //         }
+        //     }
+        // }
+        
         private void ExecuteStatements(IEnumerable<KeyValuePair<string, List<string>>> statementPairs)
         {
             var totalStatementSize = 0;
@@ -410,6 +461,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             var lineSeparatorSize = Encoding.UTF8.GetByteCount(lineSeparator);
             var segmentCount = 0;
             var firstPair = true;
+            
             foreach (var statementPair in statementPairs)
             {
                 var statementSize = 0;
@@ -433,11 +485,55 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
 
                 foreach (var statement in statementPair.Value)
                 {
-                    var sql = GetCurrentHeader() + statement;
-                    Console.WriteLine($"Executing SQL statement [{sql}]");
-                    ExecuteStatement(sql);
-                }
+                    if (!firstLine)
+                    {
+                        sb.Append(lineSeparator);
+                        statementSize += lineSeparatorSize;
+                
+                        // check if we would be over the limit with the new statement
+                        if (statementSize + totalStatementSize + beginEndLength > MaxQueryByteSize || segmentCount > MaxBatchSize)
+                        {
+                            // if so, send it already
+                            sb.Insert(0, begin);
+                            
+                            if (sb[sb.Length-2] == ',') sb.Remove(sb.Length - 2, 1);
+                            
+                            sb.Append(end);
+                            ExecuteStatement(sb.ToString());
+                            sb.Clear();
+                            
+                            totalStatementSize = 0;
+                            segmentCount = 0;
+                            
+                            statementSize = Encoding.UTF8.GetByteCount(statementPair.Key);
+                            statementSize += pairSeparatorSize;
+                            sb.Append(statementPair.Key);
+                            sb.Append(headSeparator);
+                            statementSize += headSeparatorSize;                            
+                            segmentCount++;
+                            
+                            firstLine = true;
+                        }
+                    }
+                    else firstLine = false;
+                
+                    sb.Append(statement);
+
+                    if (firstLine) sb.Append(lineSeparator);
+                    
+                    totalStatementSize += statementSize;
+                    segmentCount++;
+                }    
             }
+            
+            if (segmentCount > 1)
+            {
+                sb.Insert(0, begin);
+                sb.Append(end);
+            }
+
+            logger.LogInformation($"Executing insert statement batch");
+            ExecuteStatement(sb.ToString());
         }
         
         /// <summary>
@@ -515,10 +611,9 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             }
             catch (Exception ex)
             {
-                this.logger.LogError("Failed to execute SqlServer statement:{0}{1}", Environment.NewLine, statement);
-
                 if (!retry)
                 {
+                    this.logger.LogError("Failed to execute SqlServer statement:{0}{1}", Environment.NewLine, statement);
                     throw;
                 }
                 else

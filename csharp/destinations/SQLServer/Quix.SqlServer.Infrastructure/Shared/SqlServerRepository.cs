@@ -584,7 +584,6 @@ namespace Quix.SqlServer.Infrastructure.Shared
 
             foreach (var foreignTableSchema in this.schema.ForeignTables)
             {
-
                 var ftExpectedColumns = foreignTableSchema.Value.ColumnMemberInfos != null
                         ? foreignTableSchema.Value.ColumnMemberInfos.ToDictionary(GetColumName, y => MapDotnetTypeToSqlServerType(Utils.GetMemberInfoType(y)))
                         : new Dictionary<string, string>() {{Utils.UnPluralize(GetColumName(foreignTableSchema.Value.ForeignMemberInfo)), MapDotnetTypeToSqlServerType(foreignTableSchema.Value.ForeignMemberType)}};
@@ -615,7 +614,6 @@ namespace Quix.SqlServer.Infrastructure.Shared
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{tableName.ToUpperInvariant()}'";
                 DatabaseConnection.QuerySqlServer(sql, existingColumnNameReader =>
                 {
-
                     var cols = new List<string>();
                     while (existingColumnNameReader.Read())
                     {
