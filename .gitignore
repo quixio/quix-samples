@@ -1,9 +1,6 @@
-csharp/**/bin/
-
-csharp/**/obj/
-
+**/bin/
+**/obj/
 **/ca.cert
-
 **/.idea/
-
 **/.vscode/
+**/node_modules/
