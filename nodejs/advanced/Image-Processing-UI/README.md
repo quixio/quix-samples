@@ -18,7 +18,7 @@ Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=g
 
 NOTE! Whether running locally or in the Quix platform you should edit `environment-variables.service.ts` and add your Token.
 This can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
-
+![image](/src/assets/images/small-menu.png)
 
 ## Local
 
@@ -30,6 +30,7 @@ Set the `UseHardcodedValues` flag to True
 
 NOTE! Whether running locally or in the Quix platform you should edit `environment-variables.service.ts` and add your Token.
 This can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
+![image](/src/assets/images/small-menu.png)
 
 Optionally, to move into production you should uncomment the script tag in `index.html` and add your Google Maps API key   
 
