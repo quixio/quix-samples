@@ -16,15 +16,17 @@ namespace Quix.SqlServer.Infrastructure.Shared
 {
     public abstract class SqlServerRepository<T> where T : new()
     {
-        protected readonly IDbConnection DatabaseConnection;
+        protected readonly IDbConnection ReaderDatabaseConnection;
+        protected readonly IDbConnection WriterDatabaseConnection;
         protected readonly ILogger logger;
         private readonly SqlServerModelSchema schema;
         private const string InformationSchema = "dbo"; // Maybe this could come from config ?
         private const int MaxQueryByteSize = 1024 * 1024 * 8 - 1024*64; // 1 MB, -64 KB for safety margin
 
-        protected SqlServerRepository(IDbConnection databaseConnection, ILogger logger)
+        protected SqlServerRepository(IDbConnection readerDatabaseConnection, IDbConnection writerDatabaseConnection, ILogger logger)
         {
-            this.DatabaseConnection = databaseConnection;
+            this.ReaderDatabaseConnection = readerDatabaseConnection;
+            this.WriterDatabaseConnection = writerDatabaseConnection;
             this.logger = logger;
             this.schema = this.ValidateSchema();
             Initialize();
@@ -123,7 +125,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
             this.logger.LogTrace("Executing SqlServer statement:{0}{1}", Environment.NewLine, statement);
             try
             {
-                DatabaseConnection.ExecuteSqlServerStatement(statement);
+                WriterDatabaseConnection.ExecuteSqlServerStatement(statement);
             }
             catch (Exception ex)
             {
@@ -151,7 +153,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
             this.logger.LogTrace("SqlServer query statement: {0}", selectStatement);
             var sw = Stopwatch.StartNew();
             List<T> result = null;
-            DatabaseConnection.QuerySqlServer(selectStatement, reader =>
+            ReaderDatabaseConnection.QuerySqlServer(selectStatement, reader =>
             {
                 sw.Stop();
                 this.logger.LogDebug("Executed SqlServer query statement in {0:g}: {1}", sw.Elapsed, selectStatement);
@@ -564,7 +566,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
         {
             var checkForTableSql = $"SELECT coalesce((SELECT '1' FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table.ToUpperInvariant()}'), '0')";
             var exists = false;
-            DatabaseConnection.QuerySqlServer(checkForTableSql, existingTablesReader =>
+            ReaderDatabaseConnection.QuerySqlServer(checkForTableSql, existingTablesReader =>
             {
                 while (existingTablesReader.Read())
                 {
@@ -599,7 +601,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
             {
                 // if not
                 // create the table
-                DatabaseConnection.ExecuteSqlServerStatement(
+                WriterDatabaseConnection.ExecuteSqlServerStatement(
                     $"CREATE TABLE {InformationSchema}{(InformationSchema != "" ? "." : "")}{tableName} ({string.Join(", ", columnToTypes.Select(y => $"{y.Key} {y.Value}"))})");
 
                 //todo do we need some kind of clustering
@@ -612,7 +614,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{tableName.ToUpperInvariant()}'";
-                DatabaseConnection.QuerySqlServer(sql, existingColumnNameReader =>
+                WriterDatabaseConnection.QuerySqlServer(sql, existingColumnNameReader =>
                 {
                     var cols = new List<string>();
                     while (existingColumnNameReader.Read())

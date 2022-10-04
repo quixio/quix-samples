@@ -8,7 +8,7 @@ namespace Quix.SqlServer.Infrastructure.Metadata
 {
     public class ParameterRepository : SqlServerRepository<TelemetryParameter>, IParameterRepository
     {
-        public ParameterRepository(IDbConnection databaseConnection, ILoggerFactory loggerFactory) : base(databaseConnection, loggerFactory.CreateLogger<ParameterRepository>())
+        public ParameterRepository(IDbConnection readerDatabaseConnection, IDbConnection writerDatabaseConnection, ILoggerFactory loggerFactory) : base(readerDatabaseConnection, writerDatabaseConnection, loggerFactory.CreateLogger<ParameterRepository>())
         {
         }
     }

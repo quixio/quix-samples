@@ -8,7 +8,7 @@ namespace Quix.SqlServer.Infrastructure.Metadata
 {
     public class EventRepository : SqlServerRepository<TelemetryEvent>, IEventRepository
     {
-        public EventRepository(IDbConnection databaseConnection, ILoggerFactory loggerFactory) : base(databaseConnection, loggerFactory.CreateLogger<EventRepository>())
+        public EventRepository(IDbConnection readerDatabaseConnection, IDbConnection writerDatabaseConnection, ILoggerFactory loggerFactory) : base(readerDatabaseConnection, writerDatabaseConnection, loggerFactory.CreateLogger<EventRepository>())
         {
         }
     }
