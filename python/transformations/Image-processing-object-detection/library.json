@@ -1,0 +1,42 @@
+{
+	"libraryItemId": "bfee7144-49f1-411d-b5c3-0d8396e2c946",
+	"name": "Computer Vision object detection",
+	"language": "Python",
+	"tags": {
+		"Complexity": ["Advanced"],
+		"SDK Usage": ["Read/Write SDK"],
+		"Pipeline Stage": ["Transformation"],
+		"Use Case": ["Vision"]
+	},
+	"shortDescription": "Computer vision using YOLO v3",
+	"DefaultFile": "quix_function.py",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"Variables": [
+		{
+			"Name" : "input",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "InputTopic",
+			"Description" : "This is the input topic for raw images",
+			"DefaultValue" : "image-raw",
+			"Required": true
+		},
+		{
+			"Name" : "output",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "OutputTopic",
+			"Description" : "This is the output for images augmented with the recognized objects",
+			"DefaultValue" : "image-processed",
+			"Required": true
+		}
+	],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 8000,
+		"MemoryInMb": 16000,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": false
+	}
+}
