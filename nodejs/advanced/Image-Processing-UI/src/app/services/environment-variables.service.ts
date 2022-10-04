@@ -12,7 +12,6 @@ export class EnvironmentVariablesService {
   Token: string = "";
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
-
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
   /* TO RUN LOCALLY */
   /*
@@ -25,7 +24,7 @@ export class EnvironmentVariablesService {
   WorkspaceId: string = "";
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
-  
+
   constructor(private httpClient: HttpClient) {}
 
   // don't change this

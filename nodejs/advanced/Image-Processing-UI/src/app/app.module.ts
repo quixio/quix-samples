@@ -4,7 +4,6 @@ import {AgmCoreModule} from "@agm/core";
 import {CommonModule} from "@angular/common";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpClientModule} from "@angular/common/http";
-import {RouterModule} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import {FormsModule} from "@angular/forms";
 
@@ -17,12 +16,11 @@ import {FormsModule} from "@angular/forms";
         HttpClientModule,
         AppRoutingModule,
         BrowserModule,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyCSOdnwM7qZCxLt4G_uALn8_J4AGd9OCrQ'
-        }),
+        AgmCoreModule.forRoot(),
         FormsModule
     ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

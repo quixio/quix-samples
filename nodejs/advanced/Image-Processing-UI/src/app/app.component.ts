@@ -1,6 +1,6 @@
 /// <reference types="@types/googlemaps" />
 
-import {Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HubConnectionBuilder} from "@microsoft/signalr";
 import {ParameterData} from "./models/parameter-data";
 import {EnvironmentVariablesService} from "./services/environment-variables.service"
@@ -27,11 +27,8 @@ export class AppComponent implements OnInit {
       '#9E9E9E',
     ]
 
-  private token: string;
   private topic: string;
-  private workspaceId: string;
 
-  vehicles: { [streamId: string]: VehicleItem } = {}
   lat: number = 51.5072;
   lng: number = -0.1000;
   public connected: boolean;
@@ -42,7 +39,8 @@ export class AppComponent implements OnInit {
   private markers: any[] = new Array();
   public showTokenWarning: boolean = false;
 
-  constructor(private envVarService: EnvironmentVariablesService, private activatedRoute: ActivatedRoute,
+  constructor(private envVarService: EnvironmentVariablesService,
+              private activatedRoute: ActivatedRoute,
               private router: Router) {}
 
   ngOnInit(): void {
