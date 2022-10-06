@@ -71,7 +71,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Redshift cluster identifier when connecting to a cluster.",
-      "DefaultValue": "redshift-cluster-1",
+      "DefaultValue": "",
       "Required": false
     },
     {
