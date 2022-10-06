@@ -27,7 +27,7 @@
   "IconFile": "redshift.png",
   "Variables": [
     {
-      "Name": "input",
+      "Name": "Broker__TopicName",
       "Type": "EnvironmentVariable",
       "InputType": "InputTopic",
       "Description": "Name of the input topic to read from",
