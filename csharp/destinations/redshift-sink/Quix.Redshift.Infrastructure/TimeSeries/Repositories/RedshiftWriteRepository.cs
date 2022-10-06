@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Quix.Redshift.Domain.Common;
 using Quix.Redshift.Domain.TimeSeries.Models;
 using Quix.Redshift.Domain.TimeSeries.Repositories;
+using Quix.Redshift.Infrastructure.TimeSeries.Factories;
 using Quix.Redshift.Infrastructure.TimeSeries.Models;
 
 namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
@@ -36,6 +37,8 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
         private readonly HashSet<string> parameterColumns = new HashSet<string>();
         private readonly HashSet<string> eventColumns = new HashSet<string>();
 
+        private readonly RedshiftQueryFactory queryFactory;
+
         public RedshiftWriteRepository(
             ILogger<RedshiftWriteRepository> logger,
             RedshiftConnectionConfiguration redshiftConfiguration)
@@ -43,25 +46,26 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.redshiftConfiguration = redshiftConfiguration;
             if (redshiftConfiguration == null) throw new ArgumentNullException(nameof(redshiftConfiguration));
-            this.client = new AmazonRedshiftDataAPIServiceClient(new BasicAWSCredentials(redshiftConfiguration.AccessKeyId, redshiftConfiguration.SecretAccessKey), RegionEndpoint.EnumerableAllRegions.First(y=> y.SystemName == redshiftConfiguration.Region));
+            this.client = new AmazonRedshiftDataAPIServiceClient(new BasicAWSCredentials(redshiftConfiguration.AccessKeyId, redshiftConfiguration.SecretAccessKey), RegionEndpoint.EnumerableAllRegions.First(y => y.SystemName == redshiftConfiguration.Region));
+            this.queryFactory = new RedshiftQueryFactory(redshiftConfiguration);
         }
 
         public async Task Setup()
         {
             this.logger.LogDebug("Checking tables...");
-            var tables = await this.client.ListTablesAsync(new ListTablesRequest() { Database = redshiftConfiguration.DatabaseName});
+            var tables = await this.client.ListTablesAsync(this.queryFactory.ListTablesRequest());
             // todo handle more than 1 page
             if (tables.Tables.All(y => !y.Name.Equals(ParameterValuesTableName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 this.logger.LogInformation("Creating table " + ParameterValuesTableName);
-                await this.client.ExecuteStatementAsync(new ExecuteStatementRequest() { Database = redshiftConfiguration.DatabaseName, Sql = $"CREATE TABLE {ParameterValuesTableName} ({TimeStampColumn} BIGINT, {StreamIdColumn} VARCHAR(256)) SORTKEY ({TimeStampColumn}, {StreamIdColumn})"});
+                await this.client.ExecuteStatementAsync(this.queryFactory.ExecuteStatementRequest($"CREATE TABLE {ParameterValuesTableName} ({TimeStampColumn} BIGINT, {StreamIdColumn} VARCHAR(256)) SORTKEY ({TimeStampColumn}, {StreamIdColumn})"));
                 this.logger.LogInformation("Creating table " + ParameterValuesTableName);
                 parameterColumns.Add(TimeStampColumn);
                 parameterColumns.Add(StreamIdColumn);
             }
             else
             {
-                var tableDetails = await this.client.DescribeTableAsync(new DescribeTableRequest() {Database = redshiftConfiguration.DatabaseName, Table = ParameterValuesTableName});
+                var tableDetails = await this.client.DescribeTableAsync(this.queryFactory.DescribeTableRequest(ParameterValuesTableName));
                 foreach (var columnMetadata in tableDetails.ColumnList)
                 {
                     parameterColumns.Add(columnMetadata.Name);
@@ -71,14 +75,14 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
             if (tables.Tables.All(y => !y.Name.Equals(EventValuesTableName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 this.logger.LogInformation("Creating table " + EventValuesTableName);
-                await this.client.ExecuteStatementAsync(new ExecuteStatementRequest() { Database = redshiftConfiguration.DatabaseName, Sql = $"CREATE TABLE {EventValuesTableName} (timestamp BIGINT, {StreamIdColumn} VARCHAR(256)) SORTKEY ({TimeStampColumn}, {StreamIdColumn})"});
+                await this.client.ExecuteStatementAsync(this.queryFactory.ExecuteStatementRequest($"CREATE TABLE {EventValuesTableName} (timestamp BIGINT, {StreamIdColumn} VARCHAR(256)) SORTKEY ({TimeStampColumn}, {StreamIdColumn})"));
                 this.logger.LogInformation("Created table " + EventValuesTableName);
                 eventColumns.Add(TimeStampColumn);
                 eventColumns.Add(StreamIdColumn);
             }
             else
             {
-                var tableDetails = await this.client.DescribeTableAsync(new DescribeTableRequest() {Database = redshiftConfiguration.DatabaseName, Table = EventValuesTableName});
+                var tableDetails = await this.client.DescribeTableAsync(this.queryFactory.DescribeTableRequest(EventValuesTableName));
                 foreach (var columnMetadata in tableDetails.ColumnList)
                 {
                     eventColumns.Add(columnMetadata.Name);
@@ -90,7 +94,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
         public async Task WriteTelemetryData(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData)
         {
             var sqlInserts = new Dictionary<string, List<string>>();
-            
+
             var uniqueColumns = new Dictionary<string, string>();
 
             var totalVals = PrepareParameterSqlInserts(streamParameterData, uniqueColumns, sqlInserts);
@@ -110,10 +114,10 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                     {
                         sb.Remove(sb.Length - 1, 1);
                         sqlInsertStatements.Add(sb.ToString());
-                        
+
                         sb = new StringBuilder();
                         sb.Append(statementPair.Key);
-                        sb.Append(" ");                        
+                        sb.Append(" ");
                     }
                     sb.Append(line);
                     sb.Append(',');
@@ -122,9 +126,9 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                 sb.Remove(sb.Length - 1, 1);
                 sqlInsertStatements.Add(sb.ToString());
             }
-            
-            await this.client.BatchExecuteStatementAsync(new BatchExecuteStatementRequest() {  Database = redshiftConfiguration.DatabaseName, Sqls = sqlInsertStatements});
-            
+
+            await this.client.BatchExecuteStatementAsync(this.queryFactory.BatchExecuteStatementRequest(sqlInsertStatements));
+
             this.logger.LogTrace($"Saved {totalVals} parameter values to Redshift db");
         }
 
@@ -155,7 +159,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
 
                             valueSb.Append(",");
                             valueSb.Append($"'{kPair.Value}'");
-                            
+
                             headerSb.Append(",");
                             headerSb.Append(name);
                             uniqueColumns[name] = "tag";
@@ -218,7 +222,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                         sqlInserts[header] = lines;
                     }
                     lines.Add(valueSb.ToString());
-                    
+
                     totalValues += numericValueCount;
                     totalValues += stringValueCount;
                 }
@@ -249,13 +253,13 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
             }
 
             if (sqlStatements.Count == 0) return; // this is really just safe coding, not likely to ever happen
-            await this.client.BatchExecuteStatementAsync(new BatchExecuteStatementRequest() {  Database = redshiftConfiguration.DatabaseName, Sqls = sqlStatements});
+            await this.client.BatchExecuteStatementAsync(this.queryFactory.BatchExecuteStatementRequest(sqlStatements));
         }
 
         public async Task WriteTelemetryEvent(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData)
         {
             var sqlInserts = new Dictionary<string, List<string>>();
-            
+
             var uniqueColumns = new Dictionary<string, string>();
 
             var totalVals = PrepareEventSqlInserts(streamEventData, uniqueColumns, sqlInserts);
@@ -275,10 +279,10 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                     {
                         sb.Remove(sb.Length - 1, 1);
                         sqlInsertStatements.Add(sb.ToString());
-                        
+
                         sb = new StringBuilder();
                         sb.Append(statementPair.Key);
-                        sb.Append(" ");                        
+                        sb.Append(" ");
                     }
                     sb.Append(line);
                     sb.Append(',');
@@ -287,14 +291,14 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
                 sb.Remove(sb.Length - 1, 1);
                 sqlInsertStatements.Add(sb.ToString());
             }
-            
-            await this.client.BatchExecuteStatementAsync(new BatchExecuteStatementRequest() {  Database = redshiftConfiguration.DatabaseName, Sqls = sqlInsertStatements});
-            
+
+            await this.client.BatchExecuteStatementAsync(this.queryFactory.BatchExecuteStatementRequest(sqlInsertStatements));
+
             this.logger.LogTrace($"Saved {totalVals} event values to Redshift db");
 
         }
-        
-        
+
+
         private static int PrepareEventSqlInserts(IEnumerable<KeyValuePair<string, IEnumerable<EventDataRow>>> streamEventData, Dictionary<string, string> uniqueColumns, Dictionary<string, List<string>> sqlInserts)
         {
             var totalValues = 0;
@@ -310,7 +314,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
 
                     if (row.TagValues != null && row.TagValues.Count > 0)
                     {
-                        foreach(var kPair in row.TagValues)
+                        foreach (var kPair in row.TagValues)
                         {
                             if (string.IsNullOrEmpty(kPair.Value)) continue;
                             var name = string.Format(TagFormat, kPair.Key);
@@ -318,7 +322,7 @@ namespace Quix.Redshift.Infrastructure.TimeSeries.Repositories
 
                             valueSb.Append(",");
                             valueSb.Append($"'{kPair.Value}'");
-                            
+
                             headerSb.Append(",");
                             headerSb.Append(name);
                             uniqueColumns[name] = "tag";
