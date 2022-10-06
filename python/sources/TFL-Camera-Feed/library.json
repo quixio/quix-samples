@@ -18,7 +18,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "This is the output topic for TFL camera images",
-            "DefaultValue" : "image-raw",
+            "DefaultValue" : "tfl-cameras",
             "Required": true
         },
         {
@@ -26,7 +26,7 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
             "Description" : "The frame rate you want to use",
-            "DefaultValue" : "",
+            "DefaultValue" : "100",
             "Required": true
         },
         {

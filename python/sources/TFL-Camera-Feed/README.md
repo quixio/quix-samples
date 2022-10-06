@@ -18,6 +18,7 @@ This code sample uses the following environment variables:
 
 - **output**: This is the output topic for TFL camera images
 - **api_key**: Your TFL API Key
+- **frame_rate**: The frame rate you want to use
 
 ## Docs
 {This will contain any available references and links to documentation or resource related to the code.}

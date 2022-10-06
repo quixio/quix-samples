@@ -18,7 +18,7 @@
 			"Type" : "EnvironmentVariable",
 			"InputType" : "InputTopic",
 			"Description" : "This is the input topic for webcam images",
-			"DefaultValue" : "image-raw",
+			"DefaultValue" : "tfl-cameras",
 			"Required": true
 		},
 		{
@@ -26,7 +26,7 @@
 			"Type" : "EnvironmentVariable",
 			"InputType" : "OutputTopic",
 			"Description" : "This is the output topic for the captured frames",
-			"DefaultValue" : "tfl-cameras",
+			"DefaultValue" : "image-raw",
 			"Required": true
 		},
 		{
