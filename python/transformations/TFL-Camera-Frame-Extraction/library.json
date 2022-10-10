@@ -1,6 +1,6 @@
 {
 	"libraryItemId": "eec165e1-f648-4e58-9fd3-9af475a840e8",
-	"name": "TFL traffic camera frame grabber",
+	"name": "TfL traffic camera frame grabber",
 	"language": "Python",
 	"tags": {
 		"Complexity": ["Easy"],
@@ -8,7 +8,7 @@
 		"Pipeline Stage": ["Transformation"],
 		"Use Case": ["Mobility"]
 	},
-	"shortDescription": "Grab frames from your TFL traffic camera feed",
+	"shortDescription": "Grab frames from your TfL traffic camera feed",
 	"DefaultFile": "quix_function.py",
 	"EntryPoint": "build/dockerfile",
 	"RunEntryPoint": "main.py",

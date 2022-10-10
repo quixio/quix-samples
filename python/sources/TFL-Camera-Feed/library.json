@@ -1,6 +1,6 @@
 {
     "libraryItemId": "86195d34-be00-4f0d-a303-c1e95cdb1c32",
-    "name": "TFL Camera Feed",
+    "name": "TfL Camera Feed",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Source"],
         "Use Case": ["Mobility"]
     },
-    "shortDescription": "Stream TFL's London traffic camera images",
+    "shortDescription": "Stream TfL's London traffic camera images",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
@@ -17,7 +17,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic for TFL camera images",
+            "Description" : "This is the output topic for TfL camera images",
             "DefaultValue" : "tfl-cameras",
             "Required": true
         },
@@ -33,7 +33,7 @@
             "Name" : "api_key",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "Your TFL API Key",
+            "Description" : "Your TfL API Key",
             "DefaultValue" : "",
             "Required": true
         }
