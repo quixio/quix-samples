@@ -18,7 +18,7 @@ export class QuixService {
     public sentimentTopic: string = ""; //get topic ID from the Topics page
     /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
-    readonly subdomain = "platform";
+    readonly subdomain = "{placeholder:environment.subdomain}"; 
     readonly server = "" // leave blank
 
     public readerConnection: HubConnection;
