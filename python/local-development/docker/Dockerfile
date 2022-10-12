@@ -3,8 +3,6 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND="noninteractive"
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONIOENCODING=UTF-8
-# Copy files used later during install
-COPY ./kafkadepinstaller.sh .
 # Install python and some utilities
 RUN apt-get update && \
     apt-get install -y curl && \
@@ -22,10 +20,19 @@ RUN apt-get update && \
     apt-get install -y clang curl python3-dev libglib2.0 build-essential && \
     python3 -m pip install pycparser && \
 # install generic dependencies of SDK to reduce build times
-    python3 -m pip install pandas==1.2.1 pythonnet==2.5.1 && \
+    python3 -m pip install pandas==1.2.1 pythonnet==2.5.1
 # Install librdkafka dependencies for ubuntu 20.04
-    apt-get install -y dos2unix && \
-    dos2unix ./kafkadepinstaller.sh && \
-    chmod +x ./kafkadepinstaller.sh && \
-    . ./kafkadepinstaller.sh && \
-    rm /kafkadepinstaller.sh
+RUN apt-get install -y wget software-properties-common && \
+    wget -qO - https://packages.confluent.io/deb/7.2/archive.key | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] https://packages.confluent.io/deb/7.2 stable main" && \
+    add-apt-repository "deb https://packages.confluent.io/clients/deb $(lsb_release -cs) main" && \
+    apt-get update && \
+    apt install librdkafka-dev -y
+# cleanup unused packages that cause secu issue or update
+RUN apt purge -y libapparmor1 && \
+    apt purge -y gcc-9 && \
+    apt purge -y gcc-9-base && \
+    apt purge -y wget && \
+    apt purge -y libgdk-pixbuf2.0-0 && \
+    apt autoremove -y && \
+    apt-get upgrade libgnutls30 -y
