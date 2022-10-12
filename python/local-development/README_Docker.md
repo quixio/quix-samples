@@ -46,7 +46,7 @@ python3 -m pip install -r requirements.txt --extra-index-url https://pkgs.dev.az
 
 Use the resulting environment as you would your own machine, such as run your python application by executing `python3 main.py`
 
-Note: Any file change will reflect in the original folder.
+Note: As `/apps` folder is a mounted directory, any file or folder change in the container will be synced to your original folder in your machine and vice-versa.
 
 ### Additional configuration
-As your environment variables will greatly depend on what your application needs, make sure to update `docker/.env` as needed. By default all values are placeholder and this might be something you need to configure before application can correctly run. Several of these environment values could be considered "secrets", therefore be mindful of what you end up committing to your repository.
+As your environment variables will greatly depend on what your application needs, make sure to update `docker/.env` as needed. By default all values are placeholder and this might be something you need to configure or add to before the application can correctly run. Several of these environment values could be considered "secrets", therefore be mindful of what you end up committing to your repository.
