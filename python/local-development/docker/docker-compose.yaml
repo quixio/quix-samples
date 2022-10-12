@@ -7,9 +7,9 @@ services:
   server:
     build:
       context: .
-      dockerfile: ./docker/dockerfile
+      dockerfile: ./dockerfile
     env_file:
-     - ./docker/.env
+     - ./.env
     volumes:
-      - ./:/app
+      - ../:/app
     working_dir: /app
