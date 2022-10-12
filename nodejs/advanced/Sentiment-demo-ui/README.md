@@ -1,8 +1,10 @@
-# Chat app
+# Sentiment demo UI
 
-This is an example of how to use Quix with JavaScript.
+This is an example of how to use Quix with NodeJs.
 
-It implements a system of chat rooms where people can have communicate. It use QR codes to invite new participants into the chat room. 
+ - It implements a system of chat rooms where people can communicate. 
+ - QR codes are used to invite new participants into the chat room.
+ - Sentiment of the chat is analyzed in another service and displayed here.
 
 ## Environment variables
 
@@ -12,35 +14,33 @@ This code sample uses the following environment variables:
 - **sentiment**: This is the input topic for sentiment score from ML model. Use Hugging Face model library item to analyze messages sentiment.
 
 ## Connection
-Chat app integrates with Quix via Quix WebSocket gateway. For more please refer to [Quix docs](https://documentation.platform.quix.ai/apis/streaming-reader-api/intro.html).
-
-## Set up
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.3.
-
-### Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-### Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-### Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-### Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-### Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-### Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+This app integrates with Quix via Quix WebSocket gateway. For more please refer to [Quix docs](https://documentation.platform.quix.ai/apis/streaming-reader-api/intro.html).
 
 ## Docs
 
-Visit the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+
+## How to run
+
+Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
+
+NOTE! Whether running locally or in the Quix platform you should edit `environment-variables.service.ts` and add your Token.
+This can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
+
+### Debug In Quix
+
+If you wan to debug your javascript / typescript with the code deployed in the Quix serverless environment, please edit the docker file in the build folder.
+
+The following line runs the build
+`RUN npm run build -- --output-path=./dist/out --configuration production`
+
+Remove ` --configuration production` to skip minification and other production ready steps.
+
+The scripts will now be visible in your browsers debugger. The sources tab will now show webpack:// files.
+
+## Local
+
+To run this project locally please update the `quix.service.ts` file with your:
+ - Topics (messages and sentiment) - note that you need to get the Topic ID from the Topic page for this.
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

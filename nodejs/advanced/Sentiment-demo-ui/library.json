@@ -26,15 +26,5 @@
 			"DefaultValue" : "messages",
 			"Required": true
 		}
-	],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": true,
-		"UrlPrefix": "sentiment-demo-ui",
-		"ValidateConnection": false
-	}
+	]
 }
