@@ -23,19 +23,19 @@ You can do so by follow this guide: https://docs.docker.com/compose/install/.
 
 ### Setup
 
-Copy `docker` folder and `docker-compose.yaml` to your application's root.
+Copy `docker` folder to your application's root.
 
 ### Build and run
 
-Open a new console/terminal in your application's root, where you copied `docker-compose.yaml` in previous step.
+Open a command line within your new `docker` folder.
 
-You can start the build by running the docker compose file.
+You can start the build by running the following command.
 
 ```
 docker-compose run --rm server
 ```
 
-This step may take some time the first time, future runs should not cause rebuild.
+This step may take some time the first time, future runs should be a lot faster.
 
 Using the docker file provided, you should now be in a running server, which has all requirements installed for Quix. As the running image is nothing more than the `quixpythonbaseimage` with your code folder mounted at `/app`, in order to get your application working, you'll need to install your python requirements.
 
