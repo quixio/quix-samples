@@ -6,7 +6,6 @@ import {ParameterData} from "./models/parameter-data";
 import {EnvironmentVariablesService} from "./services/environment-variables.service"
 import {combineLatest} from "rxjs";
 import {map} from 'rxjs/operators';
-import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -39,8 +38,7 @@ export class AppComponent implements OnInit {
   private markers: any[] = new Array();
   public showTokenWarning: boolean = false;
 
-              private activatedRoute: ActivatedRoute,
-              private router: Router) {}
+  constructor(private envVarService: EnvironmentVariablesService) {}
 
   ngOnInit(): void {
 
