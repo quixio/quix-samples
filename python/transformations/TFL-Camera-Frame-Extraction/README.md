@@ -1,6 +1,6 @@
-# TFL traffic camera frame grabber
+# TfL traffic camera frame grabber
 
-This project will allow you to grab frames from your TFL traffic camera feed at a framerate of your choosing
+This project will allow you to grab frames from your TfL traffic camera feed at a framerate of your choosing
 
 ## Environment variables
 

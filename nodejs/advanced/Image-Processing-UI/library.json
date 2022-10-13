@@ -1,14 +1,14 @@
 {
 	"libraryItemId": "5976fcd9-2ed6-407c-bc5f-795891340bb5",
-	"name": "TFL image processing UI",
-	"language": "Python",
+	"name": "TfL image processing UI",
+	"language": "NodeJs",
 	"tags": {
 		"Complexity": ["Medium"],
 		"SDK Usage": ["Read SDK"],
 		"Pipeline Stage": ["Source"]
 	},
-	"shortDescription": "An Angular UI for the TFL image processing demo",
-	"DefaultFile": "src/app/app.component.ts",
+	"shortDescription": "An Angular UI for the TfL image processing demo",
+	"DefaultFile": "src/app/services/environment-variables.service.ts",
 	"EntryPoint": "build/dockerfile",
 	"Variables": [
 		{
@@ -19,15 +19,5 @@
 			"DefaultValue" : "image-processed-merged",
 			"Required": true
 		}
-	],
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 200,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": true,
-		"UrlPrefix": "tfl-demo-ui",
-		"ValidateConnection": false
-	}
+	]
 }

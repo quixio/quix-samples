@@ -39,7 +39,6 @@ export class AppComponent implements OnInit {
   private markers: any[] = new Array();
   public showTokenWarning: boolean = false;
 
-  constructor(private envVarService: EnvironmentVariablesService,
               private activatedRoute: ActivatedRoute,
               private router: Router) {}
 
@@ -64,6 +63,11 @@ export class AppComponent implements OnInit {
         if(x.token == ""){
             this.showTokenWarning = true;
         }
+        this.topic = x.topic;
+        console.log(x.token);
+        console.log(x.topic);
+        console.log(url);
+
         this.ConnectToQuix(x.token, x.topic, url).then(_ => {
             this.subscribeToData(x.topic);
         });
