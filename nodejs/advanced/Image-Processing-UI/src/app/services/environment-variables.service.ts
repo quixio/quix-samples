@@ -17,7 +17,7 @@ export class EnvironmentVariablesService {
   /*
   * Change UseHardcodedValues to True
   * And hardcode the values from your Quix workspace
-  * */
+  *~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
   UseHardcodedValues = false;
   Topic: string = "";

@@ -17,8 +17,8 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic for TFL camera images",
-            "DefaultValue" : "image-raw",
+            "Description" : "This is the output topic for TfL camera images",
+            "DefaultValue" : "tfl-cameras",
             "Required": true
         },
         {
@@ -26,14 +26,14 @@
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
             "Description" : "The frame rate you want to use",
-            "DefaultValue" : "",
+            "DefaultValue" : "100",
             "Required": true
         },
         {
             "Name" : "api_key",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "Your TFL API Key",
+            "Description" : "Your TfL API Key",
             "DefaultValue" : "",
             "Required": true
         }

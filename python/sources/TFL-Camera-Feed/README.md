@@ -1,10 +1,10 @@
-# TFL Camera Feed
+# TfL Camera Feed
 
-Stream TFL's London traffic camera images to Quix
+Stream TfL's London traffic camera images to Quix
 
 ## Requirements/prerequisites (optional)
 	
-You need a [TFL (Transport For London)](https://api-portal.tfl.gov.uk/) account and the API keys to use this service:
+You need a [TfL (Transport For London)](https://api-portal.tfl.gov.uk/) account and the API keys to use this service:
 - Register for an account.
 - Login and click the "Products" menu item.
 - You should have 1 product to choose from "500 Requests per min."
@@ -16,8 +16,9 @@ You need a [TFL (Transport For London)](https://api-portal.tfl.gov.uk/) account 
 
 This code sample uses the following environment variables:
 
-- **output**: This is the output topic for TFL camera images
-- **api_key**: Your TFL API Key
+- **output**: This is the output topic for TfL camera images
+- **api_key**: Your TfL API Key
+- **frame_rate**: The frame rate you want to use
 
 ## Docs
 {This will contain any available references and links to documentation or resource related to the code.}
