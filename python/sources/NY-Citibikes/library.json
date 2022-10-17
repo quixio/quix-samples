@@ -6,7 +6,7 @@
         "Complexity": ["Medium"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Use Case": ["Mobility"]
+        "Popular Subjects": ["Mobility"]
     },
     "shortDescription": "Write New York CitiBike data to a stream",
     "DefaultFile": "main.py",

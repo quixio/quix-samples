@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-        "Use Case": ["Quick Start"],
+        "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
     "shortDescription": "An empty template for C# applications",

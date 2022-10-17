@@ -7,7 +7,7 @@
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Type": ["Code samples"],
-        "Use Case": ["Mobility"]
+        "Popular Subjects": ["Mobility"]
     },
     "shortDescription": "Write Open Weather API data to a stream",
     "DefaultFile": "main.py",
