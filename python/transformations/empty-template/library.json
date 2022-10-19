@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
         "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-        "Use Case": ["Quick Start"],
+        "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
     "shortDescription": "Template of how to transform data between source and destination.",

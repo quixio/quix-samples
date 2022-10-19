@@ -22,24 +22,14 @@ Currently tested to work with [3.8.7](https://www.python.org/downloads/release/p
     sudo apt install python3-pip clang libglib2.0-0 build-essential librdkafka-dev
     python3 -m pip install pycparser
     ```
-    As of writing this document, some dependencies do no correctly install for librdkafka on ubuntu 20.04. These need to be manually installed with the following script, as not available pre-built.
+    In some distributions librdkafka-dev will not be readily available and guide (https://github.com/edenhill/librdkafka) must be followed. For ubuntu 20.04, the following steps are readily curated for you:
     ```
-    mkdir kafkadownloads
-    cd kafkadownloads
-    curl http://ftp.us.debian.org/debian/pool/main/g/glibc/multiarch-support_2.19-18+deb8u10_amd64.deb -O
-    md5=$(md5sum multiarch-support_2.19-18+deb8u10_amd64.deb | cut -b 1-32)
-    if [[ "$md5" != 'c3146eaa5ba5f757d1088b5217c2a313' ]]; then
-    echo "Invalid Md5Hash for multiarch-support: $md5" 1>&2
-    exit 1
-    fi
-    dpkg -i multiarch-support_2.19-18+deb8u10_amd64.deb
-
-    cd ..
-    rm -rdf kafkadownloads
-
-    echo "deb http://security.ubuntu.com/ubuntu bionic-security main" >> /etc/apt/sources.list
-    apt-get update
-    apt-get install libssl1.0.0
+    sudo apt-get install -y wget software-properties-common
+    wget -qO - https://packages.confluent.io/deb/7.2/archive.key | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://packages.confluent.io/deb/7.2 stable main"
+    sudo add-apt-repository "deb https://packages.confluent.io/clients/deb $(lsb_release -cs) main"
+    sudo apt-get update
+    sudo apt install librdkafka-dev -y
     ```
 
 

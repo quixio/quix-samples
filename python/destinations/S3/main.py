@@ -1,10 +1,10 @@
 from quixstreaming import QuixStreamingClient, StreamReader, ParameterData, AutoOffsetReset, CommitOptions, StreamEndType
 from quixstreaming.app import App
-import os
+import os, time
 from datetime import datetime, timedelta
 from pytz import timezone
 from enum import Enum
-from threading import Lock, Timer
+from threading import Lock, Thread
 import gzip
 import boto3
 
@@ -155,28 +155,29 @@ def stream_received_handler(stream: StreamReader):
 topic.on_stream_received += stream_received_handler
 
 def job():
-    print("Debug: started batch job at " + str(datetime.now()))
-    for key in batches.keys():
-        mutex.acquire()
-        try:
-            now = datetime.now()
-            batch = batches[key]
-            if is_new_batch(batch):
-                if batch.count > 0:
-                    upload(key, batch.fname)
-                    print("Info: job() uploaded batch " + batch.fname + " with " + str(batch.count) + " records to S3")
-                fname = file_name(now)
-                batches[key] = Batch(0, now, fname)
-        finally:
-            mutex.release()
-    interval = max_interval.total_seconds() / 2
-    timer = Timer(interval, job)
-    timer.daemon = True
-    timer.start()
-    print("Debug: scheduled next batch job to run at " + str(datetime.now() + timedelta(seconds=interval)))
+    while True:
+        print("Debug: started batch job at " + str(datetime.now()))
+        for key in batches.keys():
+            mutex.acquire()
+            try:
+                now = datetime.now()
+                batch = batches[key]
+                if is_new_batch(batch):
+                    if batch.count > 0:
+                        upload(key, batch.fname)
+                        print("Info: job() uploaded batch " + batch.fname + " with " + str(batch.count) + " records to S3")
+                    fname = file_name(now)
+                    batches[key] = Batch(0, now, fname)
+            finally:
+                mutex.release()
+        interval = max_interval.total_seconds() / 2
+        print("Debug: scheduled next batch job to run at " + str(datetime.now() + timedelta(seconds=interval)))
+        time.sleep(interval)
 
+thread = None
 if batch_mode == BatchMode.TIME or batch_mode == BatchMode.TIME_OR_COUNT:
-    job()
+    thread = Thread(target=job)  
+    thread.start()
     print("Info: started batch scheduler")
 
 print("Listening to streams. Press CTRL-C to exit.")

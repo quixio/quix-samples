@@ -1,0 +1,30 @@
+{
+	"libraryItemId": "0ceed698-7b4f-4549-b209-7d5ab5bc88f6",
+	"name": "Sentiment Demo UI",
+	"language": "NodeJs",
+	"tags": {
+		"Complexity": ["Medium"],
+		"SDK Usage": ["Read SDK"]
+	},
+	"shortDescription": "An Angular UI for the sentiment analysis demo",
+	"DefaultFile": "source/app/services/quix.service.ts",
+	"EntryPoint": "source/build/dockerfile",
+	"Variables": [
+		{
+			"Name" : "sentiment",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "InputTopic",
+			"Description" : "The topic to read from",
+			"DefaultValue" : "sentiment",
+			"Required": true
+		},
+		{
+			"Name" : "messages",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "InputTopic",
+			"Description" : "The topic to read from",
+			"DefaultValue" : "messages",
+			"Required": true
+		}
+	]
+}

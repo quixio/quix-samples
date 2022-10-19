@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
         "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Use Case": ["Quick Start"],
+        "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
     "shortDescription": "The most basic and essential 'Hello World' read sample",
