@@ -9,5 +9,5 @@ class QuixFunction:
         # print first value of ParameterA parameter if it exists
         value = data.timestamps[0].parameters['ParameterA'].numeric_value
         if value is not None:
-            print("ParameterA - " + str(data.timestamps[0]) + ": " + str(value))
+            print("ParameterA - " + str(data.timestamps[0].timestamp) + ": " + str(value))
 
