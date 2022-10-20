@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 
 namespace Quix.SqlServer.Infrastructure.Shared
@@ -13,7 +13,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
             readerAction(reader);
         }
 
-        public static int ExecuteSqlServerStatement(this IDbConnection dbConnection, string sql)
+        public static int ExecuteSqlServerStatement(this IDbConnection dbConnection, string sql, bool suppressErrorLogging = false)
         {
             try
             {
@@ -28,7 +28,11 @@ namespace Quix.SqlServer.Infrastructure.Shared
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                if (!suppressErrorLogging)
+                {
+                    Console.WriteLine($"Sql statement failed: {sql}.");
+                    Console.WriteLine(e);
+                }
                 throw;
             }
         }

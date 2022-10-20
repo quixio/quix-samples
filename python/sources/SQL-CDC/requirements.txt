@@ -1,0 +1,4 @@
+quixstreaming
+pyodbc
+requests
+pandas

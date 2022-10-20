@@ -1,4 +1,4 @@
-﻿namespace Quix.SqlServer.Infrastructure.TimeSeries.Models
+namespace Quix.SqlServer.Infrastructure.TimeSeries.Models
 {
     /// <summary>
     /// SqlServer database connection configuration.
@@ -16,7 +16,7 @@
             get
             {
                 return
-                    $"Server={Server},{Port};Database={Database};Uid={User};Pwd={Password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;";
+                    $"Server={Server},{Port};Database={Database};Uid={User};Pwd={Password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;MultipleActiveResultSets=True;";
             }
         }
     }

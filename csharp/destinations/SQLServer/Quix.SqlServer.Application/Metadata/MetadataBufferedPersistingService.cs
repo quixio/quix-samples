@@ -115,7 +115,14 @@ namespace Quix.SqlServer.Application.Metadata
                 }
             };
 
-            await CacheOpenStreamsFromDatabase();
+            try
+            {
+                await CacheOpenStreamsFromDatabase();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Exception in the Metadata CacheOpenStreamsFromDatabase method.");
+            }
 
             while (true)
             {

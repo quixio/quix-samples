@@ -503,13 +503,16 @@ namespace Quix.SqlServer.Application.TimeSeries
             var parameterCommitDoneTaskSource = new TaskCompletionSource<ParameterCommitItem>();
             var sw = new Stopwatch();
             // Doing locks here, so we can make sure the collection is not getting expanded after doing certain checks
+            
+            this.logger.LogInformation("Entering lock, parameter quueue size: " + this.parameterCommitQueue.Count);
+
             lock (this.paramQueueLock)
             {
                 lock (this.eventQueueLock)
                 {
                     if (this.eventQueue.IsEmpty && this.paramQueue.IsEmpty)
                     {
-                        this.logger.LogDebug("There is nothing to save to time-series db for this commit");
+                        this.logger.LogInformation("There is nothing to save to time-series db for this commit");
                         return;
                     }
                     var eventCommitItem = new EventCommitItem(eventCommitDoneTaskSource, this.eventQueue);
@@ -525,6 +528,9 @@ namespace Quix.SqlServer.Application.TimeSeries
 
                 this.paramQueue = new ConcurrentQueue<StreamParameterDataForWrite>();
             }
+            
+            this.logger.LogInformation("Entering lock, parameter quueue size: " + this.parameterCommitQueue.Count);
+
 
             var compositeTask = Task.WhenAll(eventCommitDoneTaskSource.Task, parameterCommitDoneTaskSource.Task);
             var tsSave = compositeTask.ContinueWith(t=>

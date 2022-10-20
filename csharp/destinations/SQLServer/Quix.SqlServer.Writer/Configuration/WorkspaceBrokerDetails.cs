@@ -1,4 +1,4 @@
-﻿// namespace Quix.SqlServer.Writer.Configuration
+// namespace Quix.SqlServer.Writer.Configuration
 // {
 //     /// <summary>
 //     /// Broker connection details of the Workspace

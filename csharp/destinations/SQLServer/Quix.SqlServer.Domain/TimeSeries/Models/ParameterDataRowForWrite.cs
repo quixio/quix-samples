@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Quix.SqlServer.Domain.TimeSeries.Models
 {
