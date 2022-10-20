@@ -1,4 +1,4 @@
-﻿namespace Quix.SqlServer.Domain.Models
+namespace Quix.SqlServer.Domain.Models
 {
     public enum StreamStatus
     {

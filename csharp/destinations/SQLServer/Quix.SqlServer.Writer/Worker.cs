@@ -49,14 +49,14 @@ namespace Quix.SqlServer.Writer
 
             var kafkaReader = new KafkaReader(kafkaConfiguration, topicId);
 
-            kafkaReader.OnCommitting += (sender, args) =>
+            kafkaReader.OnCommitting += async (sender, args) =>
             {
                 var sw = Stopwatch.StartNew();
-                this.logger.LogTrace("Saving to database the messages read so far.");
-                var taskMetadata = this.metadataBufferedPersistingService.Save();
-                var taskTimeSeries = this.timeSeriesBufferedPersistingService.Save();
-                Task.WaitAll(taskMetadata, taskTimeSeries); // Very important. The save has to complete within this callback
-                this.logger.LogDebug("Saved to database the messages read so far in {0:g}.", sw.Elapsed);
+                this.logger.LogInformation("Saving to database the messages read so far.");
+                await this.metadataBufferedPersistingService.Save();
+                await this.timeSeriesBufferedPersistingService.Save();
+                //Task.WaitAll(taskMetadata, taskTimeSeries); // Very important. The save has to complete within this callback
+                this.logger.LogInformation("Saved to database the messages read so far in {0:g}.", sw.Elapsed);
             };
             
             kafkaReader.ForEach(streamId =>

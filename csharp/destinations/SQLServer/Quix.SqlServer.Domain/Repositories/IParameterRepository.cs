@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Quix.SqlServer.Domain.Common;
 using Quix.SqlServer.Domain.Models;

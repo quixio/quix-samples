@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using Microsoft.Extensions.Logging;
 using Quix.SqlServer.Domain.Models;
 using Quix.SqlServer.Domain.Repositories;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Quix.Sdk.Process.Models;
 using Quix.SqlServer.Application.Models;
