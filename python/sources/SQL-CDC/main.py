@@ -13,7 +13,6 @@ last_modified_storage_key = "LAST_MODIFIED"
 
 config = helper_functions.load_config()
 table_name = config["table_name"]
-print(config)
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.

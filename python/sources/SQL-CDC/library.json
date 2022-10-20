@@ -50,7 +50,7 @@
         {
           "Name": "password",
           "Type": "EnvironmentVariable",
-          "InputType": "FreeText",
+          "InputType": "HiddenText",
           "Description": "The password.",
           "DefaultValue": "",
           "Required": true

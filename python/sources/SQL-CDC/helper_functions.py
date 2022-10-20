@@ -32,7 +32,6 @@ def load_config():
 
     try:
         if passed_rename_cols != "":
-            print(passed_rename_cols)
             rename_cols = json.loads(passed_rename_cols)
     except Exception as e:
         raise Exception("Invalid JSON supplied for column renames", e)
