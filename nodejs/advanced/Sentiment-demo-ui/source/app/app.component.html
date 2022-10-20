@@ -1,0 +1,18 @@
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+    <a routerLink="/lobby" routerLinkActive="active" >
+      <span class="title">Sentiment analyis Demo</span>
+    </a>
+    </div>
+
+    <div class="header-nav" [clr-nav-level]="1">
+      <a routerLink="/lobby" class="nav-link" routerLinkActive="active"><span class="nav-text">Lobby</span></a>
+    </div>
+  </clr-header>
+  <div class="content-container">
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</clr-main-container>

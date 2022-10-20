@@ -1,4 +1,4 @@
-﻿namespace Quix.Redshift.Infrastructure.TimeSeries.Models
+namespace Quix.Redshift.Infrastructure.TimeSeries.Models
 {
     /// <summary>
     /// Redshift database connection configuration.
@@ -15,5 +15,9 @@
         public string Region { get; set; }
 
         public string DatabaseName { get; set; }
+
+        public string ClusterIdentifier { get; set; }
+
+        public string DbUser { get; set; }
     }
 }

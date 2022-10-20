@@ -1,6 +1,12 @@
-**/bin/
+**/ref/
 **/obj/
-**/ca.cert
-**/.idea/
-**/.vscode/
-**/node_modules/
+**/bin/
+DotSettings.user
+**DotSettings.user
+ca.cert
+.idea/
+__pycache__/
+certificates/
+state/
+**/node_modules/**
+.vscode/

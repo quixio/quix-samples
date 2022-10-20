@@ -1,11 +1,13 @@
+# Purpose
+The purpose of the local docker setup is to create a temporary environment which can be used to test code or environment changes without affecting your host machine. You can use it to change your codebase, but any environment change, such as package install would have to be manually added to your dockerfile.
 
 
-# Installlation
+# Installation
 
 You need to have installed these prerequisities to run the system. 
 
- * Docker (tested on version 19.03.6)
- * Docker Compose (tested on version 1.23.1)
+ * Docker (tested on version 20.10.17)
+ * Docker Compose (tested on version 1.29.2)
 
 ### Install Docker ( step 1 )
 
@@ -19,45 +21,32 @@ You can do so by follow this guide: https://docs.docker.com/compose/install/.
 
 # Running the application
 
-### Simple one-time run
+### Setup
 
-You can start the build by running the docker compose file.
+Copy `docker` folder to your application's root.
 
-```
-docker-compose up --build
-```
+### Build and run
 
+Open a command line within your new `docker` folder.
 
-### Running as a daemon in the background
-
-If you want to run the application as a daemon in the background, you can use this command:
+You can start the build by running the following command.
 
 ```
-docker-compose stop && docker-compose up --build -d
+docker-compose run --rm server
 ```
 
-This command to access application logs:
+This step may take some time the first time, future runs should be a lot faster.
 
-```
-docker-compose logs -f
-```
+Using the docker file provided, you should now be in a running server, which has all requirements installed for Quix. As the running image is nothing more than the `quixpythonbaseimage` with your code folder mounted at `/app`, in order to get your application working, you'll need to install your python requirements.
 
-And this command to stop the application:
-
+You can do this using the following, executed in the `/app` folder
 ```
-docker-compose stop
+python3 -m pip install -r requirements.txt --extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/
 ```
 
-### Accessing the system Bash
+Use the resulting environment as you would your own machine, such as run your python application by executing `python3 main.py`
 
-If you want to install the new Python package or freeze current packages, you need to access the internal Bash of the Docker. First, you need to have the application started as a deamon (one step above).
+Note: As `/apps` folder is a mounted directory, any file or folder change in the container will be synced to your original folder in your machine and vice-versa.
 
-Then execute:
-
-```
-docker-compose exec server bash
-```
-
-
-Once you are here, you can install the Python package as you are used to (e.g., `pip install YOUR_PACKAGE` or `pip freeze -r requirements.txt`).
-
+### Additional configuration
+As your environment variables will greatly depend on what your application needs, make sure to update `docker/.env` as needed. By default all values are placeholder and this might be something you need to configure or add to before the application can correctly run. Several of these environment values could be considered "secrets", therefore be mindful of what you end up committing to your repository.
