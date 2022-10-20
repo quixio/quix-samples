@@ -28,7 +28,7 @@
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
           "Description": "The table to monitor.",
-          "DefaultValue": "\{/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.1.so.1.1\}",
+          "DefaultValue": "\\{/opt/microsoft/msodbcsql18/lib64/libmsodbcsql-18.1.so.1.1\\}",
           "Required": true
         },
         {
@@ -107,7 +107,7 @@
           "Name": "columns_to_rename",
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
-          "Description": "Columns to rename while streaming to Quix. This must be valid json e.g. `\{"DB COLUMN NAME":"QUIX_COLUMN_NAME"\}` or `\{"source_1":"dest_1", "source_2":"dest_2"\}`",
+          "Description": "Columns to rename while streaming to Quix. This must be valid json e.g. `\\{"DB COLUMN NAME":"QUIX_COLUMN_NAME"\\}` or `\\{"source_1":"dest_1", "source_2":"dest_2"\\}`",
           "DefaultValue": "",
           "Required": true
         },
