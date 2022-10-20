@@ -1,0 +1,22 @@
+FROM quixpythonbaseimage
+
+WORKDIR /app
+
+RUN apt-get update && \
+    apt-get install python-dev gcc -y && \
+    apt-get install lsb-core -y && \
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+    apt-get update && \
+    ACCEPT_EULA=Y apt-get install -y msodbcsql18 && \
+    # optional: for bcp and sqlcmd && \
+    ACCEPT_EULA=Y apt-get install -y mssql-tools18 && \
+    echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc && \
+    . ~/.bashrc && \
+    # optional: for unixODBC development headers && \
+    apt-get install -y unixodbc-dev
+
+
+COPY --from=git /project .
+RUN find | grep requirements.txt | xargs -I '{}' python3 -m pip install -i http://pip-cache.pip-cache.svc.cluster.local/simple --trusted-host pip-cache.pip-cache.svc.cluster.local -r '{}' --extra-index-url https://pypi.org/simple --extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/
+ENTRYPOINT python3 main.py
