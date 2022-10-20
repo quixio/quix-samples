@@ -16,17 +16,15 @@ namespace Quix.SqlServer.Infrastructure.Shared
 {
     public abstract class SqlServerRepository<T> where T : new()
     {
-        protected readonly IDbConnection ReaderDatabaseConnection;
-        protected readonly IDbConnection WriterDatabaseConnection;
+        protected readonly IDbConnection DatabaseConnection;
         protected readonly ILogger logger;
         private readonly SqlServerModelSchema schema;
         private const string InformationSchema = "dbo"; // Maybe this could come from config ?
         private const int MaxQueryByteSize = 1024 * 1024 * 8 - 1024*64; // 1 MB, -64 KB for safety margin
 
-        protected SqlServerRepository(IDbConnection readerDatabaseConnection, IDbConnection writerDatabaseConnection, ILogger logger)
+        protected SqlServerRepository(IDbConnection databaseConnection, ILogger logger)
         {
-            this.ReaderDatabaseConnection = readerDatabaseConnection;
-            this.WriterDatabaseConnection = writerDatabaseConnection;
+            this.DatabaseConnection = databaseConnection;
             this.logger = logger;
             this.schema = this.ValidateSchema();
             Initialize();
@@ -122,14 +120,14 @@ namespace Quix.SqlServer.Infrastructure.Shared
             }
             setTimer();
             
-            this.logger.LogTrace("Executing SqlServer statement:{0}{1}", Environment.NewLine, statement);
+            //this.logger.LogTrace("Executing SqlServer statement:{0}{1}", Environment.NewLine, statement);
             try
             {
-                WriterDatabaseConnection.ExecuteSqlServerStatement(statement);
+                DatabaseConnection.ExecuteSqlServerStatement(statement);
             }
             catch (Exception ex)
             {
-                this.logger.LogError("Failed to execute SqlServer statement:{0}{1}", Environment.NewLine, statement);
+                this.logger.LogError( ex,"SQL query failed: " + statement);
                 throw;
             }
             finally
@@ -138,7 +136,8 @@ namespace Quix.SqlServer.Infrastructure.Shared
             }
 
             sw.Stop();
-            this.logger.LogDebug("Executed SqlServer statement in {0:g}:{1}{2}", sw.Elapsed, Environment.NewLine, statement);
+            this.logger.LogDebug("Executed SqlServer statement in {0:g}", sw.Elapsed);
+            this.logger.LogTrace("{0}", statement);
         }
 
         public Task<IList<T>> Get(FilterDefinition<T> filter)
@@ -153,12 +152,22 @@ namespace Quix.SqlServer.Infrastructure.Shared
             this.logger.LogTrace("SqlServer query statement: {0}", selectStatement);
             var sw = Stopwatch.StartNew();
             List<T> result = null;
-            ReaderDatabaseConnection.QuerySqlServer(selectStatement, reader =>
+
+            try
             {
-                sw.Stop();
-                this.logger.LogDebug("Executed SqlServer query statement in {0:g}: {1}", sw.Elapsed, selectStatement);
-                result = ParseModels<T>(reader, primaryfieldMap, this.schema.TypeMapFrom).ToList();
-            });
+                DatabaseConnection.QuerySqlServer(selectStatement, reader =>
+                {
+                    sw.Stop();
+                    this.logger.LogDebug("Executed SqlServer query statement in {0:g}", sw.Elapsed);
+                    this.logger.LogTrace("{0}",selectStatement);
+                    result = ParseModels<T>(reader, primaryfieldMap, this.schema.TypeMapFrom).ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError( ex,"SQL query failed: " + selectStatement);
+                throw;
+            }
 
             // TODO set foreign table values ... Would reduce the updates on first encounter, but after that it is cached anyway...
 
@@ -267,11 +276,11 @@ namespace Quix.SqlServer.Infrastructure.Shared
             {
                 if (string.IsNullOrWhiteSpace(filterStatement))
                 {
-                    yield return $"DELETE FROM {pair.Value.ForeignTableName} USING {this.schema.TableName} WHERE {pair.Value.ForeignTableName}.{pair.Value.KeyInForeignTable} = {this.schema.TableName}.{GetColumName(this.schema.PrimaryKeyMemberInfo)}";
+                    yield return $"DELETE SM FROM {pair.Value.ForeignTableName} AS SM INNER JOIN \"{this.schema.TableName}\" AS S ON {pair.Value.ForeignTableName}.{pair.Value.KeyInForeignTable} = {this.schema.TableName}.{GetColumName(this.schema.PrimaryKeyMemberInfo)}";
                     continue;
                 }
-
-                yield return $"DELETE FROM {pair.Value.ForeignTableName} USING (select {GetColumName(this.schema.PrimaryKeyMemberInfo)} as {GetColumName(this.schema.PrimaryKeyMemberInfo)} from {this.schema.TableName} WHERE {filterStatement}) as {this.schema.TableName} WHERE {pair.Value.ForeignTableName}.{pair.Value.KeyInForeignTable} = {this.schema.TableName}.{GetColumName(this.schema.PrimaryKeyMemberInfo)}";
+                
+                yield return $"DELETE FTN FROM {pair.Value.ForeignTableName} as FTN INNER JOIN   USING (select {GetColumName(this.schema.PrimaryKeyMemberInfo)} as {GetColumName(this.schema.PrimaryKeyMemberInfo)} from {this.schema.TableName} WHERE {filterStatement}) as {this.schema.TableName} WHERE {pair.Value.ForeignTableName}.{pair.Value.KeyInForeignTable} = {this.schema.TableName}.{GetColumName(this.schema.PrimaryKeyMemberInfo)}";
             }
         }
 
@@ -327,7 +336,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
 
         private IEnumerable<string> GenerateUpdateModelStatement(T primaryModel, UpdateDefinition<T> updateDefinition, string mainTableFilter = null)
         {
-            var filter = mainTableFilter ?? $"{GetColumName(this.schema.PrimaryKeyMemberInfo)} = {GenerateSqlValueText(Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, primaryModel))}";
+            var filter = mainTableFilter ?? $"[{this.schema.PrimaryKeyMemberInfo.Name}] = {GenerateSqlValueText(Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, primaryModel))}";
             switch (updateDefinition)
             {
                 case SetUpdateDefinition<T> setUpdateDefinition:
@@ -344,15 +353,15 @@ namespace Quix.SqlServer.Infrastructure.Shared
                     if (!this.schema.ForeignTables.TryGetValue(memberExpression.Member, out var foreignTable))
                     {
                         var filterToUse = string.IsNullOrWhiteSpace(filter) ? filter : " WHERE " + filter;
-                        yield return $"UPDATE {schema.TableName} SET {GetColumName(memberExpression.Member)} = {GenerateSqlValueText(setUpdateDefinition.Value)}{filterToUse}";
+                        yield return $"UPDATE [{schema.TableName}] SET [{memberExpression.Member.Name}] = {GenerateSqlValueText(setUpdateDefinition.Value)}{filterToUse}";
                         yield break;
                     }
 
-                    var fullFilter = mainTableFilter ?? $"{this.schema.TableName}.{filter}";
+                    var fullFilter = mainTableFilter ?? $"t2.{filter}";
                     if (!string.IsNullOrWhiteSpace(fullFilter)) fullFilter = " AND " + fullFilter;
                     yield return
-                        $"DELETE FROM {foreignTable.ForeignTableName} using {this.schema.TableName} where {foreignTable.ForeignTableName}.{foreignTable.KeyInForeignTable} = {this.schema.TableName}.{GetColumName(this.schema.PrimaryKeyMemberInfo)}{fullFilter}";
-                    
+                        $"DELETE t1 FROM [{foreignTable.ForeignTableName}] AS t1 INNER JOIN [{this.schema.TableName}] AS t2 ON t1.[{foreignTable.KeyInForeignTable}] = t2.[{this.schema.PrimaryKeyMemberInfo.Name}]{fullFilter}";
+
                     var vals =  GenerateForeignTableInsertStatement(foreignTable, setUpdateDefinition.Value as IEnumerable, Utils.GetFieldOrPropValue(this.schema.PrimaryKeyMemberInfo, primaryModel));
                     if (!string.IsNullOrWhiteSpace(vals)) yield return vals;
                     yield break;
@@ -383,7 +392,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
                     return string.Join(" AND ", andFilter.FilterDefinitions.Select(y => GenerateFilterStatement(y, includeTable)));
                 case InFilterDefinition<T> inFilter:
                     var vals = GenerateValueListStatement(inFilter.Values);
-                    if (string.IsNullOrWhiteSpace(vals)) return "FALSE";
+                    if (string.IsNullOrWhiteSpace(vals)) return "1=0";
                     memberExpression = Utils.GetMemberExpression(inFilter.Selector);
                     return $"{GetMemberExpressionNameForColumn(memberExpression.Member, includeTable)} IN ({vals})";
                 case NotFilterDefinition<T> notFilter:
@@ -432,10 +441,10 @@ namespace Quix.SqlServer.Infrastructure.Shared
             var typeDict = new Dictionary<Type, Func<string>>()
             {
                 {
-                    typeof(string), () => "'" + value.ToString().Replace("'", "\\'") + "'"
+                    typeof(string), () => "'" + value.ToString() + "'"
                 },
                 {
-                    typeof(DateTime), () => "'" + ((DateTime)value).ToString("O").Replace("'", "\\'") + "'"
+                    typeof(DateTime), () => "'" + ((DateTime)value).ToString("yyyyMMdd HH:MM:ss") + "'"
                 },
             };
 
@@ -496,7 +505,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
 
         private string GenerateForeignTableInsertStatement(SqlServerForeignTableSchema foreignTable, IEnumerable elements, object keyValueInForeignTable)
         {
-            var keyValue = GenerateSqlValueText(keyValueInForeignTable);
+            var keyValue = keyValueInForeignTable.ToString();
             if (foreignTable.ColumnMemberInfos == null)
             {
                 var columName = Utils.UnPluralize(GetColumName(foreignTable.ForeignMemberInfo));
@@ -508,7 +517,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
 
                 if (values.Count == 0) return null;
 
-                return $"INSERT INTO {foreignTable.ForeignTableName} ({foreignTable.KeyInForeignTable}, {columName}) VALUES ({string.Join("), (", values)})";
+                return $"INSERT INTO \"{foreignTable.ForeignTableName}\" ({foreignTable.KeyInForeignTable}, {columName}) VALUES ({string.Join("), (", values)})";
             }
 
             if (foreignTable.ColumnMemberInfos.Count == 0) throw new Exception($"Not able to save values for table {foreignTable.ForeignTableName} due to unhandled scenario");
@@ -529,7 +538,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
 
             if (columnValues.Count == 0) return null;
 
-            return $"INSERT INTO {foreignTable.ForeignTableName} ({foreignTable.KeyInForeignTable}, {string.Join(", ", columnNames)}) VALUES ({string.Join("), (", columnValues)})";
+            return $"INSERT INTO \"{foreignTable.ForeignTableName}\" ({foreignTable.KeyInForeignTable}, {string.Join(", ", columnNames)}) VALUES ({string.Join("), (", columnValues)})";
         }
 
         private static string GetColumName(MemberInfo memberInfo)
@@ -566,7 +575,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
         {
             var checkForTableSql = $"SELECT coalesce((SELECT '1' FROM information_schema.tables WHERE table_schema = '{InformationSchema}' AND table_name = '{table.ToUpperInvariant()}'), '0')";
             var exists = false;
-            ReaderDatabaseConnection.QuerySqlServer(checkForTableSql, existingTablesReader =>
+            DatabaseConnection.QuerySqlServer(checkForTableSql, existingTablesReader =>
             {
                 while (existingTablesReader.Read())
                 {
@@ -601,7 +610,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
             {
                 // if not
                 // create the table
-                WriterDatabaseConnection.ExecuteSqlServerStatement(
+                DatabaseConnection.ExecuteSqlServerStatement(
                     $"CREATE TABLE {InformationSchema}{(InformationSchema != "" ? "." : "")}{tableName} ({string.Join(", ", columnToTypes.Select(y => $"{y.Key} {y.Value}"))})");
 
                 //todo do we need some kind of clustering
@@ -614,7 +623,7 @@ namespace Quix.SqlServer.Infrastructure.Shared
                 // otherwise
                 // get the tables existing column names and add them to the list
                 var sql = $"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{tableName.ToUpperInvariant()}'";
-                WriterDatabaseConnection.QuerySqlServer(sql, existingColumnNameReader =>
+                DatabaseConnection.QuerySqlServer(sql, existingColumnNameReader =>
                 {
                     var cols = new List<string>();
                     while (existingColumnNameReader.Read())

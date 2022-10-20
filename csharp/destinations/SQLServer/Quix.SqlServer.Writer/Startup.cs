@@ -82,7 +82,7 @@ namespace Quix.SqlServer.Writer
             // SqlServer
             services.AddScoped<SqlServerConnectionValidatorService>();
             SqlServerSchemaRegistry.Register();
-            services.AddTransient(sc =>
+            services.AddSingleton(sc =>
             {
                 var config = sc.GetRequiredService<SqlServerConnectionConfiguration>();
                 //var conn = new SqlServerDbConnection();
@@ -91,7 +91,6 @@ namespace Quix.SqlServer.Writer
                 return conn;
             });
             services.AddSingleton<IDbConnection>(sc => sc.GetRequiredService<SqlConnection>()); // using IDbConnection at some places for mocking purposes
-            
             // services.AddSingleton<IDbConnection>(sc => sc.GetRequiredService<SqlServerDbConnection>()); // using IDbConnection at some places for mocking purposes
             
             // Stream context

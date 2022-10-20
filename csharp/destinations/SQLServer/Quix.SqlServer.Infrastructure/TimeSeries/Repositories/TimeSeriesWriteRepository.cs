@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -23,8 +23,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
     {
         private readonly ILogger<TimeSeriesWriteRepository> logger;
         private readonly IDbConnection dbConnection;
-        private readonly IDbConnection writerConnection;
-
+        
         private const string ParameterValuesTablePrefix = "PARAMETERVALUES";
         private const string EventValuesTablePrefix = "EVENTVALUES";
         private const string InformationSchema = "dbo";
@@ -42,26 +41,21 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
         private readonly string topicDisplayName;
         private readonly string parameterValuesTableName;
         private readonly string eventValuesTableName;
-        private readonly Stopwatch batchStopWatch;
 
         public TimeSeriesWriteRepository(
             ILoggerFactory loggerFactory,
             IDbConnection dbConnection,
-            IDbConnection writerConnection,
             TopicName topicName)
         {
             this.logger = loggerFactory.CreateLogger<TimeSeriesWriteRepository>();
             this.dbConnection = dbConnection;
-            this.writerConnection = writerConnection;
             if (dbConnection == null) throw new ArgumentNullException(nameof(dbConnection));
-            if (writerConnection == null) throw new ArgumentNullException(nameof(writerConnection));
             
             this.topicDisplayName = Regex.Replace(topicName.Value, "[^\\w+]", "").ToUpper();
             
             this.parameterValuesTableName = $"{ParameterValuesTablePrefix}_{topicDisplayName}";
             this.eventValuesTableName = $"{EventValuesTablePrefix}_{topicDisplayName}";
 
-            this.batchStopWatch = Stopwatch.StartNew();
             
             Initialize();
         }
@@ -69,7 +63,6 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
         public void Dispose()
         {
             dbConnection.Close();
-            writerConnection.Close();
         }
 
         private bool TableExists(string table)
@@ -136,8 +129,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
         {
             this.logger.LogDebug("Checking tables...");
             
-            CheckDbConnection(dbConnection);
-            CheckDbConnection(writerConnection);
+            CheckDbConnection();
 
             // verify tables exist, if not create them
             VerifyTable(parameterValuesTableName, parameterColumns);
@@ -148,7 +140,7 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
 
         public Task WriteTelemetryData(string topicId, IEnumerable<KeyValuePair<string, IEnumerable<ParameterDataRowForWrite>>> streamParameterData)
         {
-            CheckDbConnection(writerConnection);
+            CheckDbConnection();
             
             var sqlInserts = new Dictionary<string, List<string>>();
             
@@ -173,9 +165,9 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             return Task.CompletedTask;
         }
         
-        private void CheckDbConnection(IDbConnection conn)
+        private void CheckDbConnection()
         {
-            if (conn.State != ConnectionState.Open)
+            if (dbConnection.State != ConnectionState.Open)
                 throw new Exception("Database connection is not in the 'Open' state");
         }
 
@@ -595,10 +587,10 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
             ExecuteStatement(sb.ToString());
         }
         
-        private void ExecuteStatement(string statement)//, bool retry = true)
+        private void ExecuteStatement(string statement, bool retry = true)
         {
             if (string.IsNullOrWhiteSpace(statement)) return;
-            this.logger.LogInformation("Executing SqlServer statement:{0}{1}", Environment.NewLine, statement);
+            //this.logger.LogInformation("Executing SqlServer statement:{0}{1}", Environment.NewLine, statement);
             var sw = Stopwatch.StartNew();
             IDisposable timer = null;
 
@@ -615,29 +607,29 @@ namespace Quix.SqlServer.Infrastructure.TimeSeries.Repositories
 
             try
             {
-                writerConnection.ExecuteSqlServerStatement(statement, suppressErrorLogging: true);
+                dbConnection.ExecuteSqlServerStatement(statement, suppressErrorLogging: true);
             }
             catch (Exception ex)
             {
-                //if (!retry)
+                if (!retry)
                 {
                     this.logger.LogError("Failed to execute SqlServer statement:{0}{1}", Environment.NewLine, statement);
                     throw;
                 }
-                // else
-                // {
-                //     if (dbConnection.State == ConnectionState.Open)
-                //     {
-                //         this.logger.LogInformation("Cycling connection before retrying..");
-                //         dbConnection.Close();
-                //         dbConnection.Open();
-                //     }
-                //
-                //     //try 1 more time..
-                //     ExecuteStatement(statement, false);
-                //     
-                //     this.logger.LogInformation("Retry succeeded");
-                // }
+                else
+                {
+                    if (dbConnection.State == ConnectionState.Open)
+                    {
+                        this.logger.LogInformation("Cycling connection before retrying..");
+                        dbConnection.Close();
+                        dbConnection.Open();
+                    }
+
+                    //try 1 more time..
+                    ExecuteStatement(statement, false);
+                    
+                    this.logger.LogInformation("Retry succeeded");
+                }
             }
             finally
             {

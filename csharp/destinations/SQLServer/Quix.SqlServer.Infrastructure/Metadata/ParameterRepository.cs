@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using Microsoft.Extensions.Logging;
 using Quix.SqlServer.Domain.Models;
 using Quix.SqlServer.Domain.Repositories;
@@ -8,7 +8,7 @@ namespace Quix.SqlServer.Infrastructure.Metadata
 {
     public class ParameterRepository : SqlServerRepository<TelemetryParameter>, IParameterRepository
     {
-        public ParameterRepository(IDbConnection readerDatabaseConnection, IDbConnection writerDatabaseConnection, ILoggerFactory loggerFactory) : base(readerDatabaseConnection, writerDatabaseConnection, loggerFactory.CreateLogger<ParameterRepository>())
+        public ParameterRepository(IDbConnection databaseConnection, ILoggerFactory loggerFactory) : base(databaseConnection, loggerFactory.CreateLogger<ParameterRepository>())
         {
         }
     }
