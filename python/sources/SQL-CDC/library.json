@@ -101,7 +101,7 @@
           "InputType": "FreeText",
           "Description": "Comma separated list of columns to exclude from data copied from the target table to Quix. ",
           "DefaultValue": "",
-          "Required": true
+          "Required": false
         },
         {
           "Name": "columns_to_rename",
@@ -109,7 +109,7 @@
           "InputType": "FreeText",
           "Description": "Columns to rename while streaming to Quix. This must be valid json e.g. `\\{\"DB COLUMN NAME\":\"QUIX_COLUMN_NAME\"\\}` or `\\{\"source_1\":\"dest_1\", \"source_2\":\"dest_2\"\\}`",
           "DefaultValue": "",
-          "Required": true
+          "Required": false
         },
         {
           "Name": "poll_interval_seconds",
