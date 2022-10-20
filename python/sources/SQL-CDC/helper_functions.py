@@ -18,9 +18,9 @@ def load_config():
     except Exception as e:
         raise Exception("Use UTC For Offset must be True or False", e)
 
-    drop_cols = os.environ["columns_to_drop"]
+    drop_cols = os.getenv("columns_to_drop")
     rename_cols = None
-    passed_rename_cols = os.environ["columns_to_rename"]
+    passed_rename_cols = os.getenv("columns_to_rename")
     
     try:
         poll_interval = int(os.environ["poll_interval_seconds"])
@@ -31,7 +31,7 @@ def load_config():
         poll_interval = 1
 
     try:
-        if passed_rename_cols != "":
+        if passed_rename_cols != None and passed_rename_cols != "":
             rename_cols = json.loads(passed_rename_cols)
     except Exception as e:
         raise Exception("Invalid JSON supplied for column renames", e)
