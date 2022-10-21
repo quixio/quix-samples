@@ -1,0 +1,14 @@
+{
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "This is the input topic for demo data",
+      "DefaultValue": "f1-data",
+      "Required": true
+    }
+  ],
+  "EntryPoint": "build/dockerfile",
+  "RunEntryPoint": "main.py"
+}
