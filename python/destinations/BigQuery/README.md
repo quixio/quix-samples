@@ -13,7 +13,7 @@ The code sample uses the following environment variables:
 - **PROJECT_ID**: The BigQuery GCP Project ID.
 - **DATASET_ID**: The target Biguqery dataset ID.
 - **DATASET_LOCATION**: Location of BigQuery dataset.
-- **SERVICE_KEY_PATH**: The path of the service key to connect to the BigQuery project.
+- **SERVICE_KEY_PATH**: The path to the service key of the BigQuery GCP project.
 
 ## Known limitations 
 - BigQuery fails to immediately recognise new Schema changes such as adding a new field when streaming insert data.

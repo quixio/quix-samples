@@ -20,10 +20,10 @@ class Null:
 def dataset_exists(client, dataset_id: str):
     try:
         client.get_dataset(dataset_id)
-        logger.info("Dataset {} already exists".format(dataset_id))
+        logger.debug("Dataset {} already exists".format(dataset_id))
         return True
     except NotFound:
-        logger.info("Dataset {} is not found".format(dataset_id))
+        logger.debug("Dataset {} is not found".format(dataset_id))
         return False
 
 def create_dataset(client):
@@ -32,7 +32,7 @@ def create_dataset(client):
         dataset = bigquery.Dataset(dataset_id)
         dataset.location = DATASET_LOCATION
         dataset = client.create_dataset(dataset, timeout=30)
-        logger.info("Created dataset {}.{}".format(client.project, dataset.dataset_id))
+        logger.debug("Created dataset {}.{}".format(client.project, dataset.dataset_id))
 
 def connect_bigquery():
     
@@ -48,10 +48,10 @@ def connect_bigquery():
 def table_exists(client, table_id: str):
     try:
         client.get_table(table_id)
-        logger.info("Table {} already exists.".format(table_id))
+        logger.debug("Table {} already exists.".format(table_id))
         return True
     except NotFound:
-        logger.info("Table {} is not found.".format(table_id))
+        logger.debug("Table {} is not found.".format(table_id))
         return False 
 
 
@@ -60,7 +60,7 @@ def create_table(client, table_name: str, schema: list):
     if not table_exists(client, table_id):
         table = bigquery.Table(table_id, schema=schema)
         table = client.create_table(table)
-        logger.info(
+        logger.debug(
             "Created table {}.{}.{}".format(table.project, table.dataset_id, table.table_id)
         )
 
@@ -127,7 +127,7 @@ def create_column(client, table_name: str, column_name: str, col_type: str):
         table = client.update_table(table, ["schema"])
 
         if len(table.schema) == len(original_schema) + 1 == len(new_schema):
-            logger.info("A new column has been added.")
+            logger.debug("A new column has been added.")
         else:
             logger.error("The column has not been added.")
 
@@ -144,7 +144,7 @@ def insert_row(client, table_name: str, cols: list, vals: list):
 
     errors = client.insert_rows_json(table_id, rows_to_insert)
     if errors == []:
-        logger.info("New rows have been added.")
+        logger.debug("New rows have been added.")
     else:
         logger.error("Encountered errors while inserting rows: {}".format(errors))
 
