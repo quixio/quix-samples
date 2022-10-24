@@ -1,6 +1,7 @@
 import time
 from queue import Queue
 import threading
+from setup_logger import logger
 
 from postgres_helper import create_column, Null, insert_row
 
@@ -27,19 +28,19 @@ def insert_from_queue(conn, table_name: str, insert_queue: Queue, wait_interval:
                     try:
                         create_column(conn, table_name, col, 'STRING')
                     except Exception as error:
-                        print(error)
+                        logger.error(error)
                         continue
                 if col[-2:] == '_s':
                     try:
                         create_column(conn, table_name, col, 'STRING')
                     except Exception as error:
-                        print(error)
+                        logger.error(error)
                         continue
                 if col[-2:] == '_n':
                     try:
                         create_column(conn, table_name, col, 'NUMERIC')
                     except Exception as error:
-                        print(error)
+                        logger.error(error)
                         continue
 
             all_rows = []
@@ -48,11 +49,11 @@ def insert_from_queue(conn, table_name: str, insert_queue: Queue, wait_interval:
                 for col in all_cols:
                     r_v.append(r.get(col, Null()))
                 all_rows.append(r_v)
-            print(
+            logger.debug(
                 f"Inserting row from thread: {tid}, queue size: {insert_queue.qsize()}")
             try:
                 insert_row(conn, table_name, all_cols, all_rows)
             except Exception as error:
-                print(error)
+                logger.error(error)
                 continue
             batch = [] #Empty batch
