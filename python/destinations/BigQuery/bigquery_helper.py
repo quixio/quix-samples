@@ -1,12 +1,13 @@
 from google.cloud import bigquery
 from google.cloud.exceptions import NotFound
 from google.oauth2 import service_account
+import os
 
 # BigQuery Constants
-PROJECT_ID = ""
-DATASET_ID = ""
-DATASET_LOCATION = ""
-SERVICE_KEY_PATH = ""
+PROJECT_ID = os.environ["PROJECT_ID"]
+DATASET_ID = os.environ["DATASET_ID"]
+DATASET_LOCATION = os.environ["DATASET_LOCATION"]
+SERVICE_KEY_PATH = os.environ["SERVICE_KEY_PATH"]
 
 class Null:
     def __init__(self):
