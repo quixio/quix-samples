@@ -7,8 +7,47 @@
       "Description": "This is the input topic for demo data",
       "DefaultValue": "f1-data",
       "Required": true
+    },
+    {
+      "Name": "PROJECT_ID",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "The BigQuery GCP Project ID",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "DATASET_ID",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The target Biguqery dataset ID",
+      "DefaultValue": "5432",
+      "Required": true
+    },
+    {
+      "Name": "DATASET_LOCATION",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Location of BigQuery dataset",
+      "DefaultValue": "US",
+      "Required": true
+    },
+    {
+      "Name": "SERVICE_KEY_PATH",
+      "Type": "EnvironmentVariable",
+      "InputType": "HiddenText",
+      "Description": "The path of the service key to connect to the BigQuery project",
+      "DefaultValue": "",
+      "Required": true
     }
   ],
   "EntryPoint": "build/dockerfile",
-  "RunEntryPoint": "main.py"
+  "RunEntryPoint": "main.py",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "ValidateConnection": true
+  }
 }
