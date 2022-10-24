@@ -8,15 +8,5 @@
 	},
 	"shortDescription": "Share settings to external apps",
 	"DefaultFile": "ui/source/app/services/quix.service.ts",
-	"EntryPoint": "build/dockerfile",
-	"DeploySettings":
-	{
-		"DeploymentType": "Service",
-		"CpuMillicores": 100,
-		"MemoryInMb": 200,
-		"Replicas": 1,
-		"PublicAccess": true,
-		"UrlPrefix": "qr-settings-share",
-		"ValidateConnection": false
-	}
+	"EntryPoint": "build/dockerfile"
 }
