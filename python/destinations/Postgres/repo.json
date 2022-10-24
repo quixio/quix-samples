@@ -11,7 +11,7 @@
     {
       "Name": "PG_HOST",
       "Type": "EnvironmentVariable",
-      "InputType": "InputTopic",
+      "InputType": "FreeText",
       "Description": "Host name of Postgres",
       "DefaultValue": "",
       "Required": true
