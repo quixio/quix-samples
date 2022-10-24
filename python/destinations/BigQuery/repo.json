@@ -11,7 +11,7 @@
     {
       "Name": "PROJECT_ID",
       "Type": "EnvironmentVariable",
-      "InputType": "InputTopic",
+      "InputType": "FreeText",
       "Description": "The BigQuery GCP Project ID",
       "DefaultValue": "",
       "Required": true
@@ -20,8 +20,8 @@
       "Name": "DATASET_ID",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The target Biguqery dataset ID",
-      "DefaultValue": "5432",
+      "Description": "The target BigQuery dataset ID",
+      "DefaultValue": "",
       "Required": true
     },
     {
@@ -35,8 +35,8 @@
     {
       "Name": "SERVICE_KEY_PATH",
       "Type": "EnvironmentVariable",
-      "InputType": "HiddenText",
-      "Description": "The path of the service key to connect to the BigQuery project",
+      "InputType": "FreeText",
+      "Description": "The path to the service key of the BigQuery GCP project",
       "DefaultValue": "",
       "Required": true
     }
