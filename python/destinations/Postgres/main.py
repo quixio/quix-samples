@@ -24,6 +24,7 @@ TABLE_NAME = {
 # Connect to postgres and set up table
 try:
     conn = connect_postgres()
+    logger.info("CONNECTED!")
 except:
     # End program or something
     pass
