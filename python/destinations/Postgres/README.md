@@ -1,12 +1,24 @@
-# Python Postgres - Destination
+# Python Postgres Database Sink
 
-Postgres Sink
+The sample contained in this folder gives an example on how to stream data from Quix to a Postgres Database, it handles both parameter and event data.
+
+## Requirements / Prerequisites
+ - A Postgres Database.
 
 ## Environment variables
 
 The code sample uses the following environment variables:
 
-- **input**: This is the input topic for demo data.
+- **input**: Name of the input topic to read from.
+- **PG_HOST**: The IP address or fully qualified domain name of your server.
+- **PG_PORT**: The Port number to use for communication with the server.
+- **PG_DATABASE**: The name of the database to persist to.
+- **PG_USER**: The username of the sink should use to interact with the database.
+- **PG_PASSWORD**: The password for the user configured above.
+
+## Known limitations 
+- Binary parameters are not supported in this version
+
 
 ## Docs
 
