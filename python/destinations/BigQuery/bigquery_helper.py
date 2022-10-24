@@ -2,6 +2,7 @@ from google.cloud import bigquery
 from google.cloud.exceptions import NotFound
 from google.oauth2 import service_account
 import os
+from setup_logger import logger
 
 # BigQuery Constants
 PROJECT_ID = os.environ["PROJECT_ID"]
@@ -19,10 +20,10 @@ class Null:
 def dataset_exists(client, dataset_id: str):
     try:
         client.get_dataset(dataset_id)
-        print("Dataset {} already exists".format(dataset_id))
+        logger.info("Dataset {} already exists".format(dataset_id))
         return True
     except NotFound:
-        print("Dataset {} is not found".format(dataset_id))
+        logger.info("Dataset {} is not found".format(dataset_id))
         return False
 
 def create_dataset(client):
@@ -31,7 +32,7 @@ def create_dataset(client):
         dataset = bigquery.Dataset(dataset_id)
         dataset.location = DATASET_LOCATION
         dataset = client.create_dataset(dataset, timeout=30)
-        print("Created dataset {}.{}".format(client.project, dataset.dataset_id))
+        logger.info("Created dataset {}.{}".format(client.project, dataset.dataset_id))
 
 def connect_bigquery():
     
@@ -47,10 +48,10 @@ def connect_bigquery():
 def table_exists(client, table_id: str):
     try:
         client.get_table(table_id)
-        print("Table {} already exists.".format(table_id))
+        logger.info("Table {} already exists.".format(table_id))
         return True
     except NotFound:
-        print("Table {} is not found.".format(table_id))
+        logger.info("Table {} is not found.".format(table_id))
         return False 
 
 
@@ -59,7 +60,7 @@ def create_table(client, table_name: str, schema: list):
     if not table_exists(client, table_id):
         table = bigquery.Table(table_id, schema=schema)
         table = client.create_table(table)
-        print(
+        logger.info(
             "Created table {}.{}.{}".format(table.project, table.dataset_id, table.table_id)
         )
 
@@ -126,9 +127,9 @@ def create_column(client, table_name: str, column_name: str, col_type: str):
         table = client.update_table(table, ["schema"])
 
         if len(table.schema) == len(original_schema) + 1 == len(new_schema):
-            print("A new column has been added.")
+            logger.info("A new column has been added.")
         else:
-            print("The column has not been added.")
+            logger.error("The column has not been added.")
 
 
 def insert_row(client, table_name: str, cols: list, vals: list):
@@ -143,9 +144,9 @@ def insert_row(client, table_name: str, cols: list, vals: list):
 
     errors = client.insert_rows_json(table_id, rows_to_insert)
     if errors == []:
-        print("New rows have been added.")
+        logger.info("New rows have been added.")
     else:
-        print("Encountered errors while inserting rows: {}".format(errors))
+        logger.error("Encountered errors while inserting rows: {}".format(errors))
 
 
 def delete_row(client, table_name: str, condition: str):

@@ -3,6 +3,7 @@ from quixstreaming.models.parametersbufferconfiguration import ParametersBufferC
 from quixstreaming.app import App
 from quix_function import QuixFunction
 import os
+from setup_logger import logger
 from queue import Queue
 from threading import Thread
 from queue_helper import insert_from_queue
@@ -38,9 +39,9 @@ create_properties_table(conn, TABLE_NAME["PROPERTIES_TABLE_NAME"])
 # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
 
-print("Opening input topic")
+logger.info("Opening input topic")
 input_topic = client.open_input_topic(os.environ["input"])
-print(os.environ["input"])
+logger.info(os.environ["input"])
 
 # Initialize Queue
 insert_queue = Queue(maxsize=0)
@@ -58,7 +59,7 @@ for i in range(NUM_THREADS):
 
 # read streams
 def read_stream(input_stream: StreamReader):
-    print("New stream read:" + input_stream.stream_id)
+    logger.info("New stream read:" + input_stream.stream_id)
 
     buffer_options = ParametersBufferConfiguration()
     buffer_options.time_span_in_milliseconds = 100
@@ -82,7 +83,7 @@ def read_stream(input_stream: StreamReader):
 input_topic.on_stream_received += read_stream
 
 # Hook up to termination signal (for docker image) and CTRL-C
-print("Listening to streams. Press CTRL-C to exit.")
+logger.info("Listening to streams. Press CTRL-C to exit.")
 
 # Handle graceful exit
 App.run()

@@ -2,6 +2,7 @@ from quixstreaming import ParameterData, EventData, StreamEndType, StreamReader
 
 import os
 from queue import Queue
+from setup_logger import logger
 
 from bigquery_helper import create_column, insert_row, delete_row, Null
 
@@ -19,7 +20,7 @@ class QuixFunction:
         self.committing = False
 
     def on_committing(self):
-        print("on_committing")
+        logger.debug("on_committing")
         self.committing = True
 
     def reset_data_ts(self):
@@ -53,7 +54,7 @@ class QuixFunction:
 
             if self.insert_queue.qsize() == 0 and self.committing == True:
                 self.committing = False
-                print("Commit success!")
+                logger.debug("Commit success!")
 
     def insert_metadata(self):
         cols = []
@@ -87,7 +88,7 @@ class QuixFunction:
             self.conn, self.table_name["PROPERTIES_TABLE_NAME"], cols, [vals])
 
     def on_event_data_handler(self, data: EventData):
-        print("on_event_data_handler")
+        logger.debug("on_event_data_handler")
 
         row = {'timestamp': data.timestamp_nanoseconds}
 
@@ -101,7 +102,7 @@ class QuixFunction:
             row.keys()), [list(row.values())])
 
     def on_stream_properties_changed(self):
-        print("on_stream_properties_changed")
+        logger.debug("on_stream_properties_changed")
         self.insert_metadata()
         self.insert_properties("open")
         # Reset data start and end
@@ -110,7 +111,7 @@ class QuixFunction:
         self.update_parents()
 
     def on_parameter_definition_changed(self):
-        print("on_parameter_definition_changed")
+        logger.debug("on_parameter_definition_changed")
         self.insert_metadata()
         self.insert_properties("open")
         # Reset data start and end
@@ -119,5 +120,5 @@ class QuixFunction:
         self.update_parents()
 
     def on_stream_closed(self, data: StreamEndType):
-        print("on_stream_closed")
+        logger.debug("on_stream_closed")
         self.insert_properties(str(data))
