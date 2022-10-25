@@ -10,3 +10,5 @@ certificates/
 state/
 **/node_modules/**
 .vscode/
+.DS_Store
+
