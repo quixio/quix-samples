@@ -9,7 +9,7 @@
       "Type": ["Tech connectors"],
       "Pipeline Stage": ["Destination"]
     },
-    "shortDescription": "BigQuery Sink",
+    "shortDescription": "Stream data from Quix to BigQuery",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "DefaultFile": "main.py",
@@ -18,8 +18,8 @@
           "Name": "input",
           "Type": "EnvironmentVariable",
           "InputType": "InputTopic",
-          "Description": "This is the input topic for demo data",
-          "DefaultValue": "f1-data",
+          "Description": "This is the input topic",
+          "DefaultValue": "",
           "Required": true
         },
         {
