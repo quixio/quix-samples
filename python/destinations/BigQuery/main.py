@@ -49,10 +49,12 @@ insert_queue = Queue(maxsize=0)
 
 # Create threads that execute insert from Queue
 NUM_THREADS = 10
+WAIT_INTERVAL = 0.25 # Seconds
+BATCH_SIZE = 50
 
 for i in range(NUM_THREADS):
     worker = Thread(target=insert_from_queue, args=(
-        conn, TABLE_NAME["PARAMETER_TABLE_NAME"], insert_queue, 0.25, 50))
+        conn, TABLE_NAME["PARAMETER_TABLE_NAME"], insert_queue, WAIT_INTERVAL, BATCH_SIZE))
     # Thread will be killed when main thread is terminated
     worker.setDaemon(True)
     worker.start()
