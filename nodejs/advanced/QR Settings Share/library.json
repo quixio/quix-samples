@@ -1,0 +1,12 @@
+{
+	"libraryItemId": "b7cd4cb0-9209-4968-b491-fbac95575960",
+	"name": "QR Settings Share",
+	"language": "NodeJs",
+	"tags": {
+		"Complexity": ["Medium"],
+		"Popular Subjects": ["Quick Start"]
+	},
+	"shortDescription": "Share settings to external apps",
+	"DefaultFile": "ui/source/app/services/quix.service.ts",
+	"EntryPoint": "build/dockerfile"
+}
