@@ -9,7 +9,7 @@ export class EnvironmentVariablesService {
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
   /*Create a token in the Tokens menu and paste it here*/
-  Token: string = "";
+  Token: string = "{placeholder:token}";
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
@@ -21,15 +21,17 @@ export class EnvironmentVariablesService {
 
   UseHardcodedValues = false;
   Topic: string = "";
-  WorkspaceId: string = "";
+  WorkspaceId: string = "{placeholder:workspaceId}";
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
+
+  domain = "{placeholder:environment.subdomain}";
 
   constructor(private httpClient: HttpClient) {}
 
   // don't change this
   ReaderUrl: string;
-  baseUrl = "https://reader-[WS].dev.quix.ai/hub";
+  baseUrl = "https://reader-[WS]." + this.domain + ".quix.ai/hub";
 
   public buildUrl(workspaceId) {
     return this.baseUrl.replace("[WS]", workspaceId);

@@ -15,14 +15,16 @@ export class QuixService {
     readonly subdomain = "{placeholder:environment.subdomain}";
     /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
-    public apiurl: string = "/api/";
+    public apiurl: string;
 
     private hubConnection;
     public PersonalAccessTokenReceived: Subject<any> = new Subject<any>();
     public PersonalAccessTokenCreationError: Subject<any> = new Subject<any>();
 
-
     constructor(private httpClient: HttpClient) {
+
+        this.apiurl = window.location.href + "api/";
+        console.log("API URL set to : " + this.apiurl);
     }
 
     public createPersonalAccessToken(tokenName: string, expirationUtc: Date) {
@@ -97,7 +99,7 @@ export class QuixService {
             .subscribe(data => {
                 if (data.status === 200) {
                     let url = this.apiurl + key;
-                    callback(JSON.stringify(url));
+                    callback(url);
                 }
             });
     }
