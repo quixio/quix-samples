@@ -58,9 +58,9 @@ export class AppComponent implements OnInit {
       // when it arrives, connect to Quix
       values$.subscribe(x => {
 
-          let wsid = x.wsId.replace("/\r?\n|\r/g", "");
-          let top = x.topic.replace("/\r?\n|\r/g", "");
-          let tok = x.token.replace("/\r?\n|\r/g", "");
+          let wsid = x.wsId.replace(/\n|\r/g, "");
+          let top = x.topic.replace(/\n|\r/g, "");
+          let tok = x.token.replace(/\n|\r/g, "");
 
           let url = this.envVarService.buildUrl(wsid)
           if (x.token == "") {
