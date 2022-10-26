@@ -32,7 +32,7 @@
         {
             "Name" : "api_key",
             "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
+            "InputType" : "HiddenText",
             "Description" : "Your TfL API Key",
             "DefaultValue" : "",
             "Required": true
