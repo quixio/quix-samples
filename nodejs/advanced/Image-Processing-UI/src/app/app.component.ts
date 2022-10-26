@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
           let tok = x.token.replace(/\n|\r/g, "");
 
           let url = this.envVarService.buildUrl(wsid)
-          if (x.token == "") {
+          if (tok == "") {
               this.showTokenWarning = true;
           }
           this.topic = top;
@@ -72,8 +72,8 @@ export class AppComponent implements OnInit {
           console.log(wsid);
           console.log(url);
 
-          this.ConnectToQuix(x.token, x.topic, url).then(_ => {
-              this.subscribeToData(x.topic);
+          this.ConnectToQuix(tok, top, url).then(_ => {
+              this.subscribeToData(top);
           });
       });
 
