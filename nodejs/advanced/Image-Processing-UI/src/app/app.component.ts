@@ -42,36 +42,42 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    console.log("INIT APP.Component");
+      console.log("INIT APP.Component");
 
-    // get all this stuff
-    let values$ = combineLatest(
-        this.envVarService.GetToken(),
-        this.envVarService.GetTopic(),
-        this.envVarService.GetWorkspaceId(),
-    ).pipe(
-        map(([token, topic, wsId])=>{
-          return {token, topic, wsId};
-        })
-    );
+      // get all this stuff
+      let values$ = combineLatest(
+          this.envVarService.GetToken(),
+          this.envVarService.GetTopic(),
+          this.envVarService.GetWorkspaceId(),
+      ).pipe(
+          map(([token, topic, wsId]) => {
+              return {token, topic, wsId};
+          })
+      );
 
-    // when it arrives, connect to Quix
-    values$.subscribe(x => {
-        let url = this.envVarService.buildUrl(x.wsId)
-        if(x.token == ""){
-            this.showTokenWarning = true;
-        }
-        this.topic = x.topic;
-        console.log(x.token);
-        console.log(x.topic);
-        console.log(url);
+      // when it arrives, connect to Quix
+      values$.subscribe(x => {
 
-        this.ConnectToQuix(x.token, x.topic, url).then(_ => {
-            this.subscribeToData(x.topic);
-        });
-    });
+          let wsid = x.wsId.replace("/\r?\n|\r/g", "");
+          let top = x.topic.replace("/\r?\n|\r/g", "");
+          let tok = x.token.replace("/\r?\n|\r/g", "");
 
-    this.selectedObject = "car";
+          let url = this.envVarService.buildUrl(wsid)
+          if (x.token == "") {
+              this.showTokenWarning = true;
+          }
+          this.topic = top;
+          console.log(tok);
+          console.log(top);
+          console.log(wsid);
+          console.log(url);
+
+          this.ConnectToQuix(x.token, x.topic, url).then(_ => {
+              this.subscribeToData(x.topic);
+          });
+      });
+
+      this.selectedObject = "car";
   }
 
   subscribeToData(quixTopic){
