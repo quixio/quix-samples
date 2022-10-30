@@ -1,0 +1,2 @@
+quixstreaming==0.4.9a202210131245
+psycopg2-binary
