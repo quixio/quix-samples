@@ -35,7 +35,7 @@ def create_paramdata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS public.{table_name} (
     uid SERIAL,
-    timestamp NUMERIC
+    timestamp TIMESTAMPTZ NOT NULL
     );
     CREATE INDEX IF NOT EXISTS timestamp ON public.{table_name} (timestamp);
     CLUSTER public.{table_name} USING timestamp;
@@ -56,7 +56,7 @@ def create_eventdata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS public.{table_name} (
     uid SERIAL,
-    timestamp NUMERIC,
+    timestamp TIMESTAMPTZ NOT NULL,
     value VARCHAR(100)
     );
     '''

@@ -66,7 +66,7 @@ def create_table(client, table_name: str, schema: list):
 
 def create_paramdata_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("timestamp", "NUMERIC", mode="NULLABLE")
+        bigquery.SchemaField("timestamp", "TIMESTAMP", mode="NULLABLE")
     ]
     create_table(client, table_name, schema)
 
@@ -77,7 +77,7 @@ def create_metadata_table(client, table_name: str):
 
 def create_eventdata_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("timestamp", "NUMERIC", mode="NULLABLE"),
+        bigquery.SchemaField("timestamp", "TIMESTAMP", mode="NULLABLE"),
         bigquery.SchemaField("value", "STRING", mode="NULLABLE"),
     ]
     create_table(client, table_name, schema)
