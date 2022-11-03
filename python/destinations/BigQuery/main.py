@@ -6,7 +6,7 @@ import os
 from setup_logger import logger
 from queue import Queue
 from threading import Thread
-from queue_helper import insert_from_queue
+from queue_helper import consume_queue
 from bigquery_helper import connect_bigquery, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table
 
 
@@ -45,16 +45,25 @@ input_topic = client.open_input_topic(os.environ["input"])
 logger.info(os.environ["input"])
 
 # Initialize Queue
-insert_queue = Queue(maxsize=0)
+param_insert_queue = Queue(maxsize=0)
+event_insert_queue = Queue(maxsize=0)
+insert_queue = (param_insert_queue, event_insert_queue)
 
 # Create threads that execute insert from Queue
-NUM_THREADS = 10
+NUM_THREADS = 1
 WAIT_INTERVAL = 0.25 # Seconds
 BATCH_SIZE = 50
 
 for i in range(NUM_THREADS):
-    worker = Thread(target=insert_from_queue, args=(
-        conn, TABLE_NAME["PARAMETER_TABLE_NAME"], insert_queue, WAIT_INTERVAL, BATCH_SIZE))
+    worker = Thread(target=consume_queue, args=(
+        conn, TABLE_NAME["PARAMETER_TABLE_NAME"], param_insert_queue, WAIT_INTERVAL, BATCH_SIZE))
+    # Thread will be killed when main thread is terminated
+    worker.setDaemon(True)
+    worker.start()
+
+for i in range(NUM_THREADS):
+    worker = Thread(target=consume_queue, args=(
+        conn, TABLE_NAME["EVENT_TABLE_NAME"], event_insert_queue, WAIT_INTERVAL, BATCH_SIZE))
     # Thread will be killed when main thread is terminated
     worker.setDaemon(True)
     worker.start()
