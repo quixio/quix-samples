@@ -37,7 +37,7 @@ def create_paramdata_table(conn, table_name: str):
     uid SERIAL,
     timestamp TIMESTAMPTZ NOT NULL
     );
-    SELECT create_hypertable('public.{table_name}', 'timestamp');
+    SELECT create_hypertable('public.{table_name}', 'timestamp', if_not_exists => TRUE);
     '''
     run_query(conn, query)
 
@@ -58,7 +58,7 @@ def create_eventdata_table(conn, table_name: str):
     timestamp TIMESTAMPTZ NOT NULL,
     value VARCHAR(100)
     );
-    SELECT create_hypertable('public.{table_name}', 'timestamp');
+    SELECT create_hypertable('public.{table_name}', 'timestamp', if_not_exists => TRUE);
     '''
     run_query(conn, query)
 
