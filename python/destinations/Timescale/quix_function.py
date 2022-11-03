@@ -3,25 +3,35 @@ from quixstreaming import ParameterData, EventData, StreamEndType, StreamReader
 import os
 from queue import Queue
 from datetime import datetime
+from threading import Lock
 from setup_logger import logger
 from timescale_helper import create_column, insert_row, delete_row, Null
+
 
 class QuixFunction:
 
     def __init__(self, conn, table_name, insert_queue: Queue, input_stream: StreamReader):
         self.conn = conn
         self.table_name = table_name
-        self.insert_queue = insert_queue
+        self.param_insert_queue = insert_queue[0]
+        self.event_insert_queue = insert_queue[1]
         self.input_stream = input_stream
         self.data_start = Null()
         self.data_end = Null()
         self.insert_parents()
         self.topic = os.environ["input"].replace('-', '_')
-        self.committing = False
+        self.mutex = Lock()
 
     def on_committing(self):
         logger.debug("on_committing")
-        self.committing = True
+        self.mutex.acquire()
+        logger.debug("on_committing entered")
+        
+        self.param_insert_queue.join()
+        self.event_insert_queue.join()
+        self.mutex.release()
+        logger.debug("on_committing done")
+
 
     def reset_data_ts(self):
         self.data_start = Null()
@@ -33,6 +43,8 @@ class QuixFunction:
 
     # Callback triggered for each new parameter data.
     def on_parameter_data_handler(self, data: ParameterData):
+
+        self.mutex.acquire()
 
         for ts in data.timestamps:
             row = {'timestamp': self.format_nanoseconds(ts.timestamp_nanoseconds)}
@@ -53,12 +65,9 @@ class QuixFunction:
                     row[k + '_s'] = v.string_value
 
             # Add to Queue
-            if not self.committing:
-                self.insert_queue.put(row, block=True)
+            self.param_insert_queue.put(row, block=True)
 
-            if self.insert_queue.qsize() == 0 and self.committing == True:
-                self.committing = False
-                logger.debug("Commit success!")
+        self.mutex.release()
 
     def insert_metadata(self):
         cols = []
@@ -102,25 +111,19 @@ class QuixFunction:
             row['TAG_' + k] = v
 
         row['value'] = data.value
-        insert_row(self.conn, self.table_name["EVENT_TABLE_NAME"], list(
-            row.keys()), [list(row.values())])
+        self.event_insert_queue.put(row, block=True)
+
 
     def on_stream_properties_changed(self):
         logger.debug("on_stream_properties_changed")
         self.insert_metadata()
         self.insert_properties("open")
-        # Reset data start and end
-        self.reset_data_ts()
-
         self.update_parents()
 
     def on_parameter_definition_changed(self):
         logger.debug("on_parameter_definition_changed")
         self.insert_metadata()
         self.insert_properties("open")
-        # Reset data start and end
-        self.reset_data_ts()
-
         self.update_parents()
 
     def on_stream_closed(self, data: StreamEndType):
