@@ -1,6 +1,6 @@
-# C# Snowflake Sink
+# Snowflake Sink
 
-The sample contained in this folder gives an example on how to stream data from Quix to Snowflake, it handles both parameter and event data.
+Stream data from Quix to Snowflake, it handles both parameter and event data.
 
 ## Requirements / Prerequisites
  - A Snowflake account.
