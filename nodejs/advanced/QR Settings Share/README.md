@@ -16,6 +16,10 @@ This can be obtained from the Quix portal under the Token menu item (top right o
 
 ## Local
 
+You will need to run both the UI and API.
+
+You can run the API in Quix or locally as long as the UI has access to it. 
+
 ### UI
 
 To run this project locally please update the `quix.service.ts` file with your:
@@ -26,10 +30,10 @@ The Token can be obtained from the Quix portal under the Token menu item (top ri
 ![image](small-menu.png)
 
 In the UI folder:
-Run `npm install --force` to install all of the dependencies
+Run `npm install --force` to install all the dependencies
 Run `ng serve` to build and run the . Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-NOTE! You may need to ammend the URL for accessing the API when running locally.
+NOTE! You may need to amend the URL for accessing the API when running locally.
 This can be found in the `quix.service.ts` file.
 
 ### API
