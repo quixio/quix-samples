@@ -4,15 +4,21 @@ Share settings to external apps with a QR code.
 
 ## Docs
 
-Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed SDK usage guidance.
 
 ## How to run
 
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
 
-NOTE! Whether running locally or in the Quix platform you should edit `environment-variables.service.ts` and add your Token.
+NOTE! Whether running locally or in the Quix platform you should edit `quix.service.ts` and add your Token.
 This can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
 ![image](/src/assets/images/small-menu.png)
+
+### Tokens
+
+A quick note on PAT or Personal Access Tokens.
+
+The PAT token used by default will expire. It is recommended that you generate a new token and update the `quix.service.ts` file. 
 
 ## Local
 
