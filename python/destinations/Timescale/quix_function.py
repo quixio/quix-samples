@@ -33,10 +33,6 @@ class QuixFunction:
         logger.debug("on_committing done")
 
 
-    def reset_data_ts(self):
-        self.data_start = Null()
-        self.data_end = Null()
-
     def format_nanoseconds(self, nanos):
         dt = datetime.fromtimestamp(nanos / 1e9)
         return '{}.{:09.0f}'.format(dt.strftime('%Y-%m-%dT%H:%M:%S'), nanos % 1e9)
