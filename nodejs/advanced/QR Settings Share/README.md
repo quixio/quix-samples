@@ -4,17 +4,27 @@ Share settings to external apps with a QR code.
 
 ## Docs
 
-Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed SDK usage guidance.
 
 ## How to run
 
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
 
-NOTE! Whether running locally or in the Quix platform you should edit `environment-variables.service.ts` and add your Token.
+NOTE! Whether running locally or in the Quix platform you should edit `quix.service.ts` and add your Token.
 This can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
 ![image](/src/assets/images/small-menu.png)
 
+### Tokens
+
+A quick note on PAT or Personal Access Tokens.
+
+The PAT token used by default will expire. It is recommended that you generate a new token and update the `quix.service.ts` file. 
+
 ## Local
+
+You will need to run both the UI and API.
+
+You can run the API in Quix or locally as long as the UI has access to it. 
 
 ### UI
 
@@ -26,10 +36,10 @@ The Token can be obtained from the Quix portal under the Token menu item (top ri
 ![image](small-menu.png)
 
 In the UI folder:
-Run `npm install --force` to install all of the dependencies
+Run `npm install --force` to install all the dependencies
 Run `ng serve` to build and run the . Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-NOTE! You may need to ammend the URL for accessing the API when running locally.
+NOTE! You may need to amend the URL for accessing the API when running locally.
 This can be found in the `quix.service.ts` file.
 
 ### API

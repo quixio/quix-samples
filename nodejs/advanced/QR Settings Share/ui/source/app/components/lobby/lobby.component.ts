@@ -13,7 +13,7 @@ export class LobbyComponent implements OnInit {
 
     public qrInfo: string = "";
     public qrId: Guid;
-    private interval: NodeJS.Timeout;
+    private interval;
     public timeLeft: number = 0;
     private expiry: number = 0;
     hasUsername = false;
@@ -22,12 +22,13 @@ export class LobbyComponent implements OnInit {
     public additionalProperties = {};
     newKey: string = "";
     newValue: string = "";
-    private tokenTimerInterval: NodeJS.Timeout;
+    private tokenTimerInterval;
     private tokenExpiry: Date;
     private tokenId: string;
     public firstPageError: string = "";
     public showWorkingOnItMessage: boolean = false;
     username: string = "";
+    public TokenExpiration: Date;
 
     public AddProp() {
         this.additionalProperties[this.newKey] = this.newValue;
@@ -45,7 +46,6 @@ export class LobbyComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.quixService.startHubConnection();
 
         this.route.queryParams
             .subscribe(params => {
@@ -63,9 +63,9 @@ export class LobbyComponent implements OnInit {
         this.quixService.PersonalAccessTokenReceived.subscribe(data => {
             if (data.name === this.tokenId) {
                 console.log(data);
-                this.stopTokenTimer();
                 this.showWorkingOnItMessage = false;
-                this.PushSettings(data.token);
+                this.PushSettings(data.value);
+                this.TokenExpiration = data.expiresAt;
             }
         });
     }
@@ -84,25 +84,6 @@ export class LobbyComponent implements OnInit {
         this.qrInfo = "";
     }
 
-    tokenTimeLeft = 3000;
-    startTokenTimer() {
-        this.showWorkingOnItMessage = false;
-        this.tokenTimeLeft = 3000;
-        this.tokenTimerInterval = setInterval(() => {
-            this.tokenTimeLeft -= 500;
-            console.log("Time token until retry = " + this.tokenTimeLeft);
-            if (this.tokenTimeLeft <= 0) {
-                this.tokenTimeLeft = 3000;
-                this.quixService.createPersonalAccessToken(this.tokenId, this.tokenExpiry);
-                this.showWorkingOnItMessage = true;
-            }
-        }, 500)
-    }
-
-    stopTokenTimer() {
-        clearInterval(this.tokenTimerInterval);
-    }
-
     ok_click() {
         this.processing = true;
         this.generateToken();
@@ -117,7 +98,6 @@ export class LobbyComponent implements OnInit {
     generateToken() {
         this.generateTokenId();
         this.quixService.createPersonalAccessToken(this.tokenId, this.tokenExpiry);
-        this.startTokenTimer();
     }
 
     PushSettings(token) {
@@ -133,13 +113,13 @@ export class LobbyComponent implements OnInit {
 
         let combinedProperties = Object.assign({}, coreProperties, this.additionalProperties);
 
+        console.log("Pushing token to API. Token ID = " + this.qrId);
         this.quixService.PushSettings(this.qrId.toString(), combinedProperties, this.expiry,
             (qrString) => {
                 this.startTimer();
                 this.qrInfo = JSON.stringify(qrString);
                 this.processing = false;
             });
-
     }
 
     saveUserName() {
