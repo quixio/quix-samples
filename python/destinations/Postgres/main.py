@@ -19,7 +19,7 @@ TABLE_NAME = {
     "PROPERTIES_TABLE_NAME": TOPIC + '_streams_properties',
     "PARENTS_TABLE_NAME": TOPIC + '_streams_parents'
 }
-MAX_QUEUE_SIZE = os.environ["MAX_QUEUE_SIZE"]
+MAX_QUEUE_SIZE = int(os.environ["MAX_QUEUE_SIZE"])
 
 
 # Connect to postgres and set up table
