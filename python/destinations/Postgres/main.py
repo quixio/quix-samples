@@ -7,7 +7,7 @@ from setup_logger import logger
 from queue import Queue
 from threading import Thread
 from queue_helper import consume_queue
-from postgres_helper import connect_postgres, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table
+from postgres_helper import connect_postgres, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table, create_schema
 
 
 # Global Variables
@@ -31,6 +31,7 @@ except:
     pass
 
 # Creata table if it doesn't exist
+create_schema(conn)
 create_paramdata_table(conn, TABLE_NAME["PARAMETER_TABLE_NAME"])
 create_metadata_table(conn, TABLE_NAME["METADATA_TABLE_NAME"])
 create_eventdata_table(conn, TABLE_NAME["EVENT_TABLE_NAME"])

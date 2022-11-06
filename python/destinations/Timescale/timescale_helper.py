@@ -7,6 +7,7 @@ TS_PORT = os.environ["TS_PORT"]
 TS_USER = os.environ["TS_USER"]
 TS_PASSWORD = os.environ["TS_PASSWORD"]
 TS_DATABASE = os.environ["TS_DATABASE"]
+TS_SCHEMA = os.environ["TS_SCHEMA"]
 
 
 class Null:
@@ -30,21 +31,26 @@ def run_query(conn, query: str):
     conn.commit()
     cur.close()
 
+def create_schema(conn):
+    query = f'''
+    CREATE SCHEMA IF NOT EXISTS {TS_SCHEMA};
+    '''
+    run_query(conn, query)
 
 def create_paramdata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
     timestamp TIMESTAMPTZ NOT NULL
     );
-    SELECT create_hypertable('public.{table_name}', 'timestamp', if_not_exists => TRUE);
+    SELECT create_hypertable('{TS_SCHEMA}.{table_name}', 'timestamp', if_not_exists => TRUE);
     '''
     run_query(conn, query)
 
 
 def create_metadata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL
     );
     '''
@@ -53,19 +59,19 @@ def create_metadata_table(conn, table_name: str):
 
 def create_eventdata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
     timestamp TIMESTAMPTZ NOT NULL,
     value VARCHAR(100)
     );
-    SELECT create_hypertable('public.{table_name}', 'timestamp', if_not_exists => TRUE);
+    SELECT create_hypertable('{TS_SCHEMA}.{table_name}', 'timestamp', if_not_exists => TRUE);
     '''
     run_query(conn, query)
 
 
 def create_parents_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
     stream_id VARCHAR(100),
     parent_id VARCHAR(100)
@@ -76,7 +82,7 @@ def create_parents_table(conn, table_name: str):
 
 def create_properties_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
     name VARCHAR(100),
     location VARCHAR(100),
@@ -102,12 +108,12 @@ def insert_row(conn, table_name: str, cols: list, vals: list):
 
 
 def _insert_row_str(conn, table_name: str, cols: str, vals: str):
-    query = f'''INSERT INTO public.{table_name}({cols}) VALUES {vals}'''
+    query = f'''INSERT INTO {TS_SCHEMA}.{table_name}({cols}) VALUES {vals}'''
     run_query(conn, query)
 
 
 def delete_row(conn, table_name: str, condition: str):
-    query = f'''DELETE FROM public.{table_name} WHERE {condition}'''
+    query = f'''DELETE FROM {TS_SCHEMA}.{table_name} WHERE {condition}'''
     run_query(conn, query)
 
 

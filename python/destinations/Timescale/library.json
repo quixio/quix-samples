@@ -63,6 +63,14 @@
           "Required": true
         },
         {
+          "Name": "TS_SCHEMA",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Schema name of Timescale",
+          "DefaultValue": "public",
+          "Required": true
+        },
+        {
           "Name": "MAX_QUEUE_SIZE",
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
