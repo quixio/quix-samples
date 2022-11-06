@@ -19,7 +19,7 @@ TABLE_NAME = {
     "PROPERTIES_TABLE_NAME": TOPIC + '_streams_properties',
     "PARENTS_TABLE_NAME": TOPIC + '_streams_parents'
 }
-
+MAX_QUEUE_SIZE = os.environ["MAX_QUEUE_SIZE"]
 
 # Connect to postgres and set up table
 try:
@@ -45,8 +45,8 @@ input_topic = client.open_input_topic(os.environ["input"])
 logger.info(os.environ["input"])
 
 # Initialize Queue
-param_insert_queue = Queue(maxsize=0)
-event_insert_queue = Queue(maxsize=0)
+param_insert_queue = Queue(maxsize=MAX_QUEUE_SIZE)
+event_insert_queue = Queue(maxsize=MAX_QUEUE_SIZE)
 insert_queue = (param_insert_queue, event_insert_queue)
 
 # Create threads that execute insert from Queue

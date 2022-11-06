@@ -2,9 +2,9 @@ from quixstreaming import ParameterData, EventData, StreamEndType, StreamReader
 
 import os
 from queue import Queue
-from datetime import datetime
 from threading import Lock
 from setup_logger import logger
+from utils import format_nanoseconds
 from timescale_helper import create_column, insert_row, delete_row, Null
 
 
@@ -33,17 +33,13 @@ class QuixFunction:
         logger.debug("on_committing done")
 
 
-    def format_nanoseconds(self, nanos):
-        dt = datetime.fromtimestamp(nanos / 1e9)
-        return '{}.{:09.0f}'.format(dt.strftime('%Y-%m-%dT%H:%M:%S'), nanos % 1e9)
-
     # Callback triggered for each new parameter data.
     def on_parameter_data_handler(self, data: ParameterData):
 
         self.mutex.acquire()
 
         for ts in data.timestamps:
-            row = {'timestamp': self.format_nanoseconds(ts.timestamp_nanoseconds)}
+            row = {'timestamp': format_nanoseconds(ts.timestamp_nanoseconds)}
             if type(self.data_start) == Null:
                 self.data_start = ts.timestamp_nanoseconds
                 self.data_end = ts.timestamp_nanoseconds
@@ -99,7 +95,7 @@ class QuixFunction:
     def on_event_data_handler(self, data: EventData):
         logger.debug("on_event_data_handler")
 
-        row = {'timestamp': self.format_nanoseconds(data.timestamp_nanoseconds)}
+        row = {'timestamp': format_nanoseconds(data.timestamp_nanoseconds)}
 
         for k, v in data.tags.items():
             create_column(

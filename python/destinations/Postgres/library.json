@@ -61,6 +61,14 @@
           "Description": "Database name of Postgres",
           "DefaultValue": "",
           "Required": true
+        },
+        {
+          "Name": "MAX_QUEUE_SIZE",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Max queue size for the sink ingestion",
+          "DefaultValue": "",
+          "Required": true
         }
       ],
     "DeploySettings": {
