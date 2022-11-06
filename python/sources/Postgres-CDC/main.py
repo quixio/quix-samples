@@ -9,7 +9,9 @@ from postgres_helper import connect_postgres, create_logical_slot, create_public
 #Global Variables
 PG_SLOT_NAME = "replication_slot"
 PG_PUBLICATION_NAME = "pub"
-PG_TABLE_NAME = "f1_data_parameter_data"
+PG_SCHEMA = os.environ["PG_SCHEMA"]
+PG_TABLE = os.environ["PG_TABLE"]
+PG_TABLE_NAME = "{PG_SCHEMA}.{PG_TABLE}"
 WAIT_INTERVAL = 0.1
 # Connect to postgres and set up table
 try:

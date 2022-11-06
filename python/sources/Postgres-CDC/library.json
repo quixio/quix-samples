@@ -61,6 +61,22 @@
           "Description": "Database name of Postgres",
           "DefaultValue": "",
           "Required": true
+        },
+        {
+          "Name": "PG_SCHEMA",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Name of schema for CDC",
+          "DefaultValue": "public",
+          "Required": true
+        },
+        {
+          "Name": "PG_TABLE",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Name of table for CDC",
+          "DefaultValue": "",
+          "Required": true
         }
       ],
     "DeploySettings": {

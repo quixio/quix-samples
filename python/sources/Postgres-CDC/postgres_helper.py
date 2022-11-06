@@ -42,7 +42,7 @@ def create_logical_slot(slot_name: str):
 def create_publication_on_table(publication_name: str, table_name: str):
     conn = connect_postgres()
     query = f'''
-    CREATE PUBLICATION {publication_name} FOR TABLE public.{table_name};
+    CREATE PUBLICATION {publication_name} FOR TABLE {table_name};
     '''
     try:
         run_query(conn, query)
