@@ -33,15 +33,19 @@ if "table_name" not in os.environ or os.environ["table_name"] == "":
     print("Environment variable table_name not set. Creating new DynamoDB table quix-" + os.environ["input"])
     table_name = "quix-" + os.environ["input"]
     try:
-        dynamodb.create_table(TableName=table_name, AttributeDefinitions=[{"AttributeName": "date", "AttributeType": "S"},
-                                                                          {"AttributeName": "time", "AttributeType": "S"}],
-                              KeySchema=[{"AttributeName": "date", "KeyType": "HASH"},
-                                         {"AttributeName": "time", "KeyType": "RANGE"}], BillingMode="PAY_PER_REQUEST",
+        partition_key = os.environ["param_partition_key"].split("|")[0]
+        sort_key = os.environ["param_sort_key"].split("|")[0]
+        dynamodb.create_table(TableName=table_name,
+                              AttributeDefinitions=[{"AttributeName": partition_key, "AttributeType": "S"},
+                                                    {"AttributeName": sort_key, "AttributeType": "S"}],
+                              KeySchema=[{"AttributeName": partition_key, "KeyType": "HASH"},
+                                         {"AttributeName": sort_key, "KeyType": "RANGE"}],
+                              BillingMode="PAY_PER_REQUEST",
                               SSESpecification={"Enabled": True, "SSEType": "KMS"})
         print("Create table request sent for DynamoDB table: quix-" + os.environ["input"])
     except ClientError as e:
         if e.response['Error']['Code'] == 'EntityAlreadyExists':
-            print("Skipping table ceration as table with name "+table_name+" already exists.")
+            print("Skipping table creation as table with name " + table_name + " already exists.")
         else:
             print(e)
 else:
@@ -53,6 +57,7 @@ def read_stream(input_stream: StreamReader):
     print("New stream read:" + input_stream.stream_id)
 
     buffer_options = ParametersBufferConfiguration()
+    # DynamoDB BatchWriteItem has max 25 records as limit
     buffer_options.packet_size = 25
 
     buffer = input_stream.parameters.create_buffer(buffer_options)

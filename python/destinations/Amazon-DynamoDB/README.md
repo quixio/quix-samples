@@ -53,8 +53,9 @@ The code sample uses the following environment variables:
 
 Environment variables `param_partition_key` and `param_sort_key` can take any of below values:
 
-1. Direct parameter name from the message OR
-2. Derived key attribute name and [strftime](https://docs.python.org/3/library/datetime.html#datetime.date.strftime) pattern joined
+1. Direct string type parameter name from the message OR
+2. Derived key attribute name and [strftime](https://docs.python.org/3/library/datetime.html#datetime.date.strftime)
+   pattern joined
    by pipe `|`. (e.g. `hour_of_day|%Y-%m-%d %H`)
 
 For example message,
@@ -63,41 +64,46 @@ For example message,
 {
   "timestamp": 1667844200703123, // 2022-11-07 19:03:20.703123
   "key1": "value1",
-  "key2": 10
+  "key2": 10,
+  "key3": "value3"
 }
 ```
 
 ### Example 1
+
 ```
+# Note: Only string type parameter is allowed as parition key and sort key at the time.
 param_partition_key = key1
-param_sort_key = key2
+param_sort_key = key3
 
 DynamoDB Record
 
-Key1 (PK) | Key2 (SK) | timestamp
-value1    | 10        | 1667844200703123
+key1 (PK) | key3 (SK)     | timestamp (N)        | key2 (N)
+value1    | value3        | 1667844200703123     | 10
 ```
 
 ### Example 2
+
 ```
 param_partition_key = year_month|%Y-%m
 param_sort_key = rest_of_ts|%d-%H:%M:%S.%f
 
 DynamoDB Record
 
-year_month (PK) | rest_of_ts (SK)     | timestamp        | key1   | key2
-2022-11         | 07-19:03:20.703123  | 1667844200703123 | value1 | 10
+year_month (PK) | rest_of_ts (SK)     | timestamp (N)    | key1 (S)   | key2 (N) | key3 (S)
+2022-11         | 07-19:03:20.703123  | 1667844200703123 | value1     | 10       | value3
 ```
 
 ### Example 3
+
 ```
 param_partition_key = my_date_time|%Y-%m-%dT%H:%M:%S.%f
 param_sort_key = (empty)
 
 DynamoDB Record
 
-my_date_time (PK)           | timestamp        | key1   | key2
-2022-11-07T19:03:20.703123  | 1667844200703123 | value1 | 10
+my_date_time (PK)           | timestamp (N)    | key1 (S)   | key2 (N) | key3 (S)
+2022-11-07T19:03:20.703123  | 1667844200703123 | value1     | 10       | value3
 ```
 
 ## Docs
