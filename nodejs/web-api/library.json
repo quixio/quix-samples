@@ -1,7 +1,7 @@
 {
   "libraryItemId": "f86e7b37-2fa2-4df6-a96c-8ca75a0cffc3",
-  "name": "NodeJs Empty Web API Template",
-  "language": "JavaScript",
+  "name": "Web API Template",
+  "language": "NodeJs",
   "tags": {
     "Complexity": [
       "Easy"
