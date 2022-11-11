@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const helmet = require("helmet")
+const { randomUUID } = require('crypto')
 const { unless } = require("express-unless")
 const swaggerUi = require("swagger-ui-express")
 const { expressjwt: jwt } = require("express-jwt")
@@ -18,17 +19,36 @@ app.use(cors())
 // enable jwt token authentication
 if (process.env.JWT_AUTH_SECRET) {
     const jwtOpts = { secret: process.env.JWT_AUTH_SECRET }
+
     if (process.env.JWT_AUTH_ALGORITHM) {
         jwtOpts["algorithms"] = [process.env.JWT_AUTH_ALGORITHM]
     }
+
     if (process.env.JWT_AUTH_AUDIENCE) {
         jwtOpts["audience"] = [process.env.JWT_AUTH_AUDIENCE]
     }
+
     if (process.env.JWT_AUTH_ISSUER) {
         jwtOpts["issuer"] = [process.env.JWT_AUTH_ISSUER]
     }
+
     app.use(helmet())
     app.use(jwt(jwtOpts).unless({ path: [/^\/swagger/] }))
+
+    // custom error handler
+    app.use(function (err, req, res, next) {
+        id = randomUUID();
+        if (err.name === "UnauthorizedError") {
+            res.status(401).json({
+                errorId: id,
+                errorMessage: "Unauthorized"
+            });
+            log.info(`Failed authentication: ${err.message} (${ req.headers['x-forwarded-for'] || req.socket.remoteAddress })`)
+        } else {
+            next(err);
+        }
+    });
+
     log.info("JWT token auth enabled")
 } else {
     log.warn("JWT token auth disabled")
@@ -44,9 +64,9 @@ if (process.env.SWAGGER_ENABLE.toLowerCase() == "true") {
                 scheme: "bearer"
             }
         }
-        swaggerDocument.security = [{bearer: []}]
+        swaggerDocument.security = [{ bearer: [] }]
     }
-    app.use("/swagger", function(req, res, next) {
+    app.use("/swagger", function (req, res, next) {
         swaggerDocument.host = req.get("host");
         req.swaggerDoc = swaggerDocument;
         next();
