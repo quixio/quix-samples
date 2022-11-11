@@ -13,6 +13,8 @@ const swaggerDocument = require("./swagger.json")
 const app = express()
 const port = 80
 
+app.set("trust proxy", true)
+
 // enable cross-origin request sharing
 app.use(cors())
 
@@ -43,7 +45,7 @@ if (process.env.JWT_AUTH_SECRET) {
                 errorId: id,
                 errorMessage: "Unauthorized"
             });
-            log.info(`Failed authentication: ${err.message} (${ req.headers['x-forwarded-for'] || req.socket.remoteAddress })`)
+            log.info(`Failed authentication: ${err.message} (${ req.ip })`)
         } else {
             next(err);
         }
