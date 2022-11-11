@@ -16,7 +16,7 @@
   "Variables": [
     {
       "Name": "JWT_AUTH_ISSUER",
-      "Type": "Placeholder",
+      "Type" : "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "JWT issuer.",
       "DefaultValue": "",
@@ -24,7 +24,7 @@
     },
     {
       "Name": "JWT_AUTH_AUDIENCE",
-      "Type": "Placeholder",
+      "Type" : "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "JWT audience.",
       "DefaultValue": "",
@@ -32,7 +32,7 @@
     },
     {
       "Name": "JWT_AUTH_SECRET",
-      "Type": "Placeholder",
+      "Type" : "EnvironmentVariable",
       "InputType": "HiddenText",
       "Description": "JWT signing key.",
       "DefaultValue": "",
@@ -40,7 +40,7 @@
     },
     {
       "Name": "JWT_AUTH_ALGORITHM",
-      "Type": "Placeholder",
+      "Type" : "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "JWT signing algorithm.",
       "DefaultValue": "",
@@ -48,7 +48,7 @@
     },
     {
       "Name": "SWAGGER_ENABLE",
-      "Type": "Placeholder",
+      "Type" : "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Set to \u0027true\u0027 to enable Swagger UI for your API.",
       "DefaultValue": "true",
@@ -56,7 +56,7 @@
     },
     {
       "Name": "LOG_LEVEL",
-      "Type": "Placeholder",
+      "Type" : "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Log level.",
       "DefaultValue": "info",
