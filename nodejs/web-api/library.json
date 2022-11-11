@@ -1,0 +1,66 @@
+{
+  "libraryItemId": "f86e7b37-2fa2-4df6-a96c-8ca75a0cffc3",
+  "name": "NodeJs Empty Web API Template",
+  "language": "JavaScript",
+  "tags": {
+    "Complexity": [
+      "Easy"
+    ],
+    "Type": [
+      "Basic templates"
+    ]
+  },
+  "shortDescription": "An empty template for creating NodeJs web APIs",
+  "DefaultFile": "app.js",
+  "EntryPoint": "build/dockerfile",
+  "Variables": [
+    {
+      "Name": "JWT_AUTH_ISSUER",
+      "Type": "Placeholder",
+      "InputType": "FreeText",
+      "Description": "JWT issuer.",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "JWT_AUTH_AUDIENCE",
+      "Type": "Placeholder",
+      "InputType": "FreeText",
+      "Description": "JWT audience.",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "JWT_AUTH_SECRET",
+      "Type": "Placeholder",
+      "InputType": "HiddenText",
+      "Description": "JWT signing key.",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "JWT_AUTH_ALGORITHM",
+      "Type": "Placeholder",
+      "InputType": "FreeText",
+      "Description": "JWT signing algorithm.",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "SWAGGER_ENABLE",
+      "Type": "Placeholder",
+      "InputType": "FreeText",
+      "Description": "Set to \u0027true\u0027 to enable Swagger UI for your API.",
+      "DefaultValue": "true",
+      "Required": false
+    },
+    {
+      "Name": "LOG_LEVEL",
+      "Type": "Placeholder",
+      "InputType": "FreeText",
+      "Description": "Log level.",
+      "DefaultValue": "info",
+      "Required": false
+    }
+  ]
+}
