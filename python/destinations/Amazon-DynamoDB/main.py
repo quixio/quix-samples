@@ -34,14 +34,21 @@ if "table_name" not in os.environ or os.environ["table_name"] == "":
     table_name = "quix-" + os.environ["input"]
     try:
         partition_key = os.environ["param_partition_key"].split("|")[0]
-        sort_key = os.environ["param_sort_key"].split("|")[0]
-        dynamodb.create_table(TableName=table_name,
-                              AttributeDefinitions=[{"AttributeName": partition_key, "AttributeType": "S"},
-                                                    {"AttributeName": sort_key, "AttributeType": "S"}],
-                              KeySchema=[{"AttributeName": partition_key, "KeyType": "HASH"},
-                                         {"AttributeName": sort_key, "KeyType": "RANGE"}],
-                              BillingMode="PAY_PER_REQUEST",
-                              SSESpecification={"Enabled": True, "SSEType": "KMS"})
+        if "param_sort_key" not in os.environ or os.environ["param_sort_key"] == "":
+            dynamodb.create_table(TableName=table_name,
+                                  AttributeDefinitions=[{"AttributeName": partition_key, "AttributeType": "S"}],
+                                  KeySchema=[{"AttributeName": partition_key, "KeyType": "HASH"}],
+                                  BillingMode="PAY_PER_REQUEST",
+                                  SSESpecification={"Enabled": True, "SSEType": "KMS"})
+        else:
+            sort_key = os.environ["param_sort_key"].split("|")[0]
+            dynamodb.create_table(TableName=table_name,
+                                  AttributeDefinitions=[{"AttributeName": partition_key, "AttributeType": "S"},
+                                                        {"AttributeName": sort_key, "AttributeType": "S"}],
+                                  KeySchema=[{"AttributeName": partition_key, "KeyType": "HASH"},
+                                             {"AttributeName": sort_key, "KeyType": "RANGE"}],
+                                  BillingMode="PAY_PER_REQUEST",
+                                  SSESpecification={"Enabled": True, "SSEType": "KMS"})
         print("Create table request sent for DynamoDB table: quix-" + os.environ["input"])
     except ClientError as e:
         if e.response['Error']['Code'] == 'EntityAlreadyExists':
@@ -86,6 +93,9 @@ def on_parameter_data_handler(data: ParameterData):
                 item[k] = {"S": v.string_value}
             if v.type == ParameterValueType.Numeric and v.numeric_value is not None:
                 item[k] = {"N": str(ts.parameters[k].numeric_value)}
+
+        for k, v in ts.tags.items():
+            item["tag__" + k] = {"S": v}
         items.append({"PutRequest": {"Item": item}})
     batch_write({table_name: items})
 
@@ -101,6 +111,7 @@ def batch_write(request, retry_count=1):
             else:
                 print("Failed writing to DynamoDB table. Max retries reached.")
     except Exception as e:
+        print(f'Request -> {request}')
         print(e)
 
 
