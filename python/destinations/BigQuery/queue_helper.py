@@ -5,16 +5,17 @@ from setup_logger import logger
 
 from bigquery_helper import create_column, Null, insert_row
 
-def insert_from_queue(conn, table_name: str, insert_queue: Queue, wait_interval: float, batch_size: int):
+def consume_queue(conn, table_name: str, insert_queue: Queue, wait_interval: float, batch_size: int):
     batch = []
     while True:
 
-        if insert_queue.empty():
+        if insert_queue.empty() and len(batch) == 0:
             time.sleep(wait_interval)
             continue
 
         tid = threading.get_ident()
-        if len(batch) < batch_size:
+
+        if not insert_queue.empty() and len(batch) < batch_size:
             row = insert_queue.get()
             batch.append(row)
 
@@ -53,7 +54,10 @@ def insert_from_queue(conn, table_name: str, insert_queue: Queue, wait_interval:
                 f"Inserting row from thread: {tid}, queue size: {insert_queue.qsize()}")
             try:
                 insert_row(conn, table_name, all_cols, all_rows)
+
             except Exception as error:
                 logger.error(error)
                 continue
+            for i in range(len(batch)):
+                insert_queue.task_done()
             batch = [] #Empty batch

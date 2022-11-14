@@ -5,7 +5,7 @@ from queue import Queue
 from threading import Lock
 from setup_logger import logger
 from utils import format_nanoseconds
-from bigquery_helper import create_column, insert_row, delete_row, Null
+from timescale_helper import create_column, insert_row, delete_row, Null
 
 
 class QuixFunction:

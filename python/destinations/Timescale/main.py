@@ -7,7 +7,7 @@ from setup_logger import logger
 from queue import Queue
 from threading import Thread
 from queue_helper import consume_queue
-from postgres_helper import connect_postgres, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table, create_schema
+from timescale_helper import connect_timescale, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table, create_schema
 
 
 # Global Variables
@@ -21,10 +21,9 @@ TABLE_NAME = {
 }
 MAX_QUEUE_SIZE = int(os.environ["MAX_QUEUE_SIZE"])
 
-
 # Connect to postgres and set up table
 try:
-    conn = connect_postgres()
+    conn = connect_timescale()
     logger.info("CONNECTED!")
 except:
     # End program or something

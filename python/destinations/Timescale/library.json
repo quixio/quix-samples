@@ -1,6 +1,6 @@
 {
     "libraryItemId": "faa7578f-8e26-4d59-8ef9-f359d6dfcd73",
-    "name": "Postgres - Destination",
+    "name": "Timescale - Destination",
     "language": "Python",
     "IconFile": "icon.png",
     "tags": {
@@ -9,7 +9,7 @@
       "Type": ["Tech connectors"],
       "Pipeline Stage": ["Destination"]
     },
-    "shortDescription": "Stream data from Quix to a Postgres Database",
+    "shortDescription": "Stream data from Quix to a Timescale Database",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "DefaultFile": "main.py",
@@ -23,50 +23,50 @@
           "Required": true
         },
         {
-          "Name": "PG_HOST",
+          "Name": "TS_HOST",
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
-          "Description": "Host name of Postgres",
+          "Description": "Host name of Timescale",
           "DefaultValue": "",
           "Required": true
         },
         {
-          "Name": "PG_PORT",
+          "Name": "TS_PORT",
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
-          "Description": "Port of Postgres",
+          "Description": "Port of Timescale",
           "DefaultValue": "5432",
           "Required": true
         },
         {
-          "Name": "PG_USER",
+          "Name": "TS_USER",
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
-          "Description": "Username of Postgres",
+          "Description": "Username of Timescale",
           "DefaultValue": "",
           "Required": true
         },
         {
-          "Name": "PG_PASSWORD",
+          "Name": "TS_PASSWORD",
           "Type": "EnvironmentVariable",
           "InputType": "HiddenText",
-          "Description": "Password of Postgres",
+          "Description": "Password of Timescale",
           "DefaultValue": "",
           "Required": true
         },
         {
-          "Name": "PG_DATABASE",
+          "Name": "TS_DATABASE",
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
-          "Description": "Database name of Postgres",
+          "Description": "Database name of Timescale",
           "DefaultValue": "",
           "Required": true
         },
         {
-          "Name": "PG_SCHEMA",
+          "Name": "TS_SCHEMA",
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
-          "Description": "Schema name of Postgres",
+          "Description": "Schema name of Timescale",
           "DefaultValue": "public",
           "Required": true
         },

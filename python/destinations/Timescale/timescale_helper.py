@@ -1,13 +1,14 @@
 import psycopg2
 import os
 
-# Postgres Constants
-PG_HOST = os.environ["PG_HOST"]
-PG_PORT = os.environ["PG_PORT"]
-PG_USER = os.environ["PG_USER"]
-PG_PASSWORD = os.environ["PG_PASSWORD"]
-PG_DATABASE = os.environ["PG_DATABASE"]
-PG_SCHEMA = os.environ["PG_SCHEMA"]
+# Timescale Constants
+TS_HOST = os.environ["TS_HOST"]
+TS_PORT = os.environ["TS_PORT"]
+TS_USER = os.environ["TS_USER"]
+TS_PASSWORD = os.environ["TS_PASSWORD"]
+TS_DATABASE = os.environ["TS_DATABASE"]
+TS_SCHEMA = os.environ["TS_SCHEMA"]
+
 
 class Null:
     def __init__(self):
@@ -17,9 +18,9 @@ class Null:
         return self.name
 
 
-def connect_postgres():
+def connect_timescale():
     conn = psycopg2.connect(
-        database=PG_DATABASE, user=PG_USER, password=PG_PASSWORD, host=PG_HOST, port=PG_PORT
+        database=TS_DATABASE, user=TS_USER, password=TS_PASSWORD, host=TS_HOST, port=TS_PORT
     )
     return conn
 
@@ -32,25 +33,24 @@ def run_query(conn, query: str):
 
 def create_schema(conn):
     query = f'''
-    CREATE SCHEMA IF NOT EXISTS {PG_SCHEMA};
+    CREATE SCHEMA IF NOT EXISTS {TS_SCHEMA};
     '''
-    run_query(conn, query)    
+    run_query(conn, query)
 
 def create_paramdata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
     timestamp TIMESTAMPTZ NOT NULL
     );
-    CREATE INDEX IF NOT EXISTS timestamp ON {PG_SCHEMA}.{table_name} (timestamp);
-    CLUSTER {PG_SCHEMA}.{table_name} USING timestamp;
+    SELECT create_hypertable('{TS_SCHEMA}.{table_name}', 'timestamp', if_not_exists => TRUE);
     '''
     run_query(conn, query)
 
 
 def create_metadata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL
     );
     '''
@@ -59,18 +59,19 @@ def create_metadata_table(conn, table_name: str):
 
 def create_eventdata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
     timestamp TIMESTAMPTZ NOT NULL,
     value VARCHAR(100)
     );
+    SELECT create_hypertable('{TS_SCHEMA}.{table_name}', 'timestamp', if_not_exists => TRUE);
     '''
     run_query(conn, query)
 
 
 def create_parents_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
     stream_id VARCHAR(100),
     parent_id VARCHAR(100)
@@ -81,7 +82,7 @@ def create_parents_table(conn, table_name: str):
 
 def create_properties_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
+    CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
     name VARCHAR(100),
     location VARCHAR(100),
@@ -107,12 +108,12 @@ def insert_row(conn, table_name: str, cols: list, vals: list):
 
 
 def _insert_row_str(conn, table_name: str, cols: str, vals: str):
-    query = f'''INSERT INTO {PG_SCHEMA}.{table_name}({cols}) VALUES {vals}'''
+    query = f'''INSERT INTO {TS_SCHEMA}.{table_name}({cols}) VALUES {vals}'''
     run_query(conn, query)
 
 
 def delete_row(conn, table_name: str, condition: str):
-    query = f'''DELETE FROM {PG_SCHEMA}.{table_name} WHERE {condition}'''
+    query = f'''DELETE FROM {TS_SCHEMA}.{table_name} WHERE {condition}'''
     run_query(conn, query)
 
 

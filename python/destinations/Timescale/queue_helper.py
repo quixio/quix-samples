@@ -3,7 +3,7 @@ from queue import Queue
 import threading
 from setup_logger import logger
 
-from postgres_helper import create_column, Null, insert_row
+from timescale_helper import create_column, Null, insert_row
 
 def consume_queue(conn, table_name: str, insert_queue: Queue, wait_interval: float, batch_size: int):
     batch = []
