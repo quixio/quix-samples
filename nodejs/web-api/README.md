@@ -31,7 +31,7 @@ To run the web api on your local machine, you need to have NodeJs and npm (comes
  
  - Windows: [NodeJs download](https://nodejs.org/en/download/)
  - macOS: [NodeJs download](https://nodejs.org/en/download/)
- - Linux: download from the package repository of your Linux distribution (recommended) or install from [source](https://nodejs.org/en/download/).
+ - Linux: download from the package repository for your Linux distribution (recommended) or install from [source](https://nodejs.org/en/download/).
 
 Note that if you need to work with multiple versions of NodeJS (especially on platforms that only allows installing one version of NodeJS such as rolling release Linux distributions), it is recommended to use [nvm](https://github.com/nvm-sh/nvm) when installing NodeJs.
 
