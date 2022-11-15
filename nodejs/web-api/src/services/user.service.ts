@@ -1,7 +1,7 @@
-const express = require('express')
-const { randomUUID } = require('crypto')
+import { randomUUID } from "crypto";
+import { User } from "../models/user";
 
-const users = [
+const users: User[] = [
     {
         'id': randomUUID(),
         'name': "John Doe"
@@ -10,10 +10,10 @@ const users = [
         'id': randomUUID(),
         'name': "Jane Doe"
     }
-]
+];
 
-const getAll = () => users
+const getAll = () => users;
 
-module.exports = {
+export = {
     getAll
-}
+};
