@@ -18,7 +18,7 @@ This app integrates with Quix via Quix WebSocket gateway. For more please refer 
 
 ## Docs
 
-Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+Check out the [SDK docs](https://docs.quix.io/sdk/introduction/) for detailed usage guidance.
 
 ## How to run
 
