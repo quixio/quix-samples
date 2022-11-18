@@ -288,7 +288,7 @@ function init() {
         remainingTimeSpan = document.getElementById("remainingTime");
         setInterval(() => {
             if (remainingTime <= 0) {
-                window.location.href = "https://quix.ai/car-demo-results?streamId=" + stream_id;
+                window.location.href = "https://quix.io/data-stream-processing-example-results?streamId=" + stream_id;
             }
             remainingTimeSpan.innerText = remainingTime;
             remainingTime -= 1;

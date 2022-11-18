@@ -4,7 +4,7 @@ Share settings to external apps with a QR code.
 
 ## Docs
 
-Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed SDK usage guidance.
+Check out the [SDK docs](https://docs.quix.io/sdk/introduction/) for detailed SDK usage guidance.
 
 ## How to run
 
