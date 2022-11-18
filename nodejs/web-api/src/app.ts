@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { randomUUID } from 'crypto';
 import { unless } from "express-unless";
 import swaggerUi from "swagger-ui-express";
 import { expressjwt as jwt } from "express-jwt";
@@ -37,13 +36,10 @@ if (process.env.JWT_AUTH_SECRET) {
 
     // custom error handler
     app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-        let id = randomUUID();
         if (err.name === "UnauthorizedError") {
-            res.status(401).json({
-                errorId: id,
-                errorMessage: "Unauthorized"
-            });
             logger.info(`Failed authentication: ${err.message} (${req.ip})`);
+            res.statusMessage = "Unauthorized";
+            res.status(401).end();
         } else {
             next(err);
         }
