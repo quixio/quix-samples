@@ -34,7 +34,7 @@
       "Name": "JWT_AUTH_SECRET",
       "Type" : "EnvironmentVariable",
       "InputType": "HiddenText",
-      "Description": "JWT signing key.",
+      "Description": "JWT signing key (only applicable for symmetric key algorithms)",
       "DefaultValue": "",
       "Required": false
     },
