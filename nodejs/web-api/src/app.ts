@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { unless } from "express-unless";
 import swaggerUi from "swagger-ui-express";
 import { expressjwt as jwt } from "express-jwt";
+import jwksRsa from "jwks-rsa";
 
 import userRoutes from "./routes/user.route";
 import { logger } from "./utils/logger";
@@ -19,16 +20,27 @@ app.set('trust proxy', true);
 app.use(cors())
 
 // enable jwt token authentication
-if (process.env.JWT_AUTH_SECRET) {
-    const jwtOpts: any = { secret: process.env.JWT_AUTH_SECRET };
+if (process.env.JWT_AUTH_ISSUER) {
+    const jwtOpts: any = {};
+
+    if (process.env.JWT_AUTH_ISSUER) {
+        jwtOpts.issuer = [process.env.JWT_AUTH_ISSUER];
+    }
+    if (process.env.JWT_AUTH_SECRET) {
+        jwtOpts.secret = process.env.JWT_AUTH_SECRET;
+    } else {
+        jwtOpts.secret = jwksRsa.expressJwtSecret({
+            cache: true,
+            rateLimit: true,
+            jwksRequestsPerMinute: 5,
+            jwksUri: `${jwtOpts.issuer}.well-known/jwks.json`
+        });
+    }
     if (process.env.JWT_AUTH_ALGORITHM) {
         jwtOpts.algorithms = [process.env.JWT_AUTH_ALGORITHM];
     }
     if (process.env.JWT_AUTH_AUDIENCE) {
         jwtOpts.audience = [process.env.JWT_AUTH_AUDIENCE];
-    }
-    if (process.env.JWT_AUTH_ISSUER) {
-        jwtOpts.issuer = [process.env.JWT_AUTH_ISSUER];
     }
 
     app.use(helmet());
@@ -52,7 +64,7 @@ if (process.env.JWT_AUTH_SECRET) {
 
 // enable swagger docs for your API
 if (process.env.SWAGGER_ENABLE?.toLowerCase() === "true") {
-    if (process.env.JWT_AUTH_SECRET) {
+    if (process.env.JWT_AUTH_ISSUER) {
         swaggerDocument.components.securitySchemes = {
             bearer: {
                 type: "http",
