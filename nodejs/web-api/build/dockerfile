@@ -1,0 +1,6 @@
+FROM node
+COPY --from=git /project /app
+WORKDIR /app
+RUN npm install
+RUN npm run build
+ENTRYPOINT node dist/app.js
