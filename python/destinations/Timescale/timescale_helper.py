@@ -1,5 +1,7 @@
 import psycopg2
 import os
+import traceback
+from setup_logger import logger
 
 # Timescale Constants
 TS_HOST = os.environ["TS_HOST"]
@@ -26,10 +28,15 @@ def connect_timescale():
 
 
 def run_query(conn, query: str):
-    cur = conn.cursor()
-    cur.execute(query)
-    conn.commit()
-    cur.close()
+    try:
+        cur = conn.cursor()
+        cur.execute(query)
+        conn.commit()
+        cur.close()
+    except Exception as e:
+        logger.error(str(e))
+        logger.error(traceback.print_exc())
+        logger.error("FAILED COMMAND: " + query)
 
 def create_schema(conn):
     query = f'''
