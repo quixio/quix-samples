@@ -15,6 +15,8 @@ The code sample uses the following environment variables:
 - **TS_DATABASE**: The name of the database to persist to.
 - **TS_USER**: The username of the sink should use to interact with the database.
 - **TS_PASSWORD**: The password for the user configured above.
+- **TS_SCHEMA**: The schema name of the tables.
+- **MAX_QUEUE_SIZE**: Max queue size for the sink ingestion.
 
 ## Known limitations 
 - Binary parameters are not supported in this version

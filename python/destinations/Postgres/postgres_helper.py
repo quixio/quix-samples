@@ -1,5 +1,7 @@
 import psycopg2
 import os
+import traceback
+from setup_logger import logger
 
 # Postgres Constants
 PG_HOST = os.environ["PG_HOST"]
@@ -25,10 +27,15 @@ def connect_postgres():
 
 
 def run_query(conn, query: str):
-    cur = conn.cursor()
-    cur.execute(query)
-    conn.commit()
-    cur.close()
+    try:
+        cur = conn.cursor()
+        cur.execute(query)
+        conn.commit()
+        cur.close()
+    except Exception as e:
+        logger.error(str(e))
+        logger.error(traceback.print_exc())
+        logger.error("FAILED COMMAND: " + query)
 
 def create_schema(conn):
     query = f'''
@@ -125,5 +132,4 @@ def build_insert_str(cols: list, rows_list: list):
         row_strs.append(row_str)
     batch_row_str = ",".join(row_strs)
     return (col_str, batch_row_str)
-
 

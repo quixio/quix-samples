@@ -6,6 +6,8 @@ from threading import Lock
 from setup_logger import logger
 from utils import format_nanoseconds
 from bigquery_helper import create_column, insert_row, delete_row, Null
+import re
+
 
 
 class QuixFunction:
@@ -47,9 +49,11 @@ class QuixFunction:
             self.data_end = max(self.data_end, ts.timestamp_nanoseconds)
 
             for k, v in ts.tags.items():
+                k = re.sub('[^0-9a-zA-Z]+', '_', k)
                 row['TAG_' + k] = v
 
             for k, v in ts.parameters.items():
+                k = re.sub('[^0-9a-zA-Z]+', '_', k)
                 if v.numeric_value:
                     row[k + '_n'] = v.numeric_value
 
@@ -65,12 +69,14 @@ class QuixFunction:
         cols = []
         vals = []
         for k, v in self.input_stream.properties.metadata.items():
+            k = re.sub('[^0-9a-zA-Z]+', '_', k)
             create_column(
                 self.conn, self.table_name["METADATA_TABLE_NAME"], k, 'STRING')
             cols.append(k)
             vals.append(v)
-        insert_row(
-            self.conn, self.table_name["METADATA_TABLE_NAME"], cols, [vals])
+        if len(vals) > 0:
+            insert_row(
+                self.conn, self.table_name["METADATA_TABLE_NAME"], cols, [vals])
 
     def insert_parents(self):
         for parent in self.input_stream.properties.parents:
@@ -85,10 +91,23 @@ class QuixFunction:
         self.insert_parents()
 
     def insert_properties(self, status: str):
-        cols = ["name", "location", "topic",
-                "status", "data_start", "data_end"]
-        vals = [self.input_stream.properties.name, self.input_stream.properties.location,
-                self.topic, status, self.data_start, self.data_end]
+        cols = ["topic", "status"]
+        vals = [self.topic, status]
+
+        if self.input_stream.properties.name is not None:
+            cols.append("name")
+            vals.append(self.input_stream.properties.name)
+
+        if self.input_stream.properties.location is not None:
+            cols.append("location")
+            vals.append(self.input_stream.properties.location)
+
+        if type(self.data_start) != Null:
+            cols.append("data_start")
+            cols.append("data_end")
+            vals.append(self.data_start)
+            vals.append(self.data_end)
+
         insert_row(
             self.conn, self.table_name["PROPERTIES_TABLE_NAME"], cols, [vals])
 
@@ -98,6 +117,7 @@ class QuixFunction:
         row = {'timestamp': format_nanoseconds(data.timestamp_nanoseconds)}
 
         for k, v in data.tags.items():
+            k = re.sub('[^0-9a-zA-Z]+', '_', k)
             create_column(
                 self.conn, self.table_name["EVENT_TABLE_NAME"], 'TAG_' + k, 'STRING')
             row['TAG_' + k] = v
