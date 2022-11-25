@@ -64,39 +64,38 @@ except ClientError as e:
 
 # read streams
 def read_stream(input_stream: StreamReader):
-	def on_parameter_data_handler(data: ParameterData):
-	    records = []
-	
-	    for ts in data.timestamps:
-	        record = {"Time": str(ts.timestamp_nanoseconds), "TimeUnit": "NANOSECONDS"}
-	        dimensions = [{"Name": "stream_id", "Value": input_stream.stream_id}]
-	
-	        for k, v in ts.tags.items():
-						if k != "stream_id":
-	            dimensions.append({"Name": k, "Value": v})
-	
-	        if len(dimensions) > 0:
-	            record["Dimensions"] = dimensions
-	
-	        for k, v in ts.parameters.items():
-	            if v.type == ParameterValueType.String and v.string_value:
-	                record["MeasureName"] = k
-	                record["MeasureValue"] = v.string_value
-	                record["MeasureValueType"] = "VARCHAR"
-	            if v.type == ParameterValueType.Numeric and v.numeric_value is not None:
-	                record["MeasureName"] = k
-	                record["MeasureValue"] = str(v.numeric_value)
-	        records.append(record)
-	
-	    try:
-	        result = timestream.write_records(DatabaseName=database_name, TableName=table_name, Records=records)
-	        print("WriteRecords Status: [%s]" % result['ResponseMetadata']['HTTPStatusCode'])
-	    except timestream.exceptions.RejectedRecordsException as err:
-	        print_rejected_records_exceptions(err)
-	    except Exception as err:
-	        print("Error:", err)
+    def on_parameter_data_handler(data: ParameterData):
+        records = []
 
+        for ts in data.timestamps:
+            record = {"Time": str(ts.timestamp_nanoseconds), "TimeUnit": "NANOSECONDS"}
+            dimensions = [{"Name": "stream_id", "Value": input_stream.stream_id}]
 
+            for k, v in ts.tags.items():
+                if k != "strem_id":
+                    dimensions.append({"Name": k, "Value": v})
+
+            if len(dimensions) > 0:
+                record["Dimensions"] = dimensions
+
+            for k, v in ts.parameters.items():
+                if v.type == ParameterValueType.String and v.string_value:
+                    record["MeasureName"] = k
+                    record["MeasureValue"] = v.string_value
+                    record["MeasureValueType"] = "VARCHAR"
+                if v.type == ParameterValueType.Numeric and v.numeric_value is not None:
+                    record["MeasureName"] = k
+                    record["MeasureValue"] = str(v.numeric_value)
+            records.append(record)
+
+        try:
+            result = timestream.write_records(DatabaseName=database_name, TableName=table_name, Records=records)
+            print("WriteRecords Status: [%s]" % result['ResponseMetadata']['HTTPStatusCode'])
+        except timestream.exceptions.RejectedRecordsException as err:
+            print_rejected_records_exceptions(err)
+        except Exception as err:
+            print("Error:", err)
+            
     print("New stream read:" + input_stream.stream_id)
 
     buffer_options = ParametersBufferConfiguration()
