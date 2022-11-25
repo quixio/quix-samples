@@ -91,8 +91,15 @@ class QuixFunction:
         self.insert_parents()
 
     def insert_properties(self, status: str):
+        status_map = {
+            "open": "open",
+            "StreamEndType.Closed": "closed",
+            "StreamEndType.Aborted": "aborted",
+            "StreamEndType.Terminated": "terminated"
+        }
+
         cols = ["topic", "status"]
-        vals = [self.topic, status]
+        vals = [self.topic, status_map[status]]
 
         if self.input_stream.properties.name is not None:
             cols.append("name")
