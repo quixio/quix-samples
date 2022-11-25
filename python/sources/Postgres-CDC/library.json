@@ -1,0 +1,90 @@
+{
+    "libraryItemId": "faa7578f-8e26-4d59-8ef9-f359d6dfcd73",
+    "name": "Postgres CDC - Source",
+    "language": "Python",
+    "IconFile": "icon.png",
+    "tags": {
+      "Complexity": ["Medium"],
+      "SDK Usage": ["Read SDK"],
+      "Type": ["Tech connectors"],
+      "Pipeline Stage": ["Source"]
+    },
+    "shortDescription": "Stream data from Postgres Database CDC to Quix",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "DefaultFile": "main.py",
+    "Variables": [
+        {
+          "Name": "output",
+          "Type": "EnvironmentVariable",
+          "InputType": "OutputTopic",
+          "Description": "This is the output topic",
+          "DefaultValue": "postgres-cdc-source",
+          "Required": true
+        },
+        {
+          "Name": "PG_HOST",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Host name of Postgres",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "PG_PORT",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Port of Postgres",
+          "DefaultValue": "5432",
+          "Required": true
+        },
+        {
+          "Name": "PG_USER",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Username of Postgres",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "PG_PASSWORD",
+          "Type": "EnvironmentVariable",
+          "InputType": "HiddenText",
+          "Description": "Password of Postgres",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "PG_DATABASE",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Database name of Postgres",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "PG_SCHEMA",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Name of schema for CDC",
+          "DefaultValue": "public",
+          "Required": true
+        },
+        {
+          "Name": "PG_TABLE",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Name of table for CDC",
+          "DefaultValue": "",
+          "Required": true
+        }
+      ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
+}
