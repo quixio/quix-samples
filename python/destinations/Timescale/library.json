@@ -75,7 +75,7 @@
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
           "Description": "Max queue size for the sink ingestion",
-          "DefaultValue": "",
+          "DefaultValue": "50",
           "Required": true
         }
       ],
