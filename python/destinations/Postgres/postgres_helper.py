@@ -47,6 +47,7 @@ def create_paramdata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
     uid SERIAL,
+    stream_id VARCHAR(100),
     timestamp TIMESTAMPTZ NOT NULL
     );
     CREATE INDEX IF NOT EXISTS timestamp ON {PG_SCHEMA}.{table_name} (timestamp);
@@ -58,7 +59,8 @@ def create_paramdata_table(conn, table_name: str):
 def create_metadata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
-    uid SERIAL
+    uid SERIAL,
+    stream_id VARCHAR(100)
     );
     '''
     run_query(conn, query)
@@ -68,6 +70,7 @@ def create_eventdata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
     uid SERIAL,
+    stream_id VARCHAR(100),
     timestamp TIMESTAMPTZ NOT NULL,
     value VARCHAR(100)
     );
@@ -90,6 +93,7 @@ def create_properties_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
     uid SERIAL,
+    stream_id VARCHAR(100),
     name VARCHAR(100),
     location VARCHAR(100),
     topic VARCHAR(100),
