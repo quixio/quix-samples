@@ -31,15 +31,15 @@ if batch_size < 1 or batch_size > 100:
     print("Invalid batch_size set. Must be between 1 to 100")
     exit(0)
 
-if database_name == "quix":
-    try:
-        print(f"Trying to create database with name = {database_name}")
-        timestream.create_database(DatabaseName=database_name)
-    except ClientError as e:
-        if e.response['Error']['Code'] == 'ConflictException':
-            print(f"Database {database_name} already present.")
-        else:
-            print(e)
+
+try:
+    print(f"Trying to create database with name = {database_name}")
+    timestream.create_database(DatabaseName=database_name)
+except ClientError as e:
+    if e.response['Error']['Code'] == 'ConflictException':
+        print(f"Database {database_name} already present.")
+    else:
+        print(e)
 
 if "table_name" not in os.environ or os.environ["table_name"] == "":
     table_name = os.environ["input"]
