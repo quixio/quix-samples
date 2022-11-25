@@ -41,7 +41,7 @@ class QuixFunction:
         self.mutex.acquire()
 
         for ts in data.timestamps:
-            row = {'timestamp': format_nanoseconds(ts.timestamp_nanoseconds)}
+            row = {'timestamp': format_nanoseconds(ts.timestamp_nanoseconds), 'stream_id': self.input_stream.stream_id}
             if type(self.data_start) == Null:
                 self.data_start = ts.timestamp_nanoseconds
                 self.data_end = ts.timestamp_nanoseconds
@@ -66,8 +66,8 @@ class QuixFunction:
         self.mutex.release()
 
     def insert_metadata(self):
-        cols = []
-        vals = []
+        cols = ["stream_id"]
+        vals = [self.input_stream.stream_id]
         for k, v in self.input_stream.properties.metadata.items():
             k = re.sub('[^0-9a-zA-Z]+', '_', k)
             create_column(
@@ -98,8 +98,8 @@ class QuixFunction:
             "StreamEndType.Terminated": "terminated"
         }
 
-        cols = ["topic", "status"]
-        vals = [self.topic, status_map[status]]
+        cols = ["topic", "status", "stream_id"]
+        vals = [self.topic, status_map[status], self.input_stream.stream_id]
 
         if self.input_stream.properties.name is not None:
             cols.append("name")
@@ -121,7 +121,7 @@ class QuixFunction:
     def on_event_data_handler(self, data: EventData):
         logger.debug("on_event_data_handler")
 
-        row = {'timestamp': format_nanoseconds(data.timestamp_nanoseconds)}
+        row = {'timestamp': format_nanoseconds(data.timestamp_nanoseconds), 'stream_id': self.input_stream.stream_id}
 
         for k, v in data.tags.items():
             k = re.sub('[^0-9a-zA-Z]+', '_', k)
