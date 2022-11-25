@@ -50,8 +50,8 @@ def create_paramdata_table(conn, table_name: str):
     stream_id VARCHAR(100),
     timestamp TIMESTAMPTZ NOT NULL
     );
-    CREATE INDEX IF NOT EXISTS timestamp ON {PG_SCHEMA}.{table_name} (timestamp);
-    CLUSTER {PG_SCHEMA}.{table_name} USING timestamp;
+    CREATE INDEX IF NOT EXISTS {PG_SCHEMA}_{table_name}_timestamp ON {PG_SCHEMA}.{table_name} (timestamp);
+    CLUSTER {PG_SCHEMA}.{table_name} USING {PG_SCHEMA}_{table_name}_timestamp;
     '''
     run_query(conn, query)
 
