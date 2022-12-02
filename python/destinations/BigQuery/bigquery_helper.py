@@ -67,38 +67,38 @@ def create_table(client, table_name: str, schema: list):
 
 def create_paramdata_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("timestamp", "TIMESTAMP", mode="NULLABLE"),
-        bigquery.SchemaField("stream_id", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("timestamp", "TIMESTAMP", mode="REQUIRED"),
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
     ]
     create_table(client, table_name, schema)
 
 
 def create_metadata_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("stream_id", "STRING", mode="NULLABLE")
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED")
     ]
     create_table(client, table_name, schema)
 
 def create_eventdata_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("timestamp", "TIMESTAMP", mode="NULLABLE"),
-        bigquery.SchemaField("stream_id", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("value", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("timestamp", "TIMESTAMP", mode="REQUIRED"),
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("value", "STRING", mode="REQUIRED"),
     ]
     create_table(client, table_name, schema)
 
 
 def create_parents_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("stream_id", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("parent_id", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("parent_id", "STRING", mode="REQUIRED"),
     ]
     create_table(client, table_name, schema)
 
 
 def create_properties_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("stream_id", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("name", "STRING", mode="NULLABLE"),
         bigquery.SchemaField("location", "STRING", mode="NULLABLE"),
         bigquery.SchemaField("topic", "STRING", mode="NULLABLE"),
