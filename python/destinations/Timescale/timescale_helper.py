@@ -48,6 +48,7 @@ def create_paramdata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
+    stream_id VARCHAR(100),
     timestamp TIMESTAMPTZ NOT NULL
     );
     SELECT create_hypertable('{TS_SCHEMA}.{table_name}', 'timestamp', if_not_exists => TRUE);
@@ -58,7 +59,8 @@ def create_paramdata_table(conn, table_name: str):
 def create_metadata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
-    uid SERIAL
+    uid SERIAL,
+    stream_id VARCHAR(100),
     );
     '''
     run_query(conn, query)
@@ -68,6 +70,7 @@ def create_eventdata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
+    stream_id VARCHAR(100),
     timestamp TIMESTAMPTZ NOT NULL,
     value VARCHAR(100)
     );
@@ -91,6 +94,7 @@ def create_properties_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
+    stream_id VARCHAR(100),
     name VARCHAR(100),
     location VARCHAR(100),
     topic VARCHAR(100),

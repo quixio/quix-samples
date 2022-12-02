@@ -20,6 +20,7 @@ TABLE_NAME = {
     "PARENTS_TABLE_NAME": TOPIC + '_streams_parents'
 }
 MAX_QUEUE_SIZE = int(os.environ["MAX_QUEUE_SIZE"])
+CONSUMER_GROUP = "postgres_sink"
 
 
 # Connect to postgres and set up table
@@ -43,7 +44,7 @@ create_properties_table(conn, TABLE_NAME["PROPERTIES_TABLE_NAME"])
 client = QuixStreamingClient()
 
 logger.info("Opening input topic")
-input_topic = client.open_input_topic(os.environ["input"])
+input_topic = client.open_input_topic(os.environ["input"], CONSUMER_GROUP)
 logger.info(os.environ["input"])
 
 # Initialize Queue
