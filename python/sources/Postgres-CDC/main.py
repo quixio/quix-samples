@@ -18,9 +18,10 @@ try:
     create_logical_slot(PG_SLOT_NAME)
     create_publication_on_table(PG_PUBLICATION_NAME, PG_TABLE_NAME)
     conn = connect_postgres()
-except:
-    # End program or something
-    pass
+    logger.info("CONNECTED!")
+except Exception as e:
+    logger.info(f"ERROR!: {e}")
+    raise
 
 
 # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
@@ -41,8 +42,7 @@ while True:
         changes = json.loads(record[0])
         for change in changes["change"]:
             logger.debug(json.dumps(change))
-            stream.parameters \
-                .buffer \
+            stream.events \
                 .add_timestamp(datetime.datetime.utcnow()) \
                 .add_value("cdc_data", json.dumps(change)) \
                 .write()

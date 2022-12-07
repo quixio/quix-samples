@@ -130,6 +130,7 @@ class QuixFunction:
             row['TAG_' + k] = v
 
         row['value'] = data.value
+        row['event_id'] = data.id
         self.event_insert_queue.put(row, block=True)
 
 

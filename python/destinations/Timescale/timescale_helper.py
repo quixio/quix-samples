@@ -72,7 +72,8 @@ def create_eventdata_table(conn, table_name: str):
     uid SERIAL,
     stream_id VARCHAR(100),
     timestamp TIMESTAMPTZ NOT NULL,
-    value VARCHAR(100)
+    value VARCHAR(100),
+    event_id VARCHAR(100)
     );
     SELECT create_hypertable('{TS_SCHEMA}.{table_name}', 'timestamp', if_not_exists => TRUE);
     '''

@@ -72,7 +72,8 @@ def create_eventdata_table(conn, table_name: str):
     uid SERIAL,
     stream_id VARCHAR(100),
     timestamp TIMESTAMPTZ NOT NULL,
-    value VARCHAR(100)
+    value VARCHAR(100),
+    event_id VARCHAR(100)
     );
     '''
     run_query(conn, query)

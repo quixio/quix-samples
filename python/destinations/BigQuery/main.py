@@ -26,9 +26,9 @@ CONSUMER_GROUP = "bigquery_sink"
 try:
     conn = connect_bigquery()
     logger.info("CONNECTED!")
-except:
-    # End program or something
-    pass
+except Exception as e:
+    logger.info(f"ERROR!: {e}")
+    raise
 
 # Creata table if it doesn't exist
 create_paramdata_table(conn, TABLE_NAME["PARAMETER_TABLE_NAME"])
