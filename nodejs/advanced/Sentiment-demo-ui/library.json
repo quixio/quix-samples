@@ -34,7 +34,7 @@
         "MemoryInMb": 200,
         "Replicas": 1,
         "PublicAccess": true,
-        "UrlPrefix": "Sentiment Demo UI",
+        "UrlPrefix": "Sentiment-Demo-UI",
         "ValidateConnection": false
     }
 }
