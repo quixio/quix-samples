@@ -1,222 +1,200 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {QuixService} from "../../services/quix.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import 'chartjs-plugin-streaming';
-import {ChartDataSets, ChartOptions} from "chart.js";
-
-export  class MessagePayload{
-  public name: string;
-  public message?: string;
-  public sentiment?: number;
-  public timestamp: number;
-}
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from '@techiediaries/ngx-qrcode';
+import { Chart, ChartDataset, ChartOptions, Legend, LinearScale, LineController, LineElement, PointElement } from 'chart.js';
+import 'chartjs-adapter-luxon';
+import ChartStreaming, { RealTimeScale } from 'chartjs-plugin-streaming';
+import { filter, take } from 'rxjs';
+import { EventData } from 'src/app/models/eventData';
+import { MessagePayload } from 'src/app/models/messagePayload';
+import { ParameterData } from 'src/app/models/parameterData';
+import { QuixService } from '../../services/quix.service';
 
 @Component({
   selector: 'app-webchat',
   templateUrl: './webchat.component.html',
-  styleUrls: ['./webchat.component.sass']
+  styleUrls: ['./webchat.component.scss']
 })
-export class WebchatComponent implements OnInit {
+export class WebchatComponent implements OnInit, OnDestroy {
+  @ViewChild('chatWrapper') chatWrapper: ElementRef<HTMLElement>;
+  @ViewChild('myChart') myChart: Chart;
 
-  @ViewChild("myChart") myChart: Chart;
-  datasets: ChartDataSets[] = [{
-    borderColor: "#3e4f97",
-    backgroundColor: "rgba(62,79,151,0.48)",
-    pointBackgroundColor: "black",
+  readerConnected: boolean;
+  writerConnected: boolean;
+
+  ngxQrcodeElementTypes = NgxQrcodeElementTypes;
+  ngxQrcodeErrorCorrectionLevels = NgxQrcodeErrorCorrectionLevels
+  qrValue: string;
+
+  messages: MessagePayload[] = [];
+
+  room: string;
+  name: string;
+  phone: string;
+  email: string;
+
+  chatForm = new FormGroup({
+    message: new FormControl('')
+  });
+
+  datasets: ChartDataset[] = [{
     data: [],
     label: 'Chatroom sentiment',
-
-
+    borderColor: '#0064ff',
+    backgroundColor: 'rgba(0, 100, 255, 0.24)',
+    pointBackgroundColor: 'white',
+    pointBorderColor: 'black',
+    pointBorderWidth: 2,
+    fill: true
   }];
-  options: ChartOptions & any = {
 
+  options: ChartOptions = {
+    interaction: {
+      mode: 'index',
+      intersect: false
+    },
+    maintainAspectRatio: false,
+    animation: false,
     scales: {
-      yAxes:[
-        {
-          type: "linear",
-          ticks:{
-            max: 1,
-            min: -1
-          }
-        }
-      ],
-      xAxes: [{
+      y: {
+        type: 'linear',
+        max: 1,
+        min: -1
+      },
+      x: {
         type: 'realtime',
         realtime: {
           duration: 20000,
           refresh: 1000,
           delay: 200,
-          onRefresh: chart =>{
+          onRefresh: (chart: Chart) => {
           }
         }
-      }]
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      }
     }
   };
 
-  elementType = 'url';
-  value = undefined;
+  constructor(private quixService: QuixService, private route: ActivatedRoute) {
+    Chart.register(
+      LinearScale,
+      LineController,
+      PointElement,
+      LineElement,
+      RealTimeScale,
+      Legend,
+      ChartStreaming
+    );
+  }
 
-  rate = 0;
-
-  @ViewChild("messagesDiv")
-  messagesDiv: ElementRef;
-
-  @ViewChild("messagesDivMobile")
-  messagesDivMobile  : ElementRef;
-
-  public readerConnected: boolean;
-  public writerConnected: boolean;
-
-  public messages: MessagePayload[] = [];
-
-  public role: string;
-  public sentiment: number;
-  public room: string;
-  public message: string;
-  public name: string;
-  public phone: string;
-  public email: string;
-
-  constructor(private quixService: QuixService,
-              private route: ActivatedRoute,
-              private router: Router) { }
-
-  public async send(){
-    await this.quixService.sendMessage(this.room, "Customer", this.name, this.message, this.phone, this.email);
-    this.message = "";
+  public async send() {
+    const message: string = this.chatForm.controls.message.value || '';
+    await this.quixService.sendMessage(this.room, 'Customer', this.name, message, this.phone, this.email);
+    this.chatForm.reset();
   }
 
   async ngOnInit(): Promise<void> {
-    this.quixService.loaded.subscribe(x => {
-      console.log("got value " + x)
-      if(x == true) this.Init();
-    });
-    //this.quixService.loaded.share
+    this.quixService.loaded.pipe(filter(f => !!f), take(1)).subscribe(() => this.init());
   }
 
-  async Init(){
-    this.room = this.route.snapshot.params["room"];
-    this.name = this.route.snapshot.params["name"];
-    this.phone = this.route.snapshot.queryParams["phone"];
-    this.email = this.route.snapshot.queryParams["email"];
+  async init() {
+    const paramMap = this.route.snapshot.paramMap;
+    this.room = paramMap.get('room') || '';
+    this.name = paramMap.get('name') || '';
+    this.phone = paramMap.get('phone') || '';
+    this.email = paramMap.get('email') || '';
 
-    this.quixService.readerConnection.onclose(e =>{
+    this.quixService.readerConnection.onclose(e => {
       this.readerConnected = false;
     });
 
-    this.quixService.readerConnection.onreconnecting(e =>{
+    this.quixService.readerConnection.onreconnecting(e => {
       this.readerConnected = false;
     });
 
-    this.quixService.readerConnection.onreconnected(e =>{
+    this.quixService.readerConnection.onreconnected(e => {
       this.readerConnected = true;
     });
 
-    this.quixService.writerConnection.onclose(e =>{
+    this.quixService.writerConnection.onclose(e => {
       this.writerConnected = false;
     });
 
-    this.quixService.writerConnection.onreconnecting(e =>{
+    this.quixService.writerConnection.onreconnecting(e => {
       this.writerConnected = false;
     });
 
-    this.quixService.writerConnection.onreconnected(e =>{
+    this.quixService.writerConnection.onreconnected(e => {
       this.writerConnected = true;
     });
 
     this.quixService.readerConnectionPromise.then(_ => {
 
-      this.quixService.readerConnection.on('ParameterDataReceived', (payload) => {
-
-        let message = this.messages.find(f => f.timestamp == payload.timestamps[0] && f.name == payload.tagValues["name"]);
-
-        let sentiment = payload.numericValues["sentiment"] ? payload.numericValues["sentiment"][0] : 0;
+      this.quixService.readerConnection.on('ParameterDataReceived', (payload: ParameterData) => {
         let timestamp = payload.timestamps[0];
+        let name = payload.tagValues['name'][0]
+        let sentiment = payload.numericValues['sentiment'] ? payload.numericValues['sentiment'][0] : 0;
+        let averageSentiment = payload.numericValues['average_sentiment'] ? payload.numericValues['average_sentiment'][0] : 0;
+        let message = this.messages.find(f => f.timestamp === timestamp && f.name === payload.tagValues['name'][0]);
 
-        if (!message){
-          this.messages.push({
-            timestamp: timestamp,
-            name: payload.tagValues["name"],
-            sentiment: sentiment,
-          });
-        }
-        else{
+        if (!message) {
+          this.messages.push({ timestamp, name, sentiment, value: payload.stringValues["chat-message"][0]});
+        } else {
           message.sentiment = sentiment;
+          message.value = payload.stringValues["chat-message"][0]
         }
 
-        if (payload.numericValues["average_sentiment"]) {
-          this.sentiment = payload.numericValues["average_sentiment"][0];
-
-          let row = {
-            x: Date.now(),
-            y: this.sentiment
-          }
-
+        if (averageSentiment) {
+          let row = { x: timestamp / 1000000, y: averageSentiment }
           this.datasets[0].data.push(row as any)
         }
 
-        setTimeout(() => this.messagesDiv.nativeElement.scrollTop = this.messagesDiv.nativeElement.scrollHeight, 200);
-        setTimeout(() => this.messagesDivMobile.nativeElement.scrollTop = this.messagesDivMobile.nativeElement.scrollHeight, 200);
+        const el = this.chatWrapper.nativeElement;
+        const isScrollToBottom = el.offsetHeight + el.scrollTop >= el.scrollHeight;
+
+        if (isScrollToBottom) setTimeout(() => el.scrollTop = el.scrollHeight);
       });
 
-      this.quixService.readerConnection.on('EventDataReceived', (payload) => {
-        let message = this.messages.find(f => f.timestamp == payload.timestamp && f.name == payload.tags["name"]);
 
-        let chatMessage = payload.value;
-        let timestamp = payload.timestamp;
-
-        if (!message){
-          this.messages.push({
-            timestamp: timestamp,
-            name: payload.tags["name"],
-            message: chatMessage
-          });
-        }
-
-        if (payload.numericValues !== undefined && payload.numericValues["average_sentiment"]) {
-          this.sentiment = payload.numericValues["average_sentiment"][0];
-
-          let row = {
-            x: Date.now(),
-            y: this.sentiment
-          }
-
-          this.datasets[0].data.push(row as any)
-        }
-
-        setTimeout(() => this.messagesDiv.nativeElement.scrollTop = this.messagesDiv.nativeElement.scrollHeight, 200);
-        setTimeout(() => this.messagesDivMobile.nativeElement.scrollTop = this.messagesDivMobile.nativeElement.scrollHeight, 200);
-      });
       this.connect();
-
       this.readerConnected = true;
-
-    }).catch(e => {
-      console.log(e);
-    });
+    }).catch(e => console.log(e));
 
     await this.quixService.writerConnectionPromise;
     this.writerConnected = true;
   }
 
   connect() {
+    this.quixService.readerConnection.invoke('SubscribeToParameter', this.quixService.messagesTopic, this.room, 'chat-message');
 
-    this.quixService.readerConnection.invoke('SubscribeToEvent', this.quixService.messagesTopic, this.room, 'chat-message');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', this.quixService.sentimentTopic, this.room + "-output", 'sentiment');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', this.quixService.sentimentTopic, this.room + "-output", 'chat-message');
-    this.quixService.readerConnection.invoke('SubscribeToParameter', this.quixService.sentimentTopic, this.room + "-output", 'average_sentiment');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', this.quixService.sentimentTopic, this.room, 'sentiment');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', this.quixService.sentimentTopic, this.room, 'chat-message');
+    this.quixService.readerConnection.invoke('SubscribeToParameter', this.quixService.sentimentTopic, this.room, 'average_sentiment');
 
     let host = window.location.host;
-    this.value = `${window.location.protocol}//${host}/lobby?room=${this.room}`;
+    this.qrValue = `${window.location.protocol}//${host}/lobby?room=${this.room}`;
 
-    this.quixService.getLastMessages(this.room).subscribe(res => {
-      this.messages = res.slice(Math.max(0, res.length - 20), res.length);
-      setTimeout(() => this.messagesDiv.nativeElement.scrollTop = this.messagesDiv.nativeElement.scrollHeight, 200);
-      setTimeout(() => this.messagesDivMobile.nativeElement.scrollTop = this.messagesDivMobile.nativeElement.scrollHeight, 200);
+    this.quixService.getLastMessages(this.room).subscribe(lastMessage => {
+      this.messages = lastMessage.slice(Math.max(0, lastMessage.length - 20), lastMessage.length);
+
+      const el = this.chatWrapper.nativeElement;
+      setTimeout(() => el.scrollTop = el.scrollHeight);
     });
   }
 
-  public getDateFromEpoch(epoch: number){
-    return new Date(epoch / 1000000)
+  getDateFromTimestamp(timestamp: number) {
+    return new Date(timestamp / 1000000)
+  }
+
+  ngOnDestroy(): void {
+    this.quixService.readerConnection.invoke('UnsubscribeFromParameter', this.quixService.messagesTopic, this.room, 'chat-message');
+    this.quixService.readerConnection.invoke('UnsubscribeFromParameter', this.quixService.sentimentTopic, this.room, 'sentiment');
+    this.quixService.readerConnection.invoke('UnsubscribeFromParameter', this.quixService.sentimentTopic, this.room, 'chat-message');
+    this.quixService.readerConnection.invoke('UnsubscribeFromParameter', this.quixService.sentimentTopic, this.room, 'average_sentiment');
   }
 }

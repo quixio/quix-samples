@@ -1,6 +1,8 @@
-import {Component, OnInit, Output} from '@angular/core';
-import {QuixService} from "../../services/quix.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
+interface Connection { room: string, name: string, phone?: string, email?: string };
 
 @Component({
   selector: 'app-lobby',
@@ -8,30 +10,38 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
+  storedConnection: Connection;
 
-  public room: string;
-  public message: string;
-  public name: string;
-  public phone: string;
-  public email: string;
+  form = new FormGroup({
+    room: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    phone: new FormControl(undefined),
+    email: new FormControl(undefined)
+  });
 
-  constructor(private quixService: QuixService,
-              private route: ActivatedRoute,
-              private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.room = this.route.snapshot.queryParams["room"];
+    const room = this.route.snapshot.queryParamMap.get('room');
+    if (room) this.form.controls.room.setValue(room);
+
+    const localStorageValue = localStorage.getItem('connection');
+    if (localStorageValue) this.storedConnection = JSON.parse(localStorageValue);
   }
 
-  connect(){
-    this.router.navigate(["webchat", this.room, this.name], {queryParams:{
-        "email": this.email,
-        "phone": this.phone
-      }})
+  submit() {
+    if (this.form.invalid) return;
+    const connection = this.form.value as Connection;
+    localStorage.setItem('connection', JSON.stringify(connection));
+    this.connect(connection);
   }
 
-  canConnect() {
-    return this.room?.length > 0 && this.name?.length > 0;
+  connect(connection: Connection) {
+    this.router.navigate(['webchat', connection.room.toLowerCase(), connection.name], {
+      queryParams: {
+        'email': connection.email,
+        'phone': connection.phone
+      }
+    })
   }
-
 }
