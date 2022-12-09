@@ -6,7 +6,6 @@ import {ParameterData} from "./models/parameter-data";
 import {EnvironmentVariablesService} from "./services/environment-variables.service"
 import {combineLatest} from "rxjs";
 import {map} from 'rxjs/operators';
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -39,49 +38,15 @@ export class AppComponent implements OnInit {
   private markers: any[] = new Array();
   public showTokenWarning: boolean = false;
 
-  constructor(private envVarService: EnvironmentVariablesService,
-              private route: ActivatedRoute) {}
+  constructor(private envVarService: EnvironmentVariablesService) {}
 
   ngOnInit(): void {
 
       console.log("INIT APP.Component");
 
-      // get all this stuff
-      let values$ = combineLatest(
-          this.envVarService.GetToken(),
-          this.envVarService.GetTopic(),
-          this.envVarService.GetWorkspaceId(),
-          this.route.queryParams
-      ).pipe(
-          map(([token, topic, wsId, params]) => {
-              return {token, topic, wsId, params};
-          })
-      );
-
-      // when it arrives, connect to Quix
-      values$.subscribe(x => {
-
-          let wsid = x.wsId.replace(/\n|\r/g, "");
-          let top = x.topic.replace(/\n|\r/g, "");
-          let tok = x.token.replace(/\n|\r/g, "");
-
-          let url = this.envVarService.buildUrl(wsid)
-          if (tok == "") {
-              this.showTokenWarning = true;
-          }
-          this.topic = top;
-
-          if(x.params["token"] !== undefined){
-              tok = x.params["token"];
-          }
-
-          console.log(tok);
-          console.log(top);
-          console.log(wsid);
-          console.log(url);
-
-          this.ConnectToQuix(tok, top, url).then(_ => {
-              this.subscribeToData(top);
+      this.envVarService.ready.subscribe(p =>{
+          this.ConnectToQuix(p.token, p.topic, p.readerUrl).then(_ => {
+              this.subscribeToData(p.topic);
           });
       });
 
