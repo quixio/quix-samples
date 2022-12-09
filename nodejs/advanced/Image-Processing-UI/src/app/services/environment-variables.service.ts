@@ -9,7 +9,8 @@ export class EnvironmentVariablesService {
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
   /*Create a token in the Tokens menu and paste it here*/
-  Token: string = "{placeholder:token}";
+  //Token: string = "{placeholder:token}";
+  Token: string = ""
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
@@ -21,11 +22,13 @@ export class EnvironmentVariablesService {
 
   UseHardcodedValues = false;
   Topic: string = "";
-  WorkspaceId: string = "{placeholder:workspaceId}";
+  //WorkspaceId: string = "{placeholder:workspaceId}";
+  WorkspaceId: string = "";
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
-  domain = "{placeholder:environment.subdomain}";
+  //domain = "{placeholder:environment.subdomain}";
+  domain = "dev";
 
   constructor(private httpClient: HttpClient) {}
 
@@ -38,11 +41,11 @@ export class EnvironmentVariablesService {
   }
 
   GetToken() {
-    //if(this.UseHardcodedValues)
-    return of(this.Token);
+    if(this.UseHardcodedValues)
+      return of(this.Token);
 
-    //const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    //return this.httpClient.get("sdk_token", {headers, responseType: 'text'});
+    const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
+    return this.httpClient.get("sdk_token", {headers, responseType: 'text'});
   }
 
   GetTopic() {
