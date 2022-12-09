@@ -20,7 +20,7 @@ export class QuixService {
   public sentimentTopic: string = ''; // get topic name from the Topics page
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
-  readonly subdomain = 'platform'; // leave as 'platform'
+  readonly subdomain = 'dev'; // leave as 'platform'
   readonly server = ''; // leave blank
 
   public readerConnection: HubConnection;
@@ -53,6 +53,7 @@ export class QuixService {
       }));
 
       value$.subscribe((vals) => {
+		console.log(vals);
         this.workspaceId = this.stripLineFeed(vals.workspaceId);
         this.messagesTopic = this.stripLineFeed(this.workspaceId + '-' + vals.messagesTopic);
         this.sentimentTopic = this.stripLineFeed(this.workspaceId + '-' + vals.sentimentTopic);
