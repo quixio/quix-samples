@@ -29,7 +29,7 @@ export class EnvironmentVariablesService {
 
   //domain = "{placeholder:environment.subdomain}";
   domain = "dev";
-
+  server = ""
   constructor(private httpClient: HttpClient) {}
 
   // don't change this
@@ -45,7 +45,7 @@ export class EnvironmentVariablesService {
       return of(this.Token);
 
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.httpClient.get("sdk_token", {headers, responseType: 'text'});
+    return this.httpClient.get(this.server + "sdk_token", {headers, responseType: 'text'});
   }
 
   GetTopic() {
@@ -53,7 +53,7 @@ export class EnvironmentVariablesService {
       return of(this.Topic);
 
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.httpClient.get("processed_topic", {headers, responseType: 'text'});
+    return this.httpClient.get(this.server + "processed_topic", {headers, responseType: 'text'});
   }
 
   GetWorkspaceId() {
@@ -61,6 +61,6 @@ export class EnvironmentVariablesService {
       return of(this.WorkspaceId);
 
     const headers = new HttpHeaders().set('Content-Type', 'text/plain; charset=utf-8');
-    return this.httpClient.get("workspace_id", {headers, responseType: 'text'});
+    return this.httpClient.get(this.server + "workspace_id", {headers, responseType: 'text'});
   }
 }

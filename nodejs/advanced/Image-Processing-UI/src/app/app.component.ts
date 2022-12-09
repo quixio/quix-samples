@@ -6,6 +6,7 @@ import {ParameterData} from "./models/parameter-data";
 import {EnvironmentVariablesService} from "./services/environment-variables.service"
 import {combineLatest} from "rxjs";
 import {map} from 'rxjs/operators';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -38,7 +39,8 @@ export class AppComponent implements OnInit {
   private markers: any[] = new Array();
   public showTokenWarning: boolean = false;
 
-  constructor(private envVarService: EnvironmentVariablesService) {}
+  constructor(private envVarService: EnvironmentVariablesService,
+              private route: ActivatedRoute) {}
 
   ngOnInit(): void {
 
@@ -49,9 +51,10 @@ export class AppComponent implements OnInit {
           this.envVarService.GetToken(),
           this.envVarService.GetTopic(),
           this.envVarService.GetWorkspaceId(),
+          this.route.queryParams
       ).pipe(
-          map(([token, topic, wsId]) => {
-              return {token, topic, wsId};
+          map(([token, topic, wsId, params]) => {
+              return {token, topic, wsId, params};
           })
       );
 
@@ -67,6 +70,11 @@ export class AppComponent implements OnInit {
               this.showTokenWarning = true;
           }
           this.topic = top;
+
+          if(x.params["token"] !== undefined){
+              tok = x.params["token"];
+          }
+
           console.log(tok);
           console.log(top);
           console.log(wsid);
