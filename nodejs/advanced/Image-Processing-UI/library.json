@@ -19,5 +19,15 @@
 			"DefaultValue" : "image-processed-merged",
 			"Required": true
 		}
-	]
+	],
+	"DeploySettings":
+	{
+		"DeploymentType": "Service",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": true,
+		"UrlPrefix": "tfl-image-processing-ui",
+		"ValidateConnection": false
+	}
 }
