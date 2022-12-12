@@ -48,6 +48,7 @@ yarn-error.log
 testem.log
 /typings
 __pycache__/
+/.angular
 
 # System Files
 .DS_Store
