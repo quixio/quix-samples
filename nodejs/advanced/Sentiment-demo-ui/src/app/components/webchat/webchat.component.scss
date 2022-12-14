@@ -123,9 +123,9 @@ ngx-qrcode::ng-deep img {
 }
 
 
-@media (max-height: 850px) and (orientation: landscape),
+@media (max-width: 959px) and (orientation: landscape),
 (max-height: 600px) and (orientation: portrait) {
-  section > div {
+  .media-hide {
     display: none !important;
   }
 }

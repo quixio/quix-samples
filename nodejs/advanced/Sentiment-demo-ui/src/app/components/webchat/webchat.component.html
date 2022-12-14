@@ -53,8 +53,8 @@
     </mat-card-footer>
   </mat-card>
 
-  <div fxLayout="column" fxFlex.gt-sm="50" fxFlex.lt-md="30" fxLayoutGap.gt-sm="30">
-    <mat-card fxLayout="column" fxFlex.gt-sm="50" class="chart-card">
+  <div fxLayout="column" fxFlex.gt-sm="50" fxFlex.lt-md="30" fxLayoutGap.gt-sm="30" class="media-hide">
+    <mat-card fxLayout="column" class="chart-card">
       <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
         <mat-card-title class="mat-h2 m-0">Messages: {{ messages.length }}</mat-card-title>
         <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10">
@@ -68,7 +68,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="qr-card" fxHide.lt-md="true">
+    <mat-card class="qr-card" fxHide.lt-md="true" fxFlex.gt-sm="50" *ngIf="qrValue">
       <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20">
         <ngx-qrcode [elementType]="ngxQrcodeElementTypes.URL" [value]="qrValue"></ngx-qrcode>
         <span><strong>Scan to connect to this chat room on your mobile device.</strong></span>
