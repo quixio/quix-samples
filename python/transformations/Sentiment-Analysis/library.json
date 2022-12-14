@@ -17,7 +17,7 @@
         {
             "Name" : "input",
             "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
+            "InputType" : "InputTopic",
             "Description" : "This is the raw data input topic",
             "DefaultValue" : "",
             "Required": true
@@ -25,7 +25,7 @@
         {
             "Name" : "output",
             "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
+            "InputType" : "OutputTopic",
             "Description" : "This is the output for the hugging face model score",
             "DefaultValue" : "sentiment",
             "Required": true

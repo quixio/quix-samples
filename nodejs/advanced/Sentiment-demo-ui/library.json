@@ -13,7 +13,7 @@
 		{
 			"Name" : "sentiment",
 			"Type" : "EnvironmentVariable",
-			"InputType" : "InputTopic",
+			"InputType" : "FreeText",
 			"Description" : "The topic to read from",
 			"DefaultValue" : "sentiment",
 			"Required": true
@@ -21,7 +21,7 @@
 		{
 			"Name" : "messages",
 			"Type" : "EnvironmentVariable",
-			"InputType" : "InputTopic",
+			"InputType" : "FreeText",
 			"Description" : "The topic to read from",
 			"DefaultValue" : "messages",
 			"Required": true
