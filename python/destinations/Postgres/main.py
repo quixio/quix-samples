@@ -27,9 +27,9 @@ CONSUMER_GROUP = "postgres_sink"
 try:
     conn = connect_postgres()
     logger.info("CONNECTED!")
-except:
-    # End program or something
-    pass
+except Exception as e:
+    logger.info(f"ERROR!: {e}")
+    raise
 
 # Creata table if it doesn't exist
 create_schema(conn)

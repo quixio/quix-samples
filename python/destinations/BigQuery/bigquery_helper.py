@@ -84,6 +84,7 @@ def create_eventdata_table(client, table_name: str):
         bigquery.SchemaField("timestamp", "TIMESTAMP", mode="REQUIRED"),
         bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("value", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("event_id", "STRING", mode="REQUIRED"),
     ]
     create_table(client, table_name, schema)
 

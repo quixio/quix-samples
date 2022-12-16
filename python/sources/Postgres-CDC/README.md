@@ -13,9 +13,11 @@ The code sample uses the following environment variables:
 - **output**: Name of the output topic to write into.
 - **PG_HOST**: The IP address or fully qualified domain name of your server.
 - **PG_PORT**: The Port number to use for communication with the server.
-- **PG_DATABASE**: The name of the database to persist to.
+- **PG_DATABASE**: The name of the database for CDC.
 - **PG_USER**: The username of the sink should use to interact with the database.
 - **PG_PASSWORD**: The password for the user configured above.
+- **PG_SCHEMA**: The name of the schema for CDC.
+- **PG_TABLE**: The name of the table for CDC.
 
 ## Known limitations
 

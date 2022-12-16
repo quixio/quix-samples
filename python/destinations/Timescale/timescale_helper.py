@@ -60,7 +60,7 @@ def create_metadata_table(conn, table_name: str):
     query = f'''
     CREATE TABLE IF NOT EXISTS {TS_SCHEMA}.{table_name} (
     uid SERIAL,
-    stream_id VARCHAR(100),
+    stream_id VARCHAR(100)
     );
     '''
     run_query(conn, query)
@@ -72,7 +72,8 @@ def create_eventdata_table(conn, table_name: str):
     uid SERIAL,
     stream_id VARCHAR(100),
     timestamp TIMESTAMPTZ NOT NULL,
-    value VARCHAR(100)
+    value VARCHAR(100),
+    event_id VARCHAR(100)
     );
     SELECT create_hypertable('{TS_SCHEMA}.{table_name}', 'timestamp', if_not_exists => TRUE);
     '''
