@@ -1,4 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader
+from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader, ParametersBufferConfiguration
 from quixstreaming.app import App
 from threshold_function import ThresholdAlert
 import os
@@ -13,6 +13,11 @@ print("Opening input and output topics")
 input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
 output_topic = client.open_output_topic(os.environ["output"])
 
+bufferMilliSeconds = os.environ["bufferMilliSeconds"]
+if isinstance(bufferMilliSeconds, int):
+    msecs = int(bufferMilliSeconds)
+else:
+    raise Exception("bufferMilliSeconds should be an integer")
 
 # Callback called for each incoming stream
 def read_stream(input_stream: StreamReader):
@@ -23,9 +28,12 @@ def read_stream(input_stream: StreamReader):
     # handle the data in a function to simplify the example
     quix_function = ThresholdAlert(input_stream, output_stream)
 
+    buffer_options = ParametersBufferConfiguration()
+    buffer_options.time_span_in_milliseconds = msecs
+    buffer = input_stream.parameters.create_buffer()
+
     # React to new data received from input topic.
-    input_stream.events.on_read += quix_function.on_event_data_handler
-    input_stream.parameters.on_read_pandas += quix_function.on_pandas_frame_handler
+    buffer.on_read_pandas += quix_function.on_pandas_frame_handler
 
     # When input stream closes, we close output stream as well.
     def on_stream_close(end_type: StreamEndType):

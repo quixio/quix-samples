@@ -14,10 +14,6 @@ class ThresholdAlert:
         self.previous_value = None
         self.previous_timestamp = None
 
-    # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
-        print(data)
-
     # Callback triggered for each new parameter data.
     def on_pandas_frame_handler(self, df: pd.DataFrame):
 
