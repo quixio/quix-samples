@@ -2,8 +2,11 @@ from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader, Para
 from quixstreaming.app import App
 from threshold_function import ThresholdAlert
 import os
+import traceback
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
+
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
 
 # Change consumer group to a different constant if you want to run model locally.
@@ -13,11 +16,12 @@ print("Opening input and output topics")
 input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
 output_topic = client.open_output_topic(os.environ["output"])
 
-bufferMilliSeconds = os.environ["bufferMilliSeconds"]
-if isinstance(bufferMilliSeconds, int):
+try:
+    bufferMilliSeconds = os.environ["bufferMilliSeconds"]
     msecs = int(bufferMilliSeconds)
-else:
-    raise Exception("bufferMilliSeconds should be an integer")
+except ValueError:
+    print("bufferMilliSeconds should be an integer. ERROR: {}".format(traceback.format_exc()))
+
 
 # Callback called for each incoming stream
 def read_stream(input_stream: StreamReader):
