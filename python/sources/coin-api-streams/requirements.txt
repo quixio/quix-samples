@@ -1,0 +1,5 @@
+quixstreaming==0.4.7a202206201538
+requests
+websocket-client
+rel
+python-dateutil
