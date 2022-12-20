@@ -36,7 +36,6 @@ def create_logical_slot(slot_name: str):
 
     else:
         conn.close()
-        raise
 
 
 def create_publication_on_table(publication_name: str, table_name: str):
