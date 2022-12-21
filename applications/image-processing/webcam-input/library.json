@@ -20,7 +20,6 @@
         }
     ],
     "EntryPoint": "build/dockerfile",
-    "RunEntryPoint": "main.js",
     "DefaultFile": "main.js",
     "DeploySettings":
     {
