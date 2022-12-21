@@ -1,0 +1,17 @@
+main {
+  padding: 40px
+}
+
+mat-toolbar {
+  background-color: #0a0b24;
+  color: white;
+  padding: 10px 40px;
+}
+
+// Slightly tweak the wrapper so the camera is rounded
+::ng-deep {
+  .webcam-wrapper {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+}

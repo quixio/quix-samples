@@ -21,5 +21,15 @@
     ],
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.js",
-    "DefaultFile": "main.js"
+    "DefaultFile": "main.js",
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "ValidateConnection": false,
+        "PublicAccess": true,
+        "UrlPrefix": "webcam"
+    }
 }
