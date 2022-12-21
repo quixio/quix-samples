@@ -19,8 +19,8 @@
             "Required": true
         }
     ],
-    "EntryPoint": "build/dockerfile",
-    "DefaultFile": "main.js",
+    "EntryPoint": "src/build/dockerfile",
+    "DefaultFile": "src/app/services/environment-variables.service.ts",
     "DeploySettings":
     {
         "DeploymentType": "Service",
