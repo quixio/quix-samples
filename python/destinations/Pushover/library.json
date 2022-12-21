@@ -24,7 +24,7 @@
     "Variables": [
 			{
 			  "Name": "input",
-			  "Type": "Placeholder",
+			  "Type": "EnvironmentVariable",
 			  "InputType": "InputTopic",
 			  "Description": "Name of the input topic to listen to.",
 			  "DefaultValue": "currency-rate-alerts",
@@ -32,7 +32,7 @@
 			},
 			{
 			  "Name": "base_url",
-			  "Type": "Placeholder",
+			  "Type": "EnvironmentVariable",
 			  "InputType": "FreeText",
 			  "Description": "The webhook url to send notifications to",
 			  "DefaultValue": "https://api.pushover.net/1/messages.json?",
@@ -40,7 +40,7 @@
 			},
 			{
 			  "Name": "api_token",
-			  "Type": "Placeholder",
+			  "Type": "EnvironmentVariable",
 			  "InputType": "HiddenText",
 			  "Description": "Generate an API token on the Pushover website",
 			  "DefaultValue": "",
@@ -48,7 +48,7 @@
 			},
 			{
 			  "Name": "user_key",
-			  "Type": "Placeholder",
+			  "Type": "EnvironmentVariable",
 			  "InputType": "FreeText",
 			  "Description": "User key for the Pushover mobile app",
 			  "DefaultValue": "",
