@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { EnvironmentVariablesService } from "./services/environment-variables.service"
-import {WebcamImage, WebcamInitError, WebcamUtil} from 'ngx-webcam';
-import { combineLatest, filter, map, Observable, repeat, repeatWhen, startWith, Subject, switchMap, take, takeUntil, tap, timer } from 'rxjs';
+import { QuixService } from "./services/quix.service"
+import {WebcamImage, WebcamUtil} from 'ngx-webcam';
+import { Observable, startWith, Subject, switchMap, timer } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
 
-  constructor(private envVarService: EnvironmentVariablesService) {}
+  constructor(private envVarService: QuixService) {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
 
 
   /**
-   * Output from the web cam component when it takes a snapshot
+   * Output from the webcam component when it takes a snapshot
    * @param webcamImage the image captured from web cam
    */
   public handleImage(webcamImage: WebcamImage): void {

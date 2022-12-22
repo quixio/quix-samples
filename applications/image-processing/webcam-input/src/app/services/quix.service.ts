@@ -6,7 +6,7 @@ import {WebcamImage} from "ngx-webcam";
 @Injectable({
   providedIn: 'root'
 })
-export class EnvironmentVariablesService {
+export class QuixService {
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
   /*WORKING LOCALLY? UPDATE THESE!*/
@@ -28,6 +28,7 @@ export class EnvironmentVariablesService {
   constructor(private httpClient: HttpClient) {
 
     if(this.workingLocally) {
+      this.domain = "platform"; // default to prod
       return;
     }
 

@@ -16,19 +16,19 @@ Check out the [SDK docs](https://docs.quix.io/sdk/introduction/) for detailed us
 
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
 
-NOTE! Whether running locally or in the Quix platform you should edit `environment-variables.service.ts` and add your Token.
+NOTE! Whether running locally or in the Quix platform you should edit `quix.service.ts` and add your Token.
 This can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
 ![image](/src/assets/images/small-menu.png)
 
 ## Local
 
-To run this project locally please update the `environment-variables.service.ts` file with your:
+To run this project locally please update the `quix.service.ts` file with your:
  - Topic (the topic you want to receive data from)
  - Workspace ID (the id of your Quix workspace. See the URL in your browser when you're logged in)
 
 Set the `UseHardcodedValues` flag to True
 
-NOTE! Whether running locally or in the Quix platform you should edit `environment-variables.service.ts` and add your Token.
+NOTE! Whether running locally or in the Quix platform you should edit `quix.service.ts` and add your Token.
 This can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
 ![image](/src/assets/images/small-menu.png)
 
