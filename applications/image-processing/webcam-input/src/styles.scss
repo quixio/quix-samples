@@ -12,9 +12,8 @@
 @include mat.button-theme($quix-template-theme);
 @include mat.form-field-theme($quix-template-theme);
 @include mat.input-theme($quix-template-theme);
-@include mat.select-theme($quix-template-theme);
 @include mat.icon-theme($quix-template-theme);
-@include mat.divider-theme($quix-template-theme);
+@include mat.select-theme($quix-template-theme);
 
 
 /* You can add global styles to this file, and also import other style files */
@@ -50,11 +49,4 @@ body { margin: 0; }
 // Button
 .mat-raised-button {
   line-height: 40px !important;
-  background-color: #646471;
-  color: white;
-}
-
-.mat-divider {
-  background-color: #f1f1f3;
-  margin: 5px 16px !important;
 }

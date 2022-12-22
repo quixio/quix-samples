@@ -1,20 +1,31 @@
-# Image processing - Webcam input
+# Webcam image capture
 
-This is the image processing module which does contain webpage with source from camera.
-
-## Requirements/prerequisites
-
-In order to make use of this solution you also need to deploy the following projects:
- - Image processing - Object recognition
- - Image processing - Frontend
- - Image processing - Webcam input (this one)
+Stream images from the webcam on your laptop or phone to a Quix stream.
 
 ## Environment variables
 
 This code sample uses the following environment variables:
 
-- **topic_raw**: This output topic will contain image readed from camera
+- **topic_raw**: This output topic will contain images readed from the camera
 
 ## How to run
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
+
+## Local setup
+
+Clone the repo or download a zip of the source.
+
+Update the `environment-variables.service.ts` file with your values for these:
+
+ - private workingLocally = false; // set to true if working locally
+ - private token: string = ""; // From the Topics page, copy an SDK token from the broker settings
+ - public workspaceId: string = ''; // Look in the URL for the Quix Portal your workspace ID is after 'workspace='
+ - public topic: string = ''; // get topic name from the Topics page in Quix portal
+
+Ensure you have npm installed locally.
+
+Run `npm install`
+And `ng serve`
+
+
  

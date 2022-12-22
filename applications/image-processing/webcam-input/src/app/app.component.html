@@ -1,0 +1,44 @@
+<mat-drawer-container class="example-container">
+  <mat-drawer-content>
+    <header>
+      <mat-toolbar>
+        <a routerLink="/lobby" routerLinkActive="active" class="logo" [style.marginRight.px]="30">
+          <img src="assets/quix-logo.svg" alt="Quix" width="40" />
+        </a>
+        <span class="mat-h3 m-0">Image recognition demo</span>
+      </mat-toolbar>
+    </header>
+    <main>
+     
+        <div fxLayout="column" fxFlex.gt-sm="50">
+          <div fxLayout="column" fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+            <div class="mat-h2" [ngStyle.lt-sm]="{ marginBottom: '10px' }" [ngStyle.gt-sm]="{ marginBottom: 0 }" [style.font-weight]="600">Webcam input</div>
+            <div class="mat-body-2"><span [style.fontWeight]="600">Last image: </span>{{ lastImageTaken | date:'M/d/yy, h:mm:ss' }}</div>
+          </div>
+          <div [style.marginTop.px]="24">
+            <webcam mirrorImage="always" [height]="720" [width]="width" [videoOptions]="{width: {min: 300, ideal: 1920}, height: {min: 720, ideal: 1080}}"
+             [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
+          </div>
+
+          <mat-form-field [style.maxWidth.px]="400" [style.overflow]="'hidden'" [style.margin-top.px]="36" appearance="outline" class="mt-2">
+            <mat-label>Input device</mat-label>
+            <mat-select [(value)]="inputDevice" (selectionChange)="deviceChanged($event)">
+              <mat-option *ngFor="let device of devices" [value]="device">
+                {{ device.label | titlecase }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field [style.maxWidth.px]="400" appearance="outline" class="mt-2">
+            <mat-label>Refresh rate (delay between frames)</mat-label>
+            <mat-select [(value)]="refreshRate" (selectionChange)="refreshRateChanged()">
+              <mat-option *ngFor="let rate of refreshRates" [value]="rate">
+                {{ rate }} seconds
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+     
+    </main>
+  </mat-drawer-content>
+</mat-drawer-container>
