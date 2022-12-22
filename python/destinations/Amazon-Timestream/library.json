@@ -1,0 +1,101 @@
+{
+  "libraryItemId": "eb4d88e0-27ae-4ae2-91b2-af3ceadf05e5",
+  "name": "Amazon Timestream - Destination",
+  "language": "Python",
+  "tags": {
+    "Complexity": [
+      "Easy"
+    ],
+    "SDK Usage": [
+      "Read SDK"
+    ],
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Tech connectors"
+    ],
+    "Technology": [
+      "Amazon Timestream"
+    ]
+  },
+  "shortDescription": "Publish Quix streams to Amazon Timestream",
+  "DefaultFile": "main.py",
+  "EntryPoint": "build/dockerfile",
+  "RunEntryPoint": "main.py",
+  "IconFile": "icon.png",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "This is the input topic for the data",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "database_name",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The Amazon Timestream database name. Auto created with name quix if doesn't exists",
+      "DefaultValue": "quix",
+      "Required": false
+    },
+    {
+      "Name": "table_name",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The Amazon Timestream table name. Auto created matching input topic name if doesn't exists",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "batch_size",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Number of records to push in single batch. Minimum 1 to maximum 100.",
+      "DefaultValue": "20",
+      "Required": false
+    },
+    {
+      "Name": "mem_store_retention_hours",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The Amazon Timestream table in memory retention time in hours.",
+      "DefaultValue": "6",
+      "Required": false
+    },
+    {
+      "Name": "disk_store_retention_days",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The Amazon Timestream table on disk retention time in days.",
+      "DefaultValue": "73000",
+      "Required": false
+    },
+    {
+      "Name": "region",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "AWS Region",
+      "DefaultValue": "eu-west-1",
+      "Required": false
+    },
+    {
+      "Name": "aws_access_key_id",
+      "Type": "EnvironmentVariable",
+      "InputType": "HiddenText",
+      "Description": "AWS access key id",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "aws_secret_access_key",
+      "Type": "EnvironmentVariable",
+      "InputType": "HiddenText",
+      "Description": "AWS secret access key",
+      "DefaultValue": "",
+      "Required": false
+    }
+  ]
+}

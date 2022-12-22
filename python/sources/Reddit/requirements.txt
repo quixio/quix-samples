@@ -1,2 +1,2 @@
-quixstreaming==0.4.5a202203301950
+quixstreaming==0.4.9a202210131245
 praw

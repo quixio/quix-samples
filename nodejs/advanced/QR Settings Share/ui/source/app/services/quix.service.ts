@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from "rxjs";
-import {HubConnection, HubConnectionBuilder, IHttpConnectionOptions} from "@microsoft/signalr";
-import {PersonalAccessTokenCreatedUiNotification} from "../models/PersonalAccessTokenCreatedUiNotification";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
@@ -10,6 +8,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 export class QuixService {
 
     /*WORKING LOCALLY? UPDATE THESE!*/
+    // NOTE !!! This token will expire, generate one with a customised expiry date from the tokens page
     public token: string = "{placeholder:token}";
     public workspaceId: string = "{placeholder:workspaceId}";
     readonly subdomain = "{placeholder:environment.subdomain}";
@@ -17,13 +16,14 @@ export class QuixService {
 
     public apiurl: string;
 
-    private hubConnection;
     public PersonalAccessTokenReceived: Subject<any> = new Subject<any>();
     public PersonalAccessTokenCreationError: Subject<any> = new Subject<any>();
 
     constructor(private httpClient: HttpClient) {
 
-        this.apiurl = window.location.href + "api/";
+        if(this.apiurl == undefined) {
+            this.apiurl = window.location.href + "api/";
+        }
         console.log("API URL set to : " + this.apiurl);
     }
 
@@ -34,7 +34,9 @@ export class QuixService {
         };
 
         return this.post("portal-api", `profile/tokens`, token).subscribe(
-            data => console.log("Success", data),
+            data => {
+                this.PersonalAccessTokenReceived.next(data);
+            },
             error => {
                 this.PersonalAccessTokenCreationError.next(error);
                 console.log("Error", error)
@@ -57,33 +59,6 @@ export class QuixService {
 
         let url: string = `https://${service}.${domain}/${path}`;
         return this.httpClient.post<T>(url, body, requestOptions);
-    }
-
-    public startHubConnection(): Observable<HubConnection> {
-
-        let service = "portal-api-notifications";
-        let hub = "/hub";
-        let retryDelays: number[] = [1000, 1000, 1000];
-
-        let options: IHttpConnectionOptions = {
-            accessTokenFactory: () => this.token
-        };
-        this.hubConnection = new HubConnectionBuilder()
-            .withUrl(`https://${service}.${this.subdomain}.quix.ai${hub}`, options)
-            .withAutomaticReconnect(retryDelays)
-            .build();
-
-        return this.hubConnection.start()
-            .then(() => {
-                console.log("Hub started");
-
-                this.hubConnection.on('PersonalAccessTokenCreated', (data: PersonalAccessTokenCreatedUiNotification) => {
-                    this.PersonalAccessTokenReceived.next(data);
-                });
-
-            }).catch(err => {
-                console.log(err);
-            })
     }
 
     PushSettings(key, value, expiry, callback) {

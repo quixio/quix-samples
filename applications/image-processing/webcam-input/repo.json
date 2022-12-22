@@ -1,0 +1,14 @@
+{
+  "Variables": [
+    {
+      "Name": "topic_raw",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the output topic for webcam images",
+      "DefaultValue": "image-base64",
+      "Required": true
+    }
+  ],
+  "EntryPoint": "src/build/dockerfile",
+  "RunEntryPoint": null
+}

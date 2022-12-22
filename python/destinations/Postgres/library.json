@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "faa7578f-8e26-4d59-8ef9-f359d6dfcd73",
+    "libraryItemId": "faa7578f-8e26-4d59-8ef9-f359d6dfcd77",
     "name": "Postgres - Destination",
     "language": "Python",
     "IconFile": "icon.png",
@@ -60,6 +60,22 @@
           "InputType": "FreeText",
           "Description": "Database name of Postgres",
           "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "PG_SCHEMA",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Schema name of Postgres",
+          "DefaultValue": "public",
+          "Required": true
+        },
+        {
+          "Name": "MAX_QUEUE_SIZE",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Max queue size for the sink ingestion",
+          "DefaultValue": "50",
           "Required": true
         }
       ],

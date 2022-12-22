@@ -1,0 +1,90 @@
+{
+    "libraryItemId": "ba94b84d-2af9-4720-8c77-6005133bd994",
+    "name": "Timescale - Destination",
+    "language": "Python",
+    "IconFile": "icon.png",
+    "tags": {
+      "Complexity": ["Medium"],
+      "SDK Usage": ["Read SDK"],
+      "Type": ["Tech connectors"],
+      "Pipeline Stage": ["Destination"]
+    },
+    "shortDescription": "Stream data from Quix to a Timescale Database",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "DefaultFile": "main.py",
+    "Variables": [
+        {
+          "Name": "input",
+          "Type": "EnvironmentVariable",
+          "InputType": "InputTopic",
+          "Description": "This is the input topic",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "TS_HOST",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Host name of Timescale",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "TS_PORT",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Port of Timescale",
+          "DefaultValue": "5432",
+          "Required": true
+        },
+        {
+          "Name": "TS_USER",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Username of Timescale",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "TS_PASSWORD",
+          "Type": "EnvironmentVariable",
+          "InputType": "HiddenText",
+          "Description": "Password of Timescale",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "TS_DATABASE",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Database name of Timescale",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "TS_SCHEMA",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Schema name of Timescale",
+          "DefaultValue": "public",
+          "Required": true
+        },
+        {
+          "Name": "MAX_QUEUE_SIZE",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Max queue size for the sink ingestion",
+          "DefaultValue": "50",
+          "Required": true
+        }
+      ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
+}

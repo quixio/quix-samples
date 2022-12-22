@@ -2,13 +2,14 @@ from google.cloud import bigquery
 from google.cloud.exceptions import NotFound
 from google.oauth2 import service_account
 import os
+import json
 from setup_logger import logger
 
 # BigQuery Constants
 PROJECT_ID = os.environ["PROJECT_ID"]
 DATASET_ID = os.environ["DATASET_ID"]
 DATASET_LOCATION = os.environ["DATASET_LOCATION"]
-SERVICE_KEY_PATH = os.environ["SERVICE_KEY_PATH"]
+SERVICE_ACCOUNT_JSON = os.environ["SERVICE_ACCOUNT_JSON"]
 
 class Null:
     def __init__(self):
@@ -35,9 +36,9 @@ def create_dataset(client):
         logger.debug("Created dataset {}.{}".format(client.project, dataset.dataset_id))
 
 def connect_bigquery():
-    
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_KEY_PATH, scopes=["https://www.googleapis.com/auth/cloud-platform"],
+    service_account_info = json.loads(SERVICE_ACCOUNT_JSON, strict=False)
+    credentials = service_account.Credentials.from_service_account_info(
+        service_account_info, scopes=["https://www.googleapis.com/auth/cloud-platform"],
     )
 
     client = bigquery.Client(credentials=credentials, project=credentials.project_id,)
@@ -66,33 +67,39 @@ def create_table(client, table_name: str, schema: list):
 
 def create_paramdata_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("timestamp", "NUMERIC", mode="NULLABLE")
+        bigquery.SchemaField("timestamp", "TIMESTAMP", mode="REQUIRED"),
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
     ]
     create_table(client, table_name, schema)
 
 
 def create_metadata_table(client, table_name: str):
-    schema = []
+    schema = [
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED")
+    ]
     create_table(client, table_name, schema)
 
 def create_eventdata_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("timestamp", "NUMERIC", mode="NULLABLE"),
-        bigquery.SchemaField("value", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("timestamp", "TIMESTAMP", mode="REQUIRED"),
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("value", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("event_id", "STRING", mode="REQUIRED"),
     ]
     create_table(client, table_name, schema)
 
 
 def create_parents_table(client, table_name: str):
     schema = [
-        bigquery.SchemaField("stream_id", "STRING", mode="NULLABLE"),
-        bigquery.SchemaField("parent_id", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
+        bigquery.SchemaField("parent_id", "STRING", mode="REQUIRED"),
     ]
     create_table(client, table_name, schema)
 
 
 def create_properties_table(client, table_name: str):
     schema = [
+        bigquery.SchemaField("stream_id", "STRING", mode="REQUIRED"),
         bigquery.SchemaField("name", "STRING", mode="NULLABLE"),
         bigquery.SchemaField("location", "STRING", mode="NULLABLE"),
         bigquery.SchemaField("topic", "STRING", mode="NULLABLE"),

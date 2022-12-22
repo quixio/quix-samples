@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Transformation"],
         "Type": ["Code samples"]
     },
-    "shortDescription": "Filter Reddit posts contains a specific word",
+    "shortDescription": "Filter Reddit posts containing a specific word",
     "DefaultFile": "quix_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

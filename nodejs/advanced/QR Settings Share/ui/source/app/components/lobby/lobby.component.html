@@ -13,7 +13,6 @@
     </div>
 </div>
 
-
 <div *ngIf="hasUsername" class="clr-col-12">
     <div class="clr-row" >
         <span class="margin-small label label-gray">Username: {{username}} | Device: {{device}}</span>
@@ -23,7 +22,7 @@
         <span *ngIf="processing" class="spinner spinner-inline">Please wait</span>
         <span *ngIf="showWorkingOnItMessage" class="label info">Working on it..</span>
     </div>
-    <div class="clr-col-4">
+    <div class="clr-col-4 clr-col-lg-4 clr-col-sm-12">
         <span>Add your own key value pairs to the App Pairing token store</span>
         <table class="table table-compact ">
             <thead>
@@ -54,11 +53,17 @@
 <!--      API URL: <input type="text" class="clr-input clr-col-10" [(ngModel)]="apiurl">-->
 <!--    </div>-->
 
-    <div class="clr-row table" >
-      <qr-code [hidden]="qrInfo == ''" [value]="qrInfo" level="L" size="400"></qr-code>
-    </div>
-    <div class="clr-row table" >
-        <span [hidden]="this.qrId == undefined || this.qrId.isEmpty()">QR code expires in: </span><label [hidden]="qrInfo == ''">{{this.timeLeft | number : '2.0-0'}}</label>
-    </div>
+    <div class="clr-col-4 clr-col-lg-4 clr-col-sm-12">
 
+        <div class="clr-row table clr-col-4 clr-col-lg-4 clr-col-sm-12" >
+          <qr-code [hidden]="qrInfo == ''" [value]="qrInfo" level="L" size="400"></qr-code>
+        </div>
+        <div class="clr-row table clr-col-4 clr-col-lg-4 clr-col-sm-12" >
+            <span [hidden]="this.qrId == undefined || this.qrId.isEmpty()">This token will expire on:&nbsp;</span><label [hidden]="qrInfo == ''">{{TokenExpiration}}</label>
+        </div>
+        <div class="clr-row table clr-col-4 clr-col-lg-4 clr-col-sm-12" >
+            <span [hidden]="this.qrId == undefined || this.qrId.isEmpty()">You have&nbsp;</span><label [hidden]="qrInfo == ''">{{this.timeLeft | number : '2.0-0'}}s to scan the QR code</label>
+        </div>
+
+    </div>
   </div>

@@ -1,4 +1,0 @@
-quixstreaming==0.4.7a202206201538
-numpy==1.21.0
-wget==3.2
-opencv-python==4.5.2.54

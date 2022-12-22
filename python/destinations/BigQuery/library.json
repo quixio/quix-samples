@@ -47,11 +47,19 @@
           "Required": true
         },
         {
-          "Name": "SERVICE_KEY_PATH",
+          "Name": "SERVICE_ACCOUNT_JSON",
+          "Type": "EnvironmentVariable",
+          "InputType": "HiddenText",
+          "Description": "JSON string of the service account file for the BigQuery GCP project",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+          "Name": "MAX_QUEUE_SIZE",
           "Type": "EnvironmentVariable",
           "InputType": "FreeText",
-          "Description": "The path to the service key of the BigQuery GCP project",
-          "DefaultValue": "",
+          "Description": "Max queue size for the sink ingestion",
+          "DefaultValue": "50",
           "Required": true
         }
       ],

@@ -1,4 +1,4 @@
-quixstreaming==0.4.7a202206201538
+quixstreaming==0.4.9a202210131245
 werkzeug==2.0.1
 dash==2.2.0
 dash_bootstrap_components

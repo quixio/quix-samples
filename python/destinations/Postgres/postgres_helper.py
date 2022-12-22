@@ -1,5 +1,7 @@
 import psycopg2
 import os
+import traceback
+from setup_logger import logger
 
 # Postgres Constants
 PG_HOST = os.environ["PG_HOST"]
@@ -7,7 +9,7 @@ PG_PORT = os.environ["PG_PORT"]
 PG_USER = os.environ["PG_USER"]
 PG_PASSWORD = os.environ["PG_PASSWORD"]
 PG_DATABASE = os.environ["PG_DATABASE"]
-
+PG_SCHEMA = os.environ["PG_SCHEMA"]
 
 class Null:
     def __init__(self):
@@ -25,28 +27,40 @@ def connect_postgres():
 
 
 def run_query(conn, query: str):
-    cur = conn.cursor()
-    cur.execute(query)
-    conn.commit()
-    cur.close()
+    try:
+        cur = conn.cursor()
+        cur.execute(query)
+        conn.commit()
+        cur.close()
+    except Exception as e:
+        logger.error(str(e))
+        logger.error(traceback.print_exc())
+        logger.error("FAILED COMMAND: " + query)
 
+def create_schema(conn):
+    query = f'''
+    CREATE SCHEMA IF NOT EXISTS {PG_SCHEMA};
+    '''
+    run_query(conn, query)    
 
 def create_paramdata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
     uid SERIAL,
-    timestamp NUMERIC
+    stream_id VARCHAR(100),
+    timestamp TIMESTAMPTZ NOT NULL
     );
-    CREATE INDEX IF NOT EXISTS timestamp ON public.{table_name} (timestamp);
-    CLUSTER public.{table_name} USING timestamp;
+    CREATE INDEX IF NOT EXISTS {PG_SCHEMA}_{table_name}_timestamp ON {PG_SCHEMA}.{table_name} (timestamp);
+    CLUSTER {PG_SCHEMA}.{table_name} USING {PG_SCHEMA}_{table_name}_timestamp;
     '''
     run_query(conn, query)
 
 
 def create_metadata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
-    uid SERIAL
+    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
+    uid SERIAL,
+    stream_id VARCHAR(100)
     );
     '''
     run_query(conn, query)
@@ -54,10 +68,12 @@ def create_metadata_table(conn, table_name: str):
 
 def create_eventdata_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
     uid SERIAL,
-    timestamp NUMERIC,
-    value VARCHAR(100)
+    stream_id VARCHAR(100),
+    timestamp TIMESTAMPTZ NOT NULL,
+    value VARCHAR(100),
+    event_id VARCHAR(100)
     );
     '''
     run_query(conn, query)
@@ -65,7 +81,7 @@ def create_eventdata_table(conn, table_name: str):
 
 def create_parents_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
     uid SERIAL,
     stream_id VARCHAR(100),
     parent_id VARCHAR(100)
@@ -76,8 +92,9 @@ def create_parents_table(conn, table_name: str):
 
 def create_properties_table(conn, table_name: str):
     query = f'''
-    CREATE TABLE IF NOT EXISTS public.{table_name} (
+    CREATE TABLE IF NOT EXISTS {PG_SCHEMA}.{table_name} (
     uid SERIAL,
+    stream_id VARCHAR(100),
     name VARCHAR(100),
     location VARCHAR(100),
     topic VARCHAR(100),
@@ -102,12 +119,12 @@ def insert_row(conn, table_name: str, cols: list, vals: list):
 
 
 def _insert_row_str(conn, table_name: str, cols: str, vals: str):
-    query = f'''INSERT INTO public.{table_name}({cols}) VALUES {vals}'''
+    query = f'''INSERT INTO {PG_SCHEMA}.{table_name}({cols}) VALUES {vals}'''
     run_query(conn, query)
 
 
 def delete_row(conn, table_name: str, condition: str):
-    query = f'''DELETE FROM public.{table_name} WHERE {condition}'''
+    query = f'''DELETE FROM {PG_SCHEMA}.{table_name} WHERE {condition}'''
     run_query(conn, query)
 
 
@@ -120,5 +137,4 @@ def build_insert_str(cols: list, rows_list: list):
         row_strs.append(row_str)
     batch_row_str = ",".join(row_strs)
     return (col_str, batch_row_str)
-
 

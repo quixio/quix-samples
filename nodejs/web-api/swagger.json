@@ -1,0 +1,57 @@
+{
+   "openapi":"3.0.3",
+   "info":{
+      "version":"1.0.0",
+      "title":"Quix Sample Web API",
+      "description":"Sample web API project from Quix"
+   },
+   "tags":[
+      {
+         "name":"Users",
+         "description":"API for users in the system"
+      }
+   ],
+   "paths":{
+      "/users":{
+         "get":{
+            "operationId":"getAllUsers",
+            "tags":[
+               "Users"
+            ],
+            "summary":"Get all users in system",
+            "responses":{
+               "200":{
+                  "description":"Successful operation",
+                  "content":{
+                     "application/json":{
+                        "schema":{
+                           "type":"array",
+                           "items":{
+                              "$ref":"#/components/schemas/User"
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   },
+   "components":{
+      "schemas":{
+         "User":{
+            "type":"object",
+            "properties":{
+               "id":{
+                  "type":"string",
+                  "example":"6f18aa3f-d82c-4cd5-87c1-c9480a4a08f1"
+               },
+               "name":{
+                  "type":"string",
+                  "example":"John Doe"
+               }
+            }
+         }
+      }
+   }
+}

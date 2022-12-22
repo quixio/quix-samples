@@ -1,0 +1,26 @@
+<mat-drawer-container class="example-container" fxFlexFill>
+  <mat-drawer-content fxLayout="column">
+    <header>
+      <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" 
+        [ngStyle.lt-md]="{ 'paddingLeft.px': 24, 'paddingRight.px': 24 }">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30" fxLayoutGap.lt-md="20">
+          <a routerLink="/lobby" routerLinkActive="active">
+            <img src="assets/quix-logo.svg" alt="Quix" width="40" />
+          </a>
+          <span class="mat-h3 m-0" [ngClass.lt-md]="'mat-body-2'">
+            <strong>Sentiment analysis demo</strong>
+          </span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="end center">
+          <button mat-raised-button [ngClass.lt-md]="'mat-body-2'" routerLink="/lobby" routerLinkActive
+            #leaveRoom="routerLinkActive" [fxHide]="leaveRoom.isActive">
+            <strong>Leave room</strong>
+          </button>
+        </div>
+      </mat-toolbar>
+    </header>
+    <main fxFlex [ngStyle.lt-md]="{ 'padding.px': 24 }">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-drawer-content>
+</mat-drawer-container>

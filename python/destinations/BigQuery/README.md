@@ -13,7 +13,8 @@ The code sample uses the following environment variables:
 - **PROJECT_ID**: The BigQuery GCP Project ID.
 - **DATASET_ID**: The target Biguqery dataset ID.
 - **DATASET_LOCATION**: Location of BigQuery dataset.
-- **SERVICE_KEY_PATH**: The path to the service key of the BigQuery GCP project.
+- **SERVICE_ACCOUNT_JSON**: The service account json string for the BigQuery GCP project. [Tutorial on how to create service account.](https://cloud.google.com/iam/docs/creating-managing-service-accounts#iam-service-accounts-create-console)
+- **MAX_QUEUE_SIZE**: Max queue size for the sink ingestion.
 
 ## Known limitations 
 - BigQuery fails to immediately recognise new Schema changes such as adding a new field when streaming insert data.

@@ -1,0 +1,92 @@
+{
+  "libraryItemId": "85932949-fee0-4320-9e2b-f2ded42d42c1",
+  "name": "Amazon DynamoDB - Destination",
+  "language": "Python",
+  "tags": {
+    "Complexity": [
+      "Easy"
+    ],
+    "SDK Usage": [
+      "Read SDK"
+    ],
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Tech connectors"
+    ],
+    "Technology": [
+      "DynamoDB"
+    ]
+  },
+  "shortDescription": "Publish Quix streams to Amazon DynamoDB",
+  "DefaultFile": "main.py",
+  "EntryPoint": "build/dockerfile",
+  "RunEntryPoint": "main.py",
+  "IconFile": "icon.jpg",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "This is the input topic for the data",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "table_name",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The Amazon DynamoDB table name. Auto created matching input topic name if doesn't exists",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "max_retry",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Max reties for failed batch of records",
+      "DefaultValue": "5",
+      "Required": false
+    },
+    {
+      "Name": "region",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "AWS Region",
+      "DefaultValue": "eu-west-1",
+      "Required": false
+    },
+    {
+      "Name": "aws_access_key_id",
+      "Type": "EnvironmentVariable",
+      "InputType": "HiddenText",
+      "Description": "AWS access key id",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "aws_secret_access_key",
+      "Type": "EnvironmentVariable",
+      "InputType": "HiddenText",
+      "Description": "AWS secret access key",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "param_partition_key",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Custom partition key parameter",
+      "DefaultValue": "date|%Y-%m-%d",
+      "Required": false
+    },{
+      "Name": "param_sort_key",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Custom sort key parameter",
+      "DefaultValue": "time|%H:%M:%S.%f",
+      "Required": false
+    }
+  ]
+}

@@ -42,6 +42,14 @@
             "Description" : "This is the threshold's numerical value",
             "DefaultValue" : "100",
             "Required" : true
+        },
+        {
+            "Name" : "bufferMilliSeconds",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "How long to wait before waiting for threshold checking (milliseconds)",
+            "DefaultValue" : "1",
+            "Required" : true
         }
     ],
     "DeploySettings":

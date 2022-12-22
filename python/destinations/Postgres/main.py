@@ -6,8 +6,8 @@ import os
 from setup_logger import logger
 from queue import Queue
 from threading import Thread
-from queue_helper import insert_from_queue
-from postgres_helper import connect_postgres, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table
+from queue_helper import consume_queue
+from postgres_helper import connect_postgres, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table, create_schema
 
 
 # Global Variables
@@ -19,17 +19,20 @@ TABLE_NAME = {
     "PROPERTIES_TABLE_NAME": TOPIC + '_streams_properties',
     "PARENTS_TABLE_NAME": TOPIC + '_streams_parents'
 }
+MAX_QUEUE_SIZE = int(os.environ["MAX_QUEUE_SIZE"])
+CONSUMER_GROUP = "postgres_sink"
 
 
 # Connect to postgres and set up table
 try:
     conn = connect_postgres()
     logger.info("CONNECTED!")
-except:
-    # End program or something
-    pass
+except Exception as e:
+    logger.info(f"ERROR!: {e}")
+    raise
 
 # Creata table if it doesn't exist
+create_schema(conn)
 create_paramdata_table(conn, TABLE_NAME["PARAMETER_TABLE_NAME"])
 create_metadata_table(conn, TABLE_NAME["METADATA_TABLE_NAME"])
 create_eventdata_table(conn, TABLE_NAME["EVENT_TABLE_NAME"])
@@ -41,20 +44,29 @@ create_properties_table(conn, TABLE_NAME["PROPERTIES_TABLE_NAME"])
 client = QuixStreamingClient()
 
 logger.info("Opening input topic")
-input_topic = client.open_input_topic(os.environ["input"])
+input_topic = client.open_input_topic(os.environ["input"], CONSUMER_GROUP)
 logger.info(os.environ["input"])
 
 # Initialize Queue
-insert_queue = Queue(maxsize=0)
+param_insert_queue = Queue(maxsize=MAX_QUEUE_SIZE)
+event_insert_queue = Queue(maxsize=MAX_QUEUE_SIZE)
+insert_queue = (param_insert_queue, event_insert_queue)
 
 # Create threads that execute insert from Queue
-NUM_THREADS = 10
+NUM_THREADS = 1
 WAIT_INTERVAL = 0.25 # Seconds
 BATCH_SIZE = 50
 
 for i in range(NUM_THREADS):
-    worker = Thread(target=insert_from_queue, args=(
-        conn, TABLE_NAME["PARAMETER_TABLE_NAME"], insert_queue, WAIT_INTERVAL, BATCH_SIZE))
+    worker = Thread(target=consume_queue, args=(
+        conn, TABLE_NAME["PARAMETER_TABLE_NAME"], param_insert_queue, WAIT_INTERVAL, BATCH_SIZE))
+    # Thread will be killed when main thread is terminated
+    worker.setDaemon(True)
+    worker.start()
+
+for i in range(NUM_THREADS):
+    worker = Thread(target=consume_queue, args=(
+        conn, TABLE_NAME["EVENT_TABLE_NAME"], event_insert_queue, WAIT_INTERVAL, BATCH_SIZE))
     # Thread will be killed when main thread is terminated
     worker.setDaemon(True)
     worker.start()

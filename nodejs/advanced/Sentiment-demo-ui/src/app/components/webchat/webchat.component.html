@@ -1,0 +1,78 @@
+<section fxLayout="row" fxLayout.lt-md="column" fxLayoutGap.gt-sm="30" fxLayoutGap.lt-md="24" fxFlexFill>
+  <mat-card fxLayout="column" fxFlex.gt-sm="50" class="chat-card" fxFlexOrder.lt-md="2">
+    <mat-card-header>
+      <mat-card-title class="mat-h2 m-0">Live chat</mat-card-title>
+      <mat-chip-list aria-label="Fish selection">
+        <mat-chip class="status-chip">
+          <mat-icon fontIcon="circle" class="icon14" 
+            [ngClass]="readerConnected && writerConnected ? 'text-success' : 'text-warning'"></mat-icon>
+          <strong [style.marginLeft.px]="5">{{ readerConnected && writerConnected ? 'Connected' : 'Reconnecting' }}</strong>
+        </mat-chip>
+      </mat-chip-list>
+    </mat-card-header>
+    <mat-card-content fxFlex #chatWrapper>
+      <div class="message" *ngFor="let message of messages">
+        <div fxLayout="row">
+          <span class="text-grey-light mat-caption" [style.marginRight.px]="5">
+            {{ getDateFromTimestamp(message.timestamp) | date:'hh:mm:ss' }}
+          </span>
+          <mat-chip-list *ngIf="message.sentiment">
+            <mat-chip class="text-success sentiment-chip" *ngIf="message.sentiment > 0.5">
+              <mat-icon fontIcon="sentiment_satisfied" class="material-icons-outlined icon14"></mat-icon>
+              <strong [style.marginLeft.px]="5">{{ message.name }}</strong>
+            </mat-chip>
+            <mat-chip class="text-danger sentiment-chip" *ngIf="message.sentiment < -0.5">
+              <mat-icon fontIcon="sentiment_dissatisfied" class="material-icons-outlined icon14"></mat-icon>
+              <strong [style.marginLeft.px]="5">{{ message.name }}</strong>
+            </mat-chip>
+            <mat-chip class="text-grey sentiment-chip" *ngIf="(message.sentiment < 0.5 && message.sentiment > -0.5)">
+              <mat-icon fontIcon="sentiment_neutral" class="material-icons-outlined icon14"></mat-icon>
+              <strong [style.marginLeft.px]="5">{{ message.name }}</strong>
+            </mat-chip>
+          </mat-chip-list>
+          <mat-chip-list *ngIf="!message.sentiment">
+            <mat-chip class="text-grey-light sentiment-chip">
+              <strong [style.marginLeft.px]="2">{{ message.name }}</strong>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+        <span>{{ message.value }}</span>
+      </div>        
+    </mat-card-content>
+    <mat-card-footer>
+      <form [formGroup]="chatForm" fxLayout="row" fxLayoutGap="10" autocomplete="off" (ngSubmit)="send()">
+        <mat-form-field appearance="outline" fxFlex>
+          <input matInput placeholder="Type your message" formControlName="message">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!chatForm.controls.message.value"
+          [style.fontSize.px]="14">
+          <span [style.marginRight.px]="5">SEND</span>
+          <span [style.opacity]=".5">(⏎)</span>
+        </button>
+      </form>
+    </mat-card-footer>
+  </mat-card>
+
+  <div fxLayout="column" fxFlex.gt-sm="50" fxFlex.lt-md="30" fxLayoutGap.gt-sm="30" class="media-hide">
+    <mat-card fxLayout="column" class="chart-card" fxFlex.gt-sm="50">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-card-title class="mat-h2 m-0">Messages: {{ messages.length }}</mat-card-title>
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10">
+          <strong class="text-grey mat-body-2">Sentiment:</strong>
+          <div class="chart-legend"></div>
+        </div>
+      </mat-card-header>
+      <mat-card-content fxFlex>
+        <canvas height="100%" baseChart [type]="'line'" [datasets]="datasets" [options]="options">
+        </canvas>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="qr-card" fxHide.lt-md="true" *ngIf="qrValue">
+      <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20">
+        <ngx-qrcode [elementType]="ngxQrcodeElementTypes.URL" [value]="qrValue"></ngx-qrcode>
+        <span><strong>Scan to connect to this chat room on your mobile device.</strong></span>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

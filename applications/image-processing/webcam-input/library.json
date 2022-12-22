@@ -19,7 +19,16 @@
             "Required": true
         }
     ],
-    "EntryPoint": "build/dockerfile",
-    "RunEntryPoint": "main.js",
-    "DefaultFile": "main.js"
+    "EntryPoint": "src/build/dockerfile",
+    "DefaultFile": "src/app/services/quix.service.ts",
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "ValidateConnection": false,
+        "PublicAccess": true,
+        "UrlPrefix": "webcam-ui"
+    }
 }

@@ -2,7 +2,7 @@
 
 This is the web and phone UI for the Stream Processing Demo.
 
-This is part of our [Car Demo](https://quix.ai/data-stream-processing-example/) example which your can try [here](https://quix.ai/demos/cardemo/qr).
+This is part of our [Car Demo](https://www.quix.io/data-stream-processing-example/) example which your can try [here](https://streamingdemoui-quix-cardemo.deployments.quix.ai/).
 
 ## Requirements/prerequisites
 
@@ -20,7 +20,7 @@ This code sample uses the following environment variables:
 
 ## Docs
 
-Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+Check out the [SDK docs](https://docs.quix.io/platform/tutorials/data-stream-processing/data-stream-processing/) for detailed guidance.
 
 ## How to run
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.

@@ -1,4 +1,5 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, LocalFileStorage
+from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+import pandas as pd
 from transformers import Pipeline
 
 class QuixFunction:
@@ -6,42 +7,35 @@ class QuixFunction:
         self.input_stream = input_stream
         self.output_stream = output_stream
         self.classifier = classifier
-        
-        self.storage = LocalFileStorage()
-        if self.storage.containsKey(input_stream.stream_id + "-sum"):
-            self.sum = int(self.storage.get(self.input_stream.stream_id + "-sum"))
-            self.count = int(self.storage.get(self.input_stream.stream_id + "-count"))
-            print("State loaded from storage.")
-        else:
-            self.sum = 0
-            self.count = 0
-            print("No state found in storage.")
+
+        self.sum = 0
+        self.count = 0
 
     # Callback triggered for each new event.
     def on_event_data_handler(self, data: EventData):
         print(data.value)
 
-        sent = self.classifier(data.value)
-        label = sent[0]['label']
-        score = sent[0]['score']
+        print("events")
 
-        # Invert the negative score so that graph looks better
-        if (label == 'NEGATIVE'):
-            score = score - (score * 2)
+    # Callback triggered for each new parameter data.
+    def on_pandas_frame_handler(self, df_all_messages: pd.DataFrame):
 
-        print(score)
+        # Use the model to predict sentiment label and confidence score on received messages
+        model_response = self.classifier(list(df_all_messages["chat-message"]))
 
-        self.sum = self.sum + score
-        self.count = self.count + 1
+        # Add the model response ("label" and "score") to the pandas dataframe
+        df = pd.concat([df_all_messages, pd.DataFrame(model_response)], axis=1)
 
-        self.output_stream.parameters.buffer.add_timestamp_nanoseconds(data.timestamp_nanoseconds) \
-            .add_tags(data.tags) \
-            .add_value("chat-message", data.value.upper()) \
-            .add_value("sentiment", score) \
-            .add_value("average_sentiment", self.sum / self.count) \
-            .write()
+        # Iterate over the df to work on each message
+        for i, row in df.iterrows():
 
-    def on_committed(self):
-        self.storage.set(self.input_stream.stream_id + "-sum", self.sum)
-        self.storage.set(self.input_stream.stream_id + "-count", self.count)
-        print("State persisted in storage.")
+            # Calculate "sentiment" feature using label for sign and score for magnitude
+            df.loc[i, "sentiment"] = row["score"] if row["label"] == "POSITIVE" else - row["score"]
+
+            # Add average sentiment (and update memory)
+            self.count = self.count + 1
+            self.sum = self.sum + df.loc[i, "sentiment"]
+            df.loc[i, "average_sentiment"] = self.sum/self.count
+
+        # Output data with new features
+        self.output_stream.parameters.write(df)
