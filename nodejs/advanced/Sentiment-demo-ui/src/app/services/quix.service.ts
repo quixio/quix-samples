@@ -14,13 +14,13 @@ export class QuixService {
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
   /*WORKING LOCALLY? UPDATE THESE!*/
   private workingLocally = false; // set to true if working locally
-  private token: string = ""; // Create a token in the Tokens menu and paste it here
+  private token: string = ''; // Create a token in the Tokens menu and paste it here
   public workspaceId: string = ''; // Look in the URL for the Quix Portal your workspace ID is after 'workspace='
   public messagesTopic: string = ''; // get topic name from the Topics page
   public sentimentTopic: string = ''; // get topic name from the Topics page
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
 
-  readonly subdomain = 'dev'; // leave as 'platform'
+  private subdomain = ''; // leave as 'platform'
   readonly server = ''; // leave blank
 
   public readerConnection: HubConnection;
@@ -28,6 +28,7 @@ export class QuixService {
   public writerConnection: HubConnection;
   public writerConnectionPromise: Promise<void>;
   public loaded: BehaviorSubject<any> = new BehaviorSubject<any>(false);
+  private domainRegex = new RegExp("^https:\\/\\/portal-api\\.([a-zA-Z]+)\\.quix\\.ai")
 
   constructor(private httpClient: HttpClient) {
 
@@ -42,14 +43,16 @@ export class QuixService {
       let messagesTopic$ = this.httpClient.get(this.server + 'messages_topic', {headers, responseType: 'text'});
       let sentimentTopic$ = this.httpClient.get(this.server + 'sentiment_topic', {headers, responseType: 'text'});
       let token$ = this.httpClient.get(this.server + 'sdk_token', {headers, responseType: 'text'});
+      let portalApi$ = this.httpClient.get(this.server + "portal_api", {headers, responseType: 'text'})
 
       let value$ = combineLatest([
         workspaceId$,
         messagesTopic$,
         sentimentTopic$,
-        token$
-      ]).pipe(map(([workspaceId, messagesTopic, sentimentTopic, token]) => {
-        return {workspaceId, messagesTopic, sentimentTopic, token};
+        token$,
+        portalApi$
+      ]).pipe(map(([workspaceId, messagesTopic, sentimentTopic, token, portalApi]) => {
+        return {workspaceId, messagesTopic, sentimentTopic, token, portalApi};
       }));
 
       value$.subscribe((vals) => {
@@ -58,6 +61,16 @@ export class QuixService {
         this.messagesTopic = this.stripLineFeed(this.workspaceId + '-' + vals.messagesTopic);
         this.sentimentTopic = this.stripLineFeed(this.workspaceId + '-' + vals.sentimentTopic);
         this.token = vals.token.replace('\n', '');
+
+        let portalApi = vals.portalApi.replace("\n", "");
+        let matches = portalApi.match(this.domainRegex);
+        if(matches) {
+          this.subdomain = matches[1];
+        }
+        else {
+          this.subdomain = "platform"; // default to prod
+        }
+
         this.ConnectToQuix(this.workspaceId);
       });
     }
