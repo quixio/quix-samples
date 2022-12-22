@@ -1,0 +1,131 @@
+.mat-chip {
+  &.status-chip {
+    background-color: white !important;
+    color: inherit !important;
+  }
+
+  &.sentiment-chip {
+    padding: 4px 8px 4px 4px;
+    min-height: 0;
+    height: auto;
+    line-height: 1em;
+    font-size: 12px;
+  }
+}
+
+.mat-icon.icon14 {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+}
+
+.mat-card.chat-card {
+  height: 100%;
+
+  .mat-card-content {
+    overflow: auto;
+    margin: -17px;
+  }
+}
+
+.mat-card.chart-card {
+  height: 100%;
+} 
+
+.message {
+  padding: 0 16px;
+  margin: 16px 0 !important;
+}
+
+.mat-card.qr-card {
+  background-color: #e4e4e6;
+
+  span {
+    text-align: center;
+    font-size: 2vw;
+    line-height: 1.2em;
+  }
+}
+
+.text-success {
+  color: #13a963;
+
+  &.mat-chip {
+    background-color: rgba(0, 221, 129, 0.16) !important;
+  }
+}
+
+.text-danger {
+  color: #c23131;
+
+  &.mat-chip {
+    background-color: rgba(255, 64, 64, 0.16) !important;
+  }
+}
+
+.text-grey {
+  color: #646471;
+
+  &.mat-chip {
+    background-color: rgba(100, 100, 113, 0.16) !important;
+  }
+}
+
+.text-grey-light {
+  color: #a2a2b0;
+
+  &.mat-chip {
+    background-color: rgba(162, 162, 176, 0.16) !important;
+  }
+}
+
+.text-warning {
+  color: #ffa726;
+}
+
+.chart-legend {
+  border: 3px solid #0064ff;
+  background-color: rgba(0, 100, 255, 0.24);
+  border-radius: 4px;
+  width: 26px;
+  height: 10px;
+}
+
+.mat-form-field-appearance-outline::ng-deep {
+  .mat-form-field-outline {
+    top: 0;
+  }
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mat-form-field-flex {
+    margin: 0 !important;
+  }
+
+  .mat-form-field-infix {
+    border-top: 0;
+  }
+
+  .mat-form-field-outline-start,
+  .mat-form-field-outline-gap,
+  .mat-form-field-outline-end {
+    background-color: white;
+    border: none;
+  }
+}
+
+ngx-qrcode::ng-deep img {
+  width: 25vh;
+  height: 25vh;
+}
+
+
+@media (max-width: 959px) and (orientation: landscape),
+(max-height: 600px) and (orientation: portrait) {
+  .media-hide {
+    display: none !important;
+  }
+}

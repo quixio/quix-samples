@@ -7,13 +7,13 @@
 		"SDK Usage": ["Read SDK"]
 	},
 	"shortDescription": "An Angular UI for the sentiment analysis demo",
-	"DefaultFile": "source/app/services/quix.service.ts",
-	"EntryPoint": "source/build/dockerfile",
+	"DefaultFile": "src/app/services/quix.service.ts",
+	"EntryPoint": "src/build/dockerfile",
 	"Variables": [
 		{
 			"Name" : "sentiment",
 			"Type" : "EnvironmentVariable",
-			"InputType" : "InputTopic",
+			"InputType" : "FreeText",
 			"Description" : "The topic to read from",
 			"DefaultValue" : "sentiment",
 			"Required": true
@@ -21,10 +21,20 @@
 		{
 			"Name" : "messages",
 			"Type" : "EnvironmentVariable",
-			"InputType" : "InputTopic",
+			"InputType" : "FreeText",
 			"Description" : "The topic to read from",
 			"DefaultValue" : "messages",
 			"Required": true
 		}
-	]
+	],
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": true,
+        "UrlPrefix": "Sentiment-Demo-UI",
+        "ValidateConnection": false
+    }
 }
