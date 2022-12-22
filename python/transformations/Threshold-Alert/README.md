@@ -15,8 +15,8 @@ The code sample uses the following environment variables:
 
 - **input**: This is the input topic for raw data.
 - **output**: This is the output topic for alerts.
-- **ParameterName**: This is the stream's parameter to track.
-- **ThresholdValue**: This is the threshold's numerical value.
+- **parameterName**: This is the stream's parameter to track.
+- **thresholdValue**: This is the threshold's numerical value.
 - **bufferMilliSeconds**: How long to wait before waiting for threshold checking (milliseconds).
 
 ## Docs
