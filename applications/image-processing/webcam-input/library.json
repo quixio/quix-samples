@@ -20,7 +20,7 @@
         }
     ],
     "EntryPoint": "src/build/dockerfile",
-    "DefaultFile": "src/app/services/environment-variables.service.ts",
+    "DefaultFile": "src/app/services/quix.service.ts",
     "DeploySettings":
     {
         "DeploymentType": "Service",
@@ -29,6 +29,6 @@
         "Replicas": 1,
         "ValidateConnection": false,
         "PublicAccess": true,
-        "UrlPrefix": "webcam"
+        "UrlPrefix": "webcam-ui"
     }
 }
