@@ -1,0 +1,67 @@
+{
+    "libraryItemId": "cb43e030-e5b1-4681-bc59-0666d0925254",
+    "name": "Pushover - Destination",
+    "language": "Python",
+    "tags": {
+        "Complexity": [
+            "Easy"
+        ],
+        "SDK Usage": [
+            "Read SDK"
+        ],
+        "Pipeline Stage": [
+            "Destination"
+        ],
+        "Type": ["Tech connectors"],
+        "Technology": [
+            "Pushover"
+        ]
+    },
+    "shortDescription": "Push notifications and messages to your mobile with Pushover",
+    "DefaultFile": "quix_functions.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+			{
+			  "Name": "input",
+			  "Type": "EnvironmentVariable",
+			  "InputType": "InputTopic",
+			  "Description": "Name of the input topic to listen to.",
+			  "DefaultValue": "currency-rate-alerts",
+			  "Required": true
+			},
+			{
+			  "Name": "base_url",
+			  "Type": "EnvironmentVariable",
+			  "InputType": "FreeText",
+			  "Description": "The webhook url to send notifications to",
+			  "DefaultValue": "https://api.pushover.net/1/messages.json?",
+			  "Required": true
+			},
+			{
+			  "Name": "api_token",
+			  "Type": "EnvironmentVariable",
+			  "InputType": "HiddenText",
+			  "Description": "Generate an API token on the Pushover website",
+			  "DefaultValue": "",
+			  "Required": false
+			},
+			{
+			  "Name": "user_key",
+			  "Type": "EnvironmentVariable",
+			  "InputType": "FreeText",
+			  "Description": "User key for the Pushover mobile app",
+			  "DefaultValue": "",
+			  "Required": false
+			}
+    ],
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 800,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}

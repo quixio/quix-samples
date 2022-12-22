@@ -1,9 +1,12 @@
-from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader
+from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader, ParametersBufferConfiguration
 from quixstreaming.app import App
 from threshold_function import ThresholdAlert
 import os
+import traceback
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
+
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
 client = QuixStreamingClient()
 
 # Change consumer group to a different constant if you want to run model locally.
@@ -12,6 +15,12 @@ print("Opening input and output topics")
 # Environment variables
 input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group")
 output_topic = client.open_output_topic(os.environ["output"])
+
+try:
+    bufferMilliSeconds = os.environ["bufferMilliSeconds"]
+    msecs = int(bufferMilliSeconds)
+except ValueError:
+    print("bufferMilliSeconds should be an integer. ERROR: {}".format(traceback.format_exc()))
 
 
 # Callback called for each incoming stream
@@ -23,9 +32,12 @@ def read_stream(input_stream: StreamReader):
     # handle the data in a function to simplify the example
     quix_function = ThresholdAlert(input_stream, output_stream)
 
+    buffer_options = ParametersBufferConfiguration()
+    buffer_options.time_span_in_milliseconds = msecs
+    buffer = input_stream.parameters.create_buffer()
+
     # React to new data received from input topic.
-    input_stream.events.on_read += quix_function.on_event_data_handler
-    input_stream.parameters.on_read_pandas += quix_function.on_pandas_frame_handler
+    buffer.on_read_pandas += quix_function.on_pandas_frame_handler
 
     # When input stream closes, we close output stream as well.
     def on_stream_close(end_type: StreamEndType):

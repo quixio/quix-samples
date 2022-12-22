@@ -1,0 +1,58 @@
+{
+    "libraryItemId": "49294edb-f541-4e12-b821-0c83e174258a",
+    "name": "CoinAPI WebSocket API - Source",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "SDK Usage": ["Write SDK"],
+        "Pipeline Stage": ["Source"],
+        "Type": ["Tech connectors"]
+    },
+    "shortDescription": "Publish real-time currency data from the CoinAPI WebSocket API to a stream",
+    "DefaultFile": "quix_functions.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+			{
+			  "Name": "output",
+			  "Type": "Placeholder",
+			  "InputType": "OutputTopic",
+			  "Description": "This is the output topic for coin data",
+			  "DefaultValue": "currency-exchange-rates",
+			  "Required": true
+			},
+			{
+			  "Name": "coin_api_key",
+			  "Type": "Placeholder",
+			  "InputType": "HiddenText",
+			  "Description": "Your Coin API key",
+			  "DefaultValue": "F8139880-B6DD-43F2-B0F4-38ADFB0B22B0",
+			  "Required": true
+			},
+			{
+			  "Name": "asset_id_base",
+			  "Type": "Placeholder",
+			  "InputType": "FreeText",
+			  "Description": "This is the main currency of interest",
+			  "DefaultValue": "BTC",
+			  "Required": true
+			},
+			{
+			  "Name": "asset_id_quote",
+			  "Type": "Placeholder",
+			  "InputType": "FreeText",
+			  "Description": "These are the currencies to compare the primary currency to",
+			  "DefaultValue": "USD",
+			  "Required": true
+			}
+    ],
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}
