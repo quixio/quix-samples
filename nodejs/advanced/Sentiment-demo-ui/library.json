@@ -5,7 +5,8 @@
 	"tags": {
 		"Complexity": ["Medium"],
 		"SDK Usage": ["Read SDK"],
-		"Type": ["Demos"]
+		"Type": ["Demos"],
+		"API Usage": ["Reader API (Websockets)", "Writer API (HTTP)"]
 	},
 	"shortDescription": "An Angular UI for the sentiment analysis demo",
 	"DefaultFile": "src/app/services/quix.service.ts",
