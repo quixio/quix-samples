@@ -5,7 +5,7 @@
     "tags": {
         "Complexity": ["Advanced"],
         "SDK Usage": ["Read/Write SDK"],
-        "Type": ["Code samples"],
+        "Type": ["Code samples", "Demos"],
         "Pipeline Stage": ["Transformation"]
     },
     "shortDescription": "Processes input data and sends coordinates, speed and angle to the output topic",

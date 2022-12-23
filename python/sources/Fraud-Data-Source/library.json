@@ -7,7 +7,7 @@
 		"SDK Usage": ["Write SDK"],
 		"Pipeline Stage": ["Source"],
 		"Use Case": ["Quick Start", "Fraud"],
-		"Type": ["Code Samples", "Demos"]
+		"Type": ["Code samples", "Demos"]
 	},
 	"shortDescription": "Generate fake credit card transaction data, including fraudulent transactions",
 	"DefaultFile": "datagen.py",
