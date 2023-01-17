@@ -11,11 +11,11 @@
     "shortDescription": "This project contains webpage which is able to capture image from your webcam",
     "Variables": [ 
         {
-            "Name" : "topic_raw",
+            "Name" : "webcam_output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
             "Description" : "Output topic containing unprocessed images from webcam",
-            "DefaultValue" : "image-raw",
+            "DefaultValue" : "image-base64",
             "Required": true
         }
     ],
