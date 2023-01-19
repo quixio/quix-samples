@@ -1,25 +1,28 @@
 let express = require('express');
 let cors = require('cors')
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
 
-// Change to a different port to run locally. e.g. 8081
-const port = 80;
+const path = require('path');
 
 let app = express();
+
 app.use(cors())
 app.use(bodyParser.json())
 
 module.exports = app;
 
-var distDir = __dirname + "/ui/"
+const distDir = __dirname + "/ui/";
 app.use(express.static(distDir));
 
-var localStore = {};
+const localStore = {};
 
 function checkDict(){
-	
-	var toDelete = [];
-	for(var key in localStore) {
+
+	const toDelete = [];
+	for(let key in localStore) {
 		var value = localStore[key];
 		
 		console.log(Date.now());
@@ -42,8 +45,8 @@ function checkDict(){
 
 function debug(){
 	console.log("DEBUG");
-	for(var key in localStore) {
-		var value = localStore[key];
+	for(let key in localStore) {
+		const value = localStore[key];
 		console.log("---------------");
 		console.log("KEY=" + key);
 		console.log("VALUE=" + value["value"]);
@@ -52,15 +55,39 @@ function debug(){
 	}
 }
 
+// support the UI
+function read_file(file, res){
+	fs.readFile('/my-app/api/' + file, 'utf8', (err, data) => {
+		if (err) {
+			console.error(err);
+			res.status(404).send("Error. See console log");
+			return;
+		}
+		let value = data.replace(/(\r\n|\n|\r)/gm, "");
+		console.log(value);
+		res.status(200).send(value);
+	});
+}
+
+app.get('/api/bearer_token', (req, res) => {
+	read_file("bearer_token", res);
+});
+app.get('/api/portal_api', (req, res) => {
+	read_file("portal_api", res);
+});
+app.get('/api/workspace_id', (req, res) => {
+	read_file("workspace_id", res);
+})
+
 app.post('/api', (req, res) => {
 		
 	console.log(req.body);
-	
-    var key = req.body.key;
-    var value = req.body.value;
+
+	const key = req.body.key;
+	const value = req.body.value;
 	console.log(value);
-    var expiry = parseInt(req.body.expiry);
-    localStore[key] = {"value": value, "expiry": expiry};
+	const expiry = parseInt(req.body.expiry);
+	localStore[key] = {"value": value, "expiry": expiry};
 	
 	checkDict();
 	res.sendStatus(200);
@@ -70,8 +97,8 @@ app.post('/api', (req, res) => {
 app.get('/api/:key', (req, res) => {
 	
 	checkDict();
-	
-    var tokenDict = localStore[req.params.key];
+
+	const tokenDict = localStore[req.params.key];
 	if(tokenDict !== undefined){
 		res.send(tokenDict.value);
 	}
@@ -84,4 +111,5 @@ app.get('/heartbeat', (req, res) => {
     res.status(200).send("ALL GOOD HERE!");
 })
 
-app.listen(port, () => console.log(`Server running at http://127.0.0.1:${port}`))
+let httpServer = http.createServer(app);
+httpServer.listen(80);

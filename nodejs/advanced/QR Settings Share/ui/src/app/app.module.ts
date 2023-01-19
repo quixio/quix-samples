@@ -1,16 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from "@angular/forms";
-import { ClarityModule } from '@clr/angular';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
-import {ChartsModule} from "ng2-charts";
 import { LobbyComponent } from './components/lobby/lobby.component';
+import { MaterialModule } from './material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { QRCodeModule } from 'angular2-qrcode';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -22,11 +21,12 @@ import { QRCodeModule } from 'angular2-qrcode';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ClarityModule,
-    ChartsModule,
+    ReactiveFormsModule,
+    QRCodeModule,
     BrowserAnimationsModule,
-    NgxQRCodeModule,
-    QRCodeModule
+    MaterialModule,
+    FlexLayoutModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
