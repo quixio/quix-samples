@@ -7,7 +7,7 @@
 		"SDK Usage": ["Read SDK"]
 	},
 	"shortDescription": "An Angular UI for the event detection demo",
-	"DefaultFile": "src/app/services/qenvironment-variables.service.ts",
+	"DefaultFile": "src/app/services/environment-variables.service.ts",
 	"EntryPoint": "src/build/dockerfile",
 	"Variables": [
 		{
