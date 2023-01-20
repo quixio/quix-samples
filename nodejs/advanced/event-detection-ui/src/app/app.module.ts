@@ -23,7 +23,7 @@ import { AlertsDialogComponent } from './components/alerts-dialog/alerts-dialog.
     HttpClientModule,
     BrowserModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCSOdnwM7qZCxLt4G_uALn8_J4AGd9OCrQ'
+      apiKey: ''
     }),
     MaterialModule,
     FlexLayoutModule,
