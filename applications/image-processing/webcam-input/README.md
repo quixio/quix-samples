@@ -16,7 +16,7 @@ Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=g
 
 Clone the repo or download a zip of the source.
 
-Update the `environment-variables.service.ts` file with your values for these:
+Update the `quix.service.ts` file with your values for these:
 
  - private workingLocally = false; // set to true if working locally
  - private token: string = ""; // From the Topics page, copy an SDK token from the broker settings
