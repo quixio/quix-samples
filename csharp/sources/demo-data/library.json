@@ -6,7 +6,7 @@
 		"SDK Usage": ["Write SDK"],
 		"Pipeline Stage": ["Source"],
 		"Popular Subjects": ["Quick Start", "Onboarding"],
-		"Type": ["Demos"],
+		"Type": ["Demos"]
 	},
 	"shortDescription": "Stream F1 Telemetry Data into a Quix topic from a recorded game session",
 	"longDescription": "Stream F1 Telemetry Data into a Quix topic from a recorded game session. <br/>You’ll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
