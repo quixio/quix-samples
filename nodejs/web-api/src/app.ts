@@ -12,23 +12,24 @@ import { logger } from "./utils/logger";
 const swaggerDocument: any = require("../swagger.json");
 
 const app = express();
-const port: number = 80;
+const authEnabled = process.env.JWT_AUTH_ISSUER;
+// must be set to port 80 when deploying to Quix. 
+const port = process.env.PORT ? +process.env.PORT : 80;
 
 app.set('trust proxy', true);
 
 // enable cross-origin request sharing
-app.use(cors())
+app.use(cors());
+app.use(express.json());
 
-// enable jwt token authentication
-if (process.env.JWT_AUTH_ISSUER) {
+if (authEnabled) {
+    // enable jwt token authentication
     const jwtOpts: any = {};
-
-    if (process.env.JWT_AUTH_ISSUER) {
+    if (process.env.JWT_AUTH_ISSUER)
         jwtOpts.issuer = [process.env.JWT_AUTH_ISSUER];
-    }
-    if (process.env.JWT_AUTH_SECRET) {
+    if (process.env.JWT_AUTH_SECRET)
         jwtOpts.secret = process.env.JWT_AUTH_SECRET;
-    } else {
+    else {
         jwtOpts.secret = jwksRsa.expressJwtSecret({
             cache: true,
             rateLimit: true,
@@ -36,35 +37,31 @@ if (process.env.JWT_AUTH_ISSUER) {
             jwksUri: `${jwtOpts.issuer}.well-known/jwks.json`
         });
     }
-    if (process.env.JWT_AUTH_ALGORITHM) {
+    if (process.env.JWT_AUTH_ALGORITHM)
         jwtOpts.algorithms = [process.env.JWT_AUTH_ALGORITHM];
-    }
-    if (process.env.JWT_AUTH_AUDIENCE) {
+    if (process.env.JWT_AUTH_AUDIENCE)
         jwtOpts.audience = [process.env.JWT_AUTH_AUDIENCE];
-    }
 
     app.use(helmet());
-    app.use(jwt(jwtOpts).unless({ path: [/^\/swagger/] }));
-
-    // custom error handler
+    app.use(jwt(jwtOpts).unless({ path: [/^\/swagger/, /^\/api-docs/] }));
     app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+        // custom error handler
         if (err.name === "UnauthorizedError") {
-            logger.info(`Failed authentication: ${err.message} (${req.ip})`);
+            logger.info(`Authentication failed: ${err.message} (${req.ip})`);
             res.statusMessage = "Unauthorized";
             res.status(401).end();
         } else {
             next(err);
         }
     });
-
-    logger.info("JWT token auth enabled");
+    logger.info("JWT auth enabled");
 } else {
-    logger.warn("JWT token auth disabled");
+    logger.warn("JWT auth disabled");
 }
 
-// enable swagger docs for your API
-if (process.env.SWAGGER_ENABLE?.toLowerCase() === "true") {
-    if (process.env.JWT_AUTH_ISSUER) {
+if (process.env.SWAGGER?.toLowerCase() === "true") {
+    // enable swagger docs for your API
+    if (authEnabled) {
         swaggerDocument.components.securitySchemes = {
             bearer: {
                 type: "http",
@@ -73,10 +70,18 @@ if (process.env.SWAGGER_ENABLE?.toLowerCase() === "true") {
         };
         swaggerDocument.security = [{ bearer: [] }];
     }
+
+    var options = {
+        swaggerOptions: {
+            url: "/api-docs/swagger.json",
+        },
+    };
+
+    app.get("/api-docs/swagger.json", (req, res) => res.json(swaggerDocument));
     app.use("/swagger", (req: Request, res: Response, next: NextFunction) => {
-            swaggerDocument.host = req.get("host");
-            next();
-        }, swaggerUi.serveFiles(swaggerDocument, {}), swaggerUi.setup());
+        swaggerDocument.host = req.get("host");
+        next();
+    }, swaggerUi.serveFiles(undefined, options), swaggerUi.setup(undefined, options));
     logger.info("Swagger docs for API is available at /swagger");
 }
 
