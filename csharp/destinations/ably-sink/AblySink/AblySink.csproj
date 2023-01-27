@@ -7,7 +7,7 @@
 
     <ItemGroup>
         <PackageReference Include="ably.io" Version="1.2.7" />
-        <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.7-20220620.1" />
+        <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.10-20230127.2" />
     </ItemGroup>
 
 </Project>
