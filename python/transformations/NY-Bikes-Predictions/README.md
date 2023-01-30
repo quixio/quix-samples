@@ -4,7 +4,7 @@ In this sample, you'll see how to predict the near-future availability of bikes 
 
 ## Requirements/prerequisites
 
-This is part of the Quix [data science tutorial](https://quix.ai/docs/guides/tutorials/data-science-tutorial.html). 
+This is part of the Quix [data science tutorial](https://quix.io/docs/guides/tutorials/data-science-tutorial.html). 
 
 - NY bikes I - Citibikes: get real-time availability of bikes in New York.
 - NY bikes II - OpenWeather API: get real-time weather forecasts for New York.
@@ -22,13 +22,13 @@ The code sample uses the following environment variables:
 - **output**: Name of the output topic to write predictions to.
 
 ## Docs
-Check the Quix [data science tutorial](https://quix.ai/docs/guides/tutorials/data-science-tutorial.html) for more details about how to complete the New York bikes project. 
+Check the Quix [data science tutorial](https://quix.io/docs/guides/tutorials/data-science-tutorial.html) for more details about how to complete the New York bikes project. 
 
-Visit the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+Visit the [SDK docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance.
 
 ## How to run
 Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternatively, you can learn how to set up your local environment [here](https://quix.ai/docs/sdk/python-setup.html).
+Alternatively, you can learn how to set up your local environment [here](https://quix.io/docs/sdk/python-setup.html).
 
 
