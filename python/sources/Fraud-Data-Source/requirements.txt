@@ -1,4 +1,4 @@
-quixstreaming==0.4.9a202210131245
+quixstreaming==0.4.10a202301271318
 Faker==13.12.0
 numpy==1.21.6
 pandas
