@@ -10,7 +10,7 @@ This code sample uses the following environment variables:
 
 ## Docs
 
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+Check out the [SDK Docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance.
 
 ## How to Run
 

@@ -22,7 +22,7 @@ There is no special setup required for your game station except that it has an i
 
 We will develop a dotnet core cross platform application that runs on a local computer and streams your game data to Quix. The only requirements are that you have [dotnet core runtime](https://dotnet.microsoft.com/download/dotnet/3.0) installed on the machine you are going to run this application on, that that machine is connected to the same network your game station is connected to and that the machine has an internet connection to connect to Quix.
 
-If you do not yet have a Quix account, you can sign up for one from our [website](https://quix.ai). We assume that you have F1&reg; 2019 game installed on your preferred gaming platform.
+If you do not yet have a Quix account, you can sign up for one from our [website](https://quix.io). We assume that you have F1&reg; 2019 game installed on your preferred gaming platform.
 
 ## Create a project
 
@@ -43,7 +43,7 @@ The application has two modes of running.
 More information can be found in Bridge.Codemasters.Console/Configuration/Config.cs.
 
 ## Docs
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK Docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance
 
 ## How to Run
 Run this code locally in a machine with access to the local network.
@@ -67,4 +67,4 @@ The steps above expose telemetry data over UDP which is what our client applicat
 
 The dotnet application is creating individual streams for every race in the topic you initially created. If you go back to the Quix workspace, navigate to visualise from the left navigation panel, you can see all the streams and parameters you are streaming.
 
-Select stream(s) and parameter(s) you like, and you can view and analyse your performance using our [Visualize](https://quix.ai/docs/guides/how-to/visualize/index.html) feature.
+Select stream(s) and parameter(s) you like, and you can view and analyse your performance using our [Visualize](https://quix.io/docs/guides/how-to/visualize/index.html) feature.

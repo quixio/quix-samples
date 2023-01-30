@@ -10,9 +10,9 @@ This code sample uses the following environment variables:
 - **output**: This is the output topic to write data to
 
 ## Docs
-Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance.
+Check out the [SDK docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance.
 
 ## How to run
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
 
-Alternatively, you can visit [here](https://quix.ai/docs/sdk/python-setup.html) to learn how to setup your local environment.
+Alternatively, you can visit [here](https://quix.io/docs/sdk/python-setup.html) to learn how to setup your local environment.

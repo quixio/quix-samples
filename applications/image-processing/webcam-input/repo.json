@@ -1,7 +1,7 @@
 {
   "Variables": [
     {
-      "Name": "topic_raw",
+      "Name": "webcam_output",
       "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
       "Description": "This is the output topic for webcam images",

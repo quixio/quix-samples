@@ -1,4 +1,4 @@
-quixstreaming==0.4.9a202210131245
+quixstreaming==0.4.10a202301271318
 flask
 requests
 waitress

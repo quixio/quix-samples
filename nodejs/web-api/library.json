@@ -47,7 +47,7 @@
       "Required": false
     },
     {
-      "Name": "SWAGGER_ENABLE",
+      "Name": "SWAGGER",
       "Type" : "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Set to \u0027true\u0027 to enable Swagger UI for your API.",

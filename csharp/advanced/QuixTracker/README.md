@@ -14,7 +14,7 @@ The code sample uses the following environment variables:
  - Android API level 30 (Android 11)
 
 ## Docs
-Check out the [SDK docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance
 
 ## How to run
 

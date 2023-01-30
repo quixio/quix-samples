@@ -10,7 +10,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0-preview.4.20251.6" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0-preview.2.20160.3" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-preview.2.20160.3" />
-      <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.7-20220620.1" />
+      <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.10-20230127.2" />
     </ItemGroup>
 
     <ItemGroup>
