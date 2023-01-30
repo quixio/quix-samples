@@ -1,5 +1,5 @@
 # Quix library
-## Library samples repository for [Quix](https://quix.ai) platform. 
+## Library samples repository for [Quix](https://quix.io) platform. 
 
 The Quix library contains pre-built, open source code samples that you can use to quickly create a pipeline that transforms data in real time while it travels from source to destination. 
 

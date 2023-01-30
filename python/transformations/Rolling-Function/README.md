@@ -35,10 +35,10 @@ In summary, this is an example of the expected format for WindowValue depending 
 
 
 ## Docs
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK Docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance
 
 ## How to run
 Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
 
-Alternatively, you can learn how to set up your local environment [here](https://quix.ai/docs/sdk/python-setup.html).
+Alternatively, you can learn how to set up your local environment [here](https://quix.io/docs/sdk/python-setup.html).
 

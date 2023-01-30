@@ -24,9 +24,9 @@ The code sample uses the following environment variables:
 
 ## Docs
 
-Check out the [SDK Docs](https://quix.ai/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK Docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance
 
 ## How to Run
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
 
-Alternatively, you can check [here](https://quix.ai/docs/sdk/python-setup.html) how to setup your local environment.
+Alternatively, you can check [here](https://quix.io/docs/sdk/python-setup.html) how to setup your local environment.
