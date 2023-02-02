@@ -6,7 +6,8 @@
 		"Complexity": ["Medium"],
 		"SDK Usage": ["Write SDK"],
 		"Pipeline Stage": ["Source"],
-		"Use Case": ["Quick Start", "Fraud"],
+		"Use Case": ["Fraud"],
+		"Popular Subjects": ["Quick Start"],
 		"Type": ["Code samples", "Demos"]
 	},
 	"shortDescription": "Generate fake credit card transaction data, including fraudulent transactions",
