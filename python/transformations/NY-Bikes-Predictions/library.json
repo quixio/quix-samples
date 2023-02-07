@@ -6,7 +6,8 @@
         "Complexity": ["Medium"],
         "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-        "Popular Subjects": ["Machine Learning", "Mobility"]
+        "Popular Subjects": ["Machine Learning"],
+		"Use Case": ["Mobility"]
     },
     "shortDescription": "Predict availability of bikes in New York",
     "longDescription": "In this sample, you'll see how to predict near-future bikes availability in New York based on current bikes and weather forecasts",
