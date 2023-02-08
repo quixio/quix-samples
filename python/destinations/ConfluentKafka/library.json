@@ -13,7 +13,7 @@
     "DefaultFile": "quix_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
-    "IconFile": "icon.png",
+    "IconFile": "icon.jpg",
     "Variables": [
         {
             "Name": "input",
