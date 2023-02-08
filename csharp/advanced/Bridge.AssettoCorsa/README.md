@@ -19,7 +19,7 @@ These are the variables that will be replaced in the code (`Program.cs`) if you 
 - `Bridge.AssettoCorsa.Reader`: Contains game-specific logic for transforming the byte packets to usable data objects.
 
 ## Docs
-Check out the [SDK Docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
 
 ## How to Run
 Run this code locally in a machine with access to the local network.
