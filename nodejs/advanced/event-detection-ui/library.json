@@ -1,0 +1,40 @@
+{
+	"libraryItemId": "dee1e22b-b8e4-4f88-ac16-475f709ff053",
+	"name": "Event Detection Demo UI",
+	"language": "NodeJs",
+	"tags": {
+		"Complexity": ["Medium"],
+		"SDK Usage": ["Read SDK"]
+	},
+	"shortDescription": "An Angular UI for the event detection demo",
+	"DefaultFile": "src/app/services/environment-variables.service.ts",
+	"EntryPoint": "src/build/dockerfile",
+	"Variables": [
+		{
+			"Name" : "topic",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "FreeText",
+			"Description" : "The topic to read telementry data from",
+			"DefaultValue" : "phone-data",
+			"Required": true
+		},
+		{
+			"Name" : "eventTopic",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "FreeText",
+			"Description" : "The topic to read events from",
+			"DefaultValue" : "events",
+			"Required": true
+		}
+	],
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": true,
+        "UrlPrefix": "Event-Detection-Demo-UI",
+        "ValidateConnection": false
+    }
+}
