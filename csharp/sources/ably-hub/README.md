@@ -28,7 +28,7 @@ Repeat this for the "channel"
 When you run the code it subscribes to the Ably data source you configured and streams the data into Quix.
 
 ## Docs
-Check out the [SDK docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
 
 ## How to run
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.

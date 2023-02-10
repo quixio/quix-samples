@@ -18,9 +18,9 @@ This code sample uses the following environment variables:
 - **shared_secret**: The secret you configured in Segment
 
 ## Docs
-Check out the [SDK docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance.
+Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
 
 ## How to run
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
 
-Alternativelly, you can visit [here](https://quix.io/docs/sdk/python-setup.html) to learn how to setup your local environment.
+Alternativelly, you can visit [here](https://docs.quix.io/sdk/python-setup.html) to learn how to setup your local environment.
