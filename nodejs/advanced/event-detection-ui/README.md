@@ -12,7 +12,7 @@ Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=g
 
 ## Local development
 
-To run this project locally please update the following values in `environment-variables.service.ts`
+To run this project locally please update the following values in `environment-variables.service.ts`:
 
 ``` 
   private workingLocally = false; // set to true if working locally
