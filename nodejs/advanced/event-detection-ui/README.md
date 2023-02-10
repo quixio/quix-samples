@@ -24,5 +24,14 @@ To run this project locally please update the following values in `environment-v
   
 The Token can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
 
+Then install dependencies:
+
+```
 Run `npm install --force` to install all the dependencies
+```
+
+And finally, run the solution:
+
+```
 Run `ng serve` to build and run the . Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+```
