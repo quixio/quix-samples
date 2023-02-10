@@ -10,7 +10,7 @@ Check out the [API docs](https://docs.quix.io/apis/streaming-reader-api/intro/) 
 
 Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
 
-### Local development
+## Local development
 
 To run this project locally please update the following values in `environment-variables.service.ts`
 
