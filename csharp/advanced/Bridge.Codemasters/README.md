@@ -43,7 +43,7 @@ The application has two modes of running.
 More information can be found in Bridge.Codemasters.Console/Configuration/Config.cs.
 
 ## Docs
-Check out the [SDK Docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
 
 ## How to Run
 Run this code locally in a machine with access to the local network.
@@ -67,4 +67,4 @@ The steps above expose telemetry data over UDP which is what our client applicat
 
 The dotnet application is creating individual streams for every race in the topic you initially created. If you go back to the Quix workspace, navigate to visualise from the left navigation panel, you can see all the streams and parameters you are streaming.
 
-Select stream(s) and parameter(s) you like, and you can view and analyse your performance using our [Visualize](https://quix.io/docs/guides/how-to/visualize/index.html) feature.
+Select stream(s) and parameter(s) you like, and you can view and analyse your performance using our Visualize feature.

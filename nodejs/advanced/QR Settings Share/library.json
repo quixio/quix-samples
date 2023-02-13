@@ -7,6 +7,26 @@
 		"Popular Subjects": ["Quick Start"]
 	},
 	"shortDescription": "Share settings to external apps",
-	"DefaultFile": "ui/source/app/services/quix.service.ts",
-	"EntryPoint": "build/dockerfile"
+	"DefaultFile": "ui/src/app/services/quix.service.ts",
+	"EntryPoint": "build/dockerfile",
+	"Variables": [
+		{
+			"Name" : "BearerToken",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "HiddenText",
+			"Description" : "A valid bearer token",
+			"DefaultValue" : "",
+			"Required": true
+		}
+	],
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": true,
+        "UrlPrefix": "qr-settings-share",
+        "ValidateConnection": false
+    }
 }

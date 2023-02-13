@@ -17,8 +17,8 @@ Due to the rate limit of the Awair endpoints, data will only be scraped when the
 
 ## Docs
 
-Check out the [SDK docs](https://quix.io/docs/sdk/introduction.html) for detailed usage guidance
+Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
 
 ## How to run
-This bridge can run locally or in our serverless environment. To learn how to deploy services in Quix, please create an account at [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) and see our [docs](https://quix.io/docs/guides/index.html).
+This bridge can run locally or in our serverless environment. To learn how to deploy services in Quix, please create an account at [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) and see our [docs](https://docs.quix.io/index.html).
 
