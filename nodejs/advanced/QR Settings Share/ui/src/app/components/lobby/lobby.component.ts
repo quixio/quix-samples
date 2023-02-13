@@ -69,8 +69,8 @@ export class LobbyComponent implements OnInit {
       'bearerToken': token,
       'workspaceId': this.quixService.workspaceId,
       'subdomain': this.quixService.subdomain,
-      'rider': this.form.get("name").value,
-      'device': this.form.get("deviceId").value
+      'rider': this.tokenData.name,
+      'device': this.tokenData.deviceId
     }
 
     this.qrId = Guid.create();
