@@ -7,7 +7,7 @@
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
-        "Technology": ["Confluent"]
+        "Vendor": ["Confluent"]
     },
     "shortDescription": "Subscribe to your Confluent Kafka topic with this bridge",
     "longDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge<br/>If you already have a Confluent Kafka topic, you can connect it to Quix with this simple bridge.",

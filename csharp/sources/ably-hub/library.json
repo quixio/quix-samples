@@ -7,7 +7,7 @@
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
-        "Technology": ["Ably"]
+        "Vendor": ["Ably"]
     },
     "shortDescription": "Subscribe to data in an Ably channel",
     "DefaultFile": "AblyHubSource/Program.cs",

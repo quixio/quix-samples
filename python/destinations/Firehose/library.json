@@ -15,8 +15,8 @@
     "Type": [
       "Connectors"
     ],
-    "Technology": [
-      "Firehose"
+    "Vendor": [
+      "AWS"
     ]
   },
   "shortDescription": "Publish Quix streams to Amazon Kinesis Data Firehose",

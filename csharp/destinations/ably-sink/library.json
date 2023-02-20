@@ -7,7 +7,7 @@
         "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
-        "Technology": ["Ably"]
+        "Vendor": ["Ably"]
     },
     "shortDescription": "Publish data to an Ably Channel",
     "DefaultFile": "AblySink/Program.cs",

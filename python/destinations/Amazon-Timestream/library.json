@@ -15,8 +15,8 @@
     "Type": [
       "Connectors"
     ],
-    "Technology": [
-      "Amazon Timestream"
+    "Vendor": [
+      "AWS"
     ]
   },
   "shortDescription": "Publish Quix streams to Amazon Timestream",

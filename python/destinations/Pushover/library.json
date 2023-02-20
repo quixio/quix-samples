@@ -13,7 +13,7 @@
             "Destination"
         ],
         "Type": ["Connectors"],
-        "Technology": [
+        "Vendor": [
             "Pushover"
         ]
     },

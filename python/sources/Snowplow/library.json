@@ -6,7 +6,7 @@
         "Complexity": ["Medium"],
 		"SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Technology": ["Snowplow", "AWS"]
+        "Vendor": ["Snowplow", "AWS"]
     },
     "shortDescription": "Connect your Snowplow data to a Quix topic with this bridge",
     "longDescription": "Connect your Snowplow data to a Quix topic with this bridge<br/>This bridge is for AWS Kinesis backed Snowplow installations",

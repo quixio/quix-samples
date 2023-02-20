@@ -7,7 +7,7 @@
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
-        "Technology": ["Twitter"]
+        "Vendor": ["Twitter"]
     },
     "shortDescription": "Stream Twitter live messages to a Quix topic in real time",
     "DefaultFile": "twitter_function.py",

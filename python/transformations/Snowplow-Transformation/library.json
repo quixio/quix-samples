@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
 		"SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-		"Technology": ["Snowplow"]
+		"Vendor": ["Snowplow"]
     },
     "shortDescription": "Transform raw Snowplow data to Quix format",
     "longDescription": "Transform raw Snowplow data to Quix format<br/>Deploy the Amazon Kinesis connector to stream data from Snowplow, then deploy this to convert it to Quix format",

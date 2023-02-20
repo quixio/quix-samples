@@ -7,7 +7,7 @@
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
-        "Technology": ["AWS"]
+        "Vendor": ["AWS"]
     },
     "shortDescription": "Connect your Amazon Kinesis data to a Quix topic with this bridge",
     "DefaultFile": "quix_functions.py",

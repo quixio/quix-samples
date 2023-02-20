@@ -15,8 +15,8 @@
         "Type": [
             "Connectors"
         ],
-        "Technology": [
-            "S3"
+        "Vendor": [
+            "AWS"
         ]
     },
     "shortDescription": "Publish Quix streams to AWS S3",

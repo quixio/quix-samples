@@ -15,7 +15,7 @@
     "Type": [
       "Connectors"
     ],
-    "Technology": [
+    "Vendor": [
       "AWS",
       "Redshift"
     ]
