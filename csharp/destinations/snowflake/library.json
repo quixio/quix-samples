@@ -7,7 +7,7 @@
         "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
-        "Technology": ["Snowflake"]
+        "Vendor": ["Snowflake"]
     },
     "shortDescription": "Publish data to Snowflake",
     "DefaultFile": "Quix.Snowflake.Writer/Worker.cs",
