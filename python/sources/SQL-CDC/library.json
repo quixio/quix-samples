@@ -6,7 +6,7 @@
         "Complexity": ["Medium"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Tech connectors"],
+        "Type": ["Connectors"],
         "Technology": ["SQL", "CDC"]
     },
     "shortDescription": "Stream data changes from a SQL Database",

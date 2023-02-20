@@ -12,7 +12,7 @@
         "Pipeline Stage": [
             "Destination"
         ],
-        "Type": ["Tech connectors"],
+        "Type": ["Connectors"],
         "Technology": [
             "Twilio"
         ]

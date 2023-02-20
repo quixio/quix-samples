@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
         "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Type": ["Tech connectors"],
+        "Type": ["Connectors"],
         "Technology": ["Ably"]
     },
     "shortDescription": "Publish data to an Ably Channel",

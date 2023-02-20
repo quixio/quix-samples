@@ -12,7 +12,7 @@
         "Pipeline Stage": [
             "Source"
         ],
-        "Type": ["Tech connectors"],
+        "Type": ["Connectors"],
         "Technology": [
             "MQTT"
         ]

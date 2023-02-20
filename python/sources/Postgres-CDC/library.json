@@ -6,7 +6,7 @@
     "tags": {
       "Complexity": ["Medium"],
       "SDK Usage": ["Read SDK"],
-      "Type": ["Tech connectors"],
+      "Type": ["Connectors"],
       "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Stream data from Postgres Database CDC to Quix",
