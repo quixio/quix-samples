@@ -1,12 +1,17 @@
-# C# Ably Sink
+# Ably sink connector
 
-The sample contained in this folder gives an example on how to stream data from Quix to Ably, it handles both parameter and event data.
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/ably-sink){target="_blank"} is an example of how to stream data from Quix to Ably. It handles both time-series and event data.
 
-Quix Parameter Data is streamed to an Ably with a message name prefixed with whatever you choose and postfixed with '-parameter-data'
+Time-series Data is streamed to Ably with a message name prefixed with whatever you choose and postfixed with '-parameter-data'
 Quix Event Data is prefixed with whatever you choose and postfixed with '-event-data'
 
-## Requirements / Prerequisites
- - An active [Ably](https://ably.com/) subscription (The free account is ok too)
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -17,8 +22,15 @@ The code sample uses the following environment variables:
 - **AblyChannel**: The Ably Channel to send to.
 - **AblyMessageNamePrefix**: The prefix for the Ably Message Name.
 
-## Docs
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+## Prerequisites
+ - An active [Ably](https://ably.com/) subscription (The free account is ok too)
 
-## How to run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
+## Contribute
+
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
