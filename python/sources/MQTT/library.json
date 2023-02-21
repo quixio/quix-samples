@@ -1,6 +1,6 @@
 {
     "libraryItemId": "a0b7d375-ee3f-49eb-bc22-ac054ee70ea5",
-    "name": "MQTT - Source",
+    "name": "MQTT",
     "language": "Python",
     "tags": {
         "Complexity": [

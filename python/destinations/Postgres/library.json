@@ -1,6 +1,6 @@
 {
     "libraryItemId": "cc29bdd3-610f-4043-88c8-82075e89dac0",
-    "name": "Postgres - Destination",
+    "name": "Postgres",
     "language": "Python",
     "IconFile": "icon.png",
     "tags": {

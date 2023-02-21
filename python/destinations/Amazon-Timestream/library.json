@@ -1,6 +1,6 @@
 {
   "libraryItemId": "eb4d88e0-27ae-4ae2-91b2-af3ceadf05e5",
-  "name": "Amazon Timestream - Destination",
+  "name": "Amazon Timestream",
   "language": "Python",
   "tags": {
     "Complexity": [

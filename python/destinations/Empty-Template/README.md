@@ -1,4 +1,4 @@
-# Python hello world - destination
+# Python hello world
 
 The most basic and essential "Hello World" read sample. The sample contained in this folder gives an example of how to connect to Kafka and detect the arrival of a new stream and read 'HelloWorld' parameter.
 

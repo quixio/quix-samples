@@ -1,6 +1,6 @@
 {
     "libraryItemId": "e3fcd46d-457a-4a33-84d7-a5198ddad673",
-    "name": "Netatmo - Source",
+    "name": "Netatmo",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],

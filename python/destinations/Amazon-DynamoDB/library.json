@@ -1,6 +1,6 @@
 {
   "libraryItemId": "85932949-fee0-4320-9e2b-f2ded42d42c1",
-  "name": "Amazon DynamoDB - Destination",
+  "name": "Amazon DynamoDB",
   "language": "Python",
   "tags": {
     "Complexity": [
