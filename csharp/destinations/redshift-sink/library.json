@@ -16,8 +16,7 @@
       "Connectors"
     ],
     "Vendor": [
-      "AWS",
-      "Redshift"
+      "AWS"
     ]
   },
   "shortDescription": "Publish data to AWS Redshift",
