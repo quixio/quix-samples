@@ -1,6 +1,6 @@
 {
     "libraryItemId": "41d74074-d5be-47f8-8fd8-0a564437f34e",
-    "name": "Real Time CSV",
+    "name": "Real-time CSV",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -8,7 +8,7 @@
         "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Easily write data from a CSV file into a stream respecting the original timedeltas",
+    "shortDescription": "Publish data from a CSV file into a stream respecting the original time deltas",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
