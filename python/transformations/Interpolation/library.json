@@ -8,8 +8,8 @@
         "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"]
     },
-    "shortDescription": "Performs interpolation function.",
-    "longDescription": "Performs interpolation function: calculates time delta and parameter average for the last parameter points",
+    "shortDescription": "Performs an interpolation function",
+    "longDescription": "Performs an interpolation function: calculates time delta and parameter average for the last parameter points",
     "DefaultFile": "interpolating_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
