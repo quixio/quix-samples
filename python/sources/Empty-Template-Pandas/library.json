@@ -1,13 +1,14 @@
 {
     "libraryItemId": "e86f1198-a3ba-431c-93e5-d0a4f380c79d",
-    "name": "Pandas empty template",
+    "name": "Empty template",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Popular Subjects": ["Quick Start"],
-        "Type": ["Basic templates"]
+        "Type": ["Basic templates"],
+        "Technology": ["Pandas"]
     },
     "shortDescription": "The most basic 'Hello World' source sample with Pandas",
     "DefaultFile": "main.py",
