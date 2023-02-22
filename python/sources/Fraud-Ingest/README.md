@@ -1,4 +1,4 @@
-# Fraud detection
+# Fraud detection - Ingest
 
 [This project](https://github.com/quixio/quix-library/tree/main/python/sources/Fraud-Ingest){target="_blank"} is the ingestion stage for the Fraud Detection example. This sample will publish transaction data to a topic at the rate of 5 rows per second.
 
@@ -20,9 +20,9 @@ The code sample uses the following environment variables:
 
 This is part of the fraud detection project:
 
-- Fraud detection I - ingest (this one): project that writes transaction data into topic.
-- Fraud detection II - clean: project that reads raw transaction data and cleans it (dummyfication). 
-- Fraud detection III - predict: project that writes the cleaned transaction data and uses it to predict fraud using a loaded machine learning model. 
+- Fraud detection I - Ingest (this one): project that writes transaction data into topic.
+- Fraud detection II - Cleaning: project that reads raw transaction data and cleans it (dummyfication). 
+- Fraud detection III - Prediction: project that writes the cleaned transaction data and uses it to predict fraud using a loaded machine learning model. 
 
 
 ## Contribute
