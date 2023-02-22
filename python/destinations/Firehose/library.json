@@ -1,6 +1,6 @@
 {
   "libraryItemId": "b9b314d9-ca6d-4990-b465-523d347b137c",
-  "name": "Amazon Kinesis Data Firehose",
+  "name": "Firehose",
   "language": "Python",
   "tags": {
     "Complexity": [
