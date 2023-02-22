@@ -1,6 +1,12 @@
-# Amazon DynamoDB Sink
+# DynamoDB
 
-Publishes data to DynamoDB.
+[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/Amazon-DynamoDB){target="_blank"} publishes data to DynamoDB.
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Requirements / Prerequisites
 
@@ -106,13 +112,13 @@ my_date_time (PK)           | timestamp (N)    | key1 (S)   | key2 (N) | key3 (S
 2022-11-07T19:03:20.703123  | 1667844200703123 | value1     | 10       | value3
 ```
 
-## Docs
+## Contribute
 
-Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-## How to Run
+## Open source
 
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this
-application without a local environment setup.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
 
-Alternatively, you can check [here](https://docs.quix.io/sdk/python-setup.html) how to setup your local environment.
+Please star us and mention us on social to show your appreciation.
+
