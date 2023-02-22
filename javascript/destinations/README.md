@@ -1,6 +1,12 @@
-# Websockets API sample - Javascript
+# Websocket API sample
 
-Listen for data arriving into a stream and handle it using WebSockets.
+Using [this project](https://github.com/quixio/quix-library/tree/main/javascript/destinations){target="_blank"} you can subscribe to data arriving in a stream and handle it using WebSockets.
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment Variables
 
@@ -8,10 +14,13 @@ This code sample uses the following environment variables:
 
 - **input**: Input topic to read data from.
 
-## Docs
+## Contribute
 
-Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-## How to Run
+## Open source
 
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
+

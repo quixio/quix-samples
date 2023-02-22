@@ -1,6 +1,6 @@
 {
     "libraryItemId": "945c70f6-6051-4f0b-b44e-5662deb23abc",
-    "name": "Websockets API - Javascript",
+    "name": "Websocket API",
     "language": "Javascript",
     "tags": {
         "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
         "Popular Subjects": ["Quick Start"]
     },
     "shortDescription": "Read data from a topic using our Websockets Reader API",
-    "longDescription": "This Javascript sample shows how to consume data in real time using our Websockets Reader API",
+    "longDescription": "This Javascript sample shows how to subscribe to data in real-time using our Websockets Reader API",
     "sampleTemplate": true,
     "DefaultFile": "Streaming_Reader_Example.html",
     "Variables": [ 
