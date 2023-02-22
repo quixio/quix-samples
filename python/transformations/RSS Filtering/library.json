@@ -1,6 +1,6 @@
 {
     "libraryItemId": "c4f4c164-1e7f-4a2c-81fa-f35f55c2d9b2",
-    "name": "RSS Data Filtering",
+    "name": "RSS data filtering",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -9,7 +9,7 @@
         "Type": ["Connectors"],
         "Technology": ["RSS"]
     },
-    "shortDescription": "Example of how to filter and enhance RSS data",
+    "shortDescription": "Example of how to filter and augment RSS data",
     "DefaultFile": "quix_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
