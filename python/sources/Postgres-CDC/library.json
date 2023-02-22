@@ -7,7 +7,8 @@
       "Complexity": ["Medium"],
       "SDK Usage": ["Read SDK"],
       "Type": ["Connectors"],
-      "Pipeline Stage": ["Source"]
+      "Pipeline Stage": ["Source"],
+      "Technology": ["Database"]
     },
     "shortDescription": "Stream data from Postgres Database CDC to Quix",
     "EntryPoint": "build/dockerfile",
