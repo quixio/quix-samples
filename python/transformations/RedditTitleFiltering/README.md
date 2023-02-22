@@ -1,4 +1,4 @@
-# Subreddit Title Filter
+# Subreddit title filter
 
 [This project](https://github.com/quixio/quix-library/tree/main/python/transformations/RedditTitleFiltering){target="_blank"} works with the [Reddit](https://github.com/quixio/quix-library/tree/main/python/sources/Reddit){target="_blank"} connector and applies title filtering to allow only posts of interest.
 

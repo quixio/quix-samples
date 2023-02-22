@@ -1,6 +1,6 @@
 {
 "libraryItemId": "c53e98ac-4953-4211-9541-d6364ceecbd6",
-    "name": "Rolling Window",
+    "name": "Rolling window",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -8,8 +8,8 @@
         "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"]
     },
-    "shortDescription": "Performs rolling window function.",
-    "longDescription": "Performs rolling window function. Predetermined is moving average. Window can be defined as a time period or as a number of observations",
+    "shortDescription": "Performs a rolling window function.",
+    "longDescription": "Performs a rolling window function. Predetermined moving average. Window can be defined as a time period or as a number of observations",
     "DefaultFile": "rolling_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
