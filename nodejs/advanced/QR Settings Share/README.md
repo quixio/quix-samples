@@ -58,7 +58,7 @@ The following line runs the build
 
 Remove ` --configuration production` to skip minification and other production ready steps.
 
-The scripts will now be visible in your browsers debugger. The sources tab will now show webpack:// files.
+The scripts will now be visible in your browsers debugger. The sources tab will now show `webpack://` files.
 
 ## Contribute
 
