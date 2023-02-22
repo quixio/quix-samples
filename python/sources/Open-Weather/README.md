@@ -1,6 +1,21 @@
-# NY bikes III - OpenWeather API
+# Open Weather API
 
-In this sample you'll learn how to connect to the Open Weather API.
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Open-Weather){target="_blank"} shows you hot to connect to the Open Weather API.
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
+
+## Environment variables
+
+The code sample uses the following environment variables:
+
+- **output**: This is the output topic for OpenWeather data.
+- **openweatherkey**: This is your OpenWeather API Key.
 
 ## Requirements/prerequisites
 
@@ -12,20 +27,13 @@ This is part of the Quix [data science tutorial](https://docs.quix.io/platform/t
 - NY bikes II - OpenWeather API (this one): get real-time weather forecasts for New York.
 - NY bikes III - prediction: predict near-future bikes availability in New York based on current bikes and weather forecasts.
 
+## Contribute
 
-## Environment variables
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-The code sample uses the following environment variables:
+## Open source
 
-- **output**: This is the output topic for OpenWeather data.
-- **openweatherkey**: This is your OpenWeather API Key.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
 
-## Docs
-Visit the Quix [data science tutorial](https://docs.quix.io/platform/tutorials/data-science/data-science.html) for more details about how to complete the New York bikes project. 
+Please star us and mention us on social to show your appreciation.
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
-
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
-
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
