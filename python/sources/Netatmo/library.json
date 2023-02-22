@@ -5,7 +5,8 @@
     "tags": {
         "Complexity": ["Medium"],
         "SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Type": ["Connectors"]
     },
     "shortDescription": "Subscribe to sensor data from your Netatmo devices",
     "DefaultFile": "main.py",
