@@ -49,6 +49,17 @@ To run the API locally ensure you have `node` installed.
 In the API folder:
 Run `node main.js`
 
+## Debug In Quix
+
+If you want to debug your javascript / typescript with the code deployed in the Quix serverless environment, please edit the docker file in the build folder.
+
+The following line runs the build
+`RUN npm run build -- --output-path=./dist/out --configuration production`
+
+Remove ` --configuration production` to skip minification and other production ready steps.
+
+The scripts will now be visible in your browsers debugger. The sources tab will now show webpack:// files.
+
 ## Contribute
 
 Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
