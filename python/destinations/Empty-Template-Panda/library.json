@@ -1,13 +1,14 @@
 {
     "libraryItemId": "258da76e-ca18-49f3-befd-73fdf034c149",
-    "name": "Pandas empty template",
+    "name": "Empty template",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
         "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
         "Popular Subjects": ["Quick Start"],
-        "Type": ["Basic templates"]
+        "Type": ["Basic templates"],
+        "Technology": ["Pandas"]
     },
     "shortDescription": "The most basic 'Hello World' read sample with Pandas",
     "DefaultFile": "quix_function.py",
