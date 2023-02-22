@@ -1,6 +1,6 @@
 {
     "libraryItemId": "49294edb-f541-4e12-b821-0c83e174258a",
-    "name": "CoinAPI WebSocket API - Source",
+    "name": "CoinAPI WebSocket API",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],

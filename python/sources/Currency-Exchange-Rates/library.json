@@ -1,6 +1,6 @@
 {
     "libraryItemId": "51e8b701-f688-49e3-82ff-000fdf4b5ee1",
-    "name": "Currency Exchange Rates Data - Source",
+    "name": "Currency Exchange Rates Data",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],

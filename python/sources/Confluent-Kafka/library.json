@@ -1,6 +1,6 @@
 {
     "libraryItemId": "18e00cde-7fb3-4506-a7e3-bcd86b18d0f7",
-    "name": "Confluent Kafka - Source",
+    "name": "Confluent Kafka",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
