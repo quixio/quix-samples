@@ -6,7 +6,8 @@
         "Complexity": ["Easy"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Connectors"]
+        "Type": ["Connectors"],
+        "Technology": ["API"]
     },
     "shortDescription": "Consume currency data from the CoinAPI REST API",
     "DefaultFile": "quix_functions.py",
