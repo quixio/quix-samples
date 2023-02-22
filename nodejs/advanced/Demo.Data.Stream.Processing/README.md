@@ -1,15 +1,16 @@
-# Stream processing demo - UI
+# Stream processing demo UI
 
-This is the web and phone UI for the Stream Processing Demo.
+[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/Demo.Data.Stream.Processing){target="_blank"} is the web and phone UI for the Stream Processing Demo.
 
-This is part of our [Car Demo](https://www.quix.io/data-stream-processing-example/) example which your can try [here](https://streamingdemoui-quix-cardemo.deployments.quix.ai/).
+This is part of our [Car Demo](https://www.quix.io/data-stream-processing-example/) example which you can try [here](https://streamingdemoui-quix-cardemo.deployments.quix.ai/).
 
-## Requirements/prerequisites
+## How to run
 
-In order to make use of this solution you also need to deploy the following projects:
- - Streaming demo - UI (this one)
- - Streaming demo - Input
- - Streaming demo - Control
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -18,9 +19,20 @@ This code sample uses the following environment variables:
 - **gamedata**: This topic will be read by the Demo Data Stream Processing Input project
 - **car-game-input**: This topic will be read by the Demo Data Stream Processing Control project
 
-## Docs
+## Requirements/prerequisites
 
-Check out the [SDK docs](https://docs.quix.io/platform/tutorials/data-stream-processing/data-stream-processing/) for detailed guidance.
+In order to make use of this solution you also need to deploy the following projects:
+ - Streaming demo - UI (this one)
+ - Streaming demo - Input
+ - Streaming demo - Control
 
-## How to run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
+## Contribute
+
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
+
