@@ -1,6 +1,6 @@
 # Threshold alert
 
-This Python project publishes messages when a certain numeric threshold is crossed. 
+[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Threshold-Alert){target="_blank"} publishes messages when a certain numeric threshold is crossed. 
 - It activates only once per threshold cross. 
 - It works on either side of the threshold. 
 - The signal value doesn't need to be equal to the threshold value for the alarm to go off.
@@ -8,6 +8,14 @@ This Python project publishes messages when a certain numeric threshold is cross
 - You can configure the time between checks to control the number of messages published.
 
 ![graph](Threshold_Alert.png?raw=true)
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -19,11 +27,13 @@ The code sample uses the following environment variables:
 - **thresholdValue**: This is the threshold's numerical value.
 - **bufferMilliSeconds**: How long to wait before waiting for threshold checking (milliseconds).
 
-## Docs
+## Contribute
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+## Open source
 
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
+
