@@ -1,6 +1,6 @@
 # Car CSV data
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Car-Data){target="_blank"} writes vehicle telemetry data from a CSV file to a stream.
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Car-Data){target="_blank"} publishes vehicle telemetry data from a CSV file to a stream.
 
 ## How to run
 
