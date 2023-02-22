@@ -7,7 +7,9 @@
       "Complexity": ["Medium"],
       "SDK Usage": ["Read SDK"],
       "Type": ["Connectors"],
-      "Pipeline Stage": ["Destination"]
+      "Pipeline Stage": ["Destination"],
+      "Vendor": ["Timescale"],
+      "Technology": ["Database"]
     },
     "shortDescription": "Stream data from Quix to a Timescale Database",
     "EntryPoint": "build/dockerfile",
