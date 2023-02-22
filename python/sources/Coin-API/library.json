@@ -1,6 +1,6 @@
 {
     "libraryItemId": "c3300384-a991-4bef-9c3d-f05b03baf222",
-    "name": "CoinAPI REST API",
+    "name": "CoinAPI",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"]
     },
-    "shortDescription": "Publish currency data from the CoinAPI REST API to a stream",
+    "shortDescription": "Consume currency data from the CoinAPI REST API",
     "DefaultFile": "quix_functions.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
