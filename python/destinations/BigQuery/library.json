@@ -7,7 +7,8 @@
       "Complexity": ["Medium"],
       "SDK Usage": ["Read SDK"],
       "Type": ["Connectors"],
-      "Pipeline Stage": ["Destination"]
+      "Pipeline Stage": ["Destination"],
+      "Vendor": ["Google", "GCP"]
     },
     "shortDescription": "Stream data from Quix to BigQuery",
     "EntryPoint": "build/dockerfile",
