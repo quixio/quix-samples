@@ -1,9 +1,14 @@
-# Amazon Kinesis Connector
-Connect your Amazon Kinesis data to a Quix topic with this bridge.
+# Kinesis
 
-## Requirements/prerequisites
+[This connector](https://github.com/quixio/quix-library/tree/main/python/sources/AmazonKinesis){target="_blank"} allows you to subscribe to AWS Kinesis data and stream it to a Quix topic.
 
-You will need an Amazon Kinesis account to use this project.
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -15,11 +20,18 @@ The code sample uses the following environment variables:
 - **aws_region_name**: AWS Region Name.
 - **aws_stream_name**: The name of the AWS stream you want to use.   
 
-## Docs
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+## Requirements/prerequisites
 
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+You will need an AWS Kinesis account to use this project.
 
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
+## Contribute
+
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
+
