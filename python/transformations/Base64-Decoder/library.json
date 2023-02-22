@@ -6,7 +6,7 @@
 		"Complexity": ["Easy"],
 		"SDK Usage": ["Read/Write SDK"],
 		"Pipeline Stage": ["Transformation"],
-		"Use Case": ["Image processing"]
+		"Use Case": ["Image Processing", "Utility"]
 	},
 	"shortDescription": "Convert binary data to Base64",
 	"DefaultFile": "quix_function.py",

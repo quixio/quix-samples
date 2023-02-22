@@ -7,7 +7,8 @@
         "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
         "Type": ["Connectors"],
-        "Technology": ["RSS"]
+        "Technology": ["RSS"],
+		"Use Case": ["Utility"]
     },
     "shortDescription": "Example of how to filter and augment RSS data",
     "DefaultFile": "quix_function.py",

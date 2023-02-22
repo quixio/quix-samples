@@ -6,7 +6,8 @@
         "Complexity": ["Easy"],
         "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-        "Type": ["Code samples"]
+        "Type": ["Code samples"],
+		"Use Case": ["Utility"]
     },
     "shortDescription": "Filter Reddit posts containing a specific word",
     "DefaultFile": "quix_function.py",

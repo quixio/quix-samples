@@ -6,7 +6,8 @@
         "Complexity": ["Medium"],
         "SDK Usage": ["Read/Write SDK"],
         "Type": ["Code samples"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+		"Use Case": ["Utility"]
     },
     "shortDescription": "Performs a rolling window function.",
     "longDescription": "Performs a rolling window function. Predetermined moving average. Window can be defined as a time period or as a number of observations",
