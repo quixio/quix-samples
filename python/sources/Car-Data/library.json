@@ -1,6 +1,6 @@
 {
     "libraryItemId": "a8c8b9f2-2063-4f0f-affe-a1624369a650",
-    "name": "Write Car Data",
+    "name": "Car Data",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -8,7 +8,7 @@
         "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "Write data from a CSV file into a stream",
+    "shortDescription": "Write vehicle telemetry data from a CSV file into a stream",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
