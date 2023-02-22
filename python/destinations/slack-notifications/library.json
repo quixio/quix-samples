@@ -1,6 +1,6 @@
 {
     "libraryItemId": "67c64064-e9ba-4551-8b75-2330d2e13e2e",
-    "name": "Slack Notifications",
+    "name": "Slack",
     "language": "Python",
     "tags": {
         "Complexity": [
@@ -18,7 +18,7 @@
             "Slack"
         ]
     },
-    "shortDescription": "Easily send notifications to Slack via webhooks",
+    "shortDescription": "Send notifications to Slack via webhooks",
     "DefaultFile": "quix_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
