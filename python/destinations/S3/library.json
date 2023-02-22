@@ -1,6 +1,6 @@
 {
     "libraryItemId": "b9b314d9-ca6d-4990-b465-523d347b137q",
-    "name": "S3 Destination",
+    "name": "S3",
     "language": "Python",
     "tags": {
         "Complexity": [
@@ -19,7 +19,7 @@
             "AWS"
         ]
     },
-    "shortDescription": "Publish Quix streams to AWS S3",
+    "shortDescription": "Publish Quix data to AWS S3",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
