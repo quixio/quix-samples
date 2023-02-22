@@ -9,7 +9,7 @@
         "Type": ["Connectors"],
         "Vendor": ["Azure"]
     },
-    "shortDescription": "Connect to Azure IoT and bridge data into Kafka",
+    "shortDescription": "Subscribe to Azure IoT and publish data to Kafka",
     "DefaultFile": "azureiot/Program.cs",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "azureIot.csproj",
