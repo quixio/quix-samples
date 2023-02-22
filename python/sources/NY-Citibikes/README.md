@@ -1,6 +1,20 @@
-# NY bikes I - CitiBike API
+# New York Bikes
 
-You'll connect to the New York CitiBike API in this sample.
+Using [this project](https://github.com/quixio/quix-library/tree/main/python/sources/NY-Citibikes){target="_blank"} you can connect to the New York CitiBike API.
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
+
+## Environment variables
+
+This code sample uses the following environment variables:
+
+- **output**: This is the output topic for NY CitiBike data.
 
 ## Requirements/prerequisites
 
@@ -12,19 +26,13 @@ This is part of the Quix [data science tutorial](https://docs.quix.io/platform/t
 
 You will need an [OpenWeather (free) account](https://home.openweathermap.org/users/sign_up/) to complete this tutorial.
 
+## Contribute
 
-## Environment variables
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-This code sample uses the following environment variables:
+## Open source
 
-- **output**: This is the output topic for NY CitiBike data.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
 
-## Docs
-Visit the Quix [data science tutorial](https://docs.quix.io/platform/tutorials/data-science/data-science.html) for more details about how to complete the New York bikes project. 
+Please star us and mention us on social to show your appreciation.
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
-
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
-
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
