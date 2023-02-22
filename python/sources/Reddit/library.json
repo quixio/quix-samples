@@ -1,12 +1,12 @@
 {
     "libraryItemId": "af47596d-089f-4979-b025-aa969d5f591f",
-    "name": "Reddit Data",
+    "name": "Reddit",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Code samples"]
+        "Type": ["Code samples", "Connectors"]
     },
     "shortDescription": "A Reddit scraper data feed for your Quix pipeline",
     "DefaultFile": "main.py",
