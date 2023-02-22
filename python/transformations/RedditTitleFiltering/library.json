@@ -1,6 +1,6 @@
 {
     "libraryItemId": "3c160e63-bf8d-453a-b15c-c83f7522a2dc",
-    "name": "Subreddit Title Filter",
+    "name": "Subreddit title filter",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
