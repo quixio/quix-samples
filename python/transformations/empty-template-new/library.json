@@ -1,6 +1,6 @@
 {
     "libraryItemId": "777f7253-22c3-41a4-a5e9-9f8ec084f111",
-    "name": "Empty template - Transformation New",
+    "name": "Empty template v2.0",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "Template of how to transform data between source and destination.",
+    "shortDescription": "This template demonstrates how to transform data between a source and a destination.",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
