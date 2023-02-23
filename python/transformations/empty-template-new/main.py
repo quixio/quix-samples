@@ -4,8 +4,8 @@ import os
 import pandas as pd
 
 client = QuixStreamingClient()
-topic_consumer = client.create_topic_consumer(os.environ["input"], "sum")
-topic_producer = client.create_topic_producer(os.environ["output"])
+topic_consumer = client.get_topic_consumer(os.environ["input"], "empty-transformation")
+topic_producer = client.get_topic_producer(os.environ["output"])
 
 def on_dataframe_receive(stream_consumer: StreamConsumer, df: pd.DataFrame):
     print(df)
