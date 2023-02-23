@@ -1,6 +1,6 @@
 # Python example
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Complete-Example){target="_blank"} demonstrates how to connect to Kafka and publish data to it using the [Quix SDK](https://docs.quix.io/sdk-intro.html).
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Complete-Example) demonstrates how to connect to Kafka and publish data to it using the [Quix SDK](https://docs.quix.io/sdk-intro.html).
 
 ## How to run
 
@@ -16,11 +16,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

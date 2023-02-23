@@ -1,6 +1,6 @@
 # Complete example
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/complete%20example){target="_blank"} gives an example on how to connect to Kafka and read various messages. It is a complete example, in C#, of how to read data from a topic and the usage of all the [SDK](https://docs.quix.io/sdk-intro.html) event handlers.
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/complete%20example) gives an example on how to connect to Kafka and read various messages. It is a complete example, in C#, of how to read data from a topic and the usage of all the [SDK](https://docs.quix.io/sdk-intro.html) event handlers.
 
 ## How to run
 
@@ -15,11 +15,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

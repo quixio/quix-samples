@@ -1,10 +1,10 @@
 # Snowplow transformation
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Snowplow-Transformation){target="_blank"} transforms your raw Snowplow data into Quix format.
+[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Snowplow-Transformation) transforms your raw Snowplow data into Quix format.
 
 This transformation uses the Snowplow analytics SDK and Pandas to convert the incoming data to Quix format.
 
-Configure and deploy the [Kinesis](https://github.com/quixio/quix-library/tree/main/python/sources/AmazonKinesis){target="_blank"} connector, then deploy this to convert the data.
+Configure and deploy the [Kinesis](https://github.com/quixio/quix-library/tree/main/python/sources/AmazonKinesis) connector, then deploy this to convert the data.
 
 ## How to run
 
@@ -23,11 +23,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

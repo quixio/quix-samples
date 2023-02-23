@@ -1,6 +1,6 @@
 # Azure IoT Hub
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/sources/azure-iot-hub){target="_blank"} gives an example of how to subscribe to data in an Azure IoT Hub and publish it to  Kafka using the Quix SDK.
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/sources/azure-iot-hub) gives an example of how to subscribe to data in an Azure IoT Hub and publish it to  Kafka using the Quix SDK.
 
 ![graph](iot-bridge.png?raw=true)
 
@@ -48,11 +48,11 @@ but in a real application, we suggest developing a model to parse this data and 
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

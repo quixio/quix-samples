@@ -21,7 +21,7 @@ You can create a Quix account for free [here](https://portal.platform.quix.ai/se
 
 Contributors are very welcome at Quix! Follow this guide to get a project into production on the platform.
 
-Fork our library and submit your unique projects to [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit. We might send you a cap or a t-shirt if you fix a bug too!
+Fork our library and submit your unique projects to [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit. We might send you a cap or a t-shirt if you fix a bug too!
 
 ### Adding a new source, transformation or destination
 

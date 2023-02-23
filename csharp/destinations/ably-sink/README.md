@@ -1,6 +1,6 @@
 # Ably sink connector
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/ably-sink){target="_blank"} is an example of how to stream data from Quix to Ably. It handles both time-series and event data.
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/ably-sink) is an example of how to stream data from Quix to Ably. It handles both time-series and event data.
 
 Time-series Data is streamed to Ably with a message name prefixed with whatever you choose and postfixed with '-parameter-data'
 Quix Event Data is prefixed with whatever you choose and postfixed with '-event-data'
@@ -27,10 +27,10 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.

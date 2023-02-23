@@ -1,6 +1,6 @@
 # Threshold alert
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Threshold-Alert){target="_blank"} publishes messages when a certain numeric threshold is crossed. 
+[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Threshold-Alert) publishes messages when a certain numeric threshold is crossed. 
 - It activates only once per threshold cross. 
 - It works on either side of the threshold. 
 - The signal value doesn't need to be equal to the threshold value for the alarm to go off.
@@ -29,11 +29,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

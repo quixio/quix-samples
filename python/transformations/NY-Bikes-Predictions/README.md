@@ -1,6 +1,6 @@
 # New York bikes III - prediction
 
-In [this project](https://github.com/quixio/quix-library/tree/main/python/transformations/NY-Bikes-Predictions){target="_blank"} you will see how to predict the near-future availability of bikes in New York based on current bikes and weather forecasts.
+In [this project](https://github.com/quixio/quix-library/tree/main/python/transformations/NY-Bikes-Predictions) you will see how to predict the near-future availability of bikes in New York based on current bikes and weather forecasts.
 
 ## How to run
 
@@ -28,11 +28,11 @@ You will need an [OpenWeather (free) account](https://home.openweathermap.org/us
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

@@ -1,6 +1,6 @@
 # Real-time vehicle telemetry
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Car-Data-Realtime){target="_blank"} publishes data from a CSV file  in realtime at a given rate. 
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Car-Data-Realtime) publishes data from a CSV file  in realtime at a given rate. 
 
 This is a Python code sample for publishing vehicle telemetry data (time series parameters) into the Quix platform. The example file `cardata.csv` is data collected from a virtual F1&reg; car in **Codemasters 2019 F1&reg; racing game**. This data was acquired using our [**Codemaster F1&reg; 2019 project**](https://github.com/quixio/quix-library/tree/main/csharp/advanced/Bridge.Codemasters). 
 
@@ -21,11 +21,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

@@ -1,6 +1,6 @@
 # Fraud detection - Ingest
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Fraud-Ingest){target="_blank"} is the ingestion stage for the Fraud Detection example. This sample will publish transaction data to a topic at the rate of 5 rows per second.
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Fraud-Ingest) is the ingestion stage for the Fraud Detection example. This sample will publish transaction data to a topic at the rate of 5 rows per second.
 
 ## How to run
 
@@ -27,11 +27,11 @@ This is part of the fraud detection project:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 
