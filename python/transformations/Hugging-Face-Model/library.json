@@ -6,8 +6,7 @@
         "Complexity": ["Medium"],
         "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-        "Popular Subjects": ["Sentiment Analysis"],
-        "Popular Subjects": ["Machine Learning"]
+        "Popular Subjects": ["Sentiment Analysis", "Machine Learning"]
     },
     "shortDescription": "Deploy a Hugging Face model that generates predictions based on the input data",
     "DefaultFile": "hugging_face_model.py",

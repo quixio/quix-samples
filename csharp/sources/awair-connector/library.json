@@ -1,6 +1,6 @@
 {
     "libraryItemId": "36ee9d31-d789-49f8-a7b0-2001d9120690",
-    "name": "Awair - Source",
+    "name": "Awair",
     "language": "C#",
     "tags": {
       "Complexity": ["Medium"],
@@ -8,7 +8,7 @@
       "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Awair smart home integration",
-    "longDescription": "This sample will connect to Awair's background services to continously scrape and publish data for your devices.",
+    "longDescription": "This sample will connect to Awair's background services to continuously scrape and publish data for your devices.",
       "defaultFile": "Service/Program.cs",
     "iconFile": "icon.png",
     "entryPoint": "build/dockerfile",

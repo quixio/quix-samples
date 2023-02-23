@@ -1,6 +1,6 @@
 {
     "libraryItemId": "9d3f9413-51cd-4d88-9149-fe87ca48ccc3",
-    "name": "HTTP API - Javascript",
+    "name": "HTTP API",
     "language": "Javascript",
     "tags": {
         "Complexity": ["Easy"],
@@ -8,8 +8,8 @@
         "Type": ["Code samples"],
         "Popular Subjects": ["Quick Start"]
     },
-    "shortDescription": "Write data into a topic using HTTP Writer API",
-    "longDescription": "This Javascript sample shows how write data into a topic using our HTTP Writer API",
+    "shortDescription": "Publish data to a topic using HTTP Writer API",
+    "longDescription": "This Javascript sample shows how publish data to a topic using our HTTP Writer API",
     "DefaultFile": "Hello_World_Write_Data.html",
     "sampleTemplate": true,
     "Variables": [ 

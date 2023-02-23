@@ -1,11 +1,13 @@
 {
     "libraryItemId": "e3fcd46d-457a-4a33-84d7-a5198ddad673",
-    "name": "Netatmo - Source",
+    "name": "Netatmo",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
         "SDK Usage": ["Write SDK"],
-        "Pipeline Stage": ["Source"]
+        "Pipeline Stage": ["Source"],
+        "Type": ["Connectors"],
+		"Vendor": ["Netatmo"]
     },
     "shortDescription": "Subscribe to sensor data from your Netatmo devices",
     "DefaultFile": "main.py",

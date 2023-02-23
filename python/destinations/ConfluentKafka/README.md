@@ -1,10 +1,14 @@
-# Confluent Kafka Connector
+# Confluent Kafka
 
-Connect your Quix topic to a Confluent Kafka topic with this bridge
+[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/ConfluentKafka){target="_blank"} shows you how to publish data to a Confluent Kafka topic.
 
-## Requirements/prerequisites
+## How to run
 
-You will need a [Confluent Kafka](https://www.confluent.io/) account to use this project.
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -16,11 +20,13 @@ The code sample uses the following environment variables:
 - **kafka_secret**: Obtained from the Confluent Kafka portal.
 - **kafka_broker_address**: Obtained from the Confluent Kafka portal.
 
-## Docs
+## Contribute
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+## Open source
 
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
+

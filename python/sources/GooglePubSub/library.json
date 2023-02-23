@@ -1,13 +1,13 @@
 {
     "libraryItemId": "1bb04ae0-2c62-490a-ae77-8a7af00a8853",
-    "name": "Google Pub/Sub - Source",
+    "name": "Pub/Sub",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Tech connectors"],
-        "Technology": ["Google"]
+        "Type": ["Connectors"],
+        "Vendor": ["Google"]
     },
     "shortDescription": "Subscribe to data in a Google Pub/Sub topic",
     "longDescription": "If you already have data in a Google Pub/Sub topic, you can connect to it to build your application in Quix.",

@@ -1,12 +1,12 @@
 {
     "libraryItemId": "715a301c-6f52-420c-9fba-4d30b0ba3c3f",
-    "name": "Segment Webhook",
+    "name": "Segment",
     "language": "Python",
     "tags": {
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Tech connectors"],
-        "Technology": ["Segment", "Webhook"]
+        "Type": ["Connectors"],
+        "Vendor": ["Segment"]
     },
     "shortDescription": "Stream Segment event data into Quix",
     "DefaultFile": "main.py",

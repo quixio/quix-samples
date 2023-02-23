@@ -1,13 +1,13 @@
 {
     "libraryItemId": "1c0dec04-545f-40cc-aad2-cb3e9a80d8c4",
-    "name": "Ably - Source",
+    "name": "Ably",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Tech connectors"],
-        "Technology": ["Ably"]
+        "Type": ["Connectors"],
+        "Vendor": ["Ably"]
     },
     "shortDescription": "Subscribe to data in an Ably channel",
     "DefaultFile": "AblyHubSource/Program.cs",

@@ -1,13 +1,14 @@
 {
     "libraryItemId": "66c46c5c-0efc-4245-8213-5f76ff319961",
-    "name": "BigQuery - Destination",
+    "name": "BigQuery",
     "language": "Python",
     "IconFile": "icon.png",
     "tags": {
       "Complexity": ["Medium"],
       "SDK Usage": ["Read SDK"],
-      "Type": ["Tech connectors"],
-      "Pipeline Stage": ["Destination"]
+      "Type": ["Connectors"],
+      "Pipeline Stage": ["Destination"],
+      "Vendor": ["Google", "GCP"]
     },
     "shortDescription": "Stream data from Quix to BigQuery",
     "EntryPoint": "build/dockerfile",

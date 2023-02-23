@@ -1,21 +1,16 @@
-# Stream merge
+# HTTP API
 
-Use [this project](https://github.com/quixio/quix-library/tree/main/python/transformations/Stream-Merge){target="_blank"} to merge the streams from one topic into a single stream on another topic.
+Using [this project](https://github.com/quixio/quix-library/tree/main/javascript/sources){target="_blank"} you can publish data to a topic using the Quix Streaming Writer API.
 
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
 
-Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
-
 Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
-## Environment variables
+## Setup
 
-The code sample uses the following environment variables:
-
-- **input**: Name of the source topic.
-- **output**: Name of the destination topic.
+Loading the code from the Library will ensure you have the correct `token`, `workspaceId` and `topic` configured, if downloading from GitHub or another source please ensure you edit the code to update the `placeholder` values as needed before running.
 
 ## Contribute
 

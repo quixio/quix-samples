@@ -9,7 +9,7 @@
         "Type": ["Code samples"],
         "Popular Subjects": ["Quick Start"]
     },
-    "shortDescription": "Downsample 100Hz parameter to 10Hz using the built in buffer",
+    "shortDescription": "Downsample 100Hz data to 10Hz using the built in buffer",
     "DefaultFile": "HelloWorldModel/Program.cs",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "HelloWorldModel.csproj",

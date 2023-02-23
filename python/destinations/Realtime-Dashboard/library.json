@@ -6,9 +6,10 @@
         "Complexity": ["Medium"],
         "SDK Usage": ["Read SDK"],
         "Type": ["Code samples"],
-        "Pipeline Stage": ["Destination"]
+        "Pipeline Stage": ["Destination"],
+        "Vendor": ["Dash"]
     },
-    "shortDescription": "Template of how to build realtime dashboard with Dash.",
+    "shortDescription": "Template of how to build realtime dashboard with Dash",
     "DefaultFile": "in_memory_view.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

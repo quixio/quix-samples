@@ -1,6 +1,6 @@
 {
     "libraryItemId": "8ba520a1-40f5-42e9-ab92-1f71ac717416",
-    "name": "Prometheus - Destination",
+    "name": "Prometheus",
     "language": "Python",
     "tags": {
         "Complexity": [
@@ -12,8 +12,8 @@
         "Pipeline Stage": [
             "Destination"
         ],
-        "Type": ["Tech connectors"],
-        "Technology": [
+        "Type": ["Connectors"],
+        "Vendor": [
             "Prometheus"
         ]
     },

@@ -1,6 +1,14 @@
-# Amazon DynamoDB Sink
+# Firehose
 
-Publishes data to Amazon Kinesis Data Firehose.
+[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/Firehose){target="_blank"} publishes data to an AWS Kinesis Firehose.
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Requirements / Prerequisites
 
@@ -30,13 +38,13 @@ The code sample uses the following environment variables:
 - **aws_secret_access_key**: AWS secret access key `Required`
 - **batch_msg_count**: Number of messages to push as a part of single batch write. Maximum supported: 500
 
-## Docs
+## Contribute
 
-Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-## How to Run
+## Open source
 
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this
-application without a local environment setup.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
 
-Alternatively, you can check [here](https://docs.quix.io/sdk/python-setup.html) how to setup your local environment.
+Please star us and mention us on social to show your appreciation.
+

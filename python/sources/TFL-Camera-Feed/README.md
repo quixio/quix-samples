@@ -1,16 +1,14 @@
 # TfL Camera Feed
 
-Stream TfL's London traffic camera images to Quix
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/TFL-Camera-Feed){target="_blank"} streams TfL's London traffic camera images to Quix.
 
-## Requirements/prerequisites (optional)
-	
-You need a [TfL (Transport For London)](https://api-portal.tfl.gov.uk/) account and the API keys to use this service:
-- Register for an account.
-- Login and click the "Products" menu item.
-- You should have 1 product to choose from "500 Requests per min."
-- Click "500 Requests per min."
-- Enter a name for your subscription into the box, e.g. QuixFeed, and click "Register."
-- You can now find your API Keys in the profile page.
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -20,12 +18,23 @@ This code sample uses the following environment variables:
 - **api_key**: Your TfL API Key
 - **frame_rate**: The frame rate you want to use
 
-## Docs
-{This will contain any available references and links to documentation or resource related to the code.}
+## Prerequisites
+	
+You need a [TfL (Transport For London)](https://api-portal.tfl.gov.uk/) account and the API keys to use this service:
+- Register for an account.
+- Login and click the "Products" menu item.
+- You should have 1 product to choose from "500 Requests per min."
+- Click "500 Requests per min."
+- Enter a name for your subscription into the box, e.g. QuixFeed, and click "Register."
+- You can now find your API Keys in the profile page.
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+## Contribute
 
-## How to run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-Alternatively, you can visit [here](https://docs.quix.io/sdk/python-setup.html) to learn how to setup your local environment.
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
+

@@ -1,12 +1,13 @@
 {
     "libraryItemId": "3c160e63-bf8d-453a-b15c-c83f7522a2dc",
-    "name": "Subreddit Title Filter",
+    "name": "Subreddit title filter",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
         "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-        "Type": ["Code samples"]
+        "Type": ["Code samples"],
+		"Use Case": ["Utility"]
     },
     "shortDescription": "Filter Reddit posts containing a specific word",
     "DefaultFile": "quix_function.py",

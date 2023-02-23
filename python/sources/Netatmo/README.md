@@ -1,8 +1,14 @@
-# Netatmo connector
+# Netatmo
 
-Netatmo is a company which manufactures smart home devices. 
+Netatmo is a company that manufactures smart home devices. 
 
-It offers a set of APIs to consume sensor data from installed devices. See [https://dev.netatmo.com](https://dev.netatmo.com/) 
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Netatmo){target="_blank"} allows you to connect to to their APIs to consume sensor data from installed devices. See [https://dev.netatmo.com](https://dev.netatmo.com/) 
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -29,4 +35,14 @@ The code sample uses the following environment variables:
 ### User account
 - **username**: Email you use to log in into the Netatmo app.
 - **password**: Password you use to log in into the Netatmo app.
+
+## Contribute
+
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
 

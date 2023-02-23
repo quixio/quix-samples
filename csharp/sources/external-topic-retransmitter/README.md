@@ -1,6 +1,14 @@
-# External Topic Retransmitter
+# External topic retransmitter
 
-Simple c# service which reads from an external topic and writes the content into a topic in current workspace.
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/sources/external-topic-retransmitter){target="_blank"} is a simple C# service which subscribes to an external topic and publishes the data to a topic in the current workspace.
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -13,9 +21,13 @@ This code sample uses the following environment variables:
 - **Source__ConsumerGroup**: (Optional) The consumer group. If not provided, defaults to environment variable `Quix__Deployment__Id`. 
 - **Source__Offset**: Where source should be join. `Earliest` will join from the very beginning, while `Latest` will only read new messages.
 
-## Docs
+## Contribute
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-## How to run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+
+Please star us and mention us on social to show your appreciation.
+

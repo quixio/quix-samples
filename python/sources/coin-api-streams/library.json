@@ -1,12 +1,13 @@
 {
     "libraryItemId": "49294edb-f541-4e12-b821-0c83e174258a",
-    "name": "CoinAPI WebSocket API - Source",
+    "name": "CoinAPI WebSocket API",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Tech connectors"]
+        "Type": ["Connectors"],
+        "Technology": ["WebSockets"]
     },
     "shortDescription": "Publish real-time currency data from the CoinAPI WebSocket API to a stream",
     "DefaultFile": "quix_functions.py",

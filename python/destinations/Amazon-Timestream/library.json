@@ -1,6 +1,6 @@
 {
   "libraryItemId": "eb4d88e0-27ae-4ae2-91b2-af3ceadf05e5",
-  "name": "Amazon Timestream - Destination",
+  "name": "Timestream",
   "language": "Python",
   "tags": {
     "Complexity": [
@@ -13,13 +13,13 @@
       "Destination"
     ],
     "Type": [
-      "Tech connectors"
+      "Connectors"
     ],
-    "Technology": [
-      "Amazon Timestream"
+    "Vendor": [
+      "AWS"
     ]
   },
-  "shortDescription": "Publish Quix streams to Amazon Timestream",
+  "shortDescription": "Publish Quix streams to Timestream",
   "DefaultFile": "main.py",
   "EntryPoint": "build/dockerfile",
   "RunEntryPoint": "main.py",
@@ -37,7 +37,7 @@
       "Name": "database_name",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The Amazon Timestream database name. Auto created with name quix if doesn't exists",
+      "Description": "The Timestream database name. Auto created with name quix if doesn't exists",
       "DefaultValue": "quix",
       "Required": false
     },
@@ -45,7 +45,7 @@
       "Name": "table_name",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The Amazon Timestream table name. Auto created matching input topic name if doesn't exists",
+      "Description": "The Timestream table name. Auto created matching input topic name if doesn't exists",
       "DefaultValue": "",
       "Required": false
     },

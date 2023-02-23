@@ -1,6 +1,12 @@
-# Real-time-CSV
+# Real-time CSV
 
-This is an example of how to stream historic data in a CSV file in real time, respecting the original time deltas.
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Real-Time-From-File){target="_blank"} of how to stream historic data, from a CSV file, in real time while respecting the original time deltas.
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -8,15 +14,13 @@ The code sample uses the following environment variables:
 
 - **output**: This is the output topic for realtime CSV data.
 
-## Docs
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+## Contribute
 
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
+## Open source
 
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
 
-## Local development
+Please star us and mention us on social to show your appreciation.
 
-For information on how to set up your local development environment, see the Readme that's relevant to you [here](../../local-development/).

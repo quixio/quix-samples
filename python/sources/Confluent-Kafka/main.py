@@ -33,6 +33,7 @@ try:
     quix_functions = QuixFunctions(output_stream)
     input_topic.on_message_read += quix_functions.raw_message_handler
 
+    # let the platform know were connected. It will navigate to the home page.
     print("CONNECTED!")
 
     # Hook up to termination signal (for docker image) and CTRL-C
