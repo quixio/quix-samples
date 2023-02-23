@@ -1,0 +1,31 @@
+{
+    "libraryItemId": "777f7253-22c3-41a4-a5e9-9f8ec084f111",
+    "name": "Empty template - Transformation New",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "SDK Usage": ["Read/Write SDK"],
+        "Pipeline Stage": ["Transformation"],
+        "Popular Subjects": ["Quick Start"],
+        "Type": ["Basic templates"]
+    },
+    "shortDescription": "Template of how to transform data between source and destination.",
+    "DefaultFile": "main.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "Name of the input topic to listen to."
+        },
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "Name of the output topic to write to.",
+            "DefaultValue" : "transform"
+        }
+    ]    
+}
