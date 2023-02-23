@@ -1,4 +1,4 @@
-# Python Quix Lambda
+# Python transformation
 
 This is an example of how to transform data on the fly between source and destination.
 The default implementation passes data from source to destination and prints content to console output. Insert any Python code to transform data on the fly.
