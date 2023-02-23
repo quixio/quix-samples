@@ -1,4 +1,4 @@
-# Python transformation
+# Empty template
 
 [This project](https://github.com/quixio/quix-library/tree/main/python/transformations/empty-template-new){target="_blank"} is an example of how to transform data on the fly between source and destination.
 
