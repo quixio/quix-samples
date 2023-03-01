@@ -1,4 +1,4 @@
-FROM quixpythonbaseimage
+FROM python:3.11.1-slim-buster
 
 WORKDIR /app
 COPY --from=git /project .

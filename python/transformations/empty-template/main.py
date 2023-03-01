@@ -1,45 +1,35 @@
-from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader, AutoOffsetReset
-from quixstreaming.app import App
-from quix_function import QuixFunction
+import quixstreams as qx
 import os
+import pandas as pd
 
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+client = qx.QuixStreamingClient()
 
-# Change consumer group to a different constant if you want to run model locally.
-print("Opening input and output topics")
-
-input_topic = client.open_input_topic(os.environ["input"], auto_offset_reset=AutoOffsetReset.Latest)
-output_topic = client.open_output_topic(os.environ["output"])
+topic_consumer = client.get_topic_consumer(os.environ["input"], consumer_group = "empty-transformation")
+topic_producer = client.get_topic_producer(os.environ["output"])
 
 
-# Callback called for each incoming stream
-def read_stream(input_stream: StreamReader):
+def on_dataframe_received_handler(stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
 
-    # Create a new stream to output data
-    output_stream = output_topic.create_stream(input_stream.stream_id)
-    output_stream.properties.parents.append(input_stream.stream_id)
+    # Transform data frame here in this method. You can filter data or add new features.
+    # Pass modified data frame to output stream using stream producer.
+    # Set the output stream id to the same as the input stream or change it,
+    # if you grouped or merged data with different key.
+    stream_producer = topic_producer.get_or_create_stream(stream_id = stream_consumer.stream_id)
+    stream_producer.timeseries.buffer.publish(df)
 
-    # handle the data in a function to simplify the example
-    quix_function = QuixFunction(input_stream, output_stream)
-        
-    # React to new data received from input topic.
-    input_stream.events.on_read += quix_function.on_event_data_handler
-    input_stream.parameters.on_read_pandas += quix_function.on_pandas_frame_handler
 
-    # When input stream closes, we close output stream as well. 
-    def on_stream_close(endType: StreamEndType):
-        output_stream.close()
-        print("Stream closed:" + output_stream.stream_id)
+def on_stream_received_handler(stream_consumer: qx.StreamConsumer):
+    # subscribe to new DataFrames being received
+    # if you aren't familiar with DataFrames there are other callbacks available
+    # refer to the docs here: https://docs.quix.io/sdk/subscribe.html
+    stream_consumer.timeseries.on_dataframe_received = on_dataframe_received_handler
 
-    input_stream.on_stream_closed += on_stream_close
 
-# Hook up events before initiating read to avoid losing out on any data
-input_topic.on_stream_received += read_stream
+# subscribe to new streams being received
+topic_consumer.on_stream_received = on_stream_received_handler
 
-# Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
 
-# Handle graceful exit of the model.
-App.run()
+# Handle termination signals and provide a graceful exit
+qx.App.run()
