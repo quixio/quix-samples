@@ -1,6 +1,6 @@
 # Fraud detection III - Prediction
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Fraud-Detection-Predict){target="_blank"} is the prediction stage for the fraud detection example. The prediction is performed with a loaded ML model from the cleaning data read.
+[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Fraud-Detection-Predict) is the prediction stage for the fraud detection example. The prediction is performed with a loaded ML model from the cleaning data read.
 
 ## How to run
 
@@ -25,11 +25,11 @@ This is part of the fraud detection project:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

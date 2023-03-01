@@ -1,6 +1,6 @@
 # Pushover notifications
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/Pushover){target="_blank"} is a Python service that integrates with the Pushover API to push notifications to your mobile device.
+[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/Pushover) is a Python service that integrates with the Pushover API to push notifications to your mobile device.
 
 ## How to run
 
@@ -25,11 +25,11 @@ Install the Pushover app and sign up at https://pushover.net/
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

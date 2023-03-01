@@ -1,6 +1,6 @@
 # Real-time dashboard
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/Realtime-Dashboard){target="_blank"} is a template showing how to build a real-time dashboard with Dash.
+[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/Realtime-Dashboard) is a template showing how to build a real-time dashboard with Dash.
 
 ## How to run
 
@@ -18,11 +18,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

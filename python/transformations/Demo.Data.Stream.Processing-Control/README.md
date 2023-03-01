@@ -1,6 +1,6 @@
 # Streaming demo project - Control
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Demo.Data.Stream.Processing-Control){target="_blank"} processes data from the input topic then sends `x,y` coordinates, `speed` and `angle` back to the output topic.
+[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Demo.Data.Stream.Processing-Control) processes data from the input topic then sends `x,y` coordinates, `speed` and `angle` back to the output topic.
 
 This is part of our [Car Demo](https://quix.io/data-stream-processing-example/) example, which your can try [here](https://quix.io/demos/cardemo/qr).
 
@@ -26,11 +26,11 @@ Deploy the following projects to make use of this solution:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

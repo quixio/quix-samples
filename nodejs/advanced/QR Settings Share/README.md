@@ -1,6 +1,6 @@
 # QR Settings Share
 
-[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/QR%20Settings%20Share){target="_blank"} enables sharing of tokens and other app settings with the [Quix Tracker](https://github.com/quixio/quix-tracker) app via a QR code.
+[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/QR%20Settings%20Share) enables sharing of tokens and other app settings with the [Quix Tracker](https://github.com/quixio/quix-tracker) app via a QR code.
 
 ## How to run
 
@@ -62,11 +62,11 @@ The scripts will now be visible in your browsers debugger. The sources tab will 
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

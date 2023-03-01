@@ -1,6 +1,6 @@
 # Hugging Face model
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Hugging-Face-Model){target="_blank"} generates a prediction with a [Hugging Face](https://huggingface.co/) model: 
+[This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Hugging-Face-Model) generates a prediction with a [Hugging Face](https://huggingface.co/) model: 
 - It listens to the input topic for input data to predict on.
 - It generates a prediction using the selected Hugging Face model.
 - It outputs the class and score of the prediction to the selected output topic.
@@ -27,11 +27,11 @@ When deploying this Python project, ensure you allow enough computational resour
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

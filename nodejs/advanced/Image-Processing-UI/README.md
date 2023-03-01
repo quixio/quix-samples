@@ -1,6 +1,6 @@
 # Image processing UI
 
-[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/Image-Processing-UI){target="_blank"} is a companion user interface (UI) to the other TfL projects. It shows the image feed from TfL traffic cameras and a map with the count of each object detected using a YOLO V3 model.
+[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/Image-Processing-UI) is a companion user interface (UI) to the other TfL projects. It shows the image feed from TfL traffic cameras and a map with the count of each object detected using a YOLO V3 model.
 
 ## How to run
 
@@ -44,11 +44,11 @@ The scripts will now be visible in your browsers debugger. The sources tab will 
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

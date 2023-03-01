@@ -1,6 +1,6 @@
 # Empty template
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/empty-template){target="_blank"} covers the most basic and essential "hello world" read sample. 
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/empty-template) covers the most basic and essential "hello world" read sample. 
 
 It gives an example on how to connect to Kafka and detect the arrival of a new stream and read the 'HelloWorld' parameter.
 
@@ -23,11 +23,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

@@ -1,6 +1,6 @@
 # SQL Database
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/SQLServer){target="_blank"} gives an example of how to publish data from Quix to a SQL Database, it handles both parameter and event data.
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/SQLServer) gives an example of how to publish data from Quix to a SQL Database, it handles both parameter and event data.
 
 ## How to run
 
@@ -34,11 +34,11 @@ Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=g
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

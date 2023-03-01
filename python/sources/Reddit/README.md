@@ -1,6 +1,6 @@
 # Reddit
 
-Use [this project](https://github.com/quixio/quix-library/tree/main/python/sources/Reddit){target="_blank"} to integrate a Reddit feed into your Quix pipeline
+Use [this project](https://github.com/quixio/quix-library/tree/main/python/sources/Reddit) to integrate a Reddit feed into your Quix pipeline
 
 ## How to run
 
@@ -38,11 +38,11 @@ Now you can use the 'client id' and 'secret' to configure the Reddit connector.
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

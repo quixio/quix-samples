@@ -1,6 +1,6 @@
 # Webcam image capture
 
-[This project](https://github.com/quixio/quix-library/tree/main/applications/image-processing/webcam-input){target="_blank"} allows you to stream images from the webcam on your laptop or phone to a Quix stream.
+[This project](https://github.com/quixio/quix-library/tree/main/applications/image-processing/webcam-input) allows you to stream images from the webcam on your laptop or phone to a Quix stream.
 
 ## How to run
 
@@ -36,7 +36,7 @@ Pass them at run-time when working locally or configure them in the Quix portal.
 
 ## Details
 
-This app uses the Quix [TelemetryWriter](https://docs.quix.io/apis/streaming-writer-api/intro.html){target="_blank"} to stream images to a topic.
+This app uses the Quix [TelemetryWriter](https://docs.quix.io/apis/streaming-writer-api/intro.html) to stream images to a topic.
 
 Have a look at the `quix.service.ts` file to see how it's done.
 
@@ -52,11 +52,11 @@ The data packets streamed to Quix contain the timestamp in milliseconds, the ima
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

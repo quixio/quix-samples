@@ -1,6 +1,6 @@
 # Awair
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/sources/awair-connector){target="_blank"} will connect to Awair's background services to continuously scrape and publish data for your devices.
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/sources/awair-connector) will connect to Awair's background services to continuously scrape and publish data for your devices.
 
 ## How to run
 
@@ -27,11 +27,11 @@ Due to the rate limit of the Awair endpoints, data will only be scraped when the
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 

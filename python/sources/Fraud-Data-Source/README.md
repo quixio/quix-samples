@@ -1,6 +1,6 @@
 # Fake transaction generator
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Fraud-Data-Source){target="_blank"} generates fake credit card transaction data, including fraudulent transactions
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Fraud-Data-Source) generates fake credit card transaction data, including fraudulent transactions
 
 ## How to run
 
@@ -20,11 +20,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library){target="_blank"} repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
 Please star us and mention us on social to show your appreciation.
 
