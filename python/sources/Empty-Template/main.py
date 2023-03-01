@@ -12,8 +12,11 @@ client = qx.QuixStreamingClient()
 # Open the output topic where to write data out
 topic_producer = client.get_topic_producer(topic_id_or_name = os.environ["output"])
 
+# Set stream ID or leave parameters empty to get stream ID generated.
 stream = topic_producer.create_stream()
 stream.properties.name = "Hello World Python stream"
+
+# Add metadata about time series data you are about to send. 
 stream.timeseries.add_definition("ParameterA").set_range(-1.2, 1.2)
 stream.timeseries.buffer.time_span_in_milliseconds = 100
 
