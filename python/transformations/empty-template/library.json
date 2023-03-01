@@ -10,7 +10,7 @@
         "Type": ["Basic templates"]
     },
     "shortDescription": "Template of how to transform data between source and destination.",
-    "DefaultFile": "quix_function.py",
+    "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
