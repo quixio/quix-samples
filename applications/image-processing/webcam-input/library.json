@@ -8,7 +8,7 @@
       "Type": ["Code samples"],
       "Pipeline Stage": ["Source"]
     },
-    "shortDescription": "This project contains webpage which is able to capture image from your webcam",
+    "shortDescription": "Capture images from your webcam with this Angular web app",
     "Variables": [ 
         {
             "Name" : "webcam_output",

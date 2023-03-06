@@ -1,9 +1,14 @@
-# Python BigQuery Database Sink
+# BigQuery
 
-The sample contained in this folder gives an example on how to stream data from Quix to a BigQuery Database, it handles both parameter and event data.
+[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/BigQuery) gives an example of how to stream data from Quix to a BigQuery database, it handles both parameter and event data.
 
-## Requirements / Prerequisites
- - A BigQuery Database.
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -11,22 +16,22 @@ The code sample uses the following environment variables:
 
 - **input**: Name of the input topic to read from.
 - **PROJECT_ID**: The BigQuery GCP Project ID.
-- **DATASET_ID**: The target Biguqery dataset ID.
+- **DATASET_ID**: The target Bigquery dataset ID.
 - **DATASET_LOCATION**: Location of BigQuery dataset.
 - **SERVICE_ACCOUNT_JSON**: The service account json string for the BigQuery GCP project. [Tutorial on how to create service account.](https://cloud.google.com/iam/docs/creating-managing-service-accounts#iam-service-accounts-create-console)
 - **MAX_QUEUE_SIZE**: Max queue size for the sink ingestion.
 
 ## Known limitations 
-- BigQuery fails to immediately recognise new Schema changes such as adding a new field when streaming insert data.
+- BigQuery fails to immediately recognize new Schema changes such as adding a new field when streaming insert data.
 - BigQuery doesn't allow deleting data when streaming insert data.
 
+## Contribute
 
-## Docs
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+## Open source
 
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
+Please star us and mention us on social to show your appreciation.
 

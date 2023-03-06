@@ -1,10 +1,14 @@
 # MQTT
 
-Easily publish data to Quix from a MQTT topic
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/MQTT) allows you to publish data to Quix from an MQTT topic
 
-## Requirements / Prerequisites
+## How to run
 
-You'll need to have a MQTT broker either locally or in the cloud
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment Variables
 
@@ -17,11 +21,17 @@ The code sample uses the following environment variables:
 - **mqtt_username**: Your MQTT username.
 - **mqtt_password**: Your MQTT password.
 
-## Docs
+## Requirements / Prerequisites
 
-Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+You'll need to have a MQTT broker either locally or in the cloud
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## Contribute
 
-Alternatively, you can check [here](https://docs.quix.io/sdk/python-setup.html) how to setup your local environment.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+
+Please star us and mention us on social to show your appreciation.
+

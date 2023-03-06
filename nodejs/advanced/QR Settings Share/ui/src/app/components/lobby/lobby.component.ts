@@ -68,7 +68,9 @@ export class LobbyComponent implements OnInit {
     let coreProperties = {
       'bearerToken': token,
       'workspaceId': this.quixService.workspaceId,
-      'subdomain': this.quixService.subdomain
+      'subdomain': this.quixService.subdomain,
+      'rider': this.tokenData.name,
+      'device': this.tokenData.deviceId
     }
 
     this.qrId = Guid.create();

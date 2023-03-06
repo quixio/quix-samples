@@ -1,10 +1,14 @@
-# NodeJs empty template
+# Empty template
 
-This is an empty template for a website hosted using Node JS Express in the Quix serverless environment.
+[This project](https://github.com/quixio/quix-library/tree/main/nodejs/empty) is an empty template for a website hosted using Node JS Express in the Quix serverless environment.
 
-## Requirements/prerequisites (optional)
+## How to run
 
-{This will contain any external resource needed to run this sample and the instructions to get them.}
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -14,10 +18,17 @@ This code sample uses the following environment variables:
 - **input**: {Description of the variable}
 - **output**: {Description of the variable}
 
-## Docs
-{This will contain any available references and links to documentation or resource related to the code.}
+## Requirements/prerequisites (optional)
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+{This will contain any external resource needed to run this sample and the instructions to get them.}
 
-## How to run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
+## Contribute
+
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+
+Please star us and mention us on social to show your appreciation.
+

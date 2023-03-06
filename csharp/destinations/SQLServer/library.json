@@ -1,12 +1,12 @@
 {
     "libraryItemId": "47a799c9-2afc-49db-bd10-8b117e0b77ca",
-    "name": "SQL Database - Destination",
+    "name": "SQL Database",
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
         "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Type": ["Tech connectors"],
+        "Type": ["Connectors"],
         "Technology": ["SQL"]
     },
     "shortDescription": "Publish data to a SQL Database",

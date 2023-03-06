@@ -1,9 +1,14 @@
-# CoinAPI WebSocket API
-This sample will allow you to subscribe to data from CoinAPI's Websocket API.
+# CoinAPI WebSocket
 
-## Requirements/prerequisites
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/coin-api-streams) allows you to subscribe to data from CoinAPI's Websocket API.
 
-You will need a [CoinApi (free) account](https://www.coinapi.io/pricing?apikey) to use this project.
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -14,11 +19,17 @@ The code sample uses the following environment variables:
 - **asset_id_base**: This is the main currency of interest.
 - **asset_id_quote**: These are the currencies to compare the primary currency to.
 
-## Docs
+## Requirements/prerequisites
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+You will need a [CoinApi (free) account](https://www.coinapi.io/pricing?apikey) to use this project.
 
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+## Contribute
 
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+
+Please star us and mention us on social to show your appreciation.
+

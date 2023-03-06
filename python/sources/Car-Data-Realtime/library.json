@@ -1,6 +1,6 @@
 {
     "libraryItemId": "b6a8cb37-18d6-4785-b96f-bd026b8e66a9",
-    "name": "Realtime Write Car Data - Source",
+    "name": "Real-time vehicle telemetry",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],

@@ -1,24 +1,37 @@
-# Awair Connector
-This sample will connect to Awair's background services to continously scrape and publish data for your devices.
+# Awair
 
-## Requirements
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/sources/awair-connector) will connect to Awair's background services to continuously scrape and publish data for your devices.
 
-You will need to register for a [developer account](https://developer.getawair.com/onboard/welcome) to access your Awair data. Once you have that, you can get your access token from [here](https://developer.getawair.com/console/access-token).
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
 The code sample uses the following environment variables:
 
-- **Topic**: This is the ouput topic where data will be written to.
+- **Topic**: This is the output topic where data will be written to.
 - **Awair__Token**: The token needed to communicate with Awair API.
 
+## Requirements
+
+You will need to register for a [developer account](https://developer.getawair.com/onboard/welcome) to access your Awair data. Once you have that, you can get your access token from [here](https://developer.getawair.com/console/access-token).
+
 ## Limitations
+
 Due to the rate limit of the Awair endpoints, data will only be scraped when the application starts then every 5 minutes afterwards for the elapsed period.
 
-## Docs
+## Contribute
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-## How to run
-This bridge can run locally or in our serverless environment. To learn how to deploy services in Quix, please create an account at [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) and see our [docs](https://docs.quix.io/index.html).
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+
+Please star us and mention us on social to show your appreciation.
 

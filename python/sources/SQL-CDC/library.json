@@ -1,15 +1,15 @@
 {
     "libraryItemId": "e9b31de2-e43b-4e04-a92a-effd348e4eaf",
-    "name": "SQL CDC",
+    "name": "SQL Change Data Capture (CDC)",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Tech connectors"],
+        "Type": ["Connectors"],
         "Technology": ["SQL", "CDC"]
     },
-    "shortDescription": "Stream data changes from a SQL Database",
+    "shortDescription": "Stream changes to data in a SQL Database",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

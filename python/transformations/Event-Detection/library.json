@@ -1,6 +1,6 @@
 {
     "libraryItemId": "9b7f7253-22c3-41a4-a5e9-9f8ec084f879",
-    "name": "Data Filtering Model",
+    "name": "Event Detection",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],

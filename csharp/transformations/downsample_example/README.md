@@ -1,5 +1,12 @@
-# C# Downsample example
-The sample contained in this folder gives an example on how to create a simple model that downsample 100Hz parameter to 10Hz using built in buffer.
+# Downsample example
+
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/transformations/downsample_example) gives an example of how to create a simple model that downsamples 100Hz data to 10Hz using the built in buffer.
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment Variables
 
@@ -13,9 +20,13 @@ The code sample uses the following environment variables:
 - HelloWorldModel/Program.cs: contains logic necessary to connect to kafka topic and read stream, downsample data and write it back to kafka in different topic.
 - HelloWorldModel/HelloWorldModel.csproj: the project file which holds together the project and describes some build related details
 
-## Docs
+## Contribute
 
-Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+
+Please star us and mention us on social to show your appreciation.
+

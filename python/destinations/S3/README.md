@@ -1,10 +1,14 @@
-# AWS S3 Sink
+# S3
 
-Publish data to S3.
+Publish data to an S3 bucket with [this project](https://github.com/quixio/quix-library/tree/main/python/destinations/S3).
 
-## Requirements / Prerequisites
+## How to run
 
-You'll need to have a S3 resource available on AWS and access credentials with permission to upload files to S3 buckets.
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment Variables
 
@@ -22,11 +26,17 @@ The code sample uses the following environment variables:
 - **prefix**: File name prefix.
 - **suffix**: File suffix (e.g. file type extension).
 
-## Docs
+## Requirements / Prerequisites
 
-Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+You'll need to have a S3 resource available on AWS and access credentials with permission to upload files to S3 buckets.
 
-## How to Run
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to Edit or Deploy this application without a local environment setup.
+## Contribute
 
-Alternatively, you can check [here](https://docs.quix.io/sdk/python-setup.html) how to setup your local environment.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+
+Please star us and mention us on social to show your appreciation.
+

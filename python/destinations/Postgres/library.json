@@ -1,13 +1,14 @@
 {
     "libraryItemId": "cc29bdd3-610f-4043-88c8-82075e89dac0",
-    "name": "Postgres - Destination",
+    "name": "Postgres",
     "language": "Python",
     "IconFile": "icon.png",
     "tags": {
       "Complexity": ["Medium"],
       "SDK Usage": ["Read SDK"],
-      "Type": ["Tech connectors"],
-      "Pipeline Stage": ["Destination"]
+      "Type": ["Connectors"],
+      "Pipeline Stage": ["Destination"],
+      "Technology": ["SQL"]
     },
     "shortDescription": "Stream data from Quix to a Postgres Database",
     "EntryPoint": "build/dockerfile",

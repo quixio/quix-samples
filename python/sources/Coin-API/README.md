@@ -1,9 +1,14 @@
-# Coin API 
-This sample will allow you to connect to Coin API to collect data.
+# CoinAPI 
 
-## Requirements/prerequisites
+[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Coin-API) connects to CoinAPI to collect data.
 
-You will need a [CoinApi (free) account](https://www.coinapi.io/pricing?apikey) to use this project.
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -14,12 +19,17 @@ The code sample uses the following environment variables:
 - **primary_currency**: The primary currency of interest, e.g. BTC.
 - **secondary_currencys**: Currencies to compare to the primary currency, e.g. USD and GBP.
 
+## Requirements/prerequisites
 
-## Docs
+You will need a [CoinApi (free) account](https://www.coinapi.io/pricing?apikey) to use this project.
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+## Contribute
 
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+
+Please star us and mention us on social to show your appreciation.
+

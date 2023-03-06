@@ -20,6 +20,8 @@ export class AppComponent implements OnInit {
   width = 1080;
   lat: number = 0;
   long: number = 0;
+  private intervalId: NodeJS.Timer;
+
 
   private reset$ = new Subject();
   timer$: Observable<any>;
@@ -48,24 +50,30 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.token$ = this.envVarService.GetToken();
-    // this.workspaceId$ = this.envVarService.GetWorkspaceId();
-    // this.topic$ = this.envVarService.GetTopic();
-
     // Dispatch a fake resize to trigger the resize of the webcam component
-
     window.dispatchEvent(new Event('resize'));
 
     // Get all available video outputs and put them in dropdown to
     // allow the user to select webcam source
-    WebcamUtil.getAvailableVideoInputs()
-    .then((mediaDevices: MediaDeviceInfo[]) => {
-      this.devices = mediaDevices;   
-      // If there is at least one device then set that as the default
-      if (mediaDevices.length > 0) this.inputDevice = mediaDevices[0];
-    });
+    this.getVideoInputs()
+	
+	// retry getting video inputs every 2 seconds.
+	// needed if the user has to give permission else the 
+	// code to populate the drop down will not be called again
+    this.intervalId = setInterval(() => this.getVideoInputs(), 2000);
+  }
 
-    this.setupTimer();
+  private getVideoInputs(){
+    WebcamUtil.getAvailableVideoInputs()
+        .then((mediaDevices: MediaDeviceInfo[]) => {
+          this.devices = mediaDevices;
+          // If there is at least one device with an ID then set that as the default
+          if (mediaDevices.length > 0 && mediaDevices[0].deviceId !== "") {
+            this.inputDevice = mediaDevices[0];
+            clearInterval(this.intervalId)
+          }
+        });
+
   }
 
   public deviceChanged(event: MatSelectChange): void {

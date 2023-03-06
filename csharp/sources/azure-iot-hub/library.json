@@ -1,15 +1,15 @@
 {
     "libraryItemId": "6cf9def8-936d-4d20-8068-d6b91a8be0b1",
-    "name": "Azure IoT Hub - Source",
+    "name": "Azure IoT Hub",
     "language": "C#",
     "tags": {
         "Complexity": ["Medium"],
         "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Tech connectors"],
-        "Technology": ["Azure"]
+        "Type": ["Connectors"],
+        "Vendor": ["Azure"]
     },
-    "shortDescription": "Connect to Azure IoT and bridge data into Kafka",
+    "shortDescription": "Subscribe to Azure IoT and publish data to Kafka",
     "DefaultFile": "azureiot/Program.cs",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "azureIot.csproj",

@@ -6,10 +6,11 @@
         "Complexity": ["Medium"],
         "SDK Usage": ["Read/Write SDK"],
         "Type": ["Code samples"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+		"Use Case": ["Utility"]
     },
-    "shortDescription": "Performs interpolation function.",
-    "longDescription": "Performs interpolation function: calculates time delta and parameter average for the last parameter points",
+    "shortDescription": "Performs an interpolation function",
+    "longDescription": "Performs an interpolation function: calculates time delta and parameter average for the last parameter points",
     "DefaultFile": "interpolating_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

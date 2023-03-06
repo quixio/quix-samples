@@ -1,6 +1,6 @@
 {
     "libraryItemId": "a63000ab-b397-4b43-b42e-d54e1da7f627",
-    "name": "Streamlit Dashboard",
+    "name": "Streamlit",
     "language": "Python",
     "tags": {
         "Complexity": [
@@ -11,10 +11,13 @@
         ],
         "Pipeline Stage": [
             "Destination"
+        ],
+        "Vendor": [
+            "Streamlit"
         ]
     },
-    "shortDescription": "Streamlit real time dashboard",
-    "longDescription": "Streamlit real time dashboard. Use with the 'Demo Data' source from the Quix library.",
+    "shortDescription": "Build a Streamlit real time dashboard",
+    "longDescription": "Streamlit real time dashboard. Use this with the 'Demo Data' source from the Quix library.",
     "DefaultFile": "streamlit_file.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

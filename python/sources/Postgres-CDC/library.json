@@ -1,13 +1,14 @@
 {
     "libraryItemId": "faa7578f-8e26-4d59-8ef9-f359d6dfcd77",
-    "name": "Postgres CDC - Source",
+    "name": "Postgres CDC",
     "language": "Python",
     "IconFile": "icon.png",
     "tags": {
       "Complexity": ["Medium"],
       "SDK Usage": ["Read SDK"],
-      "Type": ["Tech connectors"],
-      "Pipeline Stage": ["Source"]
+      "Type": ["Connectors"],
+      "Pipeline Stage": ["Source"],
+      "Technology": ["Database"]
     },
     "shortDescription": "Stream data from Postgres Database CDC to Quix",
     "EntryPoint": "build/dockerfile",

@@ -1,6 +1,6 @@
-# Real-time CSV
+# HTTP API
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/sources/Real-Time-From-File) of how to stream historic data, from a CSV file, in real time while respecting the original time deltas.
+Using [this project](https://github.com/quixio/quix-library/tree/main/javascript/sources) you can publish data to a topic using the Quix Streaming Writer API.
 
 ## How to run
 
@@ -8,11 +8,9 @@ Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) accou
 
 Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
-## Environment variables
+## Setup
 
-The code sample uses the following environment variables:
-
-- **output**: This is the output topic for realtime CSV data.
+Loading the code from the Library will ensure you have the correct `token`, `workspaceId` and `topic` configured, if downloading from GitHub or another source please ensure you edit the code to update the `placeholder` values as needed before running.
 
 ## Contribute
 

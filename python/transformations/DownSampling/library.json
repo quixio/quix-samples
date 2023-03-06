@@ -1,11 +1,12 @@
 {
     "libraryItemId": "0587369e-38fb-4222-b96b-68b93482809f",
-    "name": "Down-sampling with Python",
+    "name": "Down-sampling",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
         "SDK Usage": ["Read/Write SDK"],
-        "Pipeline Stage": ["Transformation"]
+        "Pipeline Stage": ["Transformation"],
+        "Use Case": ["Utility"]
     },
     "shortDescription": "Down sample data from 100hz to 10hz",
     "DefaultFile": "quix_function.py",

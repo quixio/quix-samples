@@ -1,6 +1,6 @@
 {
     "libraryItemId": "410584b6-72b9-4552-8f97-e205e8c412ca",
-    "name": "External Topic Retransmitter",
+    "name": "External topic retransmitter",
     "language": "C#",
     "tags": {
       "Complexity": ["Easy"],

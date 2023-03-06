@@ -1,5 +1,25 @@
-# A Reddit Source 
-Integrate a Reddit feed into your Quix pipeline
+# Reddit
+
+Use [this project](https://github.com/quixio/quix-library/tree/main/python/sources/Reddit) to integrate a Reddit feed into your Quix pipeline
+
+## How to run
+
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
+
+## Environment variables
+
+The code sample uses the following environment variables:
+
+- **output**: Name of the output topic to write data into.
+- **reddit_username**: The Reddit user name to use.
+- **reddit_password**: The password to use.
+- **reddit_client_id**: The Reddit client id (shown under the app name).
+- **reddit_client_secret**: The reddit secret (shown after creating the app in Reddit).
+- **subreddit**: The sub Reddit to scrape.
 
 ## Requirements/prerequisites
 
@@ -14,24 +34,15 @@ Steps:
 
 Now you can use the 'client id' and 'secret' to configure the Reddit connector.
 
-![graph](reddit_app.png?raw=true)
+![Reddit config](reddit_app.png?raw=true)
 
-## Environment variables
+## Contribute
 
-The code sample uses the following environment variables:
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
-- **output**: Name of the output topic to write data into.
-- **reddit_username**: The Reddit user name to use.
-- **reddit_password**: The password to use.
-- **reddit_client_id**: The Reddit client id (shown under the app name).
-- **reddit_client_secret**: The reddit secret (shown after creating the app in Reddit).
-- **subreddit**: The sub Reddit to scrape.
+## Open source
 
-## Docs
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
 
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance.
+Please star us and mention us on social to show your appreciation.
 
-## How to run
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account to edit or deploy this application without a local environment setup.
-
-Alternatively, you can learn how to set up your local environment [here](https://docs.quix.io/sdk/python-setup.html).

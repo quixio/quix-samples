@@ -1,6 +1,6 @@
 {
 	"libraryItemId": "a21dc781-39d3-44c7-b261-b2e4c1b06f63",
-	"name": "Fake Transaction Generator",
+	"name": "Fake transaction generator",
 	"language": "Python",
 	"tags": {
 		"Complexity": ["Medium"],

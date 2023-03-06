@@ -1,13 +1,13 @@
 {
     "libraryItemId": "06a66e6d-38ba-40fe-8b0e-d1ce9ce84897",
-    "name": "Ably - Destination",
+    "name": "Ably",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
         "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Type": ["Tech connectors"],
-        "Technology": ["Ably"]
+        "Type": ["Connectors"],
+        "Vendor": ["Ably"]
     },
     "shortDescription": "Publish data to an Ably Channel",
     "DefaultFile": "AblySink/Program.cs",

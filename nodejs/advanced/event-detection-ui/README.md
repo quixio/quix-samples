@@ -1,18 +1,21 @@
 # Event Detection Demo UI
 
-This is the UI for the event detection demo. Stream data from your phone or a data generator and see the telemetry in this UI in real-time. Run an event detection service and you can also see event time and location too.
+[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/event-detection-ui) 
+is the UI for our event detection demo. 
 
-## Docs
+Stream data from your phone or a data generator and view the telemetry in this UI in real-time. Deploy an event detection service and you can also see the events time and location.
 
-Check out the [API docs](https://docs.quix.io/apis/streaming-reader-api/intro/) for detailed API usage guidance and how to connect to the WebSockets API using SignalR.
+## How to run
 
-## How to run in the Quix Portal
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
 
-Create an account on [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) to edit or deploy this application without a local environment setup.
+Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+
+Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Local development
 
-To run this project locally please update the following values in `environment-variables.service.ts`:
+To run this project locally update the following values in `environment-variables.service.ts`:
 
 ``` 
   private workingLocally = false; // set to true if working locally
@@ -22,7 +25,7 @@ To run this project locally please update the following values in `environment-v
   public workspaceId: string = ''; // Look in the URL for the Quix Portal your workspace ID is after `workspace=`
 ```
   
-The Token can be obtained from the Quix portal under the Token menu item (top right of the page under your user avatar)
+The Token can be obtained from the Quix portal under the `Token` menu (top right of the page under your user avatar)
 
 Then install dependencies:
 
@@ -35,3 +38,18 @@ And finally, run the solution:
 ```
 Run `ng serve` to build and run the . Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 ```
+
+## Docs
+
+This UI makes use of the Streaming Reader API. Check out the [API docs](https://docs.quix.io/apis/streaming-reader-api/intro/) for detailed API usage guidance and how to connect to the WebSockets API using SignalR.
+
+## Contribute
+
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+
+## Open source
+
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+
+Please star us and mention us on social to show your appreciation.
+

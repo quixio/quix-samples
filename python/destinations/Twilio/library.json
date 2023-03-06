@@ -1,6 +1,6 @@
 {
     "libraryItemId": "0e436ae9-c48b-4da5-b069-f8703f6ab6cb",
-    "name": "Twilio - Destination",
+    "name": "Twilio",
     "language": "Python",
     "tags": {
         "Complexity": [
@@ -12,8 +12,10 @@
         "Pipeline Stage": [
             "Destination"
         ],
-        "Type": ["Tech connectors"],
-        "Technology": [
+        "Type": [
+            "Connectors"
+        ],
+        "Vendor": [
             "Twilio"
         ]
     },

@@ -1,6 +1,6 @@
 {
     "libraryItemId": "fede18aa-6600-47d6-b684-f662cb9b7b1a",
-    "name": "Fraud Detection - Ingest",
+    "name": "Fraud detection - Ingest",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
         "Type": ["Code samples"],
         "Popular Subjects": ["Fraud Detection"]
     },
-    "shortDescription": "Write raw transaction data to a stream",
+    "shortDescription": "Publish raw transaction data to a stream",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

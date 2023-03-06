@@ -1,6 +1,6 @@
 {
 	"libraryItemId": "eec165e1-f648-4e58-9fd3-9af475a840e8",
-	"name": "TFL traffic camera frame grabber",
+	"name": "TfL traffic camera frame grabber",
 	"language": "Python",
 	"tags": {
 		"Complexity": ["Easy"],

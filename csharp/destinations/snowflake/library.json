@@ -1,13 +1,13 @@
 {
     "libraryItemId": "9ec049c0-d6d4-4543-805a-1dbac7c3e962",
-    "name": "Snowflake - Destination",
+    "name": "Snowflake",
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
         "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
-        "Type": ["Tech connectors"],
-        "Technology": ["Snowflake"]
+        "Type": ["Connectors"],
+        "Vendor": ["Snowflake"]
     },
     "shortDescription": "Publish data to Snowflake",
     "DefaultFile": "Quix.Snowflake.Writer/Worker.cs",

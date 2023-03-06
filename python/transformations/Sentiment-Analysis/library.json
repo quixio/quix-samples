@@ -6,10 +6,9 @@
         "Complexity": ["Medium"],
         "SDK Usage": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
-        "Popular Subjects": ["Sentiment Analysis"],
-        "Popular Subjects": ["Machine Learning"]
+        "Popular Subjects": ["Sentiment Analysis", "Machine Learning"]
     },
-    "shortDescription": "Deploy a Hugging Face model performs sentiment analysis",
+    "shortDescription": "Deploy a Hugging Face model to perform sentiment analysis",
     "DefaultFile": "quix_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

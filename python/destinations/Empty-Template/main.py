@@ -1,36 +1,31 @@
-from quixstreaming import QuixStreamingClient, StreamReader
-from quixstreaming.models.parametersbufferconfiguration import ParametersBufferConfiguration
-from quixstreaming.app import App
-from quix_function import QuixFunction
+import quixstreams as qx
 import os
-
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
-
-print("Opening input topic")
-input_topic = client.open_input_topic(os.environ["input"])
+import pandas as pd
 
 
-# read streams
-def read_stream(input_stream: StreamReader):
-    print("New stream read:" + input_stream.stream_id)
+client = qx.QuixStreamingClient()
 
-    buffer_options = ParametersBufferConfiguration()
-    buffer_options.time_span_in_milliseconds = 100
-
-    buffer = input_stream.parameters.create_buffer(buffer_options)
-
-    # handle the data in a function to simplify the example
-    quix_function = QuixFunction()
-
-    buffer.on_read += quix_function.on_parameter_data_handler
+# get the topic consumer for a specific consumer group
+topic_consumer = client.get_topic_consumer(topic_id_or_name = os.environ["input"],
+                                           consumer_group = "empty-destination")
 
 
-# Hook up events before initiating read to avoid losing out on any data
-input_topic.on_stream_received += read_stream
+def on_dataframe_received_handler(stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
+    # do something with the data here
+    print(df)
 
-# Hook up to termination signal (for docker image) and CTRL-C
+
+def on_stream_received_handler(stream_consumer: qx.StreamConsumer):
+    # subscribe to new DataFrames being received
+    # if you aren't familiar with DataFrames there are other callbacks available
+    # refer to the docs here: https://docs.quix.io/sdk/subscribe.html
+    stream_consumer.timeseries.on_dataframe_received = on_dataframe_received_handler
+
+
+# subscribe to new streams being received
+topic_consumer.on_stream_received = on_stream_received_handler
+
 print("Listening to streams. Press CTRL-C to exit.")
 
-# Handle graceful exit
-App.run()
+# Handle termination signals and provide a graceful exit
+qx.App.run()

@@ -1,13 +1,15 @@
 {
     "libraryItemId": "ba94b84d-2af9-4720-8c77-6005133bd994",
-    "name": "Timescale - Destination",
+    "name": "Timescale",
     "language": "Python",
     "IconFile": "icon.png",
     "tags": {
       "Complexity": ["Medium"],
       "SDK Usage": ["Read SDK"],
-      "Type": ["Tech connectors"],
-      "Pipeline Stage": ["Destination"]
+      "Type": ["Connectors"],
+      "Pipeline Stage": ["Destination"],
+      "Vendor": ["Timescale"],
+      "Technology": ["Database"]
     },
     "shortDescription": "Stream data from Quix to a Timescale Database",
     "EntryPoint": "build/dockerfile",
