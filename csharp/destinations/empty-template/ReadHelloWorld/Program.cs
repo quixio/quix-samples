@@ -1,49 +1,35 @@
-﻿using System;
-using System.Linq;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Models;
+﻿// Create a client which holds generic details for creating input and output topics
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Models;
 
-namespace ReadHelloWorld
+var client = new QuixStreamingClient();
+
+var topic = Environment.GetEnvironmentVariable("input");
+            
+using var consumer = client.GetTopicConsumer(topic);
+            
+// Hook up events before initiating read to avoid losing out on any data
+consumer.OnStreamReceived += (s, stream) =>
 {
-    class Program
+    Console.WriteLine($"New stream received: {stream.StreamId}");
+                
+    var bufferConfiguration = new TimeseriesBufferConfiguration
     {
-        /// <summary>
-        /// Main will be invoked when you run the application
-        /// </summary>
-        static void Main()
-        {
-            // Create a client which holds generic details for creating input and output topics
-            var client = new QuixStreamingClient();
-
-            var inputTopicName = Environment.GetEnvironmentVariable("input");
-            
-            using var inputTopic = client.OpenInputTopic(inputTopicName);
-            
-            // Hook up events before initiating read to avoid losing out on any data
-            inputTopic.OnStreamReceived += (s, streamReader) =>
-            {
-                Console.WriteLine($"New stream read: {streamReader.StreamId}");
+        TimeSpanInMilliseconds = 1000,
+    };
                 
-                var bufferConfiguration = new ParametersBufferConfiguration
-                {
-                    TimeSpanInMilliseconds = 1000,
-                };
-                
-                var buffer = streamReader.Parameters.CreateBuffer(bufferConfiguration);
+    var buffer = stream.Timeseries.CreateBuffer(bufferConfiguration);
 
-                buffer.OnRead += parameterData =>
-                {
-                    Console.WriteLine(
-                        $"ParameterA - {parameterData.Timestamps[0].Timestamp}: {parameterData.Timestamps.Average(a => a.Parameters["ParameterA"].NumericValue)}");
-                };
-            };
+    buffer.OnDataReleased += (sender, args) => {
+        
+        Console.WriteLine(
+                $"ParameterA - {args.Data.Timestamps[0].Timestamp}: {args.Data.Timestamps.Average(a => a.Parameters["ParameterA"].NumericValue)}");
+    };
+};
 
-            Console.WriteLine("Listening for streams");
-            
-            // Hook up to termination signal (for docker image) and CTRL-C and open streams
-            App.Run();
+Console.WriteLine("Listening for streams");
 
-            Console.WriteLine("Exiting");
-        }
-    }
-}
+// Handle termination signals, open streams, and graceful shutdown
+App.Run();
+
+Console.WriteLine("Exiting");
