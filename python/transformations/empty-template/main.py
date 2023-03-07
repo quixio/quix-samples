@@ -19,10 +19,17 @@ def on_dataframe_received_handler(stream_consumer: qx.StreamConsumer, df: pd.Dat
     stream_producer.timeseries.buffer.publish(df)
 
 
+# Handle event data from library items that emit event data
+def on_event_data_received_handler(stream_consumer: qx.StreamConsumer, data: qx.EventData):
+    print(data)
+    # handle your event data here
+
+
 def on_stream_received_handler(stream_consumer: qx.StreamConsumer):
     # subscribe to new DataFrames being received
     # if you aren't familiar with DataFrames there are other callbacks available
     # refer to the docs here: https://docs.quix.io/sdk/subscribe.html
+    stream_consumer.events.on_data_received = on_event_data_received_handler # register the event data callback
     stream_consumer.timeseries.on_dataframe_received = on_dataframe_received_handler
 
 
