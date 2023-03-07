@@ -3,10 +3,10 @@ var client = new QuixStreams.Streaming.QuixStreamingClient();
 
 var outputTopicName = Environment.GetEnvironmentVariable("output");
             
-using var outputTopic = client.GetTopicProducer(outputTopicName);
+using var producer = client.GetTopicProducer(outputTopicName);
             
 Console.WriteLine("Creating stream");
-var stream = outputTopic.CreateStream();
+var stream = producer.CreateStream();
 
 stream.Properties.Name = "Hello World stream";
            
