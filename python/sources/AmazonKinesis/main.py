@@ -12,9 +12,9 @@ def connect_to_quix() -> qx.streamproducer:
     quix_client = qx.QuixStreamingClient()
 
     print("Opening output topic")
-    output_topic = quix_client.get_topic_producer(os.environ["output"])
+    producer_topic = quix_client.get_topic_producer(os.environ["output"])
 
-    stream = output_topic.create_stream()
+    stream = producer_topic.create_stream()
     stream.properties.name = "{} - {}".format("AWS Kinesis", datetime.utcnow().strftime("%d-%m-%Y %X"))
     stream.properties.location = "/aws_kinesis_data"
 
