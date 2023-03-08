@@ -21,9 +21,7 @@ consumer.OnStreamReceived += (s, stream) =>
     var buffer = stream.Timeseries.CreateBuffer(bufferConfiguration);
 
     buffer.OnDataReleased += (sender, args) => {
-        
-        Console.WriteLine(
-                $"ParameterA - {args.Data.Timestamps[0].Timestamp}: {args.Data.Timestamps.Average(a => a.Parameters["ParameterA"].NumericValue)}");
+        Console.WriteLine($"Timestamp: {args.Data.Timestamps[0].Timestamp} has {args.Data.Timestamps[0].Parameters.Count} parameters");
     };
 };
 
