@@ -16,20 +16,19 @@ class KinesisFunctions:
         self.run = False
 
     def connect(self):
-
         # connect to aws kinesis using a boto3 client
         self.kinesis_client = boto3.client(
             'kinesis',
-            aws_access_key_id=os.environ["aws_access_key_id"],
-            aws_secret_access_key=os.environ["aws_secret_access_key"],
-            region_name=os.environ["aws_region_name"]
+            aws_access_key_id = os.environ["aws_access_key_id"],
+            aws_secret_access_key = os.environ["aws_secret_access_key"],
+            region_name = os.environ["aws_region_name"]
         )
 
     def get_data(self):
 
         # set up the shard iterator
         si = self.kinesis_client.get_shard_iterator(
-            StreamName=os.environ["aws_stream_name"],
+            StreamName = os.environ["aws_stream_name"],
             ShardId='shardId-000000000000',
             ShardIteratorType='LATEST'
         )
