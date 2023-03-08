@@ -33,26 +33,20 @@ consumer.OnStreamReceived += (topic, receivedStream) =>
 	{
 		// subscribe to new data that is being received
 		// refer to the docs here: https://docs.quix.io/sdk/subscribe.html
+        Console.WriteLine($"Timestamp: {args.Data.Timestamps[0].Timestamp} has {args.Data.Timestamps[0].Parameters.Count} parameters");
     
-		var outputData = new TimeseriesData();
-
         // Here is where you should add your transformation, run your models or perform 
         // any other data modification.
 
-        Console.WriteLine($"Timestamp: {args.Data.Timestamps[0].Timestamp} has {args.Data.Timestamps[0].Parameters.Count} parameters");
+		foreach (var row in args.Data.Timestamps)
+		{
+        	var newValue = new Random().Next(500); // generate a random number up to 500
 
-        var newValue = new Random().Next(500); // generate a random number up to 500
-		outputData.AddTimestamp(args.Data.Timestamps.First().Timestamp)
-						.AddValue("New Data", newValue);
+			row.AddValue("NewData", newValue);
+		}
 		        
 		// Send using writer buffer
-        streamWriter.Timeseries.Buffer.Publish(outputData);
-
-        // Cloning data to process in a different way or publish to a different stream
-        //var outData = args.Data.Clone();
-
-        // Send without using writer buffer
-        //streamWriter.Timeseries.Publish(args.Data);
+        streamWriter.Timeseries.Buffer.Publish(args.Data);
     };
 
 	// We pass input events to output without change.
