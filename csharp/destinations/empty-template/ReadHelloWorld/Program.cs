@@ -1,4 +1,4 @@
-﻿// Create a client which holds generic details for creating input and output topics
+// Create a client which holds generic details for creating input and output topics
 using QuixStreams.Streaming;
 using QuixStreams.Streaming.Models;
 

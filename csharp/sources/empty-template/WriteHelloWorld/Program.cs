@@ -1,4 +1,4 @@
-﻿// Create a client that holds generic details for creating input and output topics
+// Create a client that holds generic details for creating input and output topics
 var client = new QuixStreams.Streaming.QuixStreamingClient();
 
 var outputTopicName = Environment.GetEnvironmentVariable("output");
