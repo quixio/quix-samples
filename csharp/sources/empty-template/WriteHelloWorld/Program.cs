@@ -1,45 +1,30 @@
-﻿using System;
-using System.Threading;
+﻿// Create a client that holds generic details for creating input and output topics
+var client = new QuixStreams.Streaming.QuixStreamingClient();
 
-namespace WriteHelloWorld
+var outputTopicName = Environment.GetEnvironmentVariable("output");
+            
+using var producer = client.GetTopicProducer(outputTopicName);
+            
+Console.WriteLine("Creating stream");
+var stream = producer.CreateStream();
+
+stream.Properties.Name = "Hello World stream";
+           
+stream.Timeseries
+    .AddDefinition("ParameterA")
+    .SetRange(-1.2, 1.2);
+           
+Console.WriteLine("Sending values for 30 seconds");
+for (var index = 0; index < 3000; index++)
 {
-    class Program
-    {
-        /// <summary>
-        /// Main will be invoked when you run the application
-        /// </summary>
-        static void Main()
-        {
-            // Create a client which holds generic details for creating input and output topics
-            var client = new Quix.Sdk.Streaming.QuixStreamingClient();
-
-            var outputTopicName = Environment.GetEnvironmentVariable("output");
-            
-            using var outputTopic = client.OpenOutputTopic(outputTopicName);
-            
-            Console.WriteLine("Creating stream");
-            var stream = outputTopic.CreateStream();
-
-            stream.Properties.Name = "Hello World stream";
-           
-            stream.Parameters
-                .AddDefinition("ParameterA")
-                .SetRange(-1.2, 1.2);
-           
-            Console.WriteLine("Sending values for 30 seconds");
-            for (var index = 0; index < 3000; index++)
-            {
-                stream.Parameters.Buffer
-                    .AddTimestamp(DateTime.UtcNow)
-                    .AddValue("ParameterA", Math.Sin(index/200.0) + Math.Sin(index) / 5.0)
-                    .Write(); 
+    stream.Timeseries.Buffer
+        .AddTimestamp(DateTime.UtcNow)
+        .AddValue("ParameterA", Math.Sin(index/200.0) + Math.Sin(index) / 5.0)
+        .Publish(); 
                     
-                Thread.Sleep(10);
-            }
-            
-            Console.WriteLine("Closing stream");
-            stream.Close();
-            Console.WriteLine("Done!");
-        }
-    }
+    Thread.Sleep(10);
 }
+            
+Console.WriteLine("Closing stream");
+stream.Close();
+Console.WriteLine("Done!");
