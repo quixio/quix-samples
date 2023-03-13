@@ -1,21 +1,20 @@
-from quixstreaming import InputTopic, StreamReader, ParameterData, EventData, OutputTopic
-from quixstreaming import LocalFileStorage
+import quixstreams as qx
 import os
 import pickle
 import pandas as pd
 
-class StatefullProcessing:
-    def __init__(self, input_topic: InputTopic, input_stream: StreamReader, output_topic: OutputTopic):
-        self.input_stream = input_stream
-        self.output_topic = output_topic
+class StatefulProcessing:
+    def __init__(self, consumer_topic: qx.topicconsumer, consumer_stream: qx.streamconsumer, producer_topic: qx.topicproducer):
+        self.input_stream = consumer_stream
+        self.output_topic = producer_topic
 
         self.state = None
 
         self.storage_key = os.environ["storage_version"]
 
-        self.storage = LocalFileStorage(os.environ["storage_version"])
+        self.storage = qx.LocalFileStorage(os.environ["storage_version"])
 
-        input_topic.on_committed += self.save_state
+        consumer_topic.on_committed += self.save_state
 
         if self.storage.containsKey(self.storage_key):
             print("State loaded.")
@@ -41,11 +40,7 @@ class StatefullProcessing:
         if self.state is not None:
             self.storage.set("dashboard", pickle.dumps(self.state))
 
-    # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
-        return
-
-    # Callback triggered for each new parameter data.
+     # Callback triggered for each new parameter data.
     def on_pandas_frame_handler(self, df: pd.DataFrame):
         return
 

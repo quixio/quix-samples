@@ -8,7 +8,7 @@
         "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"]
     },
-    "shortDescription": "Template of how to build in memory view.",
+    "shortDescription": "A template demonstrating how to build an in memory view.",
     "DefaultFile": "quix_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
