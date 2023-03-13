@@ -14,9 +14,9 @@ class StatefulProcessing:
 
         self.storage = qx.LocalFileStorage(os.environ["storage_version"])
 
-        consumer_topic.on_committed += self.save_state
+        consumer_topic.on_committed = self.save_state
 
-        if self.storage.containsKey(self.storage_key):
+        if self.storage.contains_key(self.storage_key):
             print("State loaded.")
             self.state = self.load_state()
         else:
@@ -35,7 +35,7 @@ class StatefulProcessing:
     def load_state(self):
         return pickle.loads(self.storage.get(self.storage_key))
 
-    def save_state(self):
+    def save_state(self, topic_consumer: qx.TopicConsumer):
         print("State saved.")
         if self.state is not None:
             self.storage.set("dashboard", pickle.dumps(self.state))
