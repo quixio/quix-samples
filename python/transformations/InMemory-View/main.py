@@ -3,7 +3,6 @@ import pandas as pd
 from helpers import StatefulProcessing
 import os
 
-
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
 client = qx.QuixStreamingClient()
@@ -14,35 +13,38 @@ print("Opening input and output topics")
 consumer_topic = client.get_topic_consumer(os.environ["input"], consumer_group = "view")
 producer_topic = client.get_topic_producer(os.environ["output"])
 
+# initialize the state helper
+state_helper = StatefulProcessing(consumer_topic=consumer_topic, producer_topic=producer_topic)
+
+# callback for each incoming DataFrame
+def on_dataframe_received_handler(stream_consumer: qx.StreamConsumer, data_df: pd.DataFrame):
+    # tag the data with the stream_id it originates from
+    # this can be used for grouping later
+    data_df["TAG__streamId"] = stream_consumer.stream_id
+
+    state_value = state_helper.get_state()
+
+    df = state_value.append(data_df[["timestamp", "EngineRPM", "TAG__streamId"]]) \
+        .groupby("TAG__streamId") \
+        .agg({'timestamp': 'first', 'EngineRPM': 'sum'}) \
+        .reset_index()
+
+    state_helper.set_state(df)
+
+    print(df[["timestamp", "EngineRPM", "TAG__streamId"]])
+
+    producer_topic.get_or_create_stream("view").timeseries.publish(df)
+
 
 # callback for each incoming stream
 def read_stream(consumer_stream: qx.StreamConsumer):
-
-    # initialize the state helper
-    state = StatefulProcessing(consumer_topic=consumer_topic, consumer_stream=consumer_stream, producer_topic=producer_topic)
+    global state_helper
 
     # set the initial state
-    state.set_state(pd.DataFrame())
-
-    # callback for each incoming DataFrame
-    def on_pandas_frame_handler(data_df: pd.DataFrame):
-        # tag the data with the stream_id it originates from
-        # this can be used for grouping later
-        data_df["TAG__streamId"] = consumer_stream.stream_id
-
-        df = state.append(data_df[["time", "EngineRPM", "TAG__streamId"]]) \
-            .groupby("TAG__streamId") \
-            .agg({'time': 'first', 'EngineRPM': 'sum'}) \
-            .reset_index()
-
-        state.set_state(df)
-
-        print(df[["time", "EngineRPM", "TAG__streamId"]])
-
-        producer_topic.get_or_create_stream("view").timeseries.publish(df)
+    state_helper.set_state(pd.DataFrame())
 
     # React to new data
-    consumer_stream.timeseries.on_read_pandas = on_pandas_frame_handler
+    consumer_stream.timeseries.on_dataframe_received = on_dataframe_received_handler
 
 
 # Hook up events before initiating read to avoid losing out on any data
