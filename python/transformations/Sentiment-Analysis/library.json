@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Transformation"],
         "Popular Subjects": ["Sentiment Analysis", "Machine Learning"]
     },
-    "shortDescription": "Deploy a Hugging Face model to perform sentiment analysis",
+    "shortDescription": "Deploy a sentiment analysis microservice using a Hugging Face model",
     "DefaultFile": "quix_function.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
@@ -25,7 +25,7 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output for the hugging face model score",
+            "Description" : "This is the output for the Hugging Face model score",
             "DefaultValue" : "sentiment",
             "Required": true
         }
