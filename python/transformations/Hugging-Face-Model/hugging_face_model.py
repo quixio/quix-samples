@@ -1,4 +1,4 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+import quixstreams as qx
 from transformers import Pipeline
 import os
 
@@ -6,14 +6,14 @@ import os
 class HuggingFaceModel:
 
     # Initiate
-    def __init__(self, model_pipeline: Pipeline, input_stream: StreamReader, output_stream: StreamWriter):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, model_pipeline: Pipeline, stream_consumer: qx.StreamConsumer, stream_producer: qx.StreamProducer):
+        self.stream_consumer = stream_consumer
+        self.stream_producer = stream_producer
         self.model = model_pipeline
         self.text_column_name = os.environ["TextColumnName"]
 
-    # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
+    # triggered for each new event.
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         print(data)
 
         # Call model with message payload.
@@ -22,16 +22,16 @@ class HuggingFaceModel:
         label = prediction['label']
         score = prediction['score']
 
-        # Write df to output stream
-        self.output_stream.parameters.buffer \
+        # Publish df to output stream
+        self.stream_producer.timeseries.buffer \
             .add_timestamp_nanoseconds(data.timestamp_nanoseconds) \
-            .add_tags(data.tags) \
             .add_value("label", label) \
             .add_value("sentiment", score) \
-            .write()
+            .add_tags(data.tags) \
+            .publish()
 
-    # Callback triggered for each new table data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    # triggered for each new timeseries data.
+    def on_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
 
         for row in data.timestamps:
             print(row)
@@ -43,10 +43,23 @@ class HuggingFaceModel:
             score = prediction['score']
             print(prediction)
 
+            self.workaround_tags_bug(row)
+
             # Write df to output stream
-            self.output_stream.parameters.buffer \
+            self.stream_producer.timeseries.buffer \
                 .add_timestamp_nanoseconds(row.timestamp_nanoseconds) \
-                .add_tags(row.tags) \
                 .add_value("label", label) \
                 .add_value("sentiment", score) \
-                .write()
+                .add_tags(row.tags) \
+                .publish()
+
+    def workaround_tags_bug(self, row: qx.TimeseriesDataTimestamp):
+        # remove when https://github.com/quixio/quix-streams/issues/62 fixed
+        # ensure there are no empty tags
+        tags_to_pop = []
+        for t in row.tags:
+            if row.tags[t] == "":
+                tags_to_pop.append(t)
+
+        for t in tags_to_pop:
+            row.tags.pop(t)
