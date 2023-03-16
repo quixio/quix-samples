@@ -1,24 +1,24 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
-import pandas as pd
+import quixstreams as qx
 from transformers import Pipeline
+import pandas as pd
+
 
 class QuixFunction:
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter, classifier: Pipeline):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, consumer_stream: qx.StreamConsumer, producer_stream: qx.StreamProducer, classifier: Pipeline):
+        self.consumer_stream = consumer_stream
+        self.producer_stream = producer_stream
         self.classifier = classifier
 
         self.sum = 0
         self.count = 0
 
     # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, consumer_stream: qx.StreamConsumer, data: qx.EventData):
         print(data.value)
-
         print("events")
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df_all_messages: pd.DataFrame):
+    def on_pandas_frame_handler(self, consumer_stream: qx.StreamConsumer, df_all_messages: pd.DataFrame):
 
         # Use the model to predict sentiment label and confidence score on received messages
         model_response = self.classifier(list(df_all_messages["chat-message"]))
@@ -38,4 +38,4 @@ class QuixFunction:
             df.loc[i, "average_sentiment"] = self.sum/self.count
 
         # Output data with new features
-        self.output_stream.parameters.write(df)
+        self.producer_stream.timeseries.publish(df)
