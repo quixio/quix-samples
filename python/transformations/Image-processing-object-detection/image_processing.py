@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import time
-import base64
 import os
 from os import path
 
@@ -61,7 +60,9 @@ class ImageProcessing:
         return img
 
     def img_to_binary(self, img):
-        return cv2.imencode('.png', img)[1]
+        img_encode = cv2.imencode('.png', img)[1]
+        data_encode = np.array(img_encode)
+        return data_encode.tobytes()
 
     def process_image(self, img):
         # Loading the Image
