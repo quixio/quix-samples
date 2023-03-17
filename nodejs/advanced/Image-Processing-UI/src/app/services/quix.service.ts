@@ -29,6 +29,8 @@ export class QuixService {
 
     if(this.workingLocally) {
       this.domain = "platform"; // default to prod
+
+      this.baseReaderUrl = "https://reader-" + this.workspaceId + "." + this.domain + ".quix.ai/hub";
       return;
     }
 
