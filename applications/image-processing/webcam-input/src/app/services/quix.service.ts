@@ -29,6 +29,9 @@ export class QuixService {
 
     if(this.workingLocally) {
       this.domain = "platform"; // default to prod
+      this.baseWriterUrl = "https://writer-" + this.workspaceId + "." + this.domain + ".quix.ai/";
+      this.readyToSend = true;
+
       return;
     }
 
