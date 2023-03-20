@@ -84,10 +84,12 @@ export class AppComponent implements OnInit {
           text: data.numericValues[this.selectedObject][0].toString()
         }
       });
+
       this.markers.push(gMarker);
       if (this.markers.length > 1000) {
         this.markers.shift();
       }
+
     });
 
     this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", "image");
@@ -118,8 +120,8 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < this.markers.length; i++) {
       this.markers[i].setMap(null);
     }
-    this.connection?.invoke("UnsubscribeFromParameter", this.topic, "image-feed", this.selectedObject);
-    this.connection?.invoke("SubscribeToParameter", this.topic, "image-feed", value);
+    this.connection?.invoke("UnsubscribeFromParameter", this.topic, "input-image", this.selectedObject);
+    this.connection?.invoke("SubscribeToParameter", this.topic, "input-image", value);
     this.selectedObject = value;
   }
 
@@ -132,10 +134,10 @@ export class AppComponent implements OnInit {
   public toggleFeed() {
     this.showImages =! this.showImages;
     if (!this.showImages) {
-      this.connection.invoke("UnsubscribeFromParameter", this.topic, "image-feed", "image");
+      this.connection.invoke("UnsubscribeFromParameter", this.topic, "input-image", "image");
     }
     else {
-      this.connection.invoke("SubscribeToParameter", this.topic, "image-feed", "image");
+      this.connection.invoke("SubscribeToParameter", this.topic, "input-image", "image");
     }
   }
 }
