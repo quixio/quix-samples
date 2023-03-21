@@ -1,13 +1,13 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+import quixstreams as qx
 import pandas as pd
 import os
 
 
 class PercentageAlert:
     # Initiate
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, stream_consumer: qx.StreamConsumer, stream_producer: qx.StreamProducer):
+        self.stream_consumer = stream_consumer
+        self.stream_producer = stream_producer
 
         self.parameter_name = os.environ["ParameterName"]
         self.percentage_points_alert = float(os.environ["PercentagePointsAlert"])
@@ -18,14 +18,14 @@ class PercentageAlert:
         self.global_min_ti = None
 
     # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, __: qx.StreamConsumer, data: qx.EventData):
         print(data)
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_data_frame_handler(self, __: qx.StreamConsumer, df: pd.DataFrame):
 
         # Get fresh data
-        ti = pd.Timestamp(df.loc[0, 'time'])
+        ti = pd.Timestamp(df.loc[0, 'timestamp'])
         
         if self.parameter_name not in df.columns:
             return
@@ -45,56 +45,44 @@ class PercentageAlert:
             df[self.parameter_name + '_previous_low_value'] = self.global_min
             df[self.parameter_name + '_previous_low_value_time'] = self.global_min_ti
             cols = [
-                'time',
+                'timestamp',
                 self.parameter_name,
                 'Alert',
                 self.parameter_name + '_previous_low_value',
                 self.parameter_name + '_previous_low_value_time']
-            self.output_stream.parameters.buffer.write(df[cols])  # Send alert data to output topic
 
-            # Update global max
-            self.global_max = signal_value
-            self.global_max_ti = ti
-            self.global_min = signal_value
-            self.global_min_ti = ti
+            self.set_global_min_max_values(cols, df, signal_value, ti)
 
-            print()
-            print()
-            print()
-            print("ALARM")
-            print(df[cols].to_string())
-            print()
-            print()
-            print()
-
-        # Alert if change is bigger than percentage_points_alert: DECREASE
+        # Alert if change is smaller than percentage_points_alert: DECREASE
         elif abs((self.global_max - signal_value) / signal_value) > self.percentage_points_alert / 100:
             # Generate alert data parameters
             df['Alert'] = str(self.percentage_points_alert) + "% decrease"
             df[self.parameter_name + '_previous_high_value'] = self.global_max
             df[self.parameter_name + '_previous_high_value_time'] = self.global_max_ti
             cols = [
-                'time',
+                'timestamp',
                 self.parameter_name,
                 'Alert',
                 self.parameter_name + '_previous_high_value',
                 self.parameter_name + '_previous_high_value_time']
-            self.output_stream.parameters.buffer.write(df[cols])  # Send alert data to output topic
 
-            # Update global max
-            self.global_max = signal_value
-            self.global_max_ti = ti
-            self.global_min = signal_value
-            self.global_min_ti = ti
+            self.set_global_min_max_values(cols, df, signal_value, ti)
 
-            print()
-            print()
-            print()
-            print("ALARM")
-            print(df[cols].to_string())
-            print()
-            print()
-            print()
+    def set_global_min_max_values(self, cols, df, signal_value, ti):
+        self.stream_producer.timeseries.buffer.publish(df[cols])  # Send alert data to output topic
+        # Update global max
+        self.global_max = signal_value
+        self.global_max_ti = ti
+        self.global_min = signal_value
+        self.global_min_ti = ti
+        print()
+        print()
+        print()
+        print("ALARM")
+        print(df[cols].to_string())
+        print()
+        print()
+        print()
 
     # Is it the signal value lower or higher than the threshold value?
     def _update_global_max_and_min(self, signal_value, ti, max_dif_min_max):
