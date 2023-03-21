@@ -1,25 +1,26 @@
-from quixstreaming import StreamReader, OutputTopic, EventData
+import quixstreams as qx
 import pandas as pd
 import base64
 
+
 class QuixFunction:
-    def __init__(self, input_stream: StreamReader, output_topic: OutputTopic):
-        self.input_stream = input_stream
-        self.output_topic = output_topic
+    def __init__(self, consumer_topic: qx.TopicConsumer, producer_topic: qx.TopicProducer):
+        self.consumer_topic = consumer_topic
+        self.producer_topic = producer_topic
 
     # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         print(data.value)
 
-        # Here transform your data.
+        # Transform your data here.
 
-        self.output_stream.events.write(data)
+        self.producer_topic.events.publish(data)
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_pandas_frame_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
 
-        df["TAG__parent_streamId"] = self.input_stream.stream_id
+        df["TAG__parent_streamId"] = self.consumer_topic.stream_id
         df['image'] = df["image"].apply(lambda x: str(base64.b64encode(x).decode('utf-8')))
 
-        self.output_topic.get_or_create_stream("image-feed") \
-            .parameters.buffer.write(df)
+        self.producer_topic.get_or_create_stream("image-feed") \
+            .timeseries.buffer.publish(df)
