@@ -39,7 +39,7 @@ def read_stream(consumer_stream: qx.StreamConsumer):
     buffer.on_dataframe_released = quix_function.on_pandas_frame_handler
 
     # When input stream closes, we close output stream as well.
-    def on_stream_close():
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
         producer_stream.close()
         print("Stream closed:" + producer_stream.stream_id)
 
