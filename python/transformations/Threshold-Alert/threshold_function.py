@@ -1,21 +1,20 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+import quixstreams as qx
 import pandas as pd
 import os
 
 
 class ThresholdAlert:
     # Initiate
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, producer_stream: qx.StreamProducer):
+        self.producer_stream = producer_stream
         self.threshold_value = float(os.environ["thresholdValue"])
         self.parameter_name = os.environ["parameterName"]
-        self.original_inequality_side = None  # what side of the inequality (lower or higher) is originally the signal
+        self.original_inequality_side = None  # what side of the inequality (lower or higher) is the original value
         self.previous_value = None
         self.previous_timestamp = None
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_pandas_frame_handler(self, _: qx.StreamConsumer, df: pd.DataFrame):
 
         if self.parameter_name not in df.columns:
             print("Parameter {0} not present in data frame.".format(self.parameter_name))
@@ -50,7 +49,7 @@ class ThresholdAlert:
                     'Threshold',
                     'Previous_{}_Timestamp'.format(self.parameter_name),
                     'Previous_{}_Value'.format(self.parameter_name)]
-                self.output_stream.parameters.buffer.write(df[alert_columns])  # Send ALERT data to output topic
+                self.producer_stream.timeseries.buffer.publish(df[alert_columns])  # Send ALERT data to output topic
 
                 # Now let's reset the original_inequality_side
                 self.original_inequality_side = None
