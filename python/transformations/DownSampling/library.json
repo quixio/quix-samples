@@ -9,7 +9,7 @@
         "Use Case": ["Utility"]
     },
     "shortDescription": "Down sample data from 100hz to 10hz",
-    "DefaultFile": "quix_function.py",
+    "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 

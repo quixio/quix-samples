@@ -1,22 +1,21 @@
-from quixstreaming import StreamReader, StreamWriter, ParameterData
+import quixstreams as qx
 import traceback
 import os
 
 
 class QuixFunction:
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
-
+    def __init__(self, consumer_stream: qx.StreamConsumer, producer_stream: qx.StreamProducer):
+        self.consumer_stream = consumer_stream
+        self.producer_stream = producer_stream
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
      
         # get the value for the filter
         tag_filter = os.environ["tag_filter"]
 
         for timestamp in data.timestamps:
-            # get the tag string. its an array of objects
+            # get the tag string. it's an array of objects
             tag_string = timestamp.parameters['tags'].string_value
             # convert the string to an array. this is dangerous and needs error handling
             o = eval(tag_string)
@@ -40,7 +39,7 @@ class QuixFunction:
                         data.timestamps[0].add_value("FILTERED", "True")
                         data.timestamps[0].add_value("TAG_MATCH", tag)
                         data.timestamps[0].add_value("TAGS_LIST", tags_list)
-                        self.output_stream.parameters.buffer.write(data)  # Send filtered data to output topic
+                        self.producer_stream.timeseries.buffer.publish(data)  # Send filtered data to output topic
                     # else:
                     #     print("{} not found in the filters :-(".format(filter_term))
                 except Exception:

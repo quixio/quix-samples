@@ -28,13 +28,22 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     console.log("INIT APP.Component");
 
-      this.envVarService.InitCompleted.subscribe(topic => {
-        this.topic = topic;
-        this.envVarService.ConnectToQuix().then(connection => {
-          this.connection = connection;
-          this.subscribeToData(topic);
-        });
+    this.envVarService.InitCompleted.subscribe(topic => {
+      console.log("Init completed: " + topic);
+      this.topic = topic;
+      this.envVarService.ConnectToQuix().then(connection => {
+        this.connection = connection;
+        this.subscribeToData(topic);
       });
+    });
+
+    if(this.envVarService.workingLocally){
+      this.topic = this.envVarService.topic;
+      this.envVarService.ConnectToQuix().then(connection => {
+        this.connection = connection;
+        this.subscribeToData(this.topic);
+      });
+    }
 
     this.selectedObject = "car";
   }
@@ -47,8 +56,8 @@ export class AppComponent implements OnInit {
    */
   subscribeToData(quixTopic: string) {
     this.connection.on("ParameterDataReceived", (data: ParameterData) => {
-      if (data.stringValues["image"]) {
-        let imageBinary = data.stringValues["image"][0];
+      if (data.binaryValues["image"]) {
+        let imageBinary = data.binaryValues["image"][0];
         this.last_image = "data:image/png;base64," + imageBinary;
       }
 
@@ -75,16 +84,18 @@ export class AppComponent implements OnInit {
           text: data.numericValues[this.selectedObject][0].toString()
         }
       });
+
       this.markers.push(gMarker);
       if (this.markers.length > 1000) {
         this.markers.shift();
       }
+
     });
 
-    this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "image");
-    this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "lat");
-    this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", this.selectedObject);
-    this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "lon");
+    this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", "image");
+    this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", "lat");
+    this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", this.selectedObject);
+    this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", "lon");
   }
 
   /**
@@ -109,8 +120,8 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < this.markers.length; i++) {
       this.markers[i].setMap(null);
     }
-    this.connection?.invoke("UnsubscribeFromParameter", this.topic, "image-feed", this.selectedObject);
-    this.connection?.invoke("SubscribeToParameter", this.topic, "image-feed", value);
+    this.connection?.invoke("UnsubscribeFromParameter", this.topic, "input-image", this.selectedObject);
+    this.connection?.invoke("SubscribeToParameter", this.topic, "input-image", value);
     this.selectedObject = value;
   }
 
@@ -123,10 +134,10 @@ export class AppComponent implements OnInit {
   public toggleFeed() {
     this.showImages =! this.showImages;
     if (!this.showImages) {
-      this.connection.invoke("UnsubscribeFromParameter", this.topic, "image-feed", "image");
+      this.connection.invoke("UnsubscribeFromParameter", this.topic, "input-image", "image");
     }
     else {
-      this.connection.invoke("SubscribeToParameter", this.topic, "image-feed", "image");
+      this.connection.invoke("SubscribeToParameter", this.topic, "input-image", "image");
     }
   }
 }

@@ -11,7 +11,7 @@ export class QuixService {
 
   /*~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-*/
   /*WORKING LOCALLY? UPDATE THESE!*/
-  private workingLocally = false; // set to true if working locally
+  public workingLocally = false; // set to true if working locally
   private token: string = ""; // Create a token in the Tokens menu and paste it here
   public workspaceId: string = ""; // Look in the URL for the Quix Portal your workspace ID is after 'workspace='
   public topic: string = ""; // get topic name from the Topics page in Quix portal
@@ -29,6 +29,8 @@ export class QuixService {
 
     if(this.workingLocally) {
       this.domain = "platform"; // default to prod
+
+      this.baseReaderUrl = "https://reader-" + this.workspaceId + "." + this.domain + ".quix.ai/hub";
       return;
     }
 

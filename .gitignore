@@ -12,3 +12,5 @@ state/
 .vscode/
 .DS_Store
 repo.json
+.vs/
+launchsettings.json

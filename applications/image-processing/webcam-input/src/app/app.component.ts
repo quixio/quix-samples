@@ -61,6 +61,8 @@ export class AppComponent implements OnInit {
 	// needed if the user has to give permission else the 
 	// code to populate the drop down will not be called again
     this.intervalId = setInterval(() => this.getVideoInputs(), 2000);
+
+    this.setupTimer();
   }
 
   private getVideoInputs(){

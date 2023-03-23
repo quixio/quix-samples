@@ -1,17 +1,17 @@
-from quixstreaming import StreamWriter, ParameterData
+import quixstreams as qx
 import time
 from collections import Counter
 import traceback
 
 
 class QuixFunction:
-    def __init__(self, output_stream: StreamWriter, image_processor):
-        self.output_stream = output_stream
+    def __init__(self, stream_consumer: qx.StreamConsumer, image_processor):
+        self.stream_consumer = stream_consumer
         self.image_processor = image_processor
         self.image_processor_classes = self.image_processor.get_classes()
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
         print("Received new parameter")
 
         try:
@@ -27,17 +27,18 @@ class QuixFunction:
 
                 counter = Counter(class_ids)
 
-                row = self.output_stream.parameters.buffer.add_timestamp_nanoseconds(timestamp.timestamp_nanoseconds) 
+                row = self.stream_consumer.timeseries.buffer \
+                    .add_timestamp_nanoseconds(timestamp.timestamp_nanoseconds)
 
                 for key, value in counter.items():
                     print("Key:{}".format(key))
                     row = row.add_value(key, value)
 
-                row.add_value("image", self.image_processor.img_to_binary(img)) \
-                    .add_value("lat", timestamp.parameters["lat"].numeric_value) \
-                    .add_value("lon", timestamp.parameters["lon"].numeric_value) \
-                    .add_value("delta", delta) \
-                    .write()
+                row.add_value("image", self.image_processor.img_to_binary(img))
+                row.add_value("lat", timestamp.parameters["lat"].numeric_value)
+                row.add_value("lon", timestamp.parameters["lon"].numeric_value)
+                row.add_value("delta", delta)
+                row.publish()
 
             print("Done processing parameters")
         except Exception:

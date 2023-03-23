@@ -1,117 +1,61 @@
-from quixstreaming import QuixStreamingClient, EventData
-from quixstreaming.app import App
-from quix_functions import QuixFunctions
-import boto3
+import quixstreams as qx
+from kinesis_functions import KinesisFunctions
 from datetime import datetime
 import traceback
-import time
 import threading
 import os
 
-
-# should the main loop keep running?
-run = True
-is_connected = False
-
-subscriber = None
-subscription = None
-quix_stream = None
-amazon_client = None
-output_topic = None
+quix_stream: qx.streamproducer = None
 
 
-def connect_to_amazon():
-    global amazon_client
-
-    if quix_stream is None:
-        print("Not connected to Quix")
-        return False
-
-    amazon_client = boto3.client(
-        'kinesis',
-        aws_access_key_id=os.environ["aws_access_key_id"],
-        aws_secret_access_key=os.environ["aws_secret_access_key"],
-        region_name=os.environ["aws_region_name"]
-    )
-
-
-def get_kinesis_data():
-    global is_connected
-
-    if quix_stream is None:
-        print("Not connected to Quix")
-        return False
-
-    quix_functions = QuixFunctions(quix_stream)
-
-    si = amazon_client.get_shard_iterator(
-        StreamName=os.environ["aws_stream_name"],
-        ShardId='shardId-000000000000',
-        ShardIteratorType='LATEST'
-    )
-
-    shard_iterator = si["ShardIterator"]
-
-    if not is_connected:
-        print("CONNECTED!")
-        is_connected = True
-
-    while run:
-        record_data = amazon_client.get_records(ShardIterator=shard_iterator)
-        shard_iterator = record_data["NextShardIterator"]
-
-        # print(record_data)
-        if len(record_data["Records"]) > 0:
-
-            for r in record_data["Records"]:
-                d = r["Data"]
-
-                if isinstance(d, bytes):
-                    quix_functions.write_data(d.decode())
-                else:
-                    quix_functions.write_data(d)
-                
-        behind = record_data["MillisBehindLatest"]
-        if behind < 1000:
-            time.sleep(1)
-        else:
-            time.sleep(0.1)
-
-
-def connect_to_quix():
-    global quix_stream
-    global output_topic
-
-    quix_client = QuixStreamingClient()
+def connect_to_quix() -> qx.streamproducer:
+    quix_client = qx.QuixStreamingClient()
 
     print("Opening output topic")
-    output_topic = quix_client.open_output_topic(os.environ["output"])
+    producer_topic = quix_client.get_topic_producer(os.environ["output"])
 
-    quix_stream = output_topic.create_stream()
-    quix_stream.properties.name = "{} - {}".format("Amazon Kinesis", datetime.utcnow().strftime("%d-%m-%Y %X"))
-    quix_stream.properties.location = "/amazon_kinesis_data"
+    stream = producer_topic.create_stream()
+    stream.properties.name = "{} - {}".format("AWS Kinesis", datetime.utcnow().strftime("%d-%m-%Y %X"))
+    stream.properties.location = "/aws_kinesis_data"
 
-
-def before_shutdown():
-    global run
-    run = False
+    return stream
 
 
-try:
-    connect_to_quix()
-    connect_to_amazon()
+# handle kinesis data
+def data_handler(data):
+    print("Publishing RAW event data to Quix")
 
-    thread = threading.Thread(target=get_kinesis_data)
-    thread.start()
+    try:
+        event_data = qx.EventData(event_id="raw_data", time=datetime.utcnow(), value=str(data))
+        quix_stream.events.publish(event_data)
+    except BaseException:
+        print(traceback.format_exc())
 
-    print("Waiting for Kinesis data")
 
-    App.run(before_shutdown=before_shutdown)
+if __name__ == '__main__':
 
-    # wait for worker thread to end
-    thread.join()
+    try:
+        def before_shutdown():
+            kinesis.stop_running()
 
-    print('Exiting')
 
-except:
-    print("ERROR: {}".format(traceback.format_exc()))
+        quix_stream = connect_to_quix()
+
+        kinesis = KinesisFunctions(quix_stream, data_handler=data_handler)
+
+        kinesis.connect()
+
+        thread = threading.Thread(target=kinesis.get_data)
+        thread.start()
+
+        print("Waiting for Kinesis data")
+
+        qx.App.run(before_shutdown=before_shutdown)
+
+        # wait for worker thread to end
+        thread.join()
+
+        print('Exiting')
+
+    except BaseException:
+        print("ERROR: {}".format(traceback.format_exc()))

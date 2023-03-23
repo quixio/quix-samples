@@ -1,10 +1,10 @@
 # Threshold alert
 
 [This project](https://github.com/quixio/quix-library/tree/main/python/transformations/Threshold-Alert) publishes messages when a certain numeric threshold is crossed. 
-- It activates only once per threshold cross. 
-- It works on either side of the threshold. 
+- Activates only once per threshold cross. 
+- Works on either side of the threshold. 
 - The signal value doesn't need to be equal to the threshold value for the alarm to go off.
-- It keeps activating when the threshold is crossed (doesn't stop after it goes off the first time).
+- Keeps activating when the threshold is crossed (doesn't stop after it goes off the first time).
 - You can configure the time between checks to control the number of messages published.
 
 ![graph](Threshold_Alert.png?raw=true)
