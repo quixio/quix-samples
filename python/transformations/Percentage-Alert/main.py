@@ -21,11 +21,10 @@ def read_stream(input_stream: StreamReader):
     output_stream.properties.parents.append(input_stream.stream_id)
 
     # handle the data in a function to simplify the example
-    quix_function = PercentageAlert(input_stream, output_stream)
+    perc_alert = PercentageAlert(consumer_stream, producer_stream)
 
     # React to new data received from input topic.
-    input_stream.events.on_read += quix_function.on_event_data_handler
-    input_stream.parameters.on_read_pandas += quix_function.on_pandas_frame_handler
+    consumer_stream.timeseries.on_dataframe_received = perc_alert.on_data_frame_handler
 
     # When input stream closes, we close output stream as well. 
     def on_stream_close(end_type: StreamEndType):
