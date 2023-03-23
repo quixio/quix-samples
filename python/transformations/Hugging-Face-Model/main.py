@@ -30,7 +30,7 @@ def read_stream(stream_consumer: qx.StreamConsumer):
 
     # React to new data received from input topic.
     stream_consumer.events.on_data_received = hugging_face_model.on_event_data_handler
-    stream_consumer.timeseries.on_data_received = hugging_face_model.on_parameter_data_handler
+    stream_consumer.timeseries.on_data_received = hugging_face_model.on_data_handler
 
     # When input stream closes, we close output stream as well.
     def on_stream_close():
