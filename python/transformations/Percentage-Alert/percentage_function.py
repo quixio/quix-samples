@@ -1,14 +1,14 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+import quixstreams as qx
 import pandas as pd
 import os
-pd.set_option("display.max_columns", 10)
+
+pd.set_option('display.max_columns', 10)
 
 
 class PercentageAlert:
     # Initiate
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, stream_producer: qx.StreamProducer):
+        self.stream_producer = stream_producer
 
         self.parameter_name = os.environ["ParameterName"]
         self.percentage_points_alert = float(os.environ["PercentagePointsAlert"])
@@ -17,23 +17,19 @@ class PercentageAlert:
         self.global_min = None
         self.global_min_ti = None
 
-
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_data_frame_handler(self, __: qx.StreamConsumer, df: pd.DataFrame):
 
-        # If parameter not in data received, return
         if self.parameter_name not in df.columns:
             return
 
-        # Initiate minima and maxima first time
         if self.global_max is None:
             self._update_global_max_and_min(df_i=df[["timestamp", self.parameter_name]], is_alert=False)
             return
 
-        # Print incoming data
+        is_globals_updated = False
         print("Last signal: ", df[self.parameter_name].iloc[-1], " | Current minima: ", self.global_min,
               " | Current maxima: ", self.global_max)
-        is_globals_updated = False
 
         # Alert if change is bigger than percentage_points_alert: INCREASE
         signal_max = df[self.parameter_name].max()
@@ -84,10 +80,8 @@ class PercentageAlert:
         if is_globals_updated == False:
             self._update_global_max_and_min(df_i=df[["timestamp", self.parameter_name]], is_alert=False)
 
-
     # Is it the signal value lower or higher than the threshold value?
     def _update_global_max_and_min(self, df_i, is_alert):
-
         # Calculate max and mins
         signal_max = df_i[self.parameter_name].max()
         t_signal_max = df_i.loc[df_i[self.parameter_name] == signal_max, "timestamp"].iloc[0]
@@ -105,7 +99,7 @@ class PercentageAlert:
                 self.global_min = signal_max
                 self.global_min_ti = t_signal_max
 
-        # Update global_min
+                # Update global_min
         if self.global_min is None:
             self.global_min = signal_min
             self.global_min_ti = t_signal_min
