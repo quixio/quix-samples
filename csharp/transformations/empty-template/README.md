@@ -11,7 +11,7 @@ Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) accou
 
 Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
 
-## Environment Variables
+## Environment variables
 
 The code sample uses the following environment variables:
 
@@ -20,7 +20,7 @@ The code sample uses the following environment variables:
 
 ## Content of the sample
 - HelloWorldModel.sln: The solution file describing what projects to include
-- HelloWorldModel/Program.cs: contains logic necessary to connect to kafka topic and consume a stream, process the data and publish it back to kafka in different topic.
+- HelloWorldModel/Program.cs: contains logic necessary to connect to Kafka topic and consume a stream, process the data and publish it back to Kafka in different topic.
 - HelloWorldModel/HelloWorldModel.csproj: the project file which holds together the project and describes some build related details
 
 ## Contribute
