@@ -24,7 +24,7 @@ class QuixFunction:
         self.topic = os.environ["input"].replace('-', '_')
         self.mutex = Lock()
 
-    def on_committing(self):
+    def on_committing(self, topic_consumer: qx.TopicConsumer):
         logger.debug("on_committing")
         self.mutex.acquire()
         logger.debug("on_committing entered")
