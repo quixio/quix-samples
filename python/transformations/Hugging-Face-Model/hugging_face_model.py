@@ -31,7 +31,7 @@ class HuggingFaceModel:
             .publish()
 
     # triggered for each new timeseries data.
-    def on_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
+    def on_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
 
         for row in data.timestamps:
             print(row)
