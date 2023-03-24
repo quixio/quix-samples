@@ -73,12 +73,12 @@ def generate_predictions(current_ny_time, df_bikes, df_weather, dic_ml_model_1h,
     current_n_bikes = int(df_bikes['total_num_bikes_available'][0])
 
     df_pred_1h = pd.DataFrame({
-        'timestamp_ny': [current_ny_time + timedelta(hours=1)],
+        'timestamp_ny': [current_ny_time + timedelta(hours = 1)],
         'timestamp_ny_execution': [str(current_ny_time)],
         'forecast_1h': [current_n_bikes + int(ml_model_1h.predict(df_X[cols_1h]))]})
 
     df_pred_1day = pd.DataFrame({
-        'timestamp_ny': [current_ny_time + timedelta(hours=24)],
+        'timestamp_ny': [current_ny_time + timedelta(hours = 24)],
         'timestamp_ny_execution': [str(current_ny_time)],
         'forecast_1d': [current_n_bikes + int(ml_model_1d.predict(df_X[cols_1d]))]})
 

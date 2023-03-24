@@ -52,7 +52,7 @@ try:
     # define the code to get the existing rules from the twitter api
     def get_rules(headers):
         response = requests.get(
-            "https://api.twitter.com/2/tweets/search/stream/rules", headers=headers
+            "https://api.twitter.com/2/tweets/search/stream/rules", headers = headers
         )
         if response.status_code != 200:
             raise Exception(
@@ -71,8 +71,8 @@ try:
         payload = {"delete": {"ids": ids}}
         response = requests.post(
             "https://api.twitter.com/2/tweets/search/stream/rules",
-            headers=headers,
-            json=payload
+            headers = headers,
+            json = payload
         )
         if response.status_code != 200:
             raise Exception(
@@ -91,8 +91,8 @@ try:
         payload = {"add": sample_rules}
         response = requests.post(
             "https://api.twitter.com/2/tweets/search/stream/rules",
-            headers=headers,
-            json=payload,
+            headers = headers,
+            json = payload,
         )
         if response.status_code != 201:
             raise Exception(
@@ -111,7 +111,7 @@ try:
         while run:
             try:
                 with requests.get(
-                        "https://api.twitter.com/2/tweets/search/stream", headers=headers, stream=True,
+                        "https://api.twitter.com/2/tweets/search/stream", headers = headers, stream = True,
                 ) as response:
                     print(response.status_code)
                     if response.status_code != 200:
@@ -165,11 +165,11 @@ try:
         set_rules(headers)
         stream_producer = create_stream()
 
-        thread = Thread(target=get_stream, args=(headers, stream_producer))
+        thread = Thread(target = get_stream, args=(headers, stream_producer))
         thread.start()
 
         # wait for sigterm
-        qx.App.run(before_shutdown=before_shutdown)
+        qx.App.run(before_shutdown = before_shutdown)
 
         # wait for worker thread to end
         thread.join()

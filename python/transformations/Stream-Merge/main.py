@@ -12,7 +12,7 @@ print("Opening input and output topics")
 
 print("Opening input and output topics")
 consumer_topic = client.get_topic_consumer(os.environ["input"], "default-consumer-group",
-                                           auto_offset_reset=qx.AutoOffsetReset.Latest)
+                                           auto_offset_reset = qx.AutoOffsetReset.Latest)
 producer_topic = client.get_topic_producer(os.environ["output"])
 
 

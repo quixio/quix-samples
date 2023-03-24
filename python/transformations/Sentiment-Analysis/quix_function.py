@@ -24,7 +24,7 @@ class QuixFunction:
         model_response = self.classifier(list(df_all_messages["chat-message"]))
 
         # Add the model response ("label" and "score") to the pandas dataframe
-        df = pd.concat([df_all_messages, pd.DataFrame(model_response)], axis=1)
+        df = pd.concat([df_all_messages, pd.DataFrame(model_response)], axis = 1)
 
         # Iterate over the df to work on each message
         for i, row in df.iterrows():

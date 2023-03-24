@@ -29,7 +29,7 @@ class QuixFunction:
         # If braking force applied is more than 50%, we send True.
         # update this code to apply your own logic or ML model processing
         if "Brake" in df.columns:
-            output_df["HardBraking"] = df.apply(lambda row: "True" if row.Brake > 0.5 else "False", axis=1)  
+            output_df["HardBraking"] = df.apply(lambda row: "True" if row.Brake > 0.5 else "False", axis = 1)  
 
         self.producer_stream.timeseries.buffer.publish(output_df)
 

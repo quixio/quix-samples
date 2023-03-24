@@ -10,7 +10,7 @@ client = qx.QuixStreamingClient()
 print("Starting")
 print("Opening input and output topics")
 consumer_topic = client.get_topic_consumer(os.environ.get("input"), "processing4",
-                                           auto_offset_reset=qx.AutoOffsetReset.Latest)
+                                           auto_offset_reset = qx.AutoOffsetReset.Latest)
 producer_topic = client.get_topic_producer(os.environ.get("output"))
 image_processor = ImageProcessing()
 

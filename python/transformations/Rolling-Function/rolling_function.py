@@ -22,7 +22,7 @@ class RollingFunction:
 
             # Here we perform the moving average as an example. Other aggregation functions:
             # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.agg.html
-            df[self.parameter_name + '_rolling_avg'] = self.rolling_window.df_window[self.parameter_name].agg('mean', axis=0)
+            df[self.parameter_name + '_rolling_avg'] = self.rolling_window.df_window[self.parameter_name].agg('mean', axis = 0)
             
             print(df[[self.parameter_name, self.parameter_name + '_rolling_avg']])
 

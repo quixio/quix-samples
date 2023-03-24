@@ -18,13 +18,13 @@ class QuixFunction:
         self.prediction_1d_stream_producer = prediction_1d_stream_producer
 
     def on_bike_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
-        self.df_bikes = df.copy(deep=True)
+        self.df_bikes = df.copy(deep = True)
 
         # each time new data arrives, predict the bike availability
         self.run_prediction()
 
     def on_weather_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
-        self.df_weather = df.copy(deep=True)
+        self.df_weather = df.copy(deep = True)
 
         # each time new data arrives, predict the bike availability
         self.run_prediction()

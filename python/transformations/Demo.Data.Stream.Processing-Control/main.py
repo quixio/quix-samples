@@ -9,7 +9,7 @@ properties = {
     "acks": "0"
 }
 
-client = QuixStreamingClient(properties=properties)
+client = QuixStreamingClient(properties = properties)
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
