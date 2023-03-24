@@ -1,6 +1,6 @@
 # Redshift
 
-[This project]([This project]() ) gives an example of how to stream data from Quix to AWS Redshift, it handles both parameter and event data.
+[This project](https://github.com/quixio/quix-library/tree/main/csharp/destinations/redshift-sink) gives an example of how to stream data from Quix to AWS Redshift, it handles both parameter and event data.
 
 ## How to run
 
