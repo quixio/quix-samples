@@ -45,7 +45,7 @@ class KinesisFunctions:
         # run until stop_running is called
         while self.run:
             # use the shard iterator to get the next record
-            record_data = self.kinesis_client.get_records(ShardIterator=shard_iterator)
+            record_data = self.kinesis_client.get_records(ShardIterator = shard_iterator)
             shard_iterator = record_data["NextShardIterator"]
 
             # if there is a record

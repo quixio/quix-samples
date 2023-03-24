@@ -1,5 +1,4 @@
-from quixstreaming import StreamReader, StreamWriter
-import quixstreaming.state as st
+import quixstreams as qx
 import datetime
 import pandas as pd
 
@@ -10,11 +9,11 @@ pd.set_option('display.colheader_justify', 'center')
 pd.set_option('display.precision', 3)
 
 class QuixFunction:
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter, title_contains_word: str):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, stream_consumer: qx.StreamConsumer, stream_producer: qx.StreamProducer, title_contains_word: str):
+        self.stream_consumer = stream_consumer
+        self.stream_producer = stream_producer
         self.title_contains_word = title_contains_word
-        self.storage = st.LocalFileStorage()
+        self.storage = qx.LocalFileStorage()
         self.reported = []
         if "reddit" in self.storage.getAllKeys():
             self.reported = self.storage.get("reddit")
@@ -33,6 +32,6 @@ class QuixFunction:
             submission_id = row["TAG__id"]
             print("  Reporting " + submission_id)
             self.reported.append(submission_id)            
-            self.output_stream.parameters.buffer.add_timestamp(datetime.datetime.utcnow()).add_value("text", row["shortlink"]).write()
+            self.stream_producer.timeseries.buffer.add_timestamp(datetime.datetime.utcnow()).add_value("text", row["shortlink"]).publish()
         self.storage.set("reddit", self.reported)
 

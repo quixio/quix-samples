@@ -30,7 +30,7 @@ class NetatmoAuthHelper:
             "refresh_token": self._refresh_token
         }
 
-        response = requests.post("https://api.netatmo.com/oauth2/token", data=payload)
+        response = requests.post("https://api.netatmo.com/oauth2/token", data = payload)
 
         print(str(response.content))
 
@@ -51,7 +51,7 @@ class NetatmoAuthHelper:
             "password": self._password
         }
 
-        response = requests.post("https://api.netatmo.com/oauth2/token", data=payload)
+        response = requests.post("https://api.netatmo.com/oauth2/token", data = payload)
 
         
 

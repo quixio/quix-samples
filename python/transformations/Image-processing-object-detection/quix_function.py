@@ -11,7 +11,7 @@ class QuixFunction:
         self.image_processor_classes = self.image_processor.get_classes()
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
+    def on_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
         print("Received new parameter")
 
         try:

@@ -1,17 +1,15 @@
 import json
 
-from quixstreaming import StreamReader
-from quixstreaming.models.streampackage import StreamPackage
-from quixstreaming.raw import RawOutputTopic, RawMessage
+import quixstreams as qx
 
 
 class QuixFunctions:
     topic_root = 'not_set'
 
-    def __init__(self, output_stream: RawOutputTopic):
-        self.output_stream = output_stream
+    def __init__(self, stream_producer: RawOutputTopic):
+        self.stream_producer = stream_producer
 
-    def package_received_handler(self, s: StreamReader, p: StreamPackage):
+    def package_received_handler(self, s: qx.StreamConsumer, p: StreamPackage):
 
         # build the payload object
         payload = {
@@ -26,5 +24,5 @@ class QuixFunctions:
         # create the RawMessage object
         message = RawMessage(json_payload_bytes)
         # publish the json data to Confluent
-        self.output_stream.write(message)
+        self.stream_producer.write(message)
 

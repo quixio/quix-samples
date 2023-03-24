@@ -1,4 +1,4 @@
-from quixstreaming import QuixStreamingClient
+import quixstreams as qx
 import time
 import datetime
 import os
@@ -24,16 +24,17 @@ except Exception as e:
     raise
 
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient()
 
 # Open the output topic where to write data out
-output_topic = client.open_output_topic(os.environ["output"])
+producer_topic = client.get_topic_producer(os.environ["output"])
 
-stream = output_topic.create_stream()
+stream = producer_topic.create_stream()
 stream.properties.name = f"{PG_TABLE_NAME} CDC"
 stream.parameters.add_definition("cdc_data")
-stream.parameters.buffer.time_span_in_milliseconds = 100
+stream.timeseries.buffer.time_span_in_milliseconds = 100
 
 logger.info(f"Start stream CDC for table: {PG_TABLE_NAME}")
 while True:
@@ -45,7 +46,7 @@ while True:
             stream.events \
                 .add_timestamp(datetime.datetime.utcnow()) \
                 .add_value("cdc_data", json.dumps(change)) \
-                .write()
+                .publish()
     time.sleep(WAIT_INTERVAL)
 
 logger.info("Closing stream")

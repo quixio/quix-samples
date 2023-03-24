@@ -1,6 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamReader
-from quixstreaming.models import ParameterData, EventData, StreamEndType
-from quixstreaming.app import App
+import quixstreams as qx
 import math
 import datetime
 from PIL import Image
@@ -15,8 +13,8 @@ client = QuixStreamingClient(properties=properties)
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
-input_topic = client.open_input_topic(os.environ["input"], "default-consumer-group-1")
-output_topic = client.open_output_topic(os.environ["output"])
+consumer_topic = client.get_topic_consumer(os.environ["input"], "default-consumer-group-1")
+producer_topic = client.get_topic_producer(os.environ["output"])
 
 all_pixels = None
 img = None
@@ -115,13 +113,13 @@ def get_speed(speed, throttle, brake, is_on_grass):
 
 
 # Callback called for each incoming stream
-def read_stream(new_stream: StreamReader):
+def read_stream(new_stream: qx.StreamConsumer):
     # Create a new stream to output data
-    stream_writer = output_topic.create_stream(new_stream.stream_id + "-control")
+    stream_producer = producer_topic.create_stream(new_stream.stream_id + "-control")
 
-    stream_writer.properties.parents.append(new_stream.stream_id)
+    stream_producer.properties.parents.append(new_stream.stream_id)
 
-    buffer = new_stream.parameters.create_buffer("steering", "throttle", "brake")
+    buffer = new_stream.timeseries.create_buffer("steering", "throttle", "brake")
 
     speed = 0
     angle = 0
@@ -134,7 +132,7 @@ def read_stream(new_stream: StreamReader):
     on_grass = False
 
     # Callback triggered for each new data frame
-    def on_parameter_data_handler(data: ParameterData):
+    def on_data_handler(stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
         nonlocal speed
         nonlocal angle
         nonlocal last_timestamp
@@ -162,7 +160,7 @@ def read_stream(new_stream: StreamReader):
             car_coordinates.x += speed * ((row.timestamp_nanoseconds - last_timestamp) / 10000000) * math.sin(angle)
             car_coordinates.y -= speed * ((row.timestamp_nanoseconds - last_timestamp) / 10000000) * math.cos(angle)
 
-            data = ParameterData()
+            data = qx.TimeseriesData()
             data.add_timestamp(datetime.datetime.utcnow()) \
                 .add_tags(row.tags) \
                 .add_value("x", car_coordinates.x) \
@@ -170,39 +168,39 @@ def read_stream(new_stream: StreamReader):
                 .add_value("speed", speed) \
                 .add_value("angle", angle)
 
-            stream_writer.parameters.write(data)
+            stream_producer.timeseries.write(data)
             last_timestamp = row.timestamp_nanoseconds
 
     # React to new data received from input topic.
-    buffer.on_read += on_parameter_data_handler
+    buffer.on_data_released = on_data_handler
 
-    def on_event(data: EventData):
+    def on_event(data: qx.EventData):
         if data.id == "track":
             set_track(data.value)
 
-    new_stream.events.on_read += on_event
+    new_stream.events.on_data_received = on_event
 
     # When input stream closes, we close output stream as well.
-    def on_stream_close(end_type: StreamEndType):
-        stream_writer.close(end_type)
-        print("Stream closed:" + stream_writer.stream_id)
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
+        stream_producer.close(end_type)
+        print("Stream closed:" + stream_producer.stream_id)
 
-    new_stream.on_stream_closed += on_stream_close
+    new_stream.on_stream_closed = on_stream_close
 
     # React to any metadata changes.
     def stream_properties_changed():
         if new_stream.properties.name is not None:
-            stream_writer.properties.name = new_stream.properties.name + " car game input"
+            stream_producer.properties.name = new_stream.properties.name + " car game input"
 
-    new_stream.properties.on_changed += stream_properties_changed
+    new_stream.properties.on_changed = stream_properties_changed
 
 
 set_track("track1.png")
 
 # Hook up events before initiating read to avoid losing out on any data
-input_topic.on_stream_received += read_stream
+consumer_topic.on_stream_received = read_stream
 
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
-App.run()
+qx.App.run()
 print("Exiting")

@@ -1,4 +1,4 @@
-import quixstreaming
+import quixstreams
 import os
 import praw
 import json
@@ -11,21 +11,21 @@ def main():
     global counter
     print("Configuring Reddit client")
     reddit = praw.Reddit(
-        user_agent="QuixRedditScraper (by u/" + os.environ['reddit_username'] + ")",
-        client_id=os.environ['reddit_client_id'],
-        client_secret=os.environ['reddit_client_secret'],
-        username=os.environ['reddit_username'],
-        password=os.environ['reddit_password']
+        user_agent = "QuixRedditScraper (by u/" + os.environ['reddit_username'] + ")",
+        client_id = os.environ['reddit_client_id'],
+        client_secret = os.environ['reddit_client_secret'],
+        username = os.environ['reddit_username'],
+        password = os.environ['reddit_password']
     )
     subreddit_name = os.environ['subreddit']
     print("Preparing to read subreddit " + subreddit_name)
     subreddit = reddit.subreddit(subreddit_name)
 
     print("Preparing Quix stream")
-    client = quixstreaming.QuixStreamingClient()
-    output_topic = client.open_output_topic(os.environ["output"])
-    subreddit_stream = output_topic.create_stream(subreddit_name)
-    subreddit_stream.parameters.buffer.time_span_in_milliseconds = 100
+    client = quixstreams.QuixStreamingClient()
+    producer_topic = client.get_topic_producer(os.environ["output"])
+    subreddit_stream = producer_topic.create_stream(subreddit_name)
+    subreddit_stream.timeseries.buffer.time_span_in_milliseconds = 100
 
     print("Getting subreddit stream")
     for submission in subreddit.stream.submissions():
@@ -49,8 +49,8 @@ def main():
         }
         if hasattr(submission, 'post_hint'):
             sub["post_hint"] = submission.post_hint
-        subreddit_stream.events.add_timestamp(datetime.datetime.utcnow()).add_value("submission", json.dumps(sub)).write()
-        pdata = subreddit_stream.parameters.buffer.add_timestamp(datetime.datetime.utcnow())
+        subreddit_stream.events.add_timestamp(datetime.datetime.utcnow()).add_value("submission", json.dumps(sub)).publish()
+        pdata = subreddit_stream.timeseries.buffer.add_timestamp(datetime.datetime.utcnow())
         pdata.add_value("spoiler", 1 if sub["spoiler"] else 0) \
              .add_value("over_18", 1 if sub["over_18"] else 0) \
              .add_value("title", sub["title"]) \
@@ -67,7 +67,7 @@ def main():
         if "post_hint" in sub:
             pdata.add_value("shortlink", sub["shortlink"])
         pdata.add_tag("id", sub["id"])
-        pdata.write()
+        pdata.publish()
         counter = counter + 1
         print("Sent submission count: " + str(counter))
     print("Subreddit stream finished")
@@ -80,5 +80,5 @@ def before_shutdown():
 if __name__ == "__main__":
     main_thread = threading.Thread(target = main)
     main_thread.start()
-    quixstreaming.App.run(before_shutdown=before_shutdown)
+    quixstreams.App.run(before_shutdown = before_shutdown)
     print ("Finished shutdown")

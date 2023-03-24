@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient
-from quixstreaming.app import App
+import quixstreams as qx
 from twitter_function import TwitterFunction
 import requests
 import json
@@ -13,11 +12,12 @@ try:
     # should the main loop run?
     run = True
 
-    # Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-    client = QuixStreamingClient()
+    # Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+    client = qx.QuixStreamingClient()
 
     # Open the output topic where to write data out
-    output_topic = client.open_output_topic(os.environ["output"])
+    producer_topic = client.get_topic_producer(os.environ["output"])
 
     # Twitter bearer token goes here
     bearer_token = os.environ["twitter_bearer_token"]
@@ -31,13 +31,13 @@ try:
 
     # define code to create the output stream
     def create_stream():
-        output_stream = output_topic.create_stream()
-        output_stream.properties.name = "twitter_stream_results"
-        output_stream.properties.location = "/twitter_data"
+        stream_producer = producer_topic.create_stream()
+        stream_producer.properties.name = "twitter_stream_results"
+        stream_producer.properties.location = "/twitter_data"
 
         print("CONNECTED!")
 
-        return output_stream
+        return stream_producer
 
 
     # define the code to create the headers for the http connection
@@ -103,10 +103,10 @@ try:
 
     # here were going to get the stream and handle its output
     # we'll do this by streaming the results into Quix
-    def get_stream(headers, output_stream):
+    def get_stream(headers, stream_producer):
         global run
 
-        twitter_function = TwitterFunction(output_stream)
+        twitter_function = TwitterFunction(stream_producer)
 
         while run:
             try:
@@ -157,19 +157,19 @@ try:
 
 
     def main():
-        global output_topic
+        global producer_topic
 
         headers = create_headers(bearer_token)
         rules = get_rules(headers)
         delete_all_rules(headers, rules)
         set_rules(headers)
-        output_stream = create_stream()
+        stream_producer = create_stream()
 
-        thread = Thread(target=get_stream, args=(headers, output_stream))
+        thread = Thread(target=get_stream, args=(headers, stream_producer))
         thread.start()
 
         # wait for sigterm
-        App.run(before_shutdown=before_shutdown)
+        qx.App.run(before_shutdown=before_shutdown)
 
         # wait for worker thread to end
         thread.join()

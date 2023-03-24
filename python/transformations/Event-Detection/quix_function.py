@@ -16,7 +16,7 @@ class QuixFunction:
         self.producer_stream.events.publish(data)
 
     # Callback triggered for each new timeseries data
-    def on_pandas_frame_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
         
         output_df = pd.DataFrame()
         output_df["timestamp"] = df["timestamp"]

@@ -1,13 +1,13 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+import quixstreams as qx
 import pandas as pd
 import os
 
 
 class PercentageAlert:
     # Initiate
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, stream_consumer: qx.StreamConsumer, stream_producer: qx.StreamProducer):
+        self.stream_consumer = stream_consumer
+        self.stream_producer = stream_producer
 
         self.parameter_name = os.environ["ParameterName"]
         self.percentage_points_alert = float(os.environ["PercentagePointsAlert"])
@@ -18,11 +18,11 @@ class PercentageAlert:
         self.global_min_ti = None
 
     # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         print(data)
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
 
         # Get fresh data
         ti = pd.Timestamp(df.loc[0, 'time'])
@@ -50,7 +50,7 @@ class PercentageAlert:
                 'Alert',
                 self.parameter_name + '_previous_low_value',
                 self.parameter_name + '_previous_low_value_time']
-            self.output_stream.parameters.buffer.write(df[cols])  # Send alert data to output topic
+            self.stream_producer.timeseries.buffer.write(df[cols])  # Send alert data to output topic
 
             # Update global max
             self.global_max = signal_value
@@ -79,7 +79,7 @@ class PercentageAlert:
                 'Alert',
                 self.parameter_name + '_previous_high_value',
                 self.parameter_name + '_previous_high_value_time']
-            self.output_stream.parameters.buffer.write(df[cols])  # Send alert data to output topic
+            self.stream_producer.timeseries.buffer.write(df[cols])  # Send alert data to output topic
 
             # Update global max
             self.global_max = signal_value

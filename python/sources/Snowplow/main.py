@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient, EventData
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_functions import QuixFunctions
 import boto3
 from datetime import datetime
@@ -17,7 +16,7 @@ subscriber = None
 subscription = None
 quix_stream = None
 amazon_client = None
-output_topic = None
+producer_topic = None
 
 
 def connect_to_amazon():
@@ -29,9 +28,9 @@ def connect_to_amazon():
 
     amazon_client = boto3.client(
         'kinesis',
-        aws_access_key_id=os.environ["aws_access_key_id"],
-        aws_secret_access_key=os.environ["aws_secret_access_key"],
-        region_name=os.environ["aws_region_name"]
+        aws_access_key_id = os.environ["aws_access_key_id"],
+        aws_secret_access_key = os.environ["aws_secret_access_key"],
+        region_name = os.environ["aws_region_name"]
     )
 
 
@@ -45,7 +44,7 @@ def get_kinesis_data():
     quix_functions = QuixFunctions(quix_stream)
 
     si = amazon_client.get_shard_iterator(
-        StreamName=os.environ["aws_stream_name"],
+        StreamName = os.environ["aws_stream_name"],
         ShardId='shardId-000000000000',
         ShardIteratorType='LATEST'
     )
@@ -57,7 +56,7 @@ def get_kinesis_data():
         is_connected = True
 
     while run:
-        record_data = amazon_client.get_records(ShardIterator=shard_iterator)
+        record_data = amazon_client.get_records(ShardIterator = shard_iterator)
         shard_iterator = record_data["NextShardIterator"]
 
         # print(record_data)
@@ -80,14 +79,14 @@ def get_kinesis_data():
 
 def connect_to_quix():
     global quix_stream
-    global output_topic
+    global producer_topic
 
-    quix_client = QuixStreamingClient()
+    quix_client = qx.QuixStreamingClient()
 
     print("Opening output topic")
-    output_topic = quix_client.open_output_topic(os.environ["output"])
+    producer_topic = quix_client.get_topic_producer(os.environ["output"])
 
-    quix_stream = output_topic.create_stream()
+    quix_stream = producer_topic.create_stream()
     quix_stream.properties.name = "{} - {}".format("Snowplow", datetime.utcnow().strftime("%d-%m-%Y %X"))
     quix_stream.properties.location = "/amazon_kinesis_data"
 
@@ -101,12 +100,12 @@ try:
     connect_to_quix()
     connect_to_amazon()
 
-    thread = threading.Thread(target=get_kinesis_data)
+    thread = threading.Thread(target = get_kinesis_data)
     thread.start()
 
     print("Waiting for Kinesis data")
 
-    App.run(before_shutdown=before_shutdown)
+    qx.App.run(before_shutdown = before_shutdown)
 
     # wait for worker thread to end
     thread.join()

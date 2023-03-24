@@ -1,6 +1,4 @@
-from quixstreaming import QuixStreamingClient
-from quixstreaming.app import App
-from quixstreaming.state.localfilestorage import LocalFileStorage
+import quixstreams as qx
 import time
 from datetime import datetime
 import os
@@ -16,15 +14,15 @@ table_name = config["table_name"]
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
-storage = LocalFileStorage()
+client = qx.QuixStreamingClient()
+storage = qx.LocalFileStorage()
 
 # Open the output topic where to write data out
-output_topic = client.open_output_topic(os.environ["output"])
-stream = output_topic.create_stream(table_name)
+producer_topic = client.get_topic_producer(os.environ["output"])
+stream = producer_topic.create_stream(table_name)
 
 print("connecting...")
-conn = pyodbc.connect("Driver={0};Server={1};UID={2};PWD={3};Database={4};TrustServerCertificate=yes;"
+conn = pyodbc.connect("Driver={0};Server={1};UID={2};PWD={3};Database={4};TrustServerCertificate = yes;"
                 .format(config["driver"], config["server"], config["user_id"], config["password"], config["database"]))
 print("CONNECTED!")
 
@@ -84,7 +82,7 @@ def data_poller_thread():
 
         print("Loaded {} rows in {}".format(len(data.index), str(time.time() - start_time)))
         start_time = time.time()
-        stream.parameters.write(data)
+        stream.timeseries.publish(data)
         print("Sent {} rows in {}".format(len(data.index), str(time.time() - start_time)))
 
         # lastly: set the last modified key in storage in case of a restart
@@ -100,8 +98,8 @@ def before_shutdown():
     poll_for_data = False
 
 
-thread = threading.Thread(target=data_poller_thread)
+thread = threading.Thread(target = data_poller_thread)
 thread.start()
 
 # start the app, ensure topics exist and thread handle abort sequence
-App.run(before_shutdown=before_shutdown)
+qx.App.run(before_shutdown = before_shutdown)

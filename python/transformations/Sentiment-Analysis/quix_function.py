@@ -13,12 +13,12 @@ class QuixFunction:
         self.count = 0
 
     # Callback triggered for each new event.
-    def on_event_data_handler(self, consumer_stream: qx.StreamConsumer, data: qx.EventData):
+    def on_event_data_handler(self, consumer_stream: qx.StreamConsumer, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         print(data.value)
         print("events")
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, consumer_stream: qx.StreamConsumer, df_all_messages: pd.DataFrame):
+    def on_dataframe_handler(self, consumer_stream: qx.StreamConsumer, df_all_messages: pd.DataFrame):
 
         # Use the model to predict sentiment label and confidence score on received messages
         model_response = self.classifier(list(df_all_messages["chat-message"]))

@@ -1,4 +1,4 @@
-from quixstreaming import QuixStreamingClient
+import quixstreams as qx
 from netatmo_auth_helper import NetatmoAuthHelper
 import time
 import os
@@ -6,11 +6,12 @@ import requests
 import json
 import urllib.parse
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient()
 
 # Open the output topic where to write data out
-output_topic = client.open_output_topic(os.environ["output"])
+producer_topic = client.get_topic_producer(os.environ["output"])
 
 auth_helper = NetatmoAuthHelper(
     os.environ["client_id"], 
@@ -35,7 +36,7 @@ while True:
     for device in devices:
         device_id = device["_id"]
 
-        stream = output_topic.get_or_create_stream(device_id)
+        stream = producer_topic.get_or_create_stream(device_id)
         stream.properties.name = device["home_name"]
 
         country = device["place"]["country"]
@@ -55,7 +56,7 @@ while True:
         temp_trend = dashboard_data["temp_trend"]
         pressure_trend = dashboard_data["pressure_trend"]
 
-        stream.parameters.buffer.add_timestamp_nanoseconds(time_utc* 1000000000) \
+        stream.timeseries.buffer.add_timestamp_nanoseconds(time_utc* 1000000000) \
             .add_tag("country", country) \
             .add_tag("city", city ) \
             .add_value("temperature", temperature) \
@@ -66,7 +67,7 @@ while True:
             .add_value("absolute_pressure", absolute_pressure) \
             .add_value("temp_trend", temp_trend) \
             .add_value("pressure_trend", pressure_trend) \
-            .write()
+            .publish()
 
         print("Device {0} telemetry sent.".format(device_id))
 
@@ -85,13 +86,13 @@ while True:
             humidity = dashboard_data["Humidity"]
             temp_trend = dashboard_data["temp_trend"]
 
-            stream.parameters.buffer.add_timestamp_nanoseconds(time_utc* 1000000000) \
+            stream.timeseries.buffer.add_timestamp_nanoseconds(time_utc* 1000000000) \
                 .add_tag("country", country) \
                 .add_tag("city", city ) \
                 .add_value(name + "-temperature", temperature) \
                 .add_value(name + "-humidity", humidity) \
                 .add_value(name + "-temp_trend", temp_trend) \
-                .write()
+                .publish()
 
             print("Module {0} telemetry sent.".format(name))
             

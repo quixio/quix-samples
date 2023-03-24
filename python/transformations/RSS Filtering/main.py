@@ -23,7 +23,7 @@ def read_stream(consumer_stream: qx.StreamConsumer):
     quix_function = QuixFunction(consumer_stream, producer_stream)
         
     # React to new data received from input topic.
-    consumer_stream.timeseries.on_data_received = quix_function.on_parameter_data_handler
+    consumer_stream.timeseries.on_data_received = quix_function.on_data_handler
 
     # When input stream closes, we close output stream as well. 
     def on_stream_close():

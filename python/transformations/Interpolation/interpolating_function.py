@@ -1,25 +1,25 @@
-from quixstreaming import StreamReader, StreamWriter, EventData, ParameterData
+import quixstreams as qx
 import pandas as pd
 import os
 
 
 class InterpolatingFunction:
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, stream_consumer: qx.StreamConsumer, stream_producer: qx.StreamProducer):
+        self.stream_consumer = stream_consumer
+        self.stream_producer = stream_producer
         self.parameters = os.environ["Parameters"].split(",")
         self.last_timestamp = None
         self.last_parameters_value = None
 
     # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         print(data.value)
 
         # Here transform your data.
-        self.output_stream.events.write(data)
+        self.stream_producer.events.write(data)
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
 
         # Check if all items exist in the dataframe
         if all(item in df.columns for item in self.parameters) == False:
@@ -54,7 +54,7 @@ class InterpolatingFunction:
                 print()
 
                 # Write data
-                self.output_stream.parameters.write(df_i)
+                self.stream_producer.timeseries.publish(df_i)
 
                 # Update
                 self.last_timestamp = timestamp_i

@@ -101,22 +101,22 @@ def predict_bikes_availability_and_write_into_streams(df_bikes, df_weather, dic_
 
     # We write in 3 different streams to define 3 different timestamps
     # Write bike_stream: real number of available bikes now
-    bike_stream.parameters.buffer.add_timestamp(current_ny_time.to_pydatetime()) \
+    bike_stream.timeseries.buffer.add_timestamp(current_ny_time.to_pydatetime()) \
         .add_value('timestamp_ny_execution', str(current_ny_time.to_pydatetime())) \
         .add_value('real_n_bikes', df_bikes.loc[0, 'total_num_bikes_available']) \
-        .write()
+        .publish()
 
     # Write prediction_1h_stream: 1 hour ahead prediction
-    prediction_1h_stream.parameters.buffer.add_timestamp(df_pred_1h.loc[0, 'timestamp_ny']) \
+    prediction_1h_stream.timeseries.buffer.add_timestamp(df_pred_1h.loc[0, 'timestamp_ny']) \
         .add_value('timestamp_ny_execution', df_pred_1h.loc[0, 'timestamp_ny_execution']) \
         .add_value('forecast_1h', df_pred_1h.loc[0, 'forecast_1h']) \
-        .write()
+        .publish()
 
     # Write prediction_1d_stream: 1 day ahead prediction
-    prediction_1d_stream.parameters.buffer.add_timestamp(df_pred_1day.loc[0, 'timestamp_ny']) \
+    prediction_1d_stream.timeseries.buffer.add_timestamp(df_pred_1day.loc[0, 'timestamp_ny']) \
         .add_value('timestamp_ny_execution', df_pred_1day.loc[0, 'timestamp_ny_execution']) \
         .add_value('forecast_1d', df_pred_1day.loc[0, 'forecast_1d']) \
-        .write()
+        .publish()
 
     # Print some predictions data
     print('NY time:', current_ny_time)

@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamReader, AutoOffsetReset
-from quixstreaming.app import App
+import quixstreams as qx
 
 from quixstreaming import Logging, LogLevel
 Logging.update_factory(LogLevel.Debug)
@@ -13,14 +12,14 @@ import pandas as pd  # read csv, df manipulation
 import streamlit as st  # 🎈 data web app development
 from streamlit.scriptrunner.script_run_context import add_script_run_ctx
 
-client = QuixStreamingClient()
+client = qx.QuixStreamingClient()
 
-input_topic = client.open_input_topic(os.environ["input"], None, auto_offset_reset=AutoOffsetReset.Latest)
+consumer_topic = client.get_topic_consumer(os.environ["input"], None, auto_offset_reset = qx.AutoOffsetReset.Latest)
 
 st.set_page_config(
-    page_title="Real-Time Data Science Dashboard",
-    page_icon="✅",
-    layout="wide",
+    page_title = "Real-Time Data Science Dashboard",
+    page_icon = "✅",
+    layout = "wide",
 )
 
 # data frame for the data
@@ -41,12 +40,12 @@ def on_read_pandas_data(df_i: pd.DataFrame):
     df = df.iloc[-500:, :]
 
 # callback called for each incoming stream
-def read_stream(input_stream: StreamReader):        
+def read_stream(stream_consumer: qx.StreamConsumer):        
     # React to new data received from input topic.
-    input_stream.parameters.on_read_pandas += on_read_pandas_data
+    stream_consumer.timeseries.on_dataframe_received = on_read_pandas_data
 
 # hook up the read_stream callback
-input_topic.on_stream_received += read_stream
+consumer_topic.on_stream_received = read_stream
 
 # a flag to allow us to stop the main thread on shut down
 run_thread = True
@@ -62,13 +61,13 @@ def update_dashboard():
     # use the in memory dataframe to refresh the dashboard
     while run_thread:
 
-        local_df = df.copy(deep=True)  # copy reference, so df can be changed outside of this loop while we're working on it
+        local_df = df.copy(deep = True)  # copy reference, so df can be changed outside of this loop while we're working on it
 
         # show the spinner while we wait for data
         with st.spinner('Loading data..'):
             while local_df is None or "Speed" not in local_df.columns:
                 time.sleep(0.2) # wait a moment for more data to arrive
-                local_df = df.copy(deep=True)  # copy reference, so df can be changed outside of this loop while we're working on it
+                local_df = df.copy(deep = True)  # copy reference, so df can be changed outside of this loop while we're working on it
 
         with placeholder.container():
             fig_col1, fig_col2 = st.columns(2)
@@ -88,9 +87,9 @@ def update_dashboard():
         time.sleep(0.1)
 
 # setup the thread to update the ui
-ui_updater_thread = thread.Thread(target=update_dashboard)
+ui_updater_thread = thread.Thread(target = update_dashboard)
 add_script_run_ctx(ui_updater_thread)
 ui_updater_thread.start()
 
 # run the app, open the topic, listen for shutdown events
-App.run(before_shutdown=shutdown)
+App.run(before_shutdown = shutdown)

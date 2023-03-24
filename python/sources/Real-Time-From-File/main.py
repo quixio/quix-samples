@@ -1,22 +1,23 @@
-from quixstreaming import QuixStreamingClient
+import quixstreams as qx
 import pandas as pd
 import time
 import os
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient()
 
 print("Opening output topic")
-output_topic = client.open_output_topic(os.environ["output"])
+producer_topic = client.get_topic_producer(os.environ["output"])
 
 # CREATE A NEW STREAM
 # A stream is a collection of data that belong to a single session of a single source.
-output_stream = output_topic.create_stream()
+stream_producer = producer_topic.create_stream()
 # EDIT STREAM
-# stream = output_topic.create_stream("my-own-stream-id")  # To append data into the stream later, assign a stream id.
-output_stream.properties.name = "ExampleData"  # Give the stream a human readable name (for the data catalogue).
-output_stream.properties.location = "/example data"  # Save stream in specific folder to organize your workspace.
-# output_stream.properties.metadata["version"] = "Version 1"  # Add stream metadata to add context to time series data.
+# stream = producer_topic.create_stream("my-own-stream-id")  # To append data into the stream later, assign a stream id.
+stream_producer.properties.name = "ExampleData"  # Give the stream a human readable name (for the data catalogue).
+stream_producer.properties.location = "/example data"  # Save stream in specific folder to organize your workspace.
+# stream_producer.properties.metadata["version"] = "Version 1"  # Add stream metadata to add context to time series data.
 
 # Read the CSV data
 df = pd.read_csv("ExampleData.csv")
@@ -33,7 +34,7 @@ original_cols.remove(date_col_name)
 # Get the timestamp data in timestamp format
 df['Original_'+date_col_name] = pd.to_datetime(df[date_col_name])  # you may have to define format https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html
 df['Original_'+date_col_name] = [pd.Timestamp(ti, unit='ns').timestamp() for ti in df['Original_'+date_col_name]]
-df = df.drop(date_col_name, axis=1)
+df = df.drop(date_col_name, axis = 1)
 
 # Let's calculate the original time deltas and then the accumulated timedeltas
 print("Calculating time deltas...")
@@ -61,8 +62,8 @@ while True:
         # Get the rows to write and write them to the stream
         df_to_write = df.loc[filter_df_to_write, ['timestamp', 'Original_'+date_col_name]+original_cols]
         print("Writing {} rows of data".format(len(df_to_write)))
-        output_stream.parameters.write(df_to_write)
-        print(df_to_write.to_string(index=False))
+        stream_producer.timeseries.publish(df_to_write)
+        print(df_to_write.to_string(index = False))
 
         # Update df
         df = df[filter_df_to_write == False]
@@ -79,4 +80,4 @@ print("Closing stream")
 
 # Stream can be infinitely long or have start and end.
 # If you send data into closed stream, it is automatically opened again.
-output_stream.close()
+stream_producer.close()

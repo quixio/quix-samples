@@ -1,19 +1,19 @@
+import quixstreams as qx
 import pandas as pd
 import json
 import time
 import os
 import cv2
-from quixstreaming import StreamWriter, StreamReader, EventData
 
 
 class QuixFunction:
-    def __init__(self, input_stream: StreamReader, output_stream: StreamWriter):
-        self.input_stream = input_stream
-        self.output_stream = output_stream
+    def __init__(self, stream_consumer: qx.StreamConsumer, stream_producer: qx.StreamProducer):
+        self.stream_consumer = stream_consumer
+        self.stream_producer = stream_producer
         self.frame_rate = int(os.environ["frame_rate"])
 
     # Callback triggered for each new event.
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         
         camera = json.loads(data.value)
         camera_id = camera["id"]
@@ -44,18 +44,18 @@ class QuixFunction:
             count += 1
 
             if (count - 1) % self.frame_rate == 0:
-                self.output_stream.parameters.buffer.add_timestamp_nanoseconds(time.time_ns()) \
+                self.stream_producer.timeseries.buffer.add_timestamp_nanoseconds(time.time_ns()) \
                     .add_value("image", frame_bytes) \
                     .add_value("lon", lon) \
                     .add_value("lat", lat) \
-                    .write()
+                    .publish()
                     
                 print("Sent {0} frame {1}".format(camera_id, count))
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
         print(df)
 
         # Here transform your data.
 
-        self.output_stream.parameters.write(df)
+        self.stream_producer.timeseries.publish(df)

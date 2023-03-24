@@ -1,30 +1,29 @@
-from quixstreaming import ParameterDefinition, EventDefinition, ParameterData, StreamEndType, \
-    StreamReader, EventData
+import quixstreams as qx
 from typing import List
 
 
 class QuixFunction:
 
-    def __init__(self, stream_reader: StreamReader):
-        self.stream_reader = stream_reader
+    def __init__(self, stream_consumer: qx.StreamConsumer):
+        self.stream_consumer = stream_consumer
 
     # Callback triggered for each new parameter data.
-    def on_stream_closed_handler(self, end_type: StreamEndType):
-        print("Stream", self.stream_reader.stream_id, "closed with", end_type)
+    def on_stream_closed_handler(self, stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
+        print("Stream", self.stream_consumer.stream_id, "closed with", end_type)
 
     def on_stream_properties_changed_handler(self):
-        properties = self.stream_reader.properties
-        print("Stream properties read for stream: " + self.stream_reader.stream_id)
-        print("Name", properties.name, sep=": ")
-        print("Location", properties.location, sep=": ")
-        print("Metadata", properties.metadata, sep=": ")
+        properties = self.stream_consumer.properties
+        print("Stream properties read for stream: " + self.stream_consumer.stream_id)
+        print("Name", properties.name, sep = ": ")
+        print("Location", properties.location, sep = ": ")
+        print("Metadata", properties.metadata, sep = ": ")
         # print(properties.metadata["meta"]) # or by index
-        print("Parents", properties.parents, sep=": ")
+        print("Parents", properties.parents, sep = ": ")
         # print(properties.parents[0]) # or by index
-        print("TimeOfRecording", properties.time_of_recording, sep=": ")
+        print("TimeOfRecording", properties.time_of_recording, sep = ": ")
 
-    def on_parameter_data_handler(self, data: ParameterData):
-        print("Parameter data read for stream: " + self.stream_reader.stream_id)
+    def on_data_handler(self, data: qx.TimeseriesData):
+        print("Parameter data read for stream: " + self.stream_consumer.stream_id)
         print("  Length:", len(data.timestamps))
         for index, val in enumerate(data.timestamps):
             print("    Time:", val)
@@ -39,7 +38,7 @@ class QuixFunction:
                     print("      " + key + ": " + str(value.string_value))
 
     def on_parameter_definitions_changed_handler(self):
-        print("Parameter definitions read for stream: " + self.stream_reader.stream_id)
+        print("Parameter definitions read for stream: " + self.stream_consumer.stream_id)
         indent = "   "
 
         def print_parameters(params: List[ParameterDefinition], level):
@@ -61,10 +60,10 @@ class QuixFunction:
                 if parameter.custom_properties is not None:
                     print((level + 2) * indent + "Custom properties: " + parameter.custom_properties)
 
-        print_parameters(self.stream_reader.parameters.definitions, 0)
+        print_parameters(self.stream_consumer.parameters.definitions, 0)
 
     def on_event_definitions_changed_handler(self):
-        print("Event definitions read for stream: " + self.stream_reader.stream_id)
+        print("Event definitions read for stream: " + self.stream_consumer.stream_id)
         indent = "   "
 
         def print_events(params: List[EventDefinition], level):
@@ -79,10 +78,10 @@ class QuixFunction:
                 if event.custom_properties is not None:
                     print((level + 2) * indent + "Custom properties: " + event.custom_properties)
 
-        print_events(self.stream_reader.events.definitions, 0)
+        print_events(self.stream_consumer.events.definitions, 0)
 
-    def on_event_data_handler(self, data: EventData):
-        print("Event data read for stream: " + self.stream_reader.stream_id)
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
+        print("Event data read for stream: " + self.stream_consumer.stream_id)
         print("  Time:", data.timestamp)
         print("  Id:", data.id)
         tag_string = "  Tags: "

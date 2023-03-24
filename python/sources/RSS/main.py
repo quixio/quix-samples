@@ -104,10 +104,10 @@ def before_shutdown():
 
 if __name__ == "__main__":
     # create and start the thread where all the good stuff happens
-    main_thread = threading.Thread(target=main)
+    main_thread = threading.Thread(target = main)
     main_thread.start()
 
     # run the app and handle shutdown nicely
-    qx.App.run(before_shutdown=before_shutdown)
+    qx.App.run(before_shutdown = before_shutdown)
 
     main_thread.join()

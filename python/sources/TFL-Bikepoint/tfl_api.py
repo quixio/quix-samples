@@ -46,9 +46,9 @@ def get_agg_bikepoint_data():
                 df_i["NbDocks"] = [int(json_response_all[i]['additionalProperties'][j]['value'])]
         df = df.append(df_i)
         
-    df = df.set_index('i', drop=True)
-    df.sort_index(ascending=True, inplace=True)
-    df = df[df['PlaceType'] == 'BikePoint'].drop('PlaceType', axis=1)
+    df = df.set_index('i', drop = True)
+    df.sort_index(ascending = True, inplace = True)
+    df = df[df['PlaceType'] == 'BikePoint'].drop('PlaceType', axis = 1)
     
     # Add all BikePoints' data
     df_agg = df[['NbBikes', 'NbEmptyDocks', 'NbDocks']].sum().reset_index().set_index('index').T

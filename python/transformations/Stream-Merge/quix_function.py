@@ -17,7 +17,7 @@ class QuixFunction:
         self.producer_topic.events.publish(data)
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
 
         df["TAG__parent_streamId"] = self.consumer_topic.stream_id
         df['image'] = df["image"].apply(lambda x: str(base64.b64encode(x).decode('utf-8')))

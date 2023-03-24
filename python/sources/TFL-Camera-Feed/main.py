@@ -1,17 +1,16 @@
-import time
+import quixstreams as qx
 import os
 import json
 import requests
-from quixstreaming import QuixStreamingClient
 
 
-client = QuixStreamingClient()
+client = qx.QuixStreamingClient()
 api_key = os.environ["api_key"]
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
 
-output_topic = client.open_output_topic(os.environ["output"])
+producer_topic = client.get_topic_producer(os.environ["output"])
 
 while True:
     start = time.time()
@@ -24,9 +23,9 @@ while True:
     for camera in cameras_list:
         camera_id = camera["id"]
 
-        output_topic.get_or_create_stream(camera_id).events.add_timestamp_nanoseconds(time.time_ns()) \
+        producer_topic.get_or_create_stream(camera_id).events.add_timestamp_nanoseconds(time.time_ns()) \
             .add_value("camera", json.dumps(camera)) \
-            .write()    
+            .publish()    
 
         print("Sent camera " + camera_id)
 

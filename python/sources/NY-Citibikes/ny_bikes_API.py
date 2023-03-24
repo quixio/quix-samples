@@ -20,8 +20,8 @@ def get_agg_data():
         df_i["num_ebikes_available"] = [int(station['num_ebikes_available'])]
         df = df.append(df_i)
 
-    df = df.set_index('id', drop=True)
-    df.sort_index(ascending=True, inplace=True)
+    df = df.set_index('id', drop = True)
+    df.sort_index(ascending = True, inplace = True)
 
     df_agg = df.sum().reset_index().set_index('index').T
 
