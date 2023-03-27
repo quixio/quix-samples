@@ -55,7 +55,7 @@ def read_stream(new_stream: qx.StreamConsumer):
             stream_producer.timeseries.publish(data)
 
     # React to new data received from input topic.
-    new_stream.timeseries.on_data_received += on_data_handler
+    new_stream.timeseries.on_data_received = on_data_handler
 
     # When input stream closes, we close output stream as well.
     def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):

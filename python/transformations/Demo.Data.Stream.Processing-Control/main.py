@@ -174,7 +174,7 @@ def read_stream(new_stream: qx.StreamConsumer):
     # React to new data received from input topic.
     buffer.on_data_released = on_data_handler
 
-    def on_event(data: qx.EventData):
+    def on_event(stream_consumer: qx.StreamConsumer, data: qx.EventData):
         if data.id == "track":
             set_track(data.value)
 

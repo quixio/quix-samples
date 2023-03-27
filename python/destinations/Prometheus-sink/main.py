@@ -107,7 +107,7 @@ def on_param_data_handler(stream: qx.StreamConsumer, data: qx.TimeseriesData):
                 
 
 @event_data_handler_processing_time.time()
-def on_event_data_handler(data: qx.EventData):
+def on_event_data_handler(stream_consumer: qx.StreamConsumer, data: qx.EventData):
     # increment the total values handled counter
     event_value_counter.inc()
 

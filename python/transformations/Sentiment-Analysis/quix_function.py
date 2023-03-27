@@ -13,7 +13,7 @@ class QuixFunction:
         self.count = 0
 
     # Callback triggered for each new event.
-    def on_event_data_handler(self, consumer_stream: qx.StreamConsumer, stream_consumer: qx.StreamConsumer, data: qx.EventData):
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         print(data.value)
         print("events")
 
