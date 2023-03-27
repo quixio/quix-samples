@@ -45,10 +45,10 @@ mqtt_client.connect(os.environ["mqtt_server"], int(mqtt_port))
 def read_stream(stream_consumer: qx.StreamConsumer):
 
     # handle the data in a function to simplify the example
-    mqtt_function = mqttFunction(mqtt_topic_root, mqtt_client)
+    mqtt_function = MQTTFunction(mqtt_topic_root, mqtt_client)
 
     # hookup the package received event handler
-    stream_consumer.on_package_received += mqtt_function.package_received_handler
+    stream_consumer.on_package_received = mqtt_function.package_received_handler
 
 consumer_topic.on_stream_received = read_stream
 

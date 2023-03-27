@@ -18,4 +18,4 @@ class QuixFunction:
             print(cleaned_df)
 
             # write the data to the stream
-            self.stream_producer.timeseries.buffer.write(cleaned_df)
+            self.stream_producer.timeseries.buffer.publish(cleaned_df)

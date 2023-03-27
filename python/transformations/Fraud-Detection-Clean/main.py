@@ -2,7 +2,7 @@ import quixstreams as qx
 from quix_function import QuixFunction
 import os
 
-producer_topic = None
+producer_topic: qx.TopicProducer = None
 
 
 def read_stream(new_stream: qx.StreamConsumer):
@@ -34,9 +34,9 @@ def read_stream(new_stream: qx.StreamConsumer):
 def main():
     global producer_topic
 
-    streamingclient = qx.QuixStreamingClient()
-    producer_topic = streamingClient.get_topic_producer(os.environ["output"])
-    consumer_topic = streamingClient.get_topic_consumer(os.environ["input"])
+    streaming_client = qx.QuixStreamingClient()
+    producer_topic = streaming_client.get_topic_producer(os.environ["output"])
+    consumer_topic = streaming_client.get_topic_consumer(os.environ["input"])
 
     consumer_topic.on_stream_received = read_stream
 

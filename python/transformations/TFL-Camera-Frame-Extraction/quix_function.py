@@ -37,7 +37,6 @@ class QuixFunction:
             
             frame_bytes = frame[1]
 
-
             success, image = video_stream.read()
             
             success, image = video_stream.read()

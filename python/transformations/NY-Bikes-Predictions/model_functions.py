@@ -1,3 +1,4 @@
+import quixstreams as qx
 import base64
 import pickle
 import pandas as pd
@@ -86,7 +87,9 @@ def generate_predictions(current_ny_time, df_bikes, df_weather, dic_ml_model_1h,
 
 
 def predict_bikes_availability_and_write_into_streams(df_bikes, df_weather, dic_ml_model_1h, dic_ml_model_1d,
-                                                      bike_stream, prediction_1h_stream, prediction_1d_stream):
+                                                      bike_stream: qx.StreamProducer, 
+                                                      prediction_1h_stream: qx.StreamProducer, 
+                                                      prediction_1d_stream: qx.StreamProducer):
     # If any of the dataframes is empty we cannot predict, so let's check that
     if df_bikes.empty | df_weather.empty:
         return

@@ -149,7 +149,7 @@ def stream_received_handler(stream: qx.StreamConsumer):
     start = datetime.now()
     fname = file_name(start)
     batches[stream.stream_id] = Batch(0, start, fname)
-    stream.timeseries.on_data_received += read_handler
+    stream.timeseries.on_data_received = read_handler
     stream.on_stream_closed = stream_closed_handler
 
 topic.on_stream_received = stream_received_handler

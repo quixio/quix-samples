@@ -6,7 +6,7 @@ PREDICT_STREAM_NAME = "predict_data"
 PREDICT_STREAM_PATH = "/dataset/predict_data"
 PREDICT_STREAM_ID = "-predict-out-stream"
 
-producer_topic = None
+producer_topic: qx.TopicProducer = None
 
 
 def read_stream(new_stream: qx.StreamConsumer):
@@ -36,10 +36,10 @@ def read_stream(new_stream: qx.StreamConsumer):
 def main():
     global producer_topic
 
-    streamingclient = qx.QuixStreamingClient()
+    streaming_client = qx.QuixStreamingClient()
 
-    consumer_topic = streamingClient.get_topic_consumer(os.environ["input"])
-    producer_topic = streamingClient.get_topic_producer(os.environ["output"])
+    consumer_topic = streaming_client.get_topic_consumer(os.environ["input"])
+    producer_topic = streaming_client.get_topic_producer(os.environ["output"])
 
     # Hook up events before initiating read to avoid losing out on any data
     consumer_topic.on_stream_received = read_stream

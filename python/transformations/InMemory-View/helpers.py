@@ -4,7 +4,7 @@ import pickle
 import pandas as pd
 
 class StatefulProcessing:
-    def __init__(self, consumer_topic: qx.topicconsumer, producer_topic: qx.topicproducer):
+    def __init__(self, consumer_topic: qx.TopicConsumer, producer_topic: qx.TopicProducer):
         self.producer_topic = producer_topic
 
         self.state = None
