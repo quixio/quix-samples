@@ -21,14 +21,14 @@ class QuixFunction:
     # Defining your parameters is an optional but useful step
     def send_parameter_definitions(self):
         print("---- Sending parameter definitions ----")
-        self.stream_producer.parameters \
+        self.stream_producer.timeseries \
             .add_definition("param_at_root", "Root Parameter",
                             "This is a root parameter as there is no default location")
         self.stream_producer.timeseries.default_location = "/Base/"
         self.stream_producer.timeseries.add_definition("string_param",
                                                      "String parameter",
                                                      "This is a string parameter description") \
-            .add_definition("parameter2", description = " " " " " " " " " " "This is parameter 2") \
+            .add_definition("parameter2", description="This is parameter 2") \
             .set_unit("%") \
             .set_format("{0}%") \
             .set_range(
@@ -73,7 +73,7 @@ class QuixFunction:
     def send_parameter_time_delta(self):
         self.stream_producer.timeseries.buffer.epoch = datetime.datetime(2018, 1, 2)
         self.stream_producer.timeseries.buffer \
-            .add_timestamp(datetime.timedelta(seconds = 1, millisecos = 5 = 5 555)) \
+            .add_timestamp(datetime.timedelta(seconds=1, milliseconds=555)) \
             .add_value("num_param", 123.32) \
             .publish()  # 1 second 555 milliseconds after 2018-01-02
 
@@ -104,7 +104,7 @@ class QuixFunction:
             .publish()  # 2018-01-01 15:56:23 GMT as nanoseconds since unix epoch
         self.stream_producer.events.epoch = datetime.datetime(2018, 1, 2)
         self.stream_producer.events \
-            .add_timestamp(datetime.timedelta(seconds = 1, millisecos = 5 = 555)) \
+            .add_timestamp(datetime.timedelta(seconds=1, milliseconds=555)) \
             .add_value("event_3", "3232") \
             .publish()  # 1 second 555 milliseconds after 2018-01-02
 
