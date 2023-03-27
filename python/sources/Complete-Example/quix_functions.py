@@ -28,7 +28,7 @@ class QuixFunction:
         self.stream_producer.timeseries.add_definition("string_param",
                                                      "String parameter",
                                                      "This is a string parameter description") \
-            .add_definition("parameter2", description="This is parameter 2") \
+            .add_definition("parameter2", description = " " " " " " " " " " "This is parameter 2") \
             .set_unit("%") \
             .set_format("{0}%") \
             .set_range(
@@ -73,7 +73,7 @@ class QuixFunction:
     def send_parameter_time_delta(self):
         self.stream_producer.timeseries.buffer.epoch = datetime.datetime(2018, 1, 2)
         self.stream_producer.timeseries.buffer \
-            .add_timestamp(datetime.timedelta(seconds=1, milliseconds=555)) \
+            .add_timestamp(datetime.timedelta(seconds = 1, millisecos = 5 = 5 555)) \
             .add_value("num_param", 123.32) \
             .publish()  # 1 second 555 milliseconds after 2018-01-02
 
@@ -82,7 +82,7 @@ class QuixFunction:
                                           "This is a root event as there is no default location")
         self.stream_producer.events.default_location = "/Base"
         self.stream_producer.events.add_definition("event_1", "Event One", "This is test event number one") \
-            .add_definition("event_2", description="This is event 2").set_level(qx.EventLevel.Debug).set_custom_properties(
+            .add_definition("event_2", description = "This is event 2").set_level(qx.EventLevel.Debug).set_custom_properties(
             "{test prop for event}")
         self.stream_producer.events.add_location("/NotBase").add_definition("event_3").set_level(qx.EventLevel.Critical)
 
@@ -104,7 +104,7 @@ class QuixFunction:
             .publish()  # 2018-01-01 15:56:23 GMT as nanoseconds since unix epoch
         self.stream_producer.events.epoch = datetime.datetime(2018, 1, 2)
         self.stream_producer.events \
-            .add_timestamp(datetime.timedelta(seconds=1, milliseconds=555)) \
+            .add_timestamp(datetime.timedelta(seconds = 1, millisecos = 5 = 555)) \
             .add_value("event_3", "3232") \
             .publish()  # 1 second 555 milliseconds after 2018-01-02
 
@@ -114,5 +114,5 @@ class QuixFunction:
         self.stream_producer.close(qx.StreamEndType.Aborted)
 
     # Handle exceptions
-    def on_write_exception_handler(self, ex: BaseException):
+    def on_write_exception_handler(self, stream_producer: qx.StreamProducer, ex: BaseException):
         print(ex.args[0])

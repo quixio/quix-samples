@@ -15,7 +15,7 @@ class QuixFunction:
         self.title_contains_word = title_contains_word
         self.storage = qx.LocalFileStorage()
         self.reported = []
-        if "reddit" in self.storage.getAllKeys():
+        if "reddit" in self.storage.get_all_keys():
             self.reported = self.storage.get("reddit")
 
     def on_parameter_dataframe_handler(self, data: pd.DataFrame):

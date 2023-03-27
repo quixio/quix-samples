@@ -14,10 +14,10 @@ class QuixFunctions:
         print("Sending RAW data event to Quix")
 
         # build the EventData object
-        event_data = EventData(event_id = "raw_data", time = datetime.utcnow(), value = message.data.decode("UTF-8"))
+        event_data = qx.EventData(event_id = "raw_data", time = datetime.utcnow(), value = message.data.decode("UTF-8"))
 
         # write the message to Quix as an event
-        self.stream_producer.events.write(event_data)
+        self.stream_producer.events.publish(event_data)
 
         # ack the message to let google know we've handled it
         message.ack()

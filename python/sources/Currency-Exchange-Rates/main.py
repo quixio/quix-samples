@@ -27,7 +27,7 @@ stream_producer.timeseries.buffer.packet_size = 1
 functions = Functions(stream_producer)
 
 # start a thread to write the data
-thread = threading.Thread(target = functions.write_data)
+thread = threading.Thread(target = functions.publish_data)
 thread.start()
 
 

@@ -33,17 +33,17 @@ original_cols.remove(date_col_name)
 # We want to respect the original time deltas, so we'll need some calculations
 # Get the timestamp data in timestamp format
 df['Original_'+date_col_name] = pd.to_datetime(df[date_col_name])  # you may have to define format https://pandas.pydata.org/docs/reference/api/pandas.to_datetime.html
-df['Original_'+date_col_name] = [pd.Timestamp(ti, unit='ns').timestamp() for ti in df['Original_'+date_col_name]]
+df['Original_'+date_col_name] = [pd.Timestamp(ti, unit = 'ns').timestamp() for ti in df['Original_' + date_col_name]]
 df = df.drop(date_col_name, axis = 1)
 
 # Let's calculate the original time deltas and then the accumulated timedeltas
 print("Calculating time deltas...")
-df['delta_s_'+date_col_name] = df['Original_'+date_col_name].shift(-1)-df['Original_'+date_col_name]
+df['delta_s_'+date_col_name] = df['Original_'+date_col_name].shift(-1) - df['Original_'+date_col_name]
 df['acc_delta_s_'+date_col_name] = df['delta_s_'+date_col_name].expanding(1).sum()
 
 # Let's generate the new timestamps
 print("Generate new timestamps")
-timestamp_now = pd.Timestamp(pd.Timestamp.now(), unit='ns').timestamp()
+timestamp_now = pd.Timestamp(pd.Timestamp.now(), unit = 'ns').timestamp()
 df['timestamp'] = timestamp_now + df['acc_delta_s_'+date_col_name]
 
 # Iterate over file
@@ -54,13 +54,13 @@ while True:
         break
 
     # Get df_to_write
-    filter_df_to_write = (df['timestamp'] <= pd.Timestamp(pd.Timestamp.now(), unit='ns').timestamp())
+    filter_df_to_write = (df['timestamp'] <= pd.Timestamp(pd.Timestamp.now(), unit = 'ns').timestamp())
 
     # If there are rows to write to the stream at this time
     if filter_df_to_write.sum() > 0:
 
         # Get the rows to write and write them to the stream
-        df_to_write = df.loc[filter_df_to_write, ['timestamp', 'Original_'+date_col_name]+original_cols]
+        df_to_write = df.loc[filter_df_to_write, ['timestamp', 'Original_' + date_col_name] + original_cols]
         print("Writing {} rows of data".format(len(df_to_write)))
         stream_producer.timeseries.publish(df_to_write)
         print(df_to_write.to_string(index = False))
@@ -71,7 +71,7 @@ while True:
     # If there are no rows to write now, wait a bit:
     else:
         # Calculate time to the next data point and wait that
-        time_to_wait = df['delta_s_'+date_col_name].iloc[0]
+        time_to_wait = df['delta_s_' + date_col_name].iloc[0]
         print("Waiting for ", time_to_wait, " seconds.")
         time.sleep(time_to_wait)
 

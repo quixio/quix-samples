@@ -38,7 +38,7 @@ tags = []
 
 # get the string, numeric or binary value from the parameter value
 @get_value_processing_time.time()
-def get_value(parameter: ParameterValue):
+def get_value(parameter: qx.ParameterValue):
     if parameter.string_value is not None:
         return {"type": "string", "value": parameter.string_value}
     if parameter.numeric_value is not None:
@@ -79,7 +79,7 @@ def value_is_unique(tag):
         return True
 
 @parameter_data_handler_processing_time.time()
-def on_param_data_handler(data: qx.TimeseriesData):
+def on_param_data_handler(stream: qx.StreamConsumer, data: qx.TimeseriesData):
 
     # iterate the timestamps
     for t in data.timestamps:

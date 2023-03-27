@@ -10,7 +10,7 @@ class QuixFunctions:
         self.stream_producer = stream_producer
 
     # Callback triggered for each new record.
-    def write_data(self, data) -> None:
+    def publish_data(self, data) -> None:
 
         # use the snowplow sdk to transform the incoming data
         tx = et.transform(data)
@@ -22,6 +22,6 @@ class QuixFunctions:
         df["time"] = datetime.now()
 
         # publish to the stream
-        self.stream_producer.timeseries.buffer.write(df)
+        self.stream_producer.timeseries.buffer.publish(df)
 
         print("Published {}".format(df["event_name"].values[0]))

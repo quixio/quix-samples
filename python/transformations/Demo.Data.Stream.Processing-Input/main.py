@@ -7,7 +7,7 @@ properties = {
     "acks": "0"
 }
 
-client = QuixStreamingClient(properties = properties)
+client = qx.QuixStreamingClient(properties = properties)
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
@@ -52,7 +52,7 @@ def read_stream(new_stream: qx.StreamConsumer):
                 .add_value("brake", receivedBrake) \
                 .add_value("steering", steering)
 
-            stream_producer.timeseries.write(data)
+            stream_producer.timeseries.publish(data)
 
     # React to new data received from input topic.
     new_stream.timeseries.on_data_received += on_data_handler

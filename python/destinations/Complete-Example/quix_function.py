@@ -11,7 +11,7 @@ class QuixFunction:
     def on_stream_closed_handler(self, stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
         print("Stream", self.stream_consumer.stream_id, "closed with", end_type)
 
-    def on_stream_properties_changed_handler(self):
+    def on_stream_properties_changed_handler(self, stream_consumer: qx.StreamConsumer):
         properties = self.stream_consumer.properties
         print("Stream properties read for stream: " + self.stream_consumer.stream_id)
         print("Name", properties.name, sep = ": ")
@@ -22,7 +22,7 @@ class QuixFunction:
         # print(properties.parents[0]) # or by index
         print("TimeOfRecording", properties.time_of_recording, sep = ": ")
 
-    def on_data_handler(self, data: qx.TimeseriesData):
+    def on_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
         print("Parameter data read for stream: " + self.stream_consumer.stream_id)
         print("  Length:", len(data.timestamps))
         for index, val in enumerate(data.timestamps):
@@ -37,11 +37,11 @@ class QuixFunction:
                     print("      " + key + ": " + str(value.numeric_value))
                     print("      " + key + ": " + str(value.string_value))
 
-    def on_parameter_definitions_changed_handler(self):
+    def on_parameter_definitions_changed_handler(self, stream_consumer: qx.StreamConsumer):
         print("Parameter definitions read for stream: " + self.stream_consumer.stream_id)
         indent = "   "
 
-        def print_parameters(params: List[ParameterDefinition], level):
+        def print_parameters(params: List[qx.ParameterDefinition], level):
             print(level * indent + "Parameters:")
             for parameter in params:
                 print((level + 1) * indent + parameter.id + ": ")
@@ -60,13 +60,13 @@ class QuixFunction:
                 if parameter.custom_properties is not None:
                     print((level + 2) * indent + "Custom properties: " + parameter.custom_properties)
 
-        print_parameters(self.stream_consumer.parameters.definitions, 0)
+        print_parameters(self.stream_consumer.timeseries.definitions, 0)
 
-    def on_event_definitions_changed_handler(self):
+    def on_event_definitions_changed_handler(self, stream_consumer: qx.StreamConsumer):
         print("Event definitions read for stream: " + self.stream_consumer.stream_id)
         indent = "   "
 
-        def print_events(params: List[EventDefinition], level):
+        def print_events(params: List[qx.EventDefinition], level):
             print(level * indent + "Events:")
             for event in params:
                 print((level + 1) * indent + event.id + ": ")

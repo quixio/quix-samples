@@ -81,7 +81,7 @@ def read_stream(stream_consumer: qx.StreamConsumer):
     # handle the data in a function to simplify the example
     quix_function = QuixFunction(conn, TABLE_NAME, insert_queue, stream_consumer)
 
-    buffer.on_data_released =  quix_function.on_data_handler
+    buffer.on_data_released = quix_function.on_data_handler
     stream_consumer.events.on_data_received = quix_function.on_event_data_handler
 
     stream_consumer.properties.on_changed = quix_function.on_stream_properties_changed

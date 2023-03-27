@@ -29,7 +29,7 @@ print("CONNECTED!")
 poll_for_data = True
 
 offset = None
-if storage.containsKey(last_modified_storage_key):
+if storage.contains_key(last_modified_storage_key):
     stored_value = storage.get(last_modified_storage_key)
     offset = datetime.strptime(stored_value, "%Y-%m-%d %H:%M:%S")
 else:

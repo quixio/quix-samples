@@ -27,4 +27,4 @@ class RollingFunction:
             print(df[[self.parameter_name, self.parameter_name + '_rolling_avg']])
 
             # Write data including the new rolling function column
-            self.stream_producer.timeseries.buffer.write(df)  # Send data
+            self.stream_producer.timeseries.buffer.publish(df)  # Send data

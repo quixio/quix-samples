@@ -18,7 +18,7 @@ class QuixFunctions:
         data = msg.value
 
         # print("Sending RAW data as event")
-        event_data = EventData(event_id = "raw_data", time = datetime.utcnow(),
+        event_data = qx.EventData(event_id = "raw_data", time = datetime.utcnow(),
                                value = str(data, "UTF-8"))
         print(event_data)
-        self.stream_producer.events.write(event_data)
+        self.stream_producer.events.publish(event_data)

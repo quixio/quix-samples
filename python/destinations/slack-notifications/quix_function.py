@@ -2,6 +2,7 @@ import quixstreams as qx
 import requests
 import pandas as pd
 
+
 class QuixFunction:
     def __init__(self, webhook_url, stream_consumer: qx.StreamConsumer):
         self.webhook_url = webhook_url

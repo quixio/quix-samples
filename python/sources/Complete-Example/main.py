@@ -15,7 +15,7 @@ stream_producer = producer_topic.create_stream()
 quix_function = QuixFunction(stream_producer)
 
 # Hook up the exception handler callback
-stream_producer.on_write_exception += quix_function.on_write_exception_handler
+stream_producer.on_write_exception = quix_function.on_write_exception_handler
 
 # Update the stream properties
 quix_function.set_stream_properties()

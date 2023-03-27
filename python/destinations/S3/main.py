@@ -8,9 +8,10 @@ import gzip
 import boto3
 
 client = qx.QuixStreamingClient()
-commit_settings = CommitOptions()
+commit_settings = qx.models.CommitOptions()
 commit_settings.auto_commit_enabled = False
-topic = client.get_topic_consumer(os.environ["input"], "s3-sink", commit_settings = commit_settings, auto_offset_reset = qx.AutoOffsetReset.Latest)
+topic = client.get_topic_consumer(os.environ["input"], "s3-sink", 
+                                  commit_settings = commit_settings, auto_offset_reset = qx.AutoOffsetReset.Latest)
 
 # name of the parameter that contains formatted data to save to s3
 param = os.environ["parameter"]

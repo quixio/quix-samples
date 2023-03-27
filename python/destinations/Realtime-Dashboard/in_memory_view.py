@@ -1,11 +1,11 @@
 import quixstreams as qx
 import pandas as pd
 from helpers import CrossStreamStatefullProcessing
-import os
+
 
 class InMemoryView(CrossStreamStatefullProcessing):
 
-    def __init__(self, consumer_topic: InputTopic):
+    def __init__(self, consumer_topic: qx.TopicConsumer):
         super().__init__(consumer_topic)
 
     def init_state(self):

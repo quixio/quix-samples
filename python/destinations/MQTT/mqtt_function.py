@@ -9,7 +9,7 @@ class MQTTFunction:
         self.mqtt_client = mqtt_client
         self.topic_root = topic_root
 
-    def package_received_handler(self, s: qx.StreamConsumer, p: StreamPackage):
+    def package_received_handler(self, s: qx.StreamConsumer, p: qx.models.streampackage.StreamPackage):
 
         # publish the json data to mqtt
         # topic format is [CHOSEN_TOPIC_ROOT]/[STREAM_ID]/[MESSAGE_TYPE]

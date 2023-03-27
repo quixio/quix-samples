@@ -16,7 +16,7 @@ class InterpolatingFunction:
         print(data.value)
 
         # Here transform your data.
-        self.stream_producer.events.write(data)
+        self.stream_producer.events.publish(data)
 
     # Callback triggered for each new parameter data.
     def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):

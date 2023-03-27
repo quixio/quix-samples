@@ -33,7 +33,7 @@ producer_topic = client.get_topic_producer(os.environ["output"])
 
 stream = producer_topic.create_stream()
 stream.properties.name = f"{PG_TABLE_NAME} CDC"
-stream.parameters.add_definition("cdc_data")
+stream.timeseries.add_definition("cdc_data")
 stream.timeseries.buffer.time_span_in_milliseconds = 100
 
 logger.info(f"Start stream CDC for table: {PG_TABLE_NAME}")

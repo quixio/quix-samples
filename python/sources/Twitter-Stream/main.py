@@ -13,7 +13,7 @@ try:
     run = True
 
     # Quix injects credentials automatically to the client.
-# Alternatively, you can always pass an SDK token manually as an argument.
+    # Alternatively, you can always pass an SDK token manually as an argument.
     client = qx.QuixStreamingClient()
 
     # Open the output topic where to write data out
@@ -103,7 +103,7 @@ try:
 
     # here were going to get the stream and handle its output
     # we'll do this by streaming the results into Quix
-    def get_stream(headers, stream_producer):
+    def get_stream(headers, stream_producer: qx.StreamProducer):
         global run
 
         twitter_function = TwitterFunction(stream_producer)
@@ -165,7 +165,7 @@ try:
         set_rules(headers)
         stream_producer = create_stream()
 
-        thread = Thread(target = get_stream, args=(headers, stream_producer))
+        thread = Thread(target = get_stream, args = (headers, stream_producer))
         thread.start()
 
         # wait for sigterm

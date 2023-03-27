@@ -12,7 +12,7 @@ class Functions:
     def __init__(self, stream_producer: qx.StreamProducer):
         self.stream_producer = stream_producer
 
-    def write_data(self):
+    def publish_data(self):
 
         df = pd.read_csv("currency_data.csv")
         headers = list(df)
@@ -27,7 +27,7 @@ class Functions:
                     value = row[header]
                     data_frame_row[header] = [value]
 
-                self.stream_producer.timeseries.buffer.write(data_frame_row)
+                self.stream_producer.timeseries.buffer.publish(data_frame_row)
                 time.sleep(0.1)
 
         print("Closing stream")

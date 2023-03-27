@@ -4,6 +4,7 @@ import paho.mqtt.client as paho
 from paho import mqtt
 import os
 
+
 def mqtt_protocol_version():
     if os.environ["mqtt_version"] == "3.1":
         return paho.MQTTv31

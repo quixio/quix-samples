@@ -50,7 +50,7 @@ class PercentageAlert:
                 'Alert',
                 self.parameter_name + '_previous_low_value',
                 self.parameter_name + '_previous_low_value_time']
-            self.stream_producer.timeseries.buffer.write(df[cols])  # Send alert data to output topic
+            self.stream_producer.timeseries.buffer.publish(df[cols])  # Send alert data to output topic
 
             # Update global max
             self.global_max = signal_value
@@ -79,7 +79,7 @@ class PercentageAlert:
                 'Alert',
                 self.parameter_name + '_previous_high_value',
                 self.parameter_name + '_previous_high_value_time']
-            self.stream_producer.timeseries.buffer.write(df[cols])  # Send alert data to output topic
+            self.stream_producer.timeseries.buffer.publish(df[cols])  # Send alert data to output topic
 
             # Update global max
             self.global_max = signal_value

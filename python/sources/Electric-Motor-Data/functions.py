@@ -27,7 +27,7 @@ class Functions:
                     value = row[header]
                     data_frame_row[header] = [value]
 
-                self.stream_producer.timeseries.buffer.write(data_frame_row)
+                self.stream_producer.timeseries.buffer.publish(data_frame_row)
                 time.sleep(0.1)
 
         print("Closing stream")

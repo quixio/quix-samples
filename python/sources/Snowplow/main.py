@@ -66,9 +66,9 @@ def get_kinesis_data():
                 d = r["Data"]
 
                 if isinstance(d, bytes):
-                    quix_functions.write_data(d.decode())
+                    quix_functions.publish_data(d.decode())
                 else:
-                    quix_functions.write_data(d)
+                    quix_functions.publish_data(d)
 
         behind = record_data["MillisBehindLatest"]
         if behind < 1000:

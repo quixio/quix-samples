@@ -47,7 +47,7 @@ class Customer:
 		self.raw = raw.strip().split('|')
 		self.attrs = self.parse_customer(raw)
 		self.fraud_dates = []
-		self.stream_producer_producer = stream_producer
+		self.stream_producer = stream_producer
 		self.tx_headers = txn_headers
 		#self.cust_header =
 
@@ -97,7 +97,7 @@ class Customer:
 					replacement_string = "is not"
 				print(f"Writing data to Quix stream, this one {replacement_string} fraudulent")
 
-				self.stream_producer_producer.timeseries.write(data)
+				self.stream_producer.timeseries.publish(data)
 
 				time.sleep(0.25)
 

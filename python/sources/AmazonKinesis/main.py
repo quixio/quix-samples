@@ -5,10 +5,10 @@ import traceback
 import threading
 import os
 
-quix_stream: qx.streamproducer = None
+quix_stream: qx.StreamProducer = None
 
 
-def connect_to_quix() -> qx.streamproducer:
+def connect_to_quix() -> qx.StreamProducer:
     quix_client = qx.QuixStreamingClient()
 
     print("Opening output topic")

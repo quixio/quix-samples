@@ -35,7 +35,7 @@ class QuixFunction:
 
 
     # Callback triggered for each new parameter data.
-    def on_data_handler(self, data: qx.TimeseriesData):
+    def on_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
 
         self.mutex.acquire()
 
@@ -133,13 +133,13 @@ class QuixFunction:
         self.event_insert_queue.put(row, block = True)
 
 
-    def on_stream_properties_changed(self):
+    def on_stream_properties_changed(self, stream_consumer: qx.StreamConsumer):
         logger.debug("on_stream_properties_changed")
         self.insert_metadata()
         self.insert_properties("open")
         self.update_parents()
 
-    def on_parameter_definition_changed(self):
+    def on_parameter_definition_changed(self, stream_consumer: qx.StreamConsumer):
         logger.debug("on_parameter_definition_changed")
         self.insert_metadata()
         self.insert_properties("open")

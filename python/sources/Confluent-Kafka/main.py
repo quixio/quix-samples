@@ -12,14 +12,14 @@ try:
         "sasl.password": os.environ["kafka_secret"]
     }
 
-    kafka_client = StreamingClient(os.environ["kafka_broker_address"],
+    kafka_client = qx.KafkaStreamingClient(os.environ["kafka_broker_address"],
                                    None,
                                    kafka_properties)
 
     quix_client = qx.QuixStreamingClient()
 
     print("Opening RAW input topic")
-    consumer_topic = kafka_client.open_raw_consumer_topic(os.environ["kafka_topic"])
+    consumer_topic = kafka_client.get_raw_topic_consumer(os.environ["kafka_topic"])
 
     print("Opening output topic")
     producer_topic = quix_client.get_topic_producer(os.environ["output"])
@@ -30,7 +30,7 @@ try:
     is_connected = False
 
     quix_functions = QuixFunctions(stream_producer)
-    consumer_topic.on_message_read += quix_functions.raw_message_handler
+    consumer_topic.on_message_received = quix_functions.raw_message_handler
 
     # let the platform know were connected. It will navigate to the home page.
     print("CONNECTED!")

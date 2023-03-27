@@ -1,7 +1,7 @@
 import quixstreams as qx
 
-from quixstreaming import Logging, LogLevel
-Logging.update_factory(LogLevel.Debug)
+import quixstreams as qx
+qx.Logging.update_factory(qx.LogLevel.Debug)
 
 import threading as thread
 import os
@@ -92,4 +92,4 @@ add_script_run_ctx(ui_updater_thread)
 ui_updater_thread.start()
 
 # run the app, open the topic, listen for shutdown events
-App.run(before_shutdown = shutdown)
+qx.App.run(before_shutdown = shutdown)
