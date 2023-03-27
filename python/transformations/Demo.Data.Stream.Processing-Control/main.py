@@ -9,7 +9,7 @@ properties = {
     "acks": "0"
 }
 
-client = QuixStreamingClient(properties = properties)
+client = qx.QuixStreamingClient(properties = properties)
 
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
@@ -188,7 +188,7 @@ def read_stream(new_stream: qx.StreamConsumer):
     new_stream.on_stream_closed = on_stream_close
 
     # React to any metadata changes.
-    def stream_properties_changed():
+    def stream_properties_changed(stream_consumer: qx.StreamConsumer):
         if new_stream.properties.name is not None:
             stream_producer.properties.name = new_stream.properties.name + " car game input"
 

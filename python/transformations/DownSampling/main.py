@@ -52,7 +52,7 @@ def on_stream_received_handler(stream_consumer: qx.StreamConsumer):
     buffer.on_dataframe_released = on_dataframe_received_handler
 
     # When input stream closes, we close output stream as well.
-    def on_stream_close():
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
         stream_producer.close()
         print("Stream closed:" + stream_producer.stream_id)
 

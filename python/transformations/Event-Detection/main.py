@@ -27,7 +27,7 @@ def read_stream(consumer_stream: qx.StreamConsumer):
     consumer_stream.timeseries.on_dataframe_received = quix_function.on_dataframe_handler
 
     # When input stream closes, we close output stream as well. 
-    def on_stream_close():
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
         producer_stream.close()
         print("Stream closed:" + producer_stream.stream_id)
 
