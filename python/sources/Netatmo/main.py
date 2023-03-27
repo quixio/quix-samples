@@ -29,9 +29,9 @@ while True:
 
     response = requests.get(url, headers={"Authorization": "Bearer " + token})
     response_body = response.content
-    repsonse_json = json.loads(response_body.decode("utf-8"))
+    response_json = json.loads(response_body.decode("utf-8"))
 
-    devices = repsonse_json["body"]["devices"]
+    devices = response_json["body"]["devices"]
 
     for device in devices:
         device_id = device["_id"]
@@ -56,7 +56,7 @@ while True:
         temp_trend = dashboard_data["temp_trend"]
         pressure_trend = dashboard_data["pressure_trend"]
 
-        stream.timeseries.buffer.add_timestamp_nanoseconds(time_utc* 1000000000) \
+        stream.timeseries.buffer.add_timestamp_nanoseconds(time_utc * 1000000000) \
             .add_tag("country", country) \
             .add_tag("city", city ) \
             .add_value("temperature", temperature) \
@@ -86,7 +86,7 @@ while True:
             humidity = dashboard_data["Humidity"]
             temp_trend = dashboard_data["temp_trend"]
 
-            stream.timeseries.buffer.add_timestamp_nanoseconds(time_utc* 1000000000) \
+            stream.timeseries.buffer.add_timestamp_nanoseconds(time_utc * 1000000000) \
                 .add_tag("country", country) \
                 .add_tag("city", city ) \
                 .add_value(name + "-temperature", temperature) \
@@ -95,10 +95,5 @@ while True:
                 .publish()
 
             print("Module {0} telemetry sent.".format(name))
-            
 
-    
     time.sleep(300)
-
-
-
