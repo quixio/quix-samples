@@ -51,6 +51,7 @@ def main():
             sub["post_hint"] = submission.post_hint
         subreddit_stream.events.add_timestamp(datetime.datetime.utcnow()).add_value("submission", json.dumps(sub)).publish()
         pdata = subreddit_stream.timeseries.buffer.add_timestamp(datetime.datetime.utcnow())
+
         pdata.add_value("spoiler", 1 if sub["spoiler"] else 0) \
              .add_value("over_18", 1 if sub["over_18"] else 0) \
              .add_value("title", sub["title"]) \
@@ -58,8 +59,8 @@ def main():
              .add_value("awarder_count", sub["awarder_count"]) \
              .add_value("created_utc", sub["created_utc"]) \
              .add_value("thumbnail", sub["thumbnail"]) \
-             .add_value("thumbnail_height", sub["thumbnail_height"]) \
-             .add_value("thumbnail_width", sub["thumbnail_width"]) \
+             .add_value("thumbnail_height", sub["thumbnail_height"] if sub["thumbnail_height"] else '') \
+             .add_value("thumbnail_width", sub["thumbnail_width"] if sub["thumbnail_width"] else '') \
              .add_value("url", sub["url"]) \
              .add_value("score", sub["score"]) \
              .add_value("upvote_ratio", sub["upvote_ratio"]) \
