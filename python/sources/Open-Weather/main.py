@@ -23,7 +23,7 @@ producer_topic = client.get_topic_producer(os.environ["output"])
 
 # CREATE A STREAM: A stream is a collection of data that belong to a single session of a single source.
 stream_producer = producer_topic.create_stream("NY-Real-Time-Weather")
-# Give the stream human readable name. This name will appear in data catalogue.
+# Give the stream human-readable name. This name will appear in data catalogue.
 stream_producer.properties.name = "New York Weather Real Time"
 # Save stream in specific folder in data catalogue to help organize your workspace.
 stream_producer.properties.location = "/NY_Real_Time"
@@ -46,8 +46,8 @@ def get_data():
             for i, forecast_time in enumerate(['Current', 'NextDay']):
                 stream_producer.timeseries.buffer.add_timestamp(current_time) \
                     .add_tag('Forecast', forecast_time) \
-                    .add_value('feelslike_temp_c', list_dfs[i].loc[0, 'feelslike_temp_c']) \
-                    .add_value('wind_kph', list_dfs[i].loc[0, 'wind_mps'] * 3.6) \
+                    .add_value('feelslike_temp_c', float(list_dfs[i].loc[0, 'feelslike_temp_c'])) \
+                    .add_value('wind_kph', float(list_dfs[i].loc[0, 'wind_mps'] * 3.6)) \
                     .add_value('condition', list_dfs[i].loc[0, 'condition']) \
                     .publish()
 
@@ -56,7 +56,7 @@ def get_data():
             int_sec = int((current_time_j - current_time).seconds)
             print(current_time, current_time_j, int_sec)
 
-            # We sleep for 30 minutes so we don't reach free account limit.
+            # We sleep for 30 minutes, so we don't reach free account limit.
             # Stop sleeping if process termination requested
             sleeping = 0
             while sleeping <= (1800 - int_sec) and run:
