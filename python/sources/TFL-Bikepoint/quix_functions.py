@@ -1,5 +1,4 @@
 import quixstreams as qx
-import parser
 
 
 class QuixFunctions:
