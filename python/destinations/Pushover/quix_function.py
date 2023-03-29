@@ -39,6 +39,9 @@ class QuixFunction:
 
         # send your push message
         try:
-            requests.get(self.url)
+            pushmsg = {'token': self.apitoken,
+                       'user': self.userkey,
+                       'message': 'An event has been detected'}
+            requests.post(self.baseurl, json = pushmsg)
         except Exception as e:
             print(f"Error connecting to push API: {e}")
