@@ -2,6 +2,7 @@ import quixstreams as qx
 import os
 import json
 import requests
+import time
 
 
 client = qx.QuixStreamingClient()
