@@ -19,7 +19,7 @@ producer_topic = client.get_topic_producer(os.environ["output"])
 
 # CREATE A STREAM: collection of data that belong to a single session of a single source.
 stream_producer = producer_topic.create_stream("NY-Real-Time-Bikes")
-# Give the stream human readable name. This name will appear in Live views and Data Explorer.
+# Give the stream human-readable name. This name will appear in Live views and Data Explorer.
 stream_producer.properties.name = "New York Total Bikes Real Time"
 # Save stream in specific folder in data catalogue to help organize your data.
 stream_producer.properties.location = "/NY_Real_Time"
@@ -38,8 +38,8 @@ def get_data():
 
             # Write bikes data to the output stream
             stream_producer.timeseries.buffer.add_timestamp(current_time_i) \
-                .add_value('total_num_bikes_available', total_bikes) \
-                .add_value('num_docks_available', df_i_agg.loc[0, 'num_docks_available']) \
+                .add_value('total_num_bikes_available', int(total_bikes)) \
+                .add_value('num_docks_available', int(df_i_agg.loc[0, 'num_docks_available'])) \
                 .publish()
 
             # How long did the Request and transformation take
