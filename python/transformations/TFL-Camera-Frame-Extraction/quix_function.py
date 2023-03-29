@@ -38,13 +38,11 @@ class QuixFunction:
             frame_bytes = frame[1]
 
             success, image = video_stream.read()
-            
-            success, image = video_stream.read()
             count += 1
 
             if (count - 1) % self.frame_rate == 0:
                 self.stream_producer.timeseries.buffer.add_timestamp_nanoseconds(time.time_ns()) \
-                    .add_value("image", frame_bytes) \
+                    .add_value("image", bytearray(frame_bytes)) \
                     .add_value("lon", lon) \
                     .add_value("lat", lat) \
                     .publish()
