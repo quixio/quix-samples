@@ -13,7 +13,7 @@ class InMemoryView(CrossStreamStatefullProcessing):
 
 
     # Callback triggered for each new parameter data.
-    def on_dataframe_handler(self, data_df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, data_df: pd.DataFrame):
 
         print(data_df)
         
