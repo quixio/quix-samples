@@ -168,7 +168,7 @@ def read_stream(new_stream: qx.StreamConsumer):
                 .add_value("speed", speed) \
                 .add_value("angle", angle)
 
-            stream_producer.timeseries.write(data)
+            stream_producer.timeseries.publish(data)
             last_timestamp = row.timestamp_nanoseconds
 
     # React to new data received from input topic.
