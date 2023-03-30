@@ -1,6 +1,5 @@
 import quixstreams as qx
 
-import quixstreams as qx
 qx.Logging.update_factory(qx.LogLevel.Debug)
 
 import threading as thread
@@ -28,7 +27,7 @@ df = pd.DataFrame()
 placeholder = st.empty()
 
 # callback called for each incoming data frame
-def on_read_pandas_data(df_i: pd.DataFrame):
+def on_read_pandas_data(stream_consumer: qx.StreamConsumer, df_i: pd.DataFrame):
     global df
 
     # format the datetime
