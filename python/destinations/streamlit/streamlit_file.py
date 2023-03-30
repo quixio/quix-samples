@@ -32,7 +32,7 @@ def on_read_pandas_data(df_i: pd.DataFrame):
     global df
 
     # format the datetime
-    df_i['datetime'] = pd.to_datetime(df_i['time'])
+    df_i['datetime'] = pd.to_datetime(df_i['timestamp'])
 
     # append the new data
     df = df.append(df_i)

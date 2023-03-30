@@ -28,7 +28,7 @@ class InterpolatingFunction:
         # Iterate over dataframe
         for i in range(len(df)):
             df_i = df.iloc[[i], :]
-            timestamp_i = df['time'].iloc[i]
+            timestamp_i = df['timestamp'].iloc[i]
             parameters_i = df[self.parameters].iloc[i]
 
             # If this is the first time we get data in, initiate last_timestamp and last_parameters_value
