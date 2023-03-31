@@ -1,2 +1,2 @@
-quixstreams==0.5.0
+quixstreams==0.5.1
 twilio

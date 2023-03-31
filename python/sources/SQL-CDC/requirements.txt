@@ -1,4 +1,4 @@
-quixstreams==0.5.0
+quixstreams==0.5.1
 pyodbc
 requests
 pandas==1.5.3
