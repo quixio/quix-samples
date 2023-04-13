@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_functions import QuixFunctions
 import requests
 import time
@@ -13,11 +12,11 @@ try:
 
     # Quix injects credentials automatically to the client.
     # Alternatively, you can always pass an SDK token manually as an argument.
-    client = QuixStreamingClient()
+    client = qx.QuixStreamingClient()
 
     # Open the output topic where to write data out
     print("Opening output topic")
-    output_topic = client.open_output_topic(os.environ["output"])
+    producer_topic = client.get_topic_producer(os.environ["output"])
 
     # Which currency pairs are you interested in?
     primary_currency = os.environ["primary_currency"]  # e.g."BTC"
@@ -33,22 +32,22 @@ try:
 
     headers = {'X-CoinAPI-Key': coin_api_key}
 
-    output_stream = output_topic.create_stream("coin-api")
+    stream_producer = producer_topic.create_stream("coin-api")
 
     # Give the stream human-readable name. This name will appear in data catalogue.
-    output_stream.properties.name = "Coin API"
+    stream_producer.properties.name = "Coin API"
 
     # Save stream in specific folder in data catalogue to help organize your workspace.
-    output_stream.properties.location = "/Coin API"
+    stream_producer.properties.location = "/Coin API"
 
 
     def get_data():
         global run
 
-        quix_functions = QuixFunctions(output_stream)
+        quix_functions = QuixFunctions(stream_producer)
 
         while run:
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers = headers)
 
             data = response.json()
 
@@ -72,12 +71,12 @@ try:
 
 
     def main():
-        thread = Thread(target=get_data)
+        thread = Thread(target = get_data)
         thread.start()
 
         print("CONNECTED!")
 
-        App.run(before_shutdown=before_shutdown)
+        qx.App.run(before_shutdown = before_shutdown)
 
         # wait for worker thread to end
         thread.join()

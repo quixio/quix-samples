@@ -14,7 +14,7 @@ class ThresholdAlert:
         self.previous_timestamp = None
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, _: qx.StreamConsumer, df: pd.DataFrame):
+    def on_dataframe_handler(self, _: qx.StreamConsumer, df: pd.DataFrame):
 
         if self.parameter_name not in df.columns:
             print("Parameter {0} not present in data frame.".format(self.parameter_name))

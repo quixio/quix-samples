@@ -1,7 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamReader
-from quixstreaming.models.parametersbufferconfiguration import ParametersBufferConfiguration
-from quixstreaming.models import StreamEndType
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_function import QuixFunction
 import os
 
@@ -9,47 +6,47 @@ PREDICT_STREAM_NAME = "predict_data"
 PREDICT_STREAM_PATH = "/dataset/predict_data"
 PREDICT_STREAM_ID = "-predict-out-stream"
 
-output_topic = None
+producer_topic: qx.TopicProducer = None
 
 
-def read_stream(new_stream: StreamReader):
-    output_stream = output_topic.create_stream(new_stream.stream_id + PREDICT_STREAM_ID)
+def read_stream(new_stream: qx.StreamConsumer):
+    stream_producer = producer_topic.create_stream(new_stream.stream_id + PREDICT_STREAM_ID)
 
-    output_stream.properties.name = PREDICT_STREAM_NAME
-    output_stream.properties.location = PREDICT_STREAM_PATH
+    stream_producer.properties.name = PREDICT_STREAM_NAME
+    stream_producer.properties.location = PREDICT_STREAM_PATH
 
-    buffer_options = ParametersBufferConfiguration()
+    buffer_options = qx.TimeseriesBufferConfiguration()
     buffer_options.buffer_timeout = 1000
 
-    buffer = new_stream.parameters.create_buffer(buffer_options)
+    buffer = new_stream.timeseries.create_buffer(buffer_options)
 
-    quix_function = QuixFunction(output_stream)
+    quix_function = QuixFunction(stream_producer)
 
     # React to new data received from input topic.
-    buffer.on_read_pandas += quix_function.on_pandas_frame_handler
+    buffer.on_dataframe_released = quix_function.on_dataframe_handler
 
     # When input stream closes, we close output stream as well.
-    def on_stream_close(end_type: StreamEndType):
-        output_stream.close(end_type)
-        print("Stream closed:" + output_stream.stream_id)
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
+        stream_producer.close(end_type)
+        print("Stream closed:" + stream_producer.stream_id)
 
-    new_stream.on_stream_closed += on_stream_close
+    new_stream.on_stream_closed = on_stream_close
 
 
 def main():
-    global output_topic
+    global producer_topic
 
-    streamingClient = QuixStreamingClient()
+    streaming_client = qx.QuixStreamingClient()
 
-    input_topic = streamingClient.open_input_topic(os.environ["input"])
-    output_topic = streamingClient.open_output_topic(os.environ["output"])
+    consumer_topic = streaming_client.get_topic_consumer(os.environ["input"])
+    producer_topic = streaming_client.get_topic_producer(os.environ["output"])
 
     # Hook up events before initiating read to avoid losing out on any data
-    input_topic.on_stream_received += read_stream
+    consumer_topic.on_stream_received = read_stream
 
     # Hook up to termination signal (for docker image) and CTRL-C
     print("Listening to streams. Press CTRL-C to exit.")
-    App.run()
+    qx.App.run()
     print("Exiting")
 
 

@@ -1,4 +1,4 @@
-from quixstreaming import StreamWriter, EventData
+import quixstreams as qx
 from snowplow_analytics_sdk import event_transformer as et
 import pandas as pd
 from datetime import datetime
@@ -6,11 +6,11 @@ from datetime import datetime
 
 class QuixFunctions:
 
-    def __init__(self, stream_writer: StreamWriter):
-        self.stream_writer = stream_writer
+    def __init__(self, stream_producer: qx.StreamProducer):
+        self.stream_producer = stream_producer
 
     # Callback triggered for each new record.
-    def write_data(self, data) -> None:
+    def publish_data(self, data) -> None:
 
         # use the snowplow sdk to transform the incoming data
         tx = et.transform(data)
@@ -22,6 +22,6 @@ class QuixFunctions:
         df["time"] = datetime.now()
 
         # publish to the stream
-        self.stream_writer.parameters.buffer.write(df)
+        self.stream_producer.timeseries.buffer.publish(df)
 
         print("Published {}".format(df["event_name"].values[0]))

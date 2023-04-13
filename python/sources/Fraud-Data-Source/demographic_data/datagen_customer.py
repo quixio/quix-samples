@@ -59,7 +59,7 @@ class Customer:
 
 
 	def generate_age_gender(self):
-	    g_a = age_gender[min(age_gender, key=lambda x:abs(x-random.random()))]
+	    g_a = age_gender[min(age_gender, key = lambda x:abs(x-random.random()))]
 
 	    while True:
 	        dob = fake.date_time_this_century()
@@ -78,7 +78,7 @@ class Customer:
 
 	# find nearest city
 	def get_random_location(self):
-	    return cities[min(cities, key=lambda x:abs(x-random.random()))]
+	    return cities[min(cities, key = lambda x:abs(x-random.random()))]
 
 	def print_customer(self):
 	     print(str(self.ssn) + '|' +\

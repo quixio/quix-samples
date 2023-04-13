@@ -1,6 +1,5 @@
 import paho.mqtt.client as paho
-from quixstreaming import StreamReader
-from quixstreaming.models.streampackage import StreamPackage
+import quixstreams as qx
 
 
 class MQTTFunction:
@@ -10,9 +9,9 @@ class MQTTFunction:
         self.mqtt_client = mqtt_client
         self.topic_root = topic_root
 
-    def package_received_handler(self, s: StreamReader, p: StreamPackage):
+    def package_received_handler(self, s: qx.StreamConsumer, p: qx.models.streampackage.StreamPackage):
 
         # publish the json data to mqtt
         # topic format is [CHOSEN_TOPIC_ROOT]/[STREAM_ID]/[MESSAGE_TYPE]
         self.mqtt_client.publish(self.topic_root + "/" + s.stream_id + "/" + str(p.type),
-                                   payload=p.to_json(), qos=1)
+                                   payload = p.to_json(), qos = 1)

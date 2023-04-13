@@ -7,7 +7,7 @@ from datagen_customer import main as datagen_customers
 from datagen_transaction import main as datagen_transactions
 
 
-output_topic_name = os.environ["output_topic"]
+producer_topic_name = os.environ["producer_topic"]
 
 # -n 10 -o '' 01-01-2021 01-02-2022
 if __name__ == '__main__':
@@ -80,5 +80,5 @@ if __name__ == '__main__':
 
 			datagen_transactions(customers_out_file, pathlib.Path(os.path.join('profiles', profile_file)), 
 				start_date, end_date, transactions_filename, customer_file_offset_start, 
-				customer_file_offset_end, output_topic_name, use_transaction_date_as_timestamp)
+				customer_file_offset_end, producer_topic_name, use_transaction_date_as_timestamp)
 

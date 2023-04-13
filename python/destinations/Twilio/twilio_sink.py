@@ -1,4 +1,4 @@
-from quixstreaming import ParameterData, EventData
+import quixstreams as qx
 from twilio.rest import Client
 import time
 import os
@@ -22,12 +22,12 @@ class TwilioSink:
         self._messages_sent = []  # Epochs of messages sent.
 
     # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
         print(df)
         self._send_text_message(str(df))
 
     # Callback triggered for each new event data.
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         print(data)
         self._send_text_message(data.value)
 
@@ -41,9 +41,9 @@ class TwilioSink:
         if len(self._messages_sent) < self._message_limit_per_minute:
             for phone_number in self._phone_numbers:
                 message = self._twilio_client.messages.create(
-                    messaging_service_sid=self._messaging_service_sid,
-                    body=body,
-                    to=phone_number
+                    messaging_service_sid = self._messaging_service_sid,
+                    body = body,
+                    to = phone_number
                 )
 
                 print("Message {0} sent to {1}".format(body, phone_number))

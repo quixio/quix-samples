@@ -10,25 +10,25 @@ client = qx.QuixStreamingClient()
 print("Starting")
 print("Opening input and output topics")
 consumer_topic = client.get_topic_consumer(os.environ.get("input"), "processing4",
-                                           auto_offset_reset=qx.AutoOffsetReset.Latest)
-output_topic = client.get_topic_producer(os.environ.get("output"))
+                                           auto_offset_reset = qx.AutoOffsetReset.Latest)
+producer_topic = client.get_topic_producer(os.environ.get("output"))
 image_processor = ImageProcessing()
 
 
 # Callback called for each incoming stream
 def read_stream(consumer_stream: qx.StreamConsumer):
     # Create a new stream to output data
-    producer_stream = output_topic.create_stream(consumer_stream.stream_id)
+    producer_stream = producer_topic.create_stream(consumer_stream.stream_id)
     producer_stream.properties.parents.append(consumer_stream.stream_id)
 
     # handle the data in a function to simplify the example
     quix_function = QuixFunction(producer_stream, image_processor)
 
     # React to new data received from input topic.
-    consumer_stream.timeseries.on_data_received = quix_function.on_parameter_data_handler
+    consumer_stream.timeseries.on_data_received = quix_function.on_data_handler
 
     # When input stream closes, we close output stream as well.
-    def on_stream_close():
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
         producer_stream.close()
         print("Stream closed:" + producer_stream.stream_id)
 
