@@ -16,7 +16,7 @@ class QuixFunction:
         self.producer_stream.events.publish(data)
 
     # Callback triggered for each new timeseries data
-    def on_pandas_frame_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
         
         output_df = pd.DataFrame()
         output_df["timestamp"] = df["timestamp"]
@@ -29,7 +29,7 @@ class QuixFunction:
         # If braking force applied is more than 50%, we send True.
         # update this code to apply your own logic or ML model processing
         if "Brake" in df.columns:
-            output_df["HardBraking"] = df.apply(lambda row: "True" if row.Brake > 0.5 else "False", axis=1)  
+            output_df["HardBraking"] = df.apply(lambda row: "True" if row.Brake > 0.5 else "False", axis = 1)  
 
         self.producer_stream.timeseries.buffer.publish(output_df)
 

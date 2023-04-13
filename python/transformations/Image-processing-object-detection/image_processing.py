@@ -55,8 +55,8 @@ class ImageProcessing:
         return self.classes
 
     def img_from_base64(self, jpg_original):
-        jpg_as_np = np.frombuffer(jpg_original, dtype=np.uint8)
-        img = cv2.imdecode(jpg_as_np, flags=1)
+        jpg_as_np = np.frombuffer(jpg_original, dtype = np.uint8)
+        img = cv2.imdecode(jpg_as_np, flags = 1)
         return img
 
     def img_to_binary(self, img):
@@ -68,7 +68,7 @@ class ImageProcessing:
         # Loading the Image
         height, width, channels = img.shape
         # Extracting features to detect objects
-        blob = cv2.dnn.blobFromImage(img, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+        blob = cv2.dnn.blobFromImage(img, 0.00392, (416, 416), (0, 0, 0), True, crop = False)
         # Inverting blue with red
         # bgr->rgb
         # We need to pass the img_blob to the algorithm

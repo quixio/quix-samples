@@ -21,7 +21,7 @@ class Null:
 
 def connect_postgres():
     conn = psycopg2.connect(
-        database=PG_DATABASE, user=PG_USER, password=PG_PASSWORD, host=PG_HOST, port=PG_PORT
+        database = PG_DATABASE, user = PG_USER, password = PG_PASSWORD, host = PG_HOST, port = PG_PORT
     )
     return conn
 

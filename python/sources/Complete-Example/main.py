@@ -1,20 +1,21 @@
-from quixstreaming import QuixStreamingClient, StreamEndType, EventLevel
+import quixstreams as qx
 from quix_functions import QuixFunction
 import datetime
 import os
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient()
 
 # create the output topic and stream
-output_topic = client.open_output_topic(os.environ["output"])
-output_stream = output_topic.create_stream()
+producer_topic = client.get_topic_producer(os.environ["output"])
+stream_producer = producer_topic.create_stream()
 
 # Initialise Quix function
-quix_function = QuixFunction(output_stream)
+quix_function = QuixFunction(stream_producer)
 
 # Hook up the exception handler callback
-output_stream.on_write_exception += quix_function.on_write_exception_handler
+stream_producer.on_write_exception = quix_function.on_write_exception_handler
 
 # Update the stream properties
 quix_function.set_stream_properties()

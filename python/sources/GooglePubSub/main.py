@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_functions import QuixFunctions
 from google.cloud import pubsub_v1
 from google.auth import jwt
@@ -29,17 +28,17 @@ def connect_to_google():
     audience = "https://pubsub.googleapis.com/google.pubsub.v1.Subscriber"
 
     credentials = jwt.Credentials.from_service_account_info(
-        service_account_info, audience=audience
+        service_account_info, audience = audience
     )
 
-    subscriber = pubsub_v1.SubscriberClient(credentials=credentials)
+    subscriber = pubsub_v1.SubscriberClient(credentials = credentials)
 
     quix_functions = QuixFunctions(quix_stream)
 
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     # when a message arrives from google, call the callback to handle the message
-    subscription = subscriber.subscribe(subscription_path, callback=quix_functions.callback)
+    subscription = subscriber.subscribe(subscription_path, callback = quix_functions.callback)
     print(f"Listening for messages on {subscription_path}..\n")
 
     print("CONNECTED!")
@@ -56,11 +55,11 @@ def connect_to_google():
 def connect_to_quix():
     global quix_stream
 
-    quix_client = QuixStreamingClient()
+    quix_client = qx.QuixStreamingClient()
 
     print("Opening output topic")
-    output_topic = quix_client.open_output_topic(os.environ["output"])
-    quix_stream = output_topic.create_stream()
+    producer_topic = quix_client.get_topic_producer(os.environ["output"])
+    quix_stream = producer_topic.create_stream()
 
     quix_stream.properties.location = "Raw Data"
     quix_stream.properties.name = "{} - {}".format("GooglePubSub", datetime.utcnow().strftime("%d-%m-%Y %X"))
@@ -120,7 +119,7 @@ if connected is False:
     print('Exiting')
 else:
     # Wait for termination signals and handle graceful shutdown
-    App.run(before_shutdown=before_shutdown)
+    qx.App.run(before_shutdown = before_shutdown)
     print('Exiting')
 
 

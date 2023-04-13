@@ -100,7 +100,7 @@ class Profile:
 		for h in holidays:
 			while h['start'] <= h['end']:
 				days[(h['start'].month, h['start'].day)] = h['weight']
-				h['start'] += timedelta(days=1)
+				h['start'] += timedelta(days = 1)
 
 		# need separate weights for non-leap years
 		days_nonleap = {k:days[k] for k in days.keys() if k != (2,29)}
@@ -139,7 +139,7 @@ class Profile:
 					 * weights['day_of_week'][curr.weekday()])
 
 			new_date_weights[curr] = date_wt
-			curr += timedelta(days=1)
+			curr += timedelta(days = 1)
 		# re-weight to get proportions
 		return self.weight_to_prop(new_date_weights)
 
@@ -216,7 +216,7 @@ class Profile:
 		# else:
 		#	  is_traveling = False
 		travel_max = self.profile['travel_max_dist']
-		# travel_max=1
+		# travel_max = 1
 		is_traveling = False
 
 		output = []
@@ -229,7 +229,7 @@ class Profile:
 		rnds = self.closest_rand_parallel(rnds, 2, 4, self.proportions['categories_wt'])
 
 		# get counts for each category
-		unique, counts = np.unique(rnds[:,4], return_counts=True)
+		unique, counts = np.unique(rnds[:,4], return_counts = True)
 		# sort by category
 		rnds = rnds[rnds[:,5].argsort()]
 		offset = 0
@@ -247,7 +247,7 @@ class Profile:
 		fraud_dates = []
 		# now loop through and pick from random array
 		for i in range(num_trans):
-			trans_num = self.fake.md5(raw_output=False)
+			trans_num = self.fake.md5(raw_output = False)
 			chosen_date = self.proportions['date_prop'][rnds[i, 3]]
 			chosen_date_str = chosen_date.strftime('%Y-%m-%d')
 			if is_fraud == 1:
@@ -256,7 +256,7 @@ class Profile:
 			chosen_amt = "{:.2f}".format(rnds[i, 6])
 			chosen_daypart = self.proportions['shopping_time'][rnds[i, 5]]
 			hr, mn, sec = self.sample_time(chosen_daypart, is_fraud)
-			chosen_date = datetime.combine(chosen_date, time(hour=hr, minute=mn, second=sec))
+			chosen_date = datetime.combine(chosen_date, time(hour = hr, minute = mn, second = sec))
 			epoch = int(chosen_date.timestamp())
 			output.append([str(trans_num), chosen_date_str, f"{hr:02d}:{mn:02d}:{sec:02d}", str(epoch), str(chosen_cat), str(chosen_amt), str(is_fraud)])
 		return output, is_traveling, travel_max, fraud_dates

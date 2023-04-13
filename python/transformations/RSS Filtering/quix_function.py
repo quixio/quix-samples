@@ -9,7 +9,7 @@ class QuixFunction:
         self.producer_stream = producer_stream
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
+    def on_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
      
         # get the value for the filter
         tag_filter = os.environ["tag_filter"]

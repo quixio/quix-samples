@@ -19,7 +19,7 @@ The code sample uses the following environment variables:
 
 ## Requirements / Prerequisites
 
-You'll need to have access to Slack and be able to set up a webhook
+You'll need to have access to Slack and be able to set up a webhook here: https://api.slack.com/apps
 
 ## Contribute
 

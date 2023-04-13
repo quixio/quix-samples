@@ -1,4 +1,4 @@
-from quixstreaming import StreamWriter
+import quixstreams as qx
 from datetime import datetime
 import time
 import pandas as pd
@@ -9,10 +9,10 @@ class Functions:
     # should the main loop run?
     run = True
 
-    def __init__(self, stream_writer: StreamWriter):
-        self.stream_writer = stream_writer
+    def __init__(self, stream_producer: qx.StreamProducer):
+        self.stream_producer = stream_producer
 
-    def write_data(self):
+    def publish_data(self):
 
         df = pd.read_csv("currency_data.csv")
         headers = list(df)
@@ -27,14 +27,14 @@ class Functions:
                     value = row[header]
                     data_frame_row[header] = [value]
 
-                self.stream_writer.parameters.buffer.write(data_frame_row)
+                self.stream_producer.timeseries.buffer.publish(data_frame_row)
                 time.sleep(0.1)
 
         print("Closing stream")
 
         # Stream can be infinitely long or have start and end.
         # If you send data into closed stream, it is automatically opened again.
-        self.stream_writer.close()
+        self.stream_producer.close()
 
     def stop_loop(self):
         self.run = False

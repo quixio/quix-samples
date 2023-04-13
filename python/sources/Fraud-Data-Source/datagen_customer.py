@@ -51,7 +51,7 @@ def make_age_gender_dict():
 class Customer:
 	'Randomly generates all the attributes for a customer'
 
-	def __init__(self, config, seed_num=None):
+	def __init__(self, config, seed_num = None):
 		self.fake = Faker()
 		if seed_num is not None:
 			Faker.seed(seed_num)
@@ -71,7 +71,7 @@ class Customer:
 		] + self.addy + [
 			self.fake.job(),
 			self.dob,
-			str(self.fake.random_number(digits=12)),
+			str(self.fake.random_number(digits = 12)),
 			self.find_profile()
 		]
 		return customer_data
@@ -93,7 +93,7 @@ class Customer:
 				rand_date = self.fake.date_time_this_century()
 				# find birthyear, which is today's year - age - 1 if today's month,day is smaller than dob month,day
 				birth_year = today.year - age - ((today.month, today.day) < (rand_date.month, rand_date.day))
-				dob = rand_date.replace(year=birth_year)
+				dob = rand_date.replace(year = birth_year)
 
 				# return first letter of gender, dob and age
 				return g_a[0][0], dob.strftime("%Y-%m-%d"), age
@@ -159,7 +159,7 @@ def main(num_cust, seed_num, config, out_path):
 	# print headers
 	print("|".join(headers))
 
-	c = Customer(config=config, seed_num=seed_num)
+	c = Customer(config = config, seed_num = seed_num)
 	for _ in range(num_cust):
 		customer_data = c.generate_customer()
 		print("|".join(customer_data))
@@ -176,10 +176,10 @@ age_gender = make_age_gender_dict()
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser(description='Customer Generator')
-	parser.add_argument('count', type=int, help='Number of customers to generate', default=10)
-	parser.add_argument('seed', type=int, nargs='?', help='Random generator seed', default=42)
-	parser.add_argument('config', type=pathlib.Path, nargs='?', help='Profile config file (typically profiles/main_config.json")', default='./profiles/main_config.json')
-	#parser.add_argument('-o', '--output', type=pathlib.Path, help='Output file path', default=None)
+	parser.add_argument('count', type = int, help='Number of customers to generate', default = 10)
+	parser.add_argument('seed', type = int, nargs='?', help='Random generator seed', default = 42)
+	parser.add_argument('config', type = pathlib.Path, nargs='?', help='Profile config file (typically profiles/main_config.json")', default='./profiles/main_config.json')
+	#parser.add_argument('-o', '--output', type = pathlib.Path, help='Output file path', default = None)
 
 	args = parser.parse_args()
 	num_cust = args.count

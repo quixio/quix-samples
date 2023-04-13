@@ -1,15 +1,13 @@
-from quixstreaming import QuixStreamingClient, StreamEndType, StreamReader, ParameterData, \
-    ParameterValue, EventData
-from quixstreaming.app import App
+import quixstreams as qx
 from prometheus_client import start_http_server, Summary, Counter, Gauge
 from prometheus_client import Enum
 import os
 
 
-client = QuixStreamingClient()
+client = qx.QuixStreamingClient()
 
 print("Opening input and output topics")
-input_topic = client.open_input_topic(os.environ["input"], "prometheus-sink")
+consumer_topic = client.get_topic_consumer(os.environ["input"], "prometheus-sink")
 
 # Create summaries
 parameter_data_handler_processing_time = Summary('param_data_handler_seconds', 'Time spent processing parameter data')
@@ -40,7 +38,7 @@ tags = []
 
 # get the string, numeric or binary value from the parameter value
 @get_value_processing_time.time()
-def get_value(parameter: ParameterValue):
+def get_value(parameter: qx.ParameterValue):
     if parameter.string_value is not None:
         return {"type": "string", "value": parameter.string_value}
     if parameter.numeric_value is not None:
@@ -81,7 +79,7 @@ def value_is_unique(tag):
         return True
 
 @parameter_data_handler_processing_time.time()
-def on_param_data_handler(data: ParameterData):
+def on_param_data_handler(stream: qx.StreamConsumer, data: qx.TimeseriesData):
 
     # iterate the timestamps
     for t in data.timestamps:
@@ -109,7 +107,7 @@ def on_param_data_handler(data: ParameterData):
                 
 
 @event_data_handler_processing_time.time()
-def on_event_data_handler(data: EventData):
+def on_event_data_handler(stream_consumer: qx.StreamConsumer, data: qx.EventData):
     # increment the total values handled counter
     event_value_counter.inc()
 
@@ -130,13 +128,13 @@ def on_event_data_handler(data: EventData):
             unique_tag_value_counter.inc()
 
 
-def read_stream(input_stream: StreamReader):
+def read_stream(stream_consumer: qx.StreamConsumer):
 
-    buffer = input_stream.parameters.create_buffer()
+    buffer = stream_consumer.timeseries.create_buffer()
     # handle parameter data being received
-    buffer.on_read += on_param_data_handler
+    buffer.on_data_released = on_param_data_handler
     # handle event data being received
-    input_stream.events.on_read += on_event_data_handler
+    stream_consumer.events.on_data_received = on_event_data_handler
 
     # count the total handled streams
     streams_handled_gauge.inc()
@@ -145,17 +143,17 @@ def read_stream(input_stream: StreamReader):
 
     def on_stream_properties_changed():
         # if stream properties change. update the metrics
-        create_or_update_gauge("stream_properties_parents", len(input_stream.properties.parents), "count")
-        create_or_update_gauge("stream_properties_metadata", len(input_stream.properties.metadata), "count")
+        create_or_update_gauge("stream_properties_parents", len(stream_consumer.properties.parents), "count")
+        create_or_update_gauge("stream_properties_metadata", len(stream_consumer.properties.metadata), "count")
 
-    def on_stream_close(endType: StreamEndType):
+    def on_stream_close(stream_consumer: qx.StreamConsumer, endType: qx.StreamEndType):
         # decrement when a stream is closed
         print("stream closed")
         streams_open_gauge.dec()
 
     # hook up the stream closed and properties changed event handlers
-    input_stream.on_stream_closed += on_stream_close
-    input_stream.properties.on_changed += on_stream_properties_changed
+    stream_consumer.on_stream_closed = on_stream_close
+    stream_consumer.properties.on_changed = on_stream_properties_changed
 
 def shutdown():
     # do shut down tasks here
@@ -173,11 +171,11 @@ if __name__ == '__main__':
     e.state('starting')
 
     # hook up the stream received event handler
-    input_topic.on_stream_received += read_stream
+    consumer_topic.on_stream_received = read_stream
 
     # set the state
     e.state('running')
 
     # call Quix SDK's App.run. This will create topics and keep the app running as long as required
     # when a termination signal is detected the app will stop and call the shutdown function
-    App.run(before_shutdown=shutdown)
+    qx.App.run(before_shutdown = shutdown)

@@ -5,13 +5,13 @@ import traceback
 
 
 class QuixFunction:
-    def __init__(self, stream_consumer: qx.StreamConsumer, image_processor):
-        self.stream_consumer = stream_consumer
+    def __init__(self, stream_producer: qx.StreamProducer, image_processor):
+        self.stream_producer = stream_producer
         self.image_processor = image_processor
         self.image_processor_classes = self.image_processor.get_classes()
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
+    def on_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
         print("Received new parameter")
 
         try:
@@ -27,7 +27,7 @@ class QuixFunction:
 
                 counter = Counter(class_ids)
 
-                row = self.stream_consumer.timeseries.buffer \
+                row = self.stream_producer.timeseries.buffer \
                     .add_timestamp_nanoseconds(timestamp.timestamp_nanoseconds)
 
                 for key, value in counter.items():

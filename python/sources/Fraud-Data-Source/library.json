@@ -16,7 +16,7 @@
 	"RunEntryPoint": "datagen.py",
 	"Variables": [
 		{
-			"Name" : "output_topic",
+			"Name" : "producer_topic",
 			"Type" : "EnvironmentVariable",
 			"InputType" : "OutputTopic",
 			"Description" : "This is the output topic for the data",

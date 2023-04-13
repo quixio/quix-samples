@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_functions import QuixFunctions
 import traceback
 from threading import Thread
@@ -24,23 +23,23 @@ try:
 
     # Quix injects credentials automatically to the client.
     # Alternatively, you can always pass an SDK token manually as an argument.
-    client = QuixStreamingClient()
+    client = qx.QuixStreamingClient()
 
     # Open the output topic where to write data out
     print("Opening output topic")
-    output_topic = client.open_output_topic(os.environ["output"])
+    producer_topic = client.get_topic_producer(os.environ["output"])
 
-    output_stream = output_topic.create_stream("{}-{}-quotes".format(asset_id_base, asset_id_quote))
+    stream_producer = producer_topic.create_stream("{}-{}-quotes".format(asset_id_base, asset_id_quote))
 
     # Give the stream human-readable name. This name will appear in data catalogue.
-    output_stream.properties.name = "{}/{} Exchange Rate".format(asset_id_base, asset_id_quote)
+    stream_producer.properties.name = "{}/{} Exchange Rate".format(asset_id_base, asset_id_quote)
 
     # Save stream in specific folder in data catalogue to help organize your workspace.
-    output_stream.properties.location = "/Coin API/{}-{}".format(asset_id_base, asset_id_quote)
+    stream_producer.properties.location = "/Coin API/{}-{}".format(asset_id_base, asset_id_quote)
 
 
     def on_message(ws, message):
-        quix_functions = QuixFunctions(output_stream)
+        quix_functions = QuixFunctions(stream_producer)
         ms = json.loads(message)
         quix_functions.data_handler(ms['asset_id_base'], ms['asset_id_quote'], ms['time'], ms['rate'])
 
@@ -75,23 +74,23 @@ try:
 
     if __name__ == "__main__":
         web_socket = websocket.WebSocketApp("ws://ws-sandbox.coinapi.io/v1",
-                                            on_open=on_open,
-                                            on_message=on_message,
-                                            on_error=on_error,
-                                            on_close=on_close)
+                                            on_open = on_open,
+                                            on_message = on_message,
+                                            on_error = on_error,
+                                            on_close = on_close)
 
         # Set dispatcher to automatic reconnection, 5-second reconnect delay if connection closed unexpectedly
-        web_socket.run_forever(dispatcher=rel, reconnect=5)
+        web_socket.run_forever(dispatcher = rel, reconnect = 5)
 
         # run the dispatcher in a thread
-        thread = Thread(target=rel.dispatch)
+        thread = Thread(target = rel.dispatch)
 
         # start the dispatcher thread
         thread.start()
 
         # run the Quix App, creating topics and listening for events as needed
         # before shutdown call before_shutdown
-        App.run(before_shutdown=before_shutdown)
+        qx.App.run(before_shutdown = before_shutdown)
 
         print("Shutting down")
 

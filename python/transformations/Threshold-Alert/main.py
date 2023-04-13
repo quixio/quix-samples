@@ -36,7 +36,7 @@ def read_stream(consumer_stream: qx.StreamConsumer):
     buffer = consumer_stream.timeseries.create_buffer()
 
     # React to new data received from input topic.
-    buffer.on_dataframe_released = quix_function.on_pandas_frame_handler
+    buffer.on_dataframe_released = quix_function.on_dataframe_handler
 
     # When input stream closes, we close output stream as well.
     def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):

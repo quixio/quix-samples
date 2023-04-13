@@ -12,7 +12,7 @@ Clicking `Edit code` on the library item, forks the project to your own Git repo
 
 The code sample uses the following environment variables:
 
-- **output_topic**: This is the output topic for dummy timeseries data.
+- **producer_topic**: This is the output topic for dummy timeseries data.
 - **nb_customers**: Input the number of customers to generate transactions for (Min 5).
 - **start_date**: Enter the start date for transactions. YYYY-MM-DD.
 - **end_date**: Enter the end date for transactions. YYYY-MM-DD.

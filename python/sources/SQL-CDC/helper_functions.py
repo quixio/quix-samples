@@ -65,7 +65,7 @@ def make_time_delta_from_config(time_delta_config) -> timedelta:
         hours = int(time_delta_values[2])
         days = int(time_delta_values[3])
         weeks = int(time_delta_values[4])
-        return timedelta(seconds=seconds, minutes=minutes, hours=hours, days=days, weeks=weeks)
+        return timedelta(seconds = seconds, minutes = minutes, hours = hours, days = days, weeks = weeks)
     except TypeError as te:
         raise Exception("Unable to cast one of the supplied values to int", te)
     except Exception as e:
@@ -80,7 +80,7 @@ def check_table_exists(conn, table) -> bool:
 
 
 def check_column_exists(conn, table, column_name) -> bool:
-    for c in conn.cursor().columns(table=table):
+    for c in conn.cursor().columns(table = table):
         if column_name == c.column_name:
             return True
     print("Key column [{}] not found in table [{}]".format(column_name, table))
