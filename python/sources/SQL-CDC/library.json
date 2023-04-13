@@ -1,6 +1,6 @@
 {
     "libraryItemId": "e9b31de2-e43b-4e04-a92a-effd348e4eaf",
-    "name": "SQL Change Data Capture (CDC)",
+    "name": "SQL Change Data Capture",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],

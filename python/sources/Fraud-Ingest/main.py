@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient
-from quixstreaming.app import App
+import quixstreams as qx
 import os
 import pandas as pd 
 import time
@@ -10,16 +9,17 @@ run = True
 
 DATASET_PATH = "./data/data.csv"
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient()
 
 # Open the output topic
 print("Opening output topic")
-output_topic = client.open_output_topic(os.environ["output"])
-output_stream = output_topic.create_stream('rawdata-in-stream')
+producer_topic = client.get_topic_producer(os.environ["output"])
+stream_producer = producer_topic.create_stream('rawdata-in-stream')
 
-output_stream.properties.name = 'raw_data'
-output_stream.properties.location = '/dataset/raw_data'
+stream_producer.properties.name = 'raw_data'
+stream_producer.properties.location = '/dataset/raw_data'
 
 
 def get_data():
@@ -29,10 +29,10 @@ def get_data():
     while run:
 
         if len(columns) == 0:
-            dataset = pd.read_csv(DATASET_PATH, nrows=5, skiprows=row_index)
+            dataset = pd.read_csv(DATASET_PATH, nrows = 5, skiprows = row_index)
             columns = list(dataset.columns.values)
         else:
-            dataset = pd.read_csv(DATASET_PATH, nrows=5, skiprows=row_index, names=columns)
+            dataset = pd.read_csv(DATASET_PATH, nrows = 5, skiprows = row_index, names = columns)
 
         dataset = dataset.rename(columns={'TIMESTAMP': 'time'})
         
@@ -45,8 +45,8 @@ def get_data():
         print("Writing 5 rows")
 
         # Write Data to Stream
-        output_stream.parameters.write(dataset)
-        output_stream.parameters.flush()
+        stream_producer.timeseries.publish(dataset)
+        stream_producer.timeseries.flush()
 
         time.sleep(1)
 
@@ -59,10 +59,10 @@ def before_shutdown():
 
 
 def main():
-    thread = Thread(target=get_data)
+    thread = Thread(target = get_data)
     thread.start()
 
-    App.run(before_shutdown=before_shutdown)
+    qx.App.run(before_shutdown = before_shutdown)
 
     # wait for worker thread to end
     thread.join()

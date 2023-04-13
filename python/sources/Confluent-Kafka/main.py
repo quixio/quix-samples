@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamingClient
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_functions import QuixFunctions
 import traceback
 from datetime import datetime
@@ -13,25 +12,25 @@ try:
         "sasl.password": os.environ["kafka_secret"]
     }
 
-    kafka_client = StreamingClient(os.environ["kafka_broker_address"],
+    kafka_client = qx.KafkaStreamingClient(os.environ["kafka_broker_address"],
                                    None,
                                    kafka_properties)
 
-    quix_client = QuixStreamingClient()
+    quix_client = qx.QuixStreamingClient()
 
     print("Opening RAW input topic")
-    input_topic = kafka_client.open_raw_input_topic(os.environ["kafka_topic"])
+    consumer_topic = kafka_client.get_raw_topic_consumer(os.environ["kafka_topic"])
 
     print("Opening output topic")
-    output_topic = quix_client.open_output_topic(os.environ["output"])
-    output_stream = output_topic.create_stream()
-    output_stream.properties.location = "Confluent Kafka Data"
-    output_stream.properties.name = "{} - {}".format("Confluent Kafka", datetime.utcnow().strftime("%d-%m-%Y %X"))
+    producer_topic = quix_client.get_topic_producer(os.environ["output"])
+    stream_producer = producer_topic.create_stream()
+    stream_producer.properties.location = "Confluent Kafka Data"
+    stream_producer.properties.name = "{} - {}".format("Confluent Kafka", datetime.utcnow().strftime("%d-%m-%Y %X"))
 
     is_connected = False
 
-    quix_functions = QuixFunctions(output_stream)
-    input_topic.on_message_read += quix_functions.raw_message_handler
+    quix_functions = QuixFunctions(stream_producer)
+    consumer_topic.on_message_received = quix_functions.raw_message_handler
 
     # let the platform know were connected. It will navigate to the home page.
     print("CONNECTED!")
@@ -40,7 +39,7 @@ try:
     print("Listening to streams. Press CTRL-C to exit.")
 
     # Handle graceful exit of the model.
-    App.run()
+    qx.App.run()
 
     print("Exiting")
 

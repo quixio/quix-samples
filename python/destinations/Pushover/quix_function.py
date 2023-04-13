@@ -1,4 +1,4 @@
-from quixstreaming import StreamReader, ParameterData, EventData
+import quixstreams as qx
 import requests
 import pandas as pd
 import os
@@ -6,12 +6,12 @@ import os
 
 class QuixFunction:
 
-    def __init__(self, input_stream: StreamReader):
+    def __init__(self, stream_consumer: qx.StreamConsumer):
         # Credentials
         self.apitoken = os.environ["api_token"]
         self.userkey = os.environ["user_key"]
         self.baseurl = os.environ["base_url"]
-        # self.input_stream = input_stream
+        # self.stream_consumer = stream_consumer
 
         # set the format for printing pandas data
         pd.set_option('display.max_rows', 500)
@@ -19,7 +19,7 @@ class QuixFunction:
         pd.set_option('display.width', 1000)
 
     # Callback triggered for each new parameter data
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
 
         print(str(df))
 
@@ -28,17 +28,20 @@ class QuixFunction:
             pushmsg = {'token': self.apitoken,
                        'user': self.userkey,
                        'message': 'Threshold has been crossed'}
-            requests.post(self.baseurl, json=pushmsg)
+            requests.post(self.baseurl, json = pushmsg)
 
         except Exception as e:
             print(f"Error connecting to push API: {e}")
 
     # Callback triggered for each new event
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         print(data)
 
         # send your push message
         try:
-            requests.get(self.url)
+            pushmsg = {'token': self.apitoken,
+                       'user': self.userkey,
+                       'message': 'An event has been detected'}
+            requests.post(self.baseurl, json = pushmsg)
         except Exception as e:
             print(f"Error connecting to push API: {e}")

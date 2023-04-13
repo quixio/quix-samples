@@ -8,17 +8,17 @@ fi
 
 echo 'Checking if Brew is installed'
 brewInstallLoc=''
-brewInstalled=false
+brewInstalled = false
 if [[ `uname -m` == 'arm64' ]]; then
     brewInstallLoc='/opt/homebrew/bin'
     if [[ -d $brewInstallLoc ]]; then
         echo 'Brew is installed, but as of this time update may fail on M1, so running as if it is not installed'
-        #brewInstalled=true
+        #brewInstalled = true
     fi
 else
     brewInstallLoc='/usr/local/bin'
     if [[ -f /usr/local/bin/brew ]]; then
-        brewInstalled=true
+        brewInstalled = true
     fi
 fi
 
@@ -107,7 +107,7 @@ else
 fi
 
 echo 'Checking if python 3.8.7 is installed'
-installPython=true
+installPython = true
 which -s python3 > /dev/null 2>&1
 if [ $? = 0 ]
 then
@@ -117,7 +117,7 @@ then
       # TODO maybe look up what version it is linked to and try to update to 3.8 and hope for the best?
       echo "Found python, but not 3.8.7, it is $pythonVerison"
     else
-        installPython=false
+        installPython = false
     fi
 fi
 if [ $installPython = true ]
@@ -154,7 +154,7 @@ then
     python3 -m pip install virtualenv --user
     if [ $? != 0 ] ; then printf "\e[91m╳ virtualenv failed to install.\n\e[0m" ; exit 1 ; fi ;
     echo 'Creating virtualenv'
-    python3 -m virtualenv env --python=python3.8.7
+    python3 -m virtualenv env --python = python3.8.7
     chmod +x ./env/bin/activate
     printf "\e[32m✓ Created virtualenv\n\e[0m"
 else    

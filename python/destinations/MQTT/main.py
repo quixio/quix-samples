@@ -1,6 +1,5 @@
-from quixstreaming import QuixStreamingClient, StreamReader
+import quixstreams as qx
 from mqtt_function import MQTTFunction
-from quixstreaming.app import App
 import paho.mqtt.client as paho
 from paho import mqtt
 import os
@@ -20,21 +19,21 @@ if not mqtt_port.isnumeric():
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
-quix_client = QuixStreamingClient()
+quix_client = qx.QuixStreamingClient()
 
 print("Opening input topic")
-input_topic = quix_client.open_input_topic(os.environ["input"], "default-consumer-group")
+consumer_topic = quix_client.get_topic_consumer(os.environ["input"], "default-consumer-group")
 
 
 # setting callbacks for different events to see if it works, print the message etc.
-def on_connect(client, userdata, flags, rc, properties=None):
+def on_connect(client, userdata, flags, rc, properties = None):
     print("CONNACK received with code %s." % rc)
     print("CONNECTED!")  # required for Quix to know this has connected
 
 
-mqtt_client = paho.Client(client_id="", userdata=None, protocol=mqtt_protocol_version())
+mqtt_client = paho.Client(client_id = "", userdata = None, protocol = mqtt_protocol_version())
 mqtt_client.on_connect = on_connect
-mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+mqtt_client.tls_set(tls_version = mqtt.client.ssl.PROTOCOL_TLS)
 mqtt_client.username_pw_set(os.environ["mqtt_username"], os.environ["mqtt_password"])
 
 mqtt_topic_root = os.environ["mqtt_topic_root"]
@@ -43,15 +42,15 @@ mqtt_topic_root = os.environ["mqtt_topic_root"]
 mqtt_client.connect(os.environ["mqtt_server"], int(mqtt_port))
 
 # Callback called for each incoming stream
-def read_stream(input_stream: StreamReader):
+def read_stream(stream_consumer: qx.StreamConsumer):
 
     # handle the data in a function to simplify the example
-    mqtt_function = mqttFunction(mqtt_topic_root, mqtt_client)
+    mqtt_function = MQTTFunction(mqtt_topic_root, mqtt_client)
 
     # hookup the package received event handler
-    input_stream.on_package_received += mqtt_function.package_received_handler
+    stream_consumer.on_package_received = mqtt_function.package_received_handler
 
-input_topic.on_stream_received += read_stream
+consumer_topic.on_stream_received = read_stream
 
 
 # Hook up to termination signal (for docker image) and CTRL-C
@@ -65,4 +64,4 @@ def before_shutdown():
     mqtt_client.loop_stop()
 
 # Handle graceful exit of the model.
-App.run(before_shutdown=before_shutdown)
+App.run(before_shutdown = before_shutdown)

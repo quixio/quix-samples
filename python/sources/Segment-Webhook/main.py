@@ -1,4 +1,4 @@
-from quixstreaming import QuixStreamingClient
+import quixstreams as qx
 from flask import Flask, request
 from datetime import datetime
 from waitress import serve
@@ -9,12 +9,12 @@ import hashlib
 
 # Quix injects credentials automatically to the client. 
 # Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+client = qx.QuixStreamingClient()
 
 # Open the output topic where to write data out
-output_topic = client.open_output_topic(os.environ["output"])
+producer_topic = client.get_topic_producer(os.environ["output"])
 
-stream = output_topic.create_stream()
+stream = producer_topic.create_stream()
 stream.properties.name = "Segment Data"
 
 app = Flask("Segment Webhook")
@@ -42,7 +42,7 @@ def webhook():
     # if they do then fly me to the moon
     stream.events.add_timestamp(datetime.now())\
         .add_value(request.json["type"], json.dumps(request.json))\
-        .write()
+        .publish()
 
     return "OK", 200
 
@@ -50,7 +50,7 @@ def webhook():
 print("CONNECTED!")
 
 # you can use app.run for dev, but its not secure, stable or particularly efficient
-# app.run(debug=True, host="0.0.0.0", port=80)
+# qx.App.run(debug=True, host="0.0.0.0", port=80)
 
 # use waitress instead for production
-serve(app, host='0.0.0.0', port=80)
+serve(app, host='0.0.0.0', port = 80)

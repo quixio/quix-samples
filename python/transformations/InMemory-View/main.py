@@ -14,7 +14,7 @@ consumer_topic = client.get_topic_consumer(os.environ["input"], consumer_group =
 producer_topic = client.get_topic_producer(os.environ["output"])
 
 # initialize the state helper
-state_helper = StatefulProcessing(consumer_topic=consumer_topic, producer_topic=producer_topic)
+state_helper = StatefulProcessing(consumer_topic = consumer_topic, producer_topic = producer_topic)
 
 # callback for each incoming DataFrame
 def on_dataframe_received_handler(stream_consumer: qx.StreamConsumer, data_df: pd.DataFrame):

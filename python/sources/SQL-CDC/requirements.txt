@@ -1,4 +1,4 @@
-quixstreaming
+quixstreams==0.5.1
 pyodbc
 requests
-pandas
+pandas==1.5.3
