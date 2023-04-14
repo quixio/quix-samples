@@ -2,12 +2,17 @@ import time
 from queue import Queue
 import threading
 from setup_logger import logger
-
 from bigquery_helper import create_column, Null, insert_row
+
+run = True
+
+def stop():
+    global run
+    run = False
 
 def consume_queue(conn, table_name: str, insert_queue: Queue, wait_interval: float, batch_size: int):
     batch = []
-    while True:
+    while run:
 
         if insert_queue.empty() and len(batch) == 0:
             time.sleep(wait_interval)
