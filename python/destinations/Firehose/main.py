@@ -24,6 +24,10 @@ firehose = boto3.client(
 )
 stream_name = os.environ["stream_name"]
 batch_msg_count = os.environ["batch_msg_count"]
+
+if not batch_msg_count.isdigit():
+    raise Exception("batch_msg_count must be a number")
+
 print(f"Connecting to firehose stream {stream_name} with batch size {batch_msg_count}")
 
 
@@ -33,7 +37,7 @@ def read_stream(stream_consumer: qx.StreamConsumer):
 
     buffer_options = qx.TimeseriesBufferConfiguration()
     # DynamoDB BatchWriteItem has max 25 records as limit
-    buffer_options.packet_size = batch_msg_count
+    buffer_options.packet_size = int(batch_msg_count)
 
     buffer = stream_consumer.timeseries.create_buffer(buffer_options)
 
