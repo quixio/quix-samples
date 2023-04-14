@@ -4,7 +4,7 @@ import os
 from setup_logger import logger
 from queue import Queue
 from threading import Thread
-from queue_helper import consume_queue
+from queue_helper import consume_queue, stop
 from postgres_helper import connect_postgres, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table, create_schema
 
 
@@ -99,5 +99,8 @@ consumer_topic.on_stream_received = read_stream
 # Hook up to termination signal (for docker image) and CTRL-C
 logger.info("Listening to streams. Press CTRL-C to exit.")
 
+def before_shutdown():
+    stop()
+
 # Handle graceful exit
-qx.App.run()
+qx.App.run(before_shutdown=before_shutdown)

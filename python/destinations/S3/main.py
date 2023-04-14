@@ -7,6 +7,9 @@ from threading import Lock, Thread
 import gzip
 import boto3
 
+# keep the main loop running
+run = True
+
 client = qx.QuixStreamingClient()
 commit_settings = qx.models.CommitOptions()
 commit_settings.auto_commit_enabled = False
@@ -155,7 +158,7 @@ def stream_received_handler(stream: qx.StreamConsumer):
 topic.on_stream_received = stream_received_handler
 
 def job():
-    while True:
+    while run:
         print("Debug: started batch job at " + str(datetime.now()))
         for key in batches.keys():
             mutex.acquire()
@@ -181,4 +184,10 @@ if batch_mode == BatchMode.TIME or batch_mode == BatchMode.TIME_OR_COUNT:
     print("Info: started batch scheduler")
 
 print("Listening to streams. Press CTRL-C to exit.")
-qx.App.run()
+
+def before_shutdown():
+    global run
+    run = False
+
+# Handle graceful exit
+qx.App.run(before_shutdown=before_shutdown)
