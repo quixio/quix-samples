@@ -25,7 +25,7 @@ The code sample uses the following environment variables:
 - **s3_folder_per_stream**: Flag to save different streams to different S3 folders.
 - **prefix**: File name prefix.
 - **suffix**: File suffix (e.g. file type extension).
-- **timezone**: A valid timezone e.g. GMT or US/Eastern or Asia/Singapore used for orchestrating time-based batching and file naming.
+- **timezone**: A valid timezone from the IANA Time Zone Database e.g. GMT or US/Eastern or Asia/Singapore used for orchestrating time-based batching and file naming.
 
 ## Requirements / Prerequisites
 
