@@ -2,6 +2,10 @@ import quixstreams as qx
 import pandas as pd
 import time
 import os
+from threading import Thread
+
+# should the main loop run?
+run = True
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
@@ -46,38 +50,56 @@ print("Generate new timestamps")
 timestamp_now = pd.Timestamp(pd.Timestamp.now(), unit = 'ns').timestamp()
 df['timestamp'] = timestamp_now + df['acc_delta_s_'+date_col_name]
 
-# Iterate over file
-while True:
+def get_data():
+    # Iterate over file
+    while run:
 
-    # this will end up loop when all data has been sent
-    if df.empty:
-        break
+        # this will end up loop when all data has been sent
+        if df.empty:
+            break
 
-    # Get df_to_write
-    filter_df_to_write = (df['timestamp'] <= pd.Timestamp(pd.Timestamp.now(), unit = 'ns').timestamp())
+        # Get df_to_write
+        filter_df_to_write = (df['timestamp'] <= pd.Timestamp(pd.Timestamp.now(), unit = 'ns').timestamp())
 
-    # If there are rows to write to the stream at this time
-    if filter_df_to_write.sum() > 0:
+        # If there are rows to write to the stream at this time
+        if filter_df_to_write.sum() > 0:
 
-        # Get the rows to write and write them to the stream
-        df_to_write = df.loc[filter_df_to_write, ['timestamp', 'Original_' + date_col_name] + original_cols]
-        print("Writing {} rows of data".format(len(df_to_write)))
-        stream_producer.timeseries.publish(df_to_write)
-        print(df_to_write.to_string(index = False))
+            # Get the rows to write and write them to the stream
+            df_to_write = df.loc[filter_df_to_write, ['timestamp', 'Original_' + date_col_name] + original_cols]
+            print("Writing {} rows of data".format(len(df_to_write)))
+            stream_producer.timeseries.publish(df_to_write)
+            print(df_to_write.to_string(index = False))
 
-        # Update df
-        df = df[filter_df_to_write == False]
+            # Update df
+            df = df[filter_df_to_write == False]
 
-    # If there are no rows to write now, wait a bit:
-    else:
-        # Calculate time to the next data point and wait that
-        time_to_wait = df['delta_s_' + date_col_name].iloc[0]
-        print("Waiting for ", time_to_wait, " seconds.")
-        time.sleep(time_to_wait)
+        # If there are no rows to write now, wait a bit:
+        else:
+            # Calculate time to the next data point and wait that
+            time_to_wait = df['delta_s_' + date_col_name].iloc[0]
+            print("Waiting for ", time_to_wait, " seconds.")
+            time.sleep(time_to_wait)
 
 
-print("Closing stream")
+def before_shutdown():
+    global run
 
-# Stream can be infinitely long or have start and end.
-# If you send data into closed stream, it is automatically opened again.
-stream_producer.close()
+    # Stop the main loop
+    run = False
+
+
+def main():
+    thread = Thread(target = get_data)
+    thread.start()
+
+    # handle termination signals and close streams
+    qx.App.run(before_shutdown = before_shutdown)
+
+    # wait for worker thread to end
+    thread.join()
+
+    print("Exiting")
+
+
+if __name__ == "__main__":
+    main()
