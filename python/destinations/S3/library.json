@@ -118,7 +118,7 @@
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Timezone (e.g. Asia/Singapore) for orchestrating time-based batching and file naming.",
-            "DefaultValue": "",
+            "DefaultValue": "GMT",
             "Required": true
         }
     ],
