@@ -1,4 +1,4 @@
-quixstreams==0.5.1
+quixstreams==0.5.2
 fire==0.4.0
 scikit-learn==0.24.2
 xgboost==1.4.2
