@@ -31,8 +31,13 @@ def get_data():
         device_id = os.environ["device_id"]
 
         url = "https://api.netatmo.com/api/getstationsdata?device_id={0}&get_favorites=false".format(urllib.parse.quote_plus(device_id))
-
+                
         response = requests.get(url, headers={"Authorization": "Bearer " + token})
+        
+        if response.status_code >= 300:
+            print("ERROR: " + response.content.decode(encoding="utf8"))
+            return
+        
         response_body = response.content
         response_json = json.loads(response_body.decode("utf-8"))
 

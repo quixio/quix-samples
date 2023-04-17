@@ -46,19 +46,11 @@ def read_stream(stream_consumer: qx.StreamConsumer):
 # hook up the read_stream callback
 consumer_topic.on_stream_received = read_stream
 
-# a flag to allow us to stop the main thread on shut down
-run_thread = True
-
-# when shutdown is started, set the flag to false
-def shutdown():
-    global run_thread
-    run_thread = False
-
 def update_dashboard():
     global df
     
     # use the in memory dataframe to refresh the dashboard
-    while run_thread:
+    while True:
 
         local_df = df.copy(deep = True)  # copy reference, so df can be changed outside of this loop while we're working on it
 
@@ -91,4 +83,4 @@ add_script_run_ctx(ui_updater_thread)
 ui_updater_thread.start()
 
 # run the app, open the topic, listen for shutdown events
-qx.App.run(before_shutdown = shutdown)
+qx.App.run()
