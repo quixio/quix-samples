@@ -1,2 +1,2 @@
-quixstreams==0.5.1
+quixstreams==0.5.2
 boto3==1.26.3
