@@ -1,6 +1,6 @@
 # QR Settings Share
 
-[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/QR%20Settings%20Share) enables sharing of tokens and other app settings with the [Quix Tracker](https://github.com/quixio/quix-tracker) app via a QR code.
+[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/QR%20Settings%20Share) enables sharing of tokens and other app settings with the [Quix Compation App](https://github.com/quixio/quix-companion-app) app via a QR code.
 
 ## How to run
 
