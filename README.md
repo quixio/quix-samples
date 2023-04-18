@@ -2,7 +2,7 @@
 
 ## Samples repository for the [Quix](https://quix.io) platform. 
 
-The Quix samples contains pre-built, open source code samples that you can use to quickly create a pipeline that transforms data in real time while it travels from source to destination. 
+The Quix Samples contains pre-built, open source code samples that you can use to quickly create a pipeline that transforms data in real time while it travels from source to destination. 
 
 ## The samples includes three types of samples: 
 
@@ -158,7 +158,7 @@ Recommended size: 48x48 pixels
 
 Defines the Instant Deploy settings for the project. Optional.
 
-If you configure these properties, the project will have the "Setup & Deploy" button enabled in the Quix samples. This provides users with the option to deploy the project without cloning it to their own repo. It’s particularly useful for connectors (source and destinations) and applications that don’t require customization.
+If you configure these properties, the project will have the "Setup & Deploy" button enabled in the Quix Samples. This provides users with the option to deploy the project without cloning it to their own repo. It’s particularly useful for connectors (source and destinations) and applications that don’t require customization.
 
 If the settings are null, a Docker Image for this project will not be generated and the Deploy actions will not be available in the UI.
 
