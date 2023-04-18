@@ -8,9 +8,9 @@ When running, the project creates individual streams for every race. To locate t
 
 ## How to run
 
-1. Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library
+1. Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples
 
-2. Click `Edit code` on the library item to fork the project to your own Git repo
+2. Click `Edit code` on the sample to fork the project to your own Git repo
 
 3. Clone or download the code to your local machine
 
