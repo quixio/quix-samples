@@ -1,6 +1,6 @@
 # Complete Python example
 
-[This project](https://github.com/quixio/quix-library/tree/main/python/destinations/Complete-Example) is an example of how to connect to and handle the arrival of a new stream and its data.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/destinations/Complete-Example) is an example of how to connect to and handle the arrival of a new stream and its data.
 
 It shows you how to handle:
  - Stream opening and closing.
@@ -8,9 +8,9 @@ It shows you how to handle:
  - Parameter and event data arriving.
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
 
-Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
+Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -20,11 +20,11 @@ The code sample uses the following environment variables:
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
 

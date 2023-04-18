@@ -1,12 +1,12 @@
-# Quix library
+# Quix samples
 
-## Library samples repository for the [Quix](https://quix.io) platform. 
+## Samples repository for the [Quix](https://quix.io) platform. 
 
-The Quix library contains pre-built, open source code samples that you can use to quickly create a pipeline that transforms data in real time while it travels from source to destination. 
+The Quix samples contains pre-built, open source code samples that you can use to quickly create a pipeline that transforms data in real time while it travels from source to destination. 
 
-## The library includes three types of samples: 
+## The samples includes three types of samples: 
 
-Sources: data connectors that you can plug and play. Or add an API gateway to push data. If you have a project in mind but the connector isn’t available, you can develop your own and share the code with Quix users by adding it to the library. You never know what kind of projects you might be supporting.
+Sources: data connectors that you can plug and play. Or add an API gateway to push data. If you have a project in mind but the connector isn’t available, you can develop your own and share the code with Quix users by adding it to the samples repo. You never know what kind of projects you might be supporting.
 
 Transformations: code samples you can use as-is or modify to make your application more functional. Extract and load, merge, synchronize, enrich, predict or anything else you might want to do with your data — the options are endless since you can extend the samples with any class, method, package or library.
 
@@ -21,11 +21,11 @@ You can create a Quix account for free [here](https://portal.platform.quix.ai/se
 
 Contributors are very welcome at Quix! Follow this guide to get a project into production on the platform.
 
-Fork our library and submit your unique projects to [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit. We might send you a cap or a t-shirt if you fix a bug too!
+Fork our samples repo and submit your unique projects to [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit. We might send you a cap or a t-shirt if you fix a bug too!
 
 ### Adding a new source, transformation or destination
 
-1. Create a fork of the quix-library
+1. Create a fork of the `quix-samples` repo
 
 2. Add a folder to the directory that best suits your project (e.g., Python>Sources>New Folder)
 
@@ -45,7 +45,7 @@ Fork our library and submit your unique projects to [GitHub](https://github.com/
 
 Applications store all the code to run an end-to-end app. They are made up of multiple projects.
 
-1. Create a fork of the quix-library
+1. Create a fork of the `quix-samples` repo
 
 2. Add a folder to the Applications directory and name it something short and obvious like "chat app with real-time sentiment scoring"
 
@@ -65,7 +65,7 @@ Applications store all the code to run an end-to-end app. They are made up of mu
 
 Follow the same pattern used when adding a new application 
 
-1. Create a fork of the quix-library
+1. Create a fork of the `quix-samples` repo
 
 2. Modify your files
 
@@ -75,7 +75,7 @@ Follow the same pattern used when adding a new application
 
 ### Configuring library.json
 
-Library.json contains the metadata that we use to provide a smooth developer experience in the Quix portal by powering the search and set-up features in the Library. Both features make your code more reusable for other developers.
+Library.json contains the metadata that we use to provide a smooth developer experience in the Quix portal by powering the search and set-up features in the Samples. Both features make your code more reusable for other developers.
 
 **"libraryItemId"**
 A unique identifier for your project.
@@ -92,15 +92,15 @@ The projects language (Python, C#, NodeJs, Shell Script, Javascript etc)
 See here for a current list of languages.
 
 **"tags"**
-Additional search filters that show-up in the library. Pick two or three of the most important tags like "Complexity," "SDK Usage" and "Pipeline State."
-See Quix Library for a current list of tags.
+Additional search filters that show-up in the samples. Pick two or three of the most important tags like "Complexity," "SDK Usage" and "Pipeline State."
+See Quix Samples for a current list of tags.
 Add new tags with discretion — they may not be accepted.
 
 **"shortDescription"**
 A unique description of your project. Keep it less than 80 characters.
 
 **"DefaultFile"**
-Defines the default file to show when loading the project in a Code Explorer and is the default file displayed in the code preview in the Quix Library.
+Defines the default file to show when loading the project in a Code Explorer and is the default file displayed in the code preview in the Quix Samples.
 
 **"EntryPoint"**
 
@@ -114,9 +114,9 @@ The Run entry point (main code file to run).
 
 Defines the external variables of the project. 
 
-Variables are used to configure the project during setup in the Quix Library or programatically from your application.
+Variables are used to configure the project during setup in the Quix Samples or programatically from your application.
 
-Each variable will create a unique setup field in the Quix Library.
+Each variable will create a unique setup field in the Quix Samples.
 
 **"Name"** The display name for your variable
 
@@ -158,7 +158,7 @@ Recommended size: 48x48 pixels
 
 Defines the Instant Deploy settings for the project. Optional.
 
-If you configure these properties, the project will have the "Setup & Deploy" button enabled in the Quix library. This provides users with the option to deploy the project without cloning it to their own repo. It’s particularly useful for connectors (source and destinations) and applications that don’t require customization.
+If you configure these properties, the project will have the "Setup & Deploy" button enabled in the Quix samples. This provides users with the option to deploy the project without cloning it to their own repo. It’s particularly useful for connectors (source and destinations) and applications that don’t require customization.
 
 If the settings are null, a Docker Image for this project will not be generated and the Deploy actions will not be available in the UI.
 

@@ -9,5 +9,5 @@ client = qx.QuixStreamingClient()
 consumer_topic = client.get_topic_consumer(os.environ["input"])
 producer_topic = client.get_topic_producer(os.environ["output"])
 
-# for more samples, please see library or docs
+# for more samples, please see samples or docs
 
