@@ -15,7 +15,7 @@ namespace Service
            
             using var inputTopic = client.OpenInputTopic(Environment.GetEnvironmentVariable("input"));
             
-            // for more samples, please see library or docs
+            // for more samples, please see samples or docs
             throw new NotImplementedException(""); //
         }
     }
