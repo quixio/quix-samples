@@ -1,6 +1,6 @@
 # Assetto Corsa
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/advanced/Bridge.AssettoCorsa) is capable of streaming the game's telemetry (PC or Console) to the Quix platform. It is intended to be run on a pc on your local network.
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/advanced/Bridge.AssettoCorsa) is capable of streaming the game's telemetry (PC or Console) to the Quix platform. It is intended to be run on a pc on your local network.
 
 ## Requirements / Prerequisites
 
@@ -8,9 +8,9 @@
 
 ## Get the code
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
 
-Clicking `Edit code` on the library item, forks the project to your own Git repo. Clone the code to your local machine to run it.
+Clicking `Edit code` on the Sample, forks the project to your own Git repo. Clone the code to your local machine to run it.
 
 # How to run
 
@@ -41,10 +41,10 @@ Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.

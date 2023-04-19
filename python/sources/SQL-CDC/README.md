@@ -1,14 +1,14 @@
 # SQL Change Data Capture (CDC)
 
-[This](https://github.com/quixio/quix-library/tree/main/python/sources/SQL-CDC) SQL Change Detection Capture (CDC) project will stream changes detected in your SQL Server database to a Quix topic.
+[This](https://github.com/quixio/quix-samples/tree/main/python/sources/SQL-CDC) SQL Change Detection Capture (CDC) project will stream changes detected in your SQL Server database to a Quix topic.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
 
-Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Setup & deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
-Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
+Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -34,11 +34,11 @@ Driver and columns to rename should include `{` and `}` and the start and end of
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
 

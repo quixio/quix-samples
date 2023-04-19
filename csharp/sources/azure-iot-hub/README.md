@@ -1,16 +1,16 @@
 # Azure IoT Hub
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/sources/azure-iot-hub) gives an example of how to subscribe to data in an Azure IoT Hub and publish it to  Kafka using the Quix SDK.
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/sources/azure-iot-hub) gives an example of how to subscribe to data in an Azure IoT Hub and publish it to  Kafka using the Quix SDK.
 
 ![graph](iot-bridge.png?raw=true)
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
 
-Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Setup & deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
-Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
+Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Environment variables
 
@@ -22,7 +22,7 @@ The code sample uses the following environment variables:
 
 ### Connection to Quix
 
-In this code snippet, the service connects to the Kafka topic in Quix. Use the Library page in the Quix portal to generate this code for a particular topic in your workspace.
+In this code snippet, the service connects to the Kafka topic in Quix. Use the Samples page in the Quix portal to generate this code for a particular topic in your workspace.
 ```csharp
  // Create a client factory. The Factory helps you create a QuixStreamingClient (see below) more easily
 var client = new Quix.Sdk.Streaming.QuixStreamingClient();
@@ -48,11 +48,11 @@ but in a real application, we suggest developing a model to parse this data and 
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
 
