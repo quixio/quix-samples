@@ -22,7 +22,7 @@ class QuixFunctions:
         # serialize to json
         json_payload = json.dumps(payload)
         # convert to a byte array
-        json_payload_bytes = bytearray(json_payload, "ansi")
+        json_payload_bytes = bytearray(json_payload, "UTF-8")
         # create the RawMessage object
         message = RawMessage(json_payload_bytes)
         # publish the json data to Confluent
