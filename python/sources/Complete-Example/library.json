@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "A complete example of how to write data into a topic",
-    "longDescription": "This is a complete example in Python of how to write data into a topic and the usage of all the SDK methods",
+    "longDescription": "This is a complete example in Python of how to write data into a topic and the usage of all the QuixStreams methods",
     "DefaultFile": "quix_functions.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

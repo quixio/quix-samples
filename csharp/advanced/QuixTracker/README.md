@@ -14,7 +14,7 @@ The code sample uses the following environment variables:
  - Android API level 30 (Android 11)
 
 ## Docs
-Check out the [SDK docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+Check out the [QuixStreams docs](https://quix.io/docs/client-library-intro.html) for detailed usage guidance
 
 ## How to run
 

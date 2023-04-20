@@ -31,13 +31,13 @@ These are the variables that will be replaced in the code (`Program.cs`) if you 
 ## Details
 
 - `Bridge.AssettoCorsa.sln`: The solution file describing what projects to include
-- `Bridge.AssettoCorsa`: Main project implementing all the code needed to read from the game and publish to Quix platform using the SDK. 
-  - `Program.cs`: It contains all the relevant code to write telemetry data in real-time to Quix. It will let you learn and understand how to use our SDK.
+- `Bridge.AssettoCorsa`: Main project implementing all the code needed to read from the game and publish to Quix platform using the QuixStreams/SDK. 
+  - `Program.cs`: It contains all the relevant code to write telemetry data in real-time to Quix. It will let you learn and understand how to use our Client Library (QuixStreams).
 - `Bridge.AssettoCorsa.Reader`: Contains game-specific logic for transforming the byte packets to usable data objects.
 
 ## Docs
 
-Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+Check out the [QuixStreams Docs](https://quix.io/docs/client-library-intro.html) for detailed usage guidance
 
 ## Contribute
 

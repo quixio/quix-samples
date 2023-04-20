@@ -69,7 +69,7 @@ If you do not yet have a Quix account, you can sign up for one via our [website]
 
 
 ## Docs
-Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage guidance
+Check out the [QuixStreams Docs](https://quix.io/docs/client-library-intro.html) for detailed usage guidance
 
 
 ## Contribute

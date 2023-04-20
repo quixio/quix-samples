@@ -1,6 +1,6 @@
 # Azure IoT Hub
 
-[This project](https://github.com/quixio/quix-samples/tree/main/csharp/sources/azure-iot-hub) gives an example of how to subscribe to data in an Azure IoT Hub and publish it to  Kafka using the Quix SDK.
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/sources/azure-iot-hub) gives an example of how to subscribe to data in an Azure IoT Hub and publish it to Kafka using the Quix client library (QuixStreams).
 
 ![graph](iot-bridge.png?raw=true)
 
@@ -31,9 +31,9 @@ var client = new Quix.Sdk.Streaming.QuixStreamingClient();
 using var outputTopic = client.OpenOutputTopic("{placeholder:outputTopic}");
 ```
 
-### Transformation to Quix SDK format
+### Transformation to QuixStreams format
 
-In code example we simply get the whole JSON message and send it as an event with the Quix SDK.
+In code example we simply get the whole JSON message and send it as an event with QuixStreams.
 
 ```csharp
 var data = Encoding.UTF8.GetString(partitionEvent.Data.Body.ToArray());
@@ -44,7 +44,7 @@ stream.Events
 	.Write();
 ```
 
-but in a real application, we suggest developing a model to parse this data and publish it using the Quix SDK. 
+but in a real application, we suggest developing a model to parse this data and publish it using QuixStreams. 
 
 ## Contribute
 
