@@ -2,15 +2,15 @@
 
 F1&reg; 2019 is the official FIA Formula One game series developed by [Codemasters](https://www.codemasters.com). You can take your gaming experience to the next level by live streaming your in-game telemetry data to Quix and performing visualisations, analytics and simulations just like the real Formula One teams do.
 
-[This project](https://github.com/quixio/quix-library/tree/main/csharp/advanced/Bridge.Codemasters) shows you how to obtain, stream and visualize your F1&reg; 2019 game telemetry from a PC or gaming console using Quix. You can follow the same procedure for later editions of the game as long as the UDP format in the telemetry settings is 2019-compatible.
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/advanced/Bridge.Codemasters) shows you how to obtain, stream and visualize your F1&reg; 2019 game telemetry from a PC or gaming console using Quix. You can follow the same procedure for later editions of the game as long as the UDP format in the telemetry settings is 2019-compatible.
 
 When running, the project creates individual streams for every race. To locate these go to your Quix workspace and navigate to `Visualize` from the left navigation panel, you will see all the streams and parameters you are streaming.
 
 ## How to run
 
-1. Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library
+1. Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples
 
-2. Click `Edit code` on the library item to fork the project to your own Git repo
+2. Click `Edit code` on the sample to fork the project to your own Git repo
 
 3. Clone or download the code to your local machine
 
@@ -74,11 +74,11 @@ Check out the [SDK Docs](https://docs.quix.io/sdk-intro.html) for detailed usage
 
 ## Contribute
 
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-library) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
+Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
 
 ## Open source
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-library) repo.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
 
