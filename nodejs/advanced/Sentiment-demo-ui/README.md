@@ -1,6 +1,6 @@
 # Sentiment demo UI
 
-[This project](https://github.com/quixio/quix-library/tree/main/nodejs/advanced/Sentiment-demo-ui) is an example of how to use Quix with NodeJs.
+[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/advanced/Sentiment-demo-ui) is an example of how to use Quix with NodeJs.
 
  - It implements a system of chat rooms where people can communicate
  - QR codes are used to invite new participants into the chat room
@@ -8,11 +8,11 @@
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Library to use this project.
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
 
-Clicking `Setup & deploy` on the library item, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Setup & deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
-Clicking `Edit code` on the library item, forks the project to your own Git repo so you can customize it before deploying.
+Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
 NOTE! If running locally you should read the `Local` section below.
 
@@ -21,7 +21,7 @@ NOTE! If running locally you should read the `Local` section below.
 This code sample uses the following environment variables:
 
 - **messages**: This is the output topic for chat messages
-- **sentiment**: This is the input topic for sentiment score from ML model. Use Hugging Face model library item to analyze messages sentiment.
+- **sentiment**: This is the input topic for sentiment score from ML model. Use Hugging Face model sample to analyze messages sentiment.
 
 ## Connection
 This app integrates with Quix via Quix WebSocket gateway. For more please refer to [Quix docs](https://documentation.platform.quix.ai/apis/streaming-reader-api/intro.html).

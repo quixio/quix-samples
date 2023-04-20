@@ -22,7 +22,7 @@ class Null:
 
 def connect_timescale():
     conn = psycopg2.connect(
-        database=TS_DATABASE, user=TS_USER, password=TS_PASSWORD, host=TS_HOST, port=TS_PORT
+        database = TS_DATABASE, user = TS_USER, password = TS_PASSWORD, host = TS_HOST, port = TS_PORT
     )
     return conn
 

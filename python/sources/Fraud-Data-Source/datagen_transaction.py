@@ -1,3 +1,4 @@
+import quixstreams as qx
 import pathlib
 import random
 import sys
@@ -9,12 +10,11 @@ from profile_weights import Profile
 import json
 import csv
 from datagen_customer import headers # as customer_headers
-from quixstreaming import QuixStreamingClient, StreamWriter, ParameterData
 
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+client = qx.QuixStreamingClient()
 
 fake = Faker()
 transaction_headers = [
@@ -43,11 +43,11 @@ with open('data/merchants.csv', 'r') as merchants_file:
 
 
 class Customer:
-	def __init__(self, raw, txn_headers, output_stream: StreamWriter):
+	def __init__(self, raw, txn_headers, stream_producer: qx.StreamProducer):
 		self.raw = raw.strip().split('|')
 		self.attrs = self.parse_customer(raw)
 		self.fraud_dates = []
-		self.output_stream_writer = output_stream
+		self.stream_producer = stream_producer
 		self.tx_headers = txn_headers
 		#self.cust_header =
 
@@ -71,15 +71,15 @@ class Customer:
 				rad = (float(travel_max) / 100) * 1.43
 
 			# geo_coordinate() uses uniform distribution with lower = (center-rad), upper = (center+rad)
-			merch_lat = fake.coordinate(center=float(cust_lat),radius=rad)
-			merch_long = fake.coordinate(center=float(cust_long),radius=rad)
+			merch_lat = fake.coordinate(center = float(cust_lat),radius = rad)
+			merch_long = fake.coordinate(center = float(cust_long),radius = rad)
 
 			if (is_fraud == 0 and t[1] not in fraud_dates) or is_fraud == 1:
 
 				all_data = self.raw + t + [chosen_merchant, str(merch_lat), str(merch_long)]
 				all_headers = self.tx_headers
 
-				data = ParameterData()
+				data = qx.TimeseriesData()
 
 				if use_transaction_date_as_timestamp: 
 					temp_value = all_data[17] + " " + all_data[18]
@@ -97,7 +97,7 @@ class Customer:
 					replacement_string = "is not"
 				print(f"Writing data to Quix stream, this one {replacement_string} fraudulent")
 
-				self.output_stream_writer.parameters.write(data)
+				self.stream_producer.timeseries.publish(data)
 
 				time.sleep(0.25)
 
@@ -141,14 +141,14 @@ def valid_boolean(s):
 		raise argparse.ArgumentTypeError(msg)
 
 
-def main(customer_file, profile_file, start_date, end_date, out_path=None, start_offset=0, end_offset=sys.maxsize,
-		 output_topic_name: str = None, use_transaction_date_as_timestamp = False):
+def main(customer_file, profile_file, start_date, end_date, out_path = None, start_offset = 0, end_offset = sys.maxsize,
+		 producer_topic_name: str = None, use_transaction_date_as_timestamp = False):
 
 	print("opening output topic..")
 	# Use an output topic to stream data out of your service
-	output_topic = client.open_output_topic(output_topic_name)
+	producer_topic = client.get_topic_producer(producer_topic_name)
 
-	output_stream = None
+	stream_producer = None
 
 	profile_name = profile_file.name
 	profile_file_fraud = pathlib.Path(*list(profile_file.parts)[:-1] + [f"fraud_{profile_name}"])
@@ -162,7 +162,7 @@ def main(customer_file, profile_file, start_date, end_date, out_path=None, start
 		# [sr] create the stream here
 		out_path = out_path.replace("\'", "").replace("\\", "")
 		print("Creating the stream..")
-		output_stream = output_topic.create_stream(out_path)
+		stream_producer = producer_topic.create_stream(out_path)
 
 
 	with open(profile_file, 'r') as f:
@@ -197,7 +197,7 @@ def main(customer_file, profile_file, start_date, end_date, out_path=None, start
 				break
 		if not fail:
 			for row in f.readlines():
-				cust = Customer(row, joined_headers, output_stream)
+				cust = Customer(row, joined_headers, stream_producer)
 				if cust.attrs['profile'] == profile_name:
 					is_fraud = 0
 					fraud_flag = random.randint(0,100) # set fraud flag here, as we either gen real or fraud, not both for
@@ -209,9 +209,9 @@ def main(customer_file, profile_file, start_date, end_date, out_path=None, start
 						# rand_interval is the random no of days to be added to start date
 						rand_interval = random.randint(1, inter_val)
 						#random start date is selected
-						newstart = start_date + timedelta(days=rand_interval)
+						newstart = start_date + timedelta(days = rand_interval)
 						# based on the fraud interval , random enddate is selected
-						newend = newstart + timedelta(days=fraud_interval)
+						newend = newstart + timedelta(days = fraud_interval)
 						# we assume that the fraud window can be between 1 to 7 days #7->1
 						fraud_profile.set_date_range(newstart, newend)
 						is_fraud = 1
@@ -236,11 +236,11 @@ def main(customer_file, profile_file, start_date, end_date, out_path=None, start
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser('Transaction Generator')
-	parser.add_argument('customer_file', type=pathlib.Path, help='Customer file generated with the datagen_customer script')
-	parser.add_argument('profile', type=pathlib.Path, help='profile')
-	parser.add_argument('start_date', type=valid_date, help='Transactions start date')
-	parser.add_argument('end_date', type=valid_date, help='Transactions start date')
-	parser.add_argument('-o', '--output', type=pathlib.Path, help='Output file path')
+	parser.add_argument('customer_file', type = pathlib.Path, help='Customer file generated with the datagen_customer script')
+	parser.add_argument('profile', type = pathlib.Path, help='profile')
+	parser.add_argument('start_date', type = valid_date, help='Transactions start date')
+	parser.add_argument('end_date', type = valid_date, help='Transactions start date')
+	parser.add_argument('-o', '--output', type = pathlib.Path, help='Output file path')
 
 	args = parser.parse_args()
 

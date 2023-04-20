@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamingClient, StreamReader
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_function import QuixFunctions
 import traceback
 import os
@@ -12,34 +11,34 @@ try:
         "sasl.password": os.environ["kafka_secret"]
     }
 
-    kafka_client = StreamingClient(os.environ["kafka_broker_address"],
+    kafka_client = qx.KafkaStreamingClient(os.environ["kafka_broker_address"],
                                    None,
                                    kafka_properties)
 
-    quix_client = QuixStreamingClient()
+    quix_client = qx.QuixStreamingClient()
 
     print("Opening RAW output topic")
-    output_topic = kafka_client.open_raw_output_topic(os.environ["kafka_topic"])
+    producer_topic = kafka_client.get_raw_topic_producer(os.environ["kafka_topic"])
 
-    input_topic = quix_client.open_input_topic(os.environ["input"])
+    consumer_topic = quix_client.get_topic_consumer(os.environ["input"])
 
     is_connected = False
 
-    quix_functions = QuixFunctions(output_topic)
+    quix_functions = QuixFunctions(producer_topic)
 
     # Callback called for each incoming stream
-    def read_stream(input_stream: StreamReader):
+    def read_stream(stream_consumer: qx.StreamConsumer):
 
         print("New input stream detected")
 
         # handle the data in a function to simplify the example
-        quix_function = QuixFunctions(output_topic)
+        quix_function = QuixFunctions(producer_topic)
 
         # hookup the package received event handler
-        input_stream.on_package_received += quix_function.package_received_handler
+        stream_consumer.on_package_received = quix_function.package_received_handler
 
     # hookup the callback to handle new streams
-    input_topic.on_stream_received += read_stream
+    consumer_topic.on_stream_received = read_stream
 
     print("CONNECTED!")
 
@@ -47,7 +46,7 @@ try:
     print("Listening to streams. Press CTRL-C to exit.")
 
     # Handle graceful exit of the model.
-    App.run()
+    qx.App.run()
 
     print("Exiting")
 

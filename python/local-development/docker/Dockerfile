@@ -1,8 +1,8 @@
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND="noninteractive"
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONIOENCODING=UTF-8
+ENV PYTHONUNBUFFERED = 1
+ENV PYTHONIOENCODING = UTF-8
 # Install python and some utilities
 RUN apt-get update && \
     apt-get install -y curl && \

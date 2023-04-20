@@ -27,7 +27,7 @@
 			  "Type": "Placeholder",
 			  "InputType": "HiddenText",
 			  "Description": "Your Coin API key",
-			  "DefaultValue": "F8139880-B6DD-43F2-B0F4-38ADFB0B22B0",
+			  "DefaultValue": "",
 			  "Required": true
 			},
 			{

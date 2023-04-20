@@ -1,4 +1,4 @@
-from quixstreaming import StreamWriter
+import quixstreams as qx
 import pandas as pd
 import pickle
 import traceback
@@ -6,12 +6,12 @@ import traceback
 
 class QuixFunction:
 
-    def __init__(self, stream_writer: StreamWriter):
-        self.stream_writer = stream_writer
+    def __init__(self, stream_producer: qx.StreamProducer):
+        self.stream_producer = stream_producer
         self.model = pickle.load(open("data/ML_model.pkl", "rb"))
 
 
-    def on_pandas_frame_handler(self, cleaned_row_df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer,  cleaned_row_df: pd.DataFrame):
         #print(cleaned_row_df)
         try:
             # Run the model and get the predicted value
@@ -24,8 +24,8 @@ class QuixFunction:
                output_df = cleaned_row_df
                output_df["predicted_value"] = predicted_values
 
-               self.stream_writer.parameters.write(output_df)
-               self.stream_writer.parameters.flush()
+               self.stream_producer.timeseries.publish(output_df)
+               self.stream_producer.timeseries.flush()
         except Exception as e:
             print(e)
             traceback.print_exc()

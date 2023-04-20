@@ -59,7 +59,7 @@ class TestCustomer(unittest.TestCase):
 		fake.date_time_this_century.return_value = date(1970, 1, 4)
 		random_mock.side_effect = [0.421, 0.333]
 		
-		c = Customer(config=main)
+		c = Customer(config = main)
 		c.fake = fake
 		customer_data = c.generate_customer()
 
@@ -96,7 +96,7 @@ class TestCustomer(unittest.TestCase):
 		# random_mock.random.return_value = 0.2
 		random_mock.side_effect = [0.2, 0.333]
 
-		c = Customer(config=main)
+		c = Customer(config = main)
 		c.fake = fake
 		customer_data = c.generate_customer()
 
@@ -124,7 +124,7 @@ class TestCustomer(unittest.TestCase):
 		fake = faker_constructor.return_value
 		random_mock.return_value = 0.1
 		fake.date_time_this_century.return_value = date(1970, 1, 4)
-		c = Customer(config=main)
+		c = Customer(config = main)
 		c.fake = fake
 		c.generate_customer()
 
@@ -256,7 +256,7 @@ class TestCustomer(unittest.TestCase):
 		fake.date_time_this_century.return_value = date(1970, 1, 4)
 
 		random_mock.return_value = 0.1
-		c = Customer(config=main)
+		c = Customer(config = main)
 		c.fake = fake
 		c.generate_customer()
 
@@ -490,7 +490,7 @@ class TestCustomer(unittest.TestCase):
 		for i in range(len(results)):
 			# set random value that affects age_gender
 			random_mock.side_effect = [results[i][0], 0.1, results[i][0]]
-			c = Customer(config=main)
+			c = Customer(config = main)
 			c.fake = fake
 			c.generate_customer()
 			self.assertEqual((results[i][0], results[i][1]), (results[i][0], c.find_profile()))
@@ -549,11 +549,11 @@ class TestProfileWeights(unittest.TestCase):
 				# to save the profiles as test data use the following:
 				# del p.proportions['date_wt']
 				# with open(f"./tests/data/{p_file}", 'w') as f:
-				#	  json.dump(p.proportions, f, indent=4, sort_keys=True, default=str)
+				#	  json.dump(p.proportions, f, indent = 4, sort_keys = True, default = str)
 
 				# test that the results are matching the saved data
 				del p.proportions['date_wt']
-				p_dump = json.loads(json.dumps(p.proportions, default=str))
+				p_dump = json.loads(json.dumps(p.proportions, default = str))
 				with open(os.path.join('tests', 'data', p_file), 'r') as f:
 					p_test = json.load(f)
 				self.assertDictEqual(p_dump['categories_wt'], p_test['categories_wt'])

@@ -108,6 +108,6 @@ if __name__ == "__main__":
     main_thread.start()
 
     # run the app and handle shutdown nicely
-    qx.App.run(before_shutdown=before_shutdown)
+    qx.App.run(before_shutdown = before_shutdown)
 
     main_thread.join()

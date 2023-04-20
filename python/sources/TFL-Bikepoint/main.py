@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_functions import QuixFunctions
 from datetime import datetime, timezone
 import traceback
@@ -10,29 +9,30 @@ import os
 # should the main loop run?
 run = True
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient()
 
 print("Opening output topic")
-output_topic = client.open_output_topic(os.environ["output"])
+producer_topic = client.get_topic_producer(os.environ["output"])
 
 # CREATE A STREAM
 # A stream is a collection of data that belong to a single session of a single source.
 # Initiate streams
-output_stream = output_topic.create_stream("Available-Bikes")
+stream_producer = producer_topic.create_stream("Available-Bikes")
 
 # Give the stream human readable name. This name will appear in data catalogue.
-output_stream.properties.name = "Available Bikes Location"
+stream_producer.properties.name = "Available Bikes Location"
 
 # Save stream in specific folder in data catalogue to help organize your workspace.
-output_stream.properties.location = "/Bikes"
+stream_producer.properties.location = "/Bikes"
 
-output_stream.parameters.buffer.buffer_timeout = 1000
-output_stream.parameters.buffer.time_span_in_milliseconds = 1000
+stream_producer.timeseries.buffer.buffer_timeout = 1000
+stream_producer.timeseries.buffer.time_span_in_milliseconds = 1000
 
 
 def get_data():
-    quix_functions = QuixFunctions(output_stream)
+    quix_functions = QuixFunctions(stream_producer)
 
     while run:
         try:
@@ -56,10 +56,10 @@ def before_shutdown():
 
 
 def main():
-    thread = Thread(target=get_data)
+    thread = Thread(target = get_data)
     thread.start()
 
-    App.run(before_shutdown=before_shutdown)
+    qx.App.run(before_shutdown = before_shutdown)
 
     # wait for worker thread to end
     thread.join()

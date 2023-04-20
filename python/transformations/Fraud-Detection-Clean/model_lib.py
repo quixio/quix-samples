@@ -4,7 +4,7 @@ import pandas as pd
 def clean_function(row):
 
     cols_needed = [
-        "time",
+        "timestamp",
         "AMT_ANNUITY",
         "AMT_CREDIT",
         "AMT_GOODS_PRICE",
@@ -38,7 +38,7 @@ def clean_function(row):
     else:
         # Cols needed output
         cols_needed_output = [
-            "time",
+            "timestamp",
             "AMT_ANNUITY",
             "AMT_CREDIT",
             "AMT_GOODS_PRICE",

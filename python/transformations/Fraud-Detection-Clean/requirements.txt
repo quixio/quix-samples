@@ -1,2 +1,2 @@
-quixstreaming==0.4.10a202301271318
-pandas
+quixstreams==0.5.2
+pandas==1.5.3

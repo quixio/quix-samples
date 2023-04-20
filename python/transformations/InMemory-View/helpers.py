@@ -4,8 +4,8 @@ import pickle
 import pandas as pd
 
 class StatefulProcessing:
-    def __init__(self, consumer_topic: qx.topicconsumer, producer_topic: qx.topicproducer):
-        self.output_topic = producer_topic
+    def __init__(self, consumer_topic: qx.TopicConsumer, producer_topic: qx.TopicProducer):
+        self.producer_topic = producer_topic
 
         self.state = None
 
@@ -40,7 +40,7 @@ class StatefulProcessing:
             self.storage.set(self.storage_key, pickle.dumps(self.state))
 
      # Callback triggered for each new parameter data.
-    def on_pandas_frame_handler(self, df: pd.DataFrame):
+    def on_dataframe_handler(self, stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
         return
 
 

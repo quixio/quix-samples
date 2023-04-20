@@ -1,5 +1,4 @@
-from quixstreaming import ParameterData, EventData, StreamEndType, StreamReader
-
+import quixstreams as qx
 import os
 from queue import Queue
 from threading import Lock
@@ -12,19 +11,19 @@ import re
 
 class QuixFunction:
 
-    def __init__(self, conn, table_name, insert_queue: Queue, input_stream: StreamReader):
+    def __init__(self, conn, table_name, insert_queue: Queue, stream_consumer: qx.StreamConsumer):
         self.conn = conn
         self.table_name = table_name
         self.param_insert_queue = insert_queue[0]
         self.event_insert_queue = insert_queue[1]
-        self.input_stream = input_stream
+        self.stream_consumer = stream_consumer
         self.data_start = Null()
         self.data_end = Null()
         self.insert_parents()
         self.topic = os.environ["input"].replace('-', '_')
         self.mutex = Lock()
 
-    def on_committing(self):
+    def on_committing(self, topic_consumer: qx.TopicConsumer):
         logger.debug("on_committing")
         self.mutex.acquire()
         logger.debug("on_committing entered")
@@ -36,12 +35,12 @@ class QuixFunction:
 
 
     # Callback triggered for each new parameter data.
-    def on_parameter_data_handler(self, data: ParameterData):
+    def on_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
 
         self.mutex.acquire()
 
         for ts in data.timestamps:
-            row = {'timestamp': format_nanoseconds(ts.timestamp_nanoseconds), 'stream_id': self.input_stream.stream_id}
+            row = {'timestamp': format_nanoseconds(ts.timestamp_nanoseconds), 'stream_id': self.stream_consumer.stream_id}
             if type(self.data_start) == Null:
                 self.data_start = ts.timestamp_nanoseconds
                 self.data_end = ts.timestamp_nanoseconds
@@ -61,14 +60,14 @@ class QuixFunction:
                     row[k + '_s'] = v.string_value
 
             # Add to Queue
-            self.param_insert_queue.put(row, block=True)
+            self.param_insert_queue.put(row, block = True)
 
         self.mutex.release()
 
     def insert_metadata(self):
         cols = ["stream_id"]
-        vals = [self.input_stream.stream_id]
-        for k, v in self.input_stream.properties.metadata.items():
+        vals = [self.stream_consumer.stream_id]
+        for k, v in self.stream_consumer.properties.metadata.items():
             k = re.sub('[^0-9a-zA-Z]+', '_', k)
             create_column(
                 self.conn, self.table_name["METADATA_TABLE_NAME"], k, 'STRING')
@@ -79,15 +78,15 @@ class QuixFunction:
                 self.conn, self.table_name["METADATA_TABLE_NAME"], cols, [vals])
 
     def insert_parents(self):
-        for parent in self.input_stream.properties.parents:
+        for parent in self.stream_consumer.properties.parents:
             cols = ['stream_id', 'parent_id']
-            vals = [self.input_stream.stream_id, parent]
+            vals = [self.stream_consumer.stream_id, parent]
             insert_row(
                 self.conn, self.table_name["PARENTS_TABLE_NAME"], cols, [vals])
 
     def update_parents(self):
         delete_row(self.conn, self.table_name["PARENTS_TABLE_NAME"],
-                   f"stream_id = '{self.input_stream.stream_id}'")
+                   f"stream_id = '{self.stream_consumer.stream_id}'")
         self.insert_parents()
 
     def insert_properties(self, status: str):
@@ -99,15 +98,15 @@ class QuixFunction:
         }
 
         cols = ["topic", "status", "stream_id"]
-        vals = [self.topic, status_map[status], self.input_stream.stream_id]
+        vals = [self.topic, status_map[status], self.stream_consumer.stream_id]
 
-        if self.input_stream.properties.name is not None:
+        if self.stream_consumer.properties.name is not None:
             cols.append("name")
-            vals.append(self.input_stream.properties.name)
+            vals.append(self.stream_consumer.properties.name)
 
-        if self.input_stream.properties.location is not None:
+        if self.stream_consumer.properties.location is not None:
             cols.append("location")
-            vals.append(self.input_stream.properties.location)
+            vals.append(self.stream_consumer.properties.location)
 
         if type(self.data_start) != Null:
             cols.append("data_start")
@@ -118,10 +117,10 @@ class QuixFunction:
         insert_row(
             self.conn, self.table_name["PROPERTIES_TABLE_NAME"], cols, [vals])
 
-    def on_event_data_handler(self, data: EventData):
+    def on_event_data_handler(self, stream_consumer: qx.StreamConsumer, data: qx.EventData):
         logger.debug("on_event_data_handler")
 
-        row = {'timestamp': format_nanoseconds(data.timestamp_nanoseconds), 'stream_id': self.input_stream.stream_id}
+        row = {'timestamp': format_nanoseconds(data.timestamp_nanoseconds), 'stream_id': self.stream_consumer.stream_id}
 
         for k, v in data.tags.items():
             k = re.sub('[^0-9a-zA-Z]+', '_', k)
@@ -131,21 +130,21 @@ class QuixFunction:
 
         row['value'] = data.value
         row['event_id'] = data.id
-        self.event_insert_queue.put(row, block=True)
+        self.event_insert_queue.put(row, block = True)
 
 
-    def on_stream_properties_changed(self):
+    def on_stream_properties_changed(self, stream_consumer: qx.StreamConsumer):
         logger.debug("on_stream_properties_changed")
         self.insert_metadata()
         self.insert_properties("open")
         self.update_parents()
 
-    def on_parameter_definition_changed(self):
+    def on_parameter_definition_changed(self, stream_consumer: qx.StreamConsumer):
         logger.debug("on_parameter_definition_changed")
         self.insert_metadata()
         self.insert_properties("open")
         self.update_parents()
 
-    def on_stream_closed(self, data: StreamEndType):
+    def on_stream_closed(self, stream_consumer: qx.StreamConsumer, data: qx.StreamEndType):
         logger.debug("on_stream_closed")
         self.insert_properties(str(data))

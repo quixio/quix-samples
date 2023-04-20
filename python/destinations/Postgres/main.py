@@ -1,12 +1,10 @@
-from quixstreaming import QuixStreamingClient, StreamReader
-from quixstreaming.models.parametersbufferconfiguration import ParametersBufferConfiguration
-from quixstreaming.app import App
+import quixstreams as qx
 from quix_function import QuixFunction
 import os
 from setup_logger import logger
 from queue import Queue
 from threading import Thread
-from queue_helper import consume_queue
+from queue_helper import consume_queue, stop
 from postgres_helper import connect_postgres, create_paramdata_table, create_metadata_table, create_eventdata_table, create_properties_table, create_parents_table, create_schema
 
 
@@ -40,16 +38,17 @@ create_parents_table(conn, TABLE_NAME["PARENTS_TABLE_NAME"])
 create_properties_table(conn, TABLE_NAME["PROPERTIES_TABLE_NAME"])
 
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient()
 
 logger.info("Opening input topic")
-input_topic = client.open_input_topic(os.environ["input"], CONSUMER_GROUP)
+consumer_topic = client.get_topic_consumer(os.environ["input"], CONSUMER_GROUP)
 logger.info(os.environ["input"])
 
 # Initialize Queue
-param_insert_queue = Queue(maxsize=MAX_QUEUE_SIZE)
-event_insert_queue = Queue(maxsize=MAX_QUEUE_SIZE)
+param_insert_queue = Queue(maxsize = MAX_QUEUE_SIZE)
+event_insert_queue = Queue(maxsize = MAX_QUEUE_SIZE)
 insert_queue = (param_insert_queue, event_insert_queue)
 
 # Create threads that execute insert from Queue
@@ -58,14 +57,14 @@ WAIT_INTERVAL = 0.25 # Seconds
 BATCH_SIZE = 50
 
 for i in range(NUM_THREADS):
-    worker = Thread(target=consume_queue, args=(
+    worker = Thread(target = consume_queue, args=(
         conn, TABLE_NAME["PARAMETER_TABLE_NAME"], param_insert_queue, WAIT_INTERVAL, BATCH_SIZE))
     # Thread will be killed when main thread is terminated
     worker.setDaemon(True)
     worker.start()
 
 for i in range(NUM_THREADS):
-    worker = Thread(target=consume_queue, args=(
+    worker = Thread(target = consume_queue, args=(
         conn, TABLE_NAME["EVENT_TABLE_NAME"], event_insert_queue, WAIT_INTERVAL, BATCH_SIZE))
     # Thread will be killed when main thread is terminated
     worker.setDaemon(True)
@@ -73,32 +72,35 @@ for i in range(NUM_THREADS):
 
 
 # read streams
-def read_stream(input_stream: StreamReader):
-    logger.info("New stream read:" + input_stream.stream_id)
+def read_stream(stream_consumer: qx.StreamConsumer):
+    logger.info("New stream read:" + stream_consumer.stream_id)
 
-    buffer_options = ParametersBufferConfiguration()
+    buffer_options = qx.TimeseriesBufferConfiguration()
     buffer_options.time_span_in_milliseconds = 100
 
-    buffer = input_stream.parameters.create_buffer(buffer_options)
+    buffer = stream_consumer.timeseries.create_buffer(buffer_options)
 
     # handle the data in a function to simplify the example
-    quix_function = QuixFunction(conn, TABLE_NAME, insert_queue, input_stream)
+    quix_function = QuixFunction(conn, TABLE_NAME, insert_queue, stream_consumer)
 
-    buffer.on_read += quix_function.on_parameter_data_handler
-    input_stream.events.on_read += quix_function.on_event_data_handler
+    buffer.on_data_released = quix_function.on_data_handler
+    stream_consumer.events.on_data_received = quix_function.on_event_data_handler
 
-    input_stream.properties.on_changed += quix_function.on_stream_properties_changed
-    input_stream.on_stream_closed += quix_function.on_stream_closed
-    input_stream.parameters.on_definitions_changed += quix_function.on_parameter_definition_changed
+    stream_consumer.properties.on_changed = quix_function.on_stream_properties_changed
+    stream_consumer.on_stream_closed = quix_function.on_stream_closed
+    stream_consumer.timeseries.on_definitions_changed = quix_function.on_parameter_definition_changed
 
-    input_topic.on_committing += quix_function.on_committing
+    consumer_topic.on_committing = quix_function.on_committing
 
 
 # Hook up events before initiating read to avoid losing out on any data
-input_topic.on_stream_received += read_stream
+consumer_topic.on_stream_received = read_stream
 
 # Hook up to termination signal (for docker image) and CTRL-C
 logger.info("Listening to streams. Press CTRL-C to exit.")
 
+def before_shutdown():
+    stop()
+
 # Handle graceful exit
-App.run()
+qx.App.run(before_shutdown=before_shutdown)

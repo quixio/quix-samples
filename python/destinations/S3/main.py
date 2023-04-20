@@ -1,5 +1,4 @@
-from quixstreaming import QuixStreamingClient, StreamReader, ParameterData, AutoOffsetReset, CommitOptions, StreamEndType
-from quixstreaming.app import App
+import quixstreams as qx
 import os, time
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -8,10 +7,14 @@ from threading import Lock, Thread
 import gzip
 import boto3
 
-client = QuixStreamingClient()
-commit_settings = CommitOptions()
+# keep the main loop running
+run = True
+
+client = qx.QuixStreamingClient()
+commit_settings = qx.models.CommitOptions()
 commit_settings.auto_commit_enabled = False
-topic = client.open_input_topic(os.environ["input"], "s3-sink", commit_settings=commit_settings, auto_offset_reset=AutoOffsetReset.Latest)
+topic = client.get_topic_consumer(os.environ["input"], "s3-sink", 
+                                  commit_settings = commit_settings, auto_offset_reset = qx.AutoOffsetReset.Latest)
 
 # name of the parameter that contains formatted data to save to s3
 param = os.environ["parameter"]
@@ -31,7 +34,7 @@ tz = tz = timezone(os.environ["timezone"])
 # maximum number of messages to wait for before uploading files to s3. 
 max_count = int(os.environ["batch_msg_count"])
 # maximum time interval to wait before an upload happens.
-max_interval = timedelta(seconds=int(os.environ["batch_time_interval"]))
+max_interval = timedelta(seconds = int(os.environ["batch_time_interval"]))
 
 class Batch:
     def __init__(self, count, start, fname):
@@ -61,8 +64,8 @@ batches = {}
 
 s3 = boto3.client(
     "s3",
-    aws_access_key_id=os.environ["aws_access_key_id"],
-    aws_secret_access_key=os.environ["aws_access_key"]
+    aws_access_key_id = os.environ["aws_access_key_id"],
+    aws_secret_access_key = os.environ["aws_access_key"]
 )
 
 def upload(stream_id: str, fname: str):
@@ -105,7 +108,7 @@ def is_new_batch(batch: Batch):
 def file_name(start: datetime):
     return prefix + start.astimezone(tz).isoformat(timespec='milliseconds').replace(":", "").replace("+", "_plus_") + suffix + ".gz"
 
-def save(stream_id: str, data: ParameterData):
+def save(stream_id: str, data: qx.TimeseriesData):
     global batches
     if data is not None and len(data.timestamps) > 0:
         mutex.acquire()
@@ -132,13 +135,13 @@ def save(stream_id: str, data: ParameterData):
         finally:
             mutex.release()
 
-def stream_received_handler(stream: StreamReader):
+def stream_received_handler(stream: qx.StreamConsumer):
     global batches
 
-    def read_handler(data: ParameterData):
+    def read_handler(stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
         save(stream.stream_id, data)
     
-    def stream_closed_handler(status: StreamEndType):
+    def stream_closed_handler(stream_consumer: qx.StreamConsumer, status: qx.StreamEndType):
         batch = batches.pop(stream.stream_id, None)
         if batch is not None and batch.count > 0:
             upload(stream.stream_id, batch.fname)
@@ -149,13 +152,13 @@ def stream_received_handler(stream: StreamReader):
     start = datetime.now()
     fname = file_name(start)
     batches[stream.stream_id] = Batch(0, start, fname)
-    stream.parameters.on_read += read_handler
-    stream.on_stream_closed += stream_closed_handler
+    stream.timeseries.on_data_received = read_handler
+    stream.on_stream_closed = stream_closed_handler
 
-topic.on_stream_received += stream_received_handler
+topic.on_stream_received = stream_received_handler
 
 def job():
-    while True:
+    while run:
         print("Debug: started batch job at " + str(datetime.now()))
         for key in batches.keys():
             mutex.acquire()
@@ -171,14 +174,20 @@ def job():
             finally:
                 mutex.release()
         interval = max_interval.total_seconds() / 2
-        print("Debug: scheduled next batch job to run at " + str(datetime.now() + timedelta(seconds=interval)))
+        print("Debug: scheduled next batch job to run at " + str(datetime.now() + timedelta(seconds = interval)))
         time.sleep(interval)
 
 thread = None
 if batch_mode == BatchMode.TIME or batch_mode == BatchMode.TIME_OR_COUNT:
-    thread = Thread(target=job)  
+    thread = Thread(target = job)  
     thread.start()
     print("Info: started batch scheduler")
 
 print("Listening to streams. Press CTRL-C to exit.")
-App.run()
+
+def before_shutdown():
+    global run
+    run = False
+
+# Handle graceful exit
+qx.App.run(before_shutdown=before_shutdown)

@@ -12,7 +12,7 @@ client = qx.QuixStreamingClient()
 # Change consumer group to a different constant if you want to run model locally.
 print("Opening input and output topics")
 
-consumer_topic = client.get_topic_consumer(os.environ["input"], auto_offset_reset=qx.AutoOffsetReset.Latest)
+consumer_topic = client.get_topic_consumer(os.environ["input"], auto_offset_reset = qx.AutoOffsetReset.Latest)
 producer_topic = client.get_topic_producer(os.environ["output"])
 
 
@@ -28,10 +28,10 @@ def read_stream(consumer_stream: qx.StreamConsumer):
 
     # React to new data received from input topic.
     consumer_stream.events.on_data_received = quix_function.on_event_data_handler
-    consumer_stream.timeseries.on_dataframe_received = quix_function.on_pandas_frame_handler
+    consumer_stream.timeseries.on_dataframe_received = quix_function.on_dataframe_handler
 
     # When input stream closes, we close output stream as well. 
-    def on_stream_close():
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
         producer_stream.close()
         print("Stream closed:" + producer_stream.stream_id)
 

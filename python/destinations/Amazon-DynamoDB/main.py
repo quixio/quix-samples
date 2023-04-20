@@ -1,22 +1,21 @@
+import quixstreams as qx
 import boto3
 import os
 import time
 from datetime import datetime
 from botocore.exceptions import ClientError
 from botocore.config import Config
-from quixstreaming import QuixStreamingClient, StreamReader, ParameterData, ParameterValueType
-from quixstreaming.app import App
-from quixstreaming.models.parametersbufferconfiguration import ParametersBufferConfiguration
 
-# Quix injects credentials automatically to the client. Alternatively, you can always pass an SDK token manually as an argument.
-client = QuixStreamingClient()
+# Quix injects credentials automatically to the client.
+# Alternatively, you can always pass an SDK token manually as an argument.
+client = qx.QuixStreamingClient()
 
 print("Opening input topic")
-input_topic = client.open_input_topic(os.environ["input"])
+consumer_topic = client.get_topic_consumer(os.environ["input"])
 
 config = Config(
-    region_name=os.environ["region"],
-    retries={
+    region_name = os.environ["region"],
+    retries = {
         'max_attempts': 5,
         'mode': 'adaptive'
     }
@@ -24,9 +23,9 @@ config = Config(
 
 dynamodb = boto3.client(
     "dynamodb",
-    aws_access_key_id=os.environ["aws_access_key_id"],
-    aws_secret_access_key=os.environ["aws_secret_access_key"],
-    config=config
+    aws_access_key_id = os.environ["aws_access_key_id"],
+    aws_secret_access_key = os.environ["aws_secret_access_key"],
+    config = config
 )
 
 if "table_name" not in os.environ or os.environ["table_name"] == "":
@@ -35,19 +34,19 @@ if "table_name" not in os.environ or os.environ["table_name"] == "":
     try:
         partition_key = os.environ["param_partition_key"].split("|")[0]
         if "param_sort_key" not in os.environ or os.environ["param_sort_key"] == "":
-            dynamodb.create_table(TableName=table_name,
+            dynamodb.create_table(TableName = table_name,
                                   AttributeDefinitions=[{"AttributeName": partition_key, "AttributeType": "S"}],
                                   KeySchema=[{"AttributeName": partition_key, "KeyType": "HASH"}],
-                                  BillingMode="PAY_PER_REQUEST",
+                                  BillingMode = "PAY_PER_REQUEST",
                                   SSESpecification={"Enabled": True, "SSEType": "KMS"})
         else:
             sort_key = os.environ["param_sort_key"].split("|")[0]
-            dynamodb.create_table(TableName=table_name,
+            dynamodb.create_table(TableName = table_name,
                                   AttributeDefinitions=[{"AttributeName": partition_key, "AttributeType": "S"},
                                                         {"AttributeName": sort_key, "AttributeType": "S"}],
                                   KeySchema=[{"AttributeName": partition_key, "KeyType": "HASH"},
                                              {"AttributeName": sort_key, "KeyType": "RANGE"}],
-                                  BillingMode="PAY_PER_REQUEST",
+                                  BillingMode = "PAY_PER_REQUEST",
                                   SSESpecification={"Enabled": True, "SSEType": "KMS"})
         print("Create table request sent for DynamoDB table: quix-" + os.environ["input"])
     except ClientError as e:
@@ -60,19 +59,19 @@ else:
 
 
 # read streams
-def read_stream(input_stream: StreamReader):
-    print("New stream read:" + input_stream.stream_id)
+def read_stream(stream_consumer: qx.StreamConsumer):
+    print("New stream read:" + stream_consumer.stream_id)
 
-    buffer_options = ParametersBufferConfiguration()
+    buffer_options = qx.TimeseriesBufferConfiguration()
     # DynamoDB BatchWriteItem has max 25 records as limit
     buffer_options.packet_size = 25
 
-    buffer = input_stream.parameters.create_buffer(buffer_options)
+    buffer = stream_consumer.timeseries.create_buffer(buffer_options)
 
-    buffer.on_read += on_parameter_data_handler
+    buffer.on_data_released = on_data_handler
 
 
-def on_parameter_data_handler(data: ParameterData):
+def on_data_handler(stream_consumer: qx.StreamConsumer, data: qx.TimeseriesData):
     items = []
 
     for ts in data.timestamps:
@@ -89,9 +88,9 @@ def on_parameter_data_handler(data: ParameterData):
             item[key] = {"S": timestamp.strftime(pattern)}
 
         for k, v in ts.parameters.items():
-            if v.type == ParameterValueType.String and v.string_value:
+            if v.type == qx.ParameterValueType.String and v.string_value:
                 item[k] = {"S": v.string_value}
-            if v.type == ParameterValueType.Numeric and v.numeric_value is not None:
+            if v.type == qx.ParameterValueType.Numeric and v.numeric_value is not None:
                 item[k] = {"N": str(ts.parameters[k].numeric_value)}
 
         for k, v in ts.tags.items():
@@ -100,9 +99,9 @@ def on_parameter_data_handler(data: ParameterData):
     batch_write({table_name: items})
 
 
-def batch_write(request, retry_count=1):
+def batch_write(request, retry_count = 1):
     try:
-        response = dynamodb.batch_write_item(RequestItems=request)
+        response = dynamodb.batch_write_item(RequestItems = request)
         if "UnprocessedItems" in response and len(response["UnprocessedItems"]) > 0:
             if retry_count < os.environ["max_retry"]:
                 print("Try: [" + retry_count + "] Retrying " + len(response["UnprocessedItems"]) + " unprocessed items")
@@ -116,10 +115,10 @@ def batch_write(request, retry_count=1):
 
 
 # Hook up events before initiating read to avoid losing out on any data
-input_topic.on_stream_received += read_stream
+consumer_topic.on_stream_received = read_stream
 
 # Hook up to termination signal (for docker image) and CTRL-C
 print("Listening to streams. Press CTRL-C to exit.")
 
 # Handle graceful exit
-App.run()
+qx.App.run()

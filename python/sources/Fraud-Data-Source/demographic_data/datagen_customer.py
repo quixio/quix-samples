@@ -59,39 +59,39 @@ class Customer:
 
 
 	def generate_age_gender(self):
-	    g_a = age_gender[min(age_gender, key=lambda x:abs(x-random.random()))]
+		g_a = age_gender[min(age_gender, key = lambda x:abs(x-random.random()))]
 
-	    while True:
-	        dob = fake.date_time_this_century()
+		while True:
+			dob = fake.date_time_this_century()
 
-	        # adjust the randomized date to yield the correct age 
-	        start_age = (date.today() - date(dob.year, dob.month, dob.day)).days/365.
-	        dob_year = dob.year - int(g_a[1] - int(start_age)) 
+			# adjust the randomized date to yield the correct age 
+			start_age = (date.today() - date(dob.year, dob.month, dob.day)).days/365.
+			dob_year = dob.year - int(g_a[1] - int(start_age)) 
 
-	        # since the year is adjusted, sometimes Feb 29th won't be a day
-	        # in the adjusted year
-	        try:
-	        	# return first letter of gender and dob
-	            return g_a[0][0], date(dob_year, dob.month, dob.day)
-	        except:
-	            pass
+			# since the year is adjusted, sometimes Feb 29th won't be a day
+			# in the adjusted year
+			try:
+				# return first letter of gender and dob
+				return g_a[0][0], date(dob_year, dob.month, dob.day)
+			except:
+				pass
 
 	# find nearest city
 	def get_random_location(self):
-	    return cities[min(cities, key=lambda x:abs(x-random.random()))]
+		return cities[min(cities, key = lambda x:abs(x-random.random()))]
 
 	def print_customer(self):
-	     print(str(self.ssn) + '|' +\
-	     self.first + '|' +\
-	     self.last + '|' +\
-	     self.gender + '|' +\
-	     self.street + '|' +\
-	     self.addy + '|' +\
-	     self.job + '|' +\
-	     str(self.dob.day) + '|' +\
-	     str(self.dob.month) + '|' +\
-	     str(self.dob.year) + '|' +\
-	     str(self.account))
+			print(str(self.ssn) + '|' +\
+			self.first + '|' +\
+			self.last + '|' +\
+			self.gender + '|' +\
+			self.street + '|' +\
+			self.addy + '|' +\
+			self.job + '|' +\
+			str(self.dob.day) + '|' +\
+			str(self.dob.month) + '|' +\
+			str(self.dob.year) + '|' +\
+			str(self.account))
 
 
 
@@ -112,20 +112,20 @@ def validate():
 		sys.exit(0)		           
 
 	try:
-	    num_cust = int(sys.argv[1])
+		num_cust = int(sys.argv[1])
 	except:
-	    print_err(1)
+		print_err(1)
 	try:
-	    seed_num = int(sys.argv[2])
+		seed_num = int(sys.argv[2])
 	except:
-	    print_err(2)
+		print_err(2)
 	try:
-	    m = sys.argv[3]
-	    main = open(m, 'r').read()
+		m = sys.argv[3]
+		main = open(m, 'r').read()
 
 	except:
-	    print_err(3)
-
+		print_err(3)
+	    
 	return num_cust, seed_num, main
 
 if __name__ == '__main__':

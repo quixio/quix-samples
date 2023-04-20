@@ -11,7 +11,7 @@ client = qx.QuixStreamingClient()
 # suggested default is distilbert-base-uncased-finetuned-sst-2-english
 model_name = os.environ["HuggingFaceModel"]
 print("Downloading {0} model...".format(model_name))
-model_pipeline = pipeline(model=model_name)
+model_pipeline = pipeline(model = model_name)
 
 print("Opening input and output topics")
 # Change consumer group to a different constant if you want to run model locally.
@@ -30,10 +30,10 @@ def read_stream(stream_consumer: qx.StreamConsumer):
 
     # React to new data received from input topic.
     stream_consumer.events.on_data_received = hugging_face_model.on_event_data_handler
-    stream_consumer.timeseries.on_data_received = hugging_face_model.on_parameter_data_handler
+    stream_consumer.timeseries.on_data_received = hugging_face_model.on_data_handler
 
     # When input stream closes, we close output stream as well.
-    def on_stream_close():
+    def on_stream_close(stream_consumer: qx.StreamConsumer, end_type: qx.StreamEndType):
         producer_stream.close()
         print("Stream closed:" + producer_stream.stream_id)
 
