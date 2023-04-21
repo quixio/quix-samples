@@ -4,7 +4,7 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-        "Technology": ["Read/Write SDK"],
+        "Technology": ["QuixStreams"],
         "Pipeline Stage": ["Transformation"],
         "Type": ["Code samples"],
         "Popular Subjects": ["Onboarding"]

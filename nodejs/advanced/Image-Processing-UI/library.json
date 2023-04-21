@@ -4,7 +4,7 @@
 	"language": "NodeJs",
 	"tags": {
 		"Complexity": ["Medium"],
-		"Technology": ["Read SDK"],
+		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Destination"],
 		"Type": ["Demos"],
 		"API Usage": ["Reader API (Websockets)"]

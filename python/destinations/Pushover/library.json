@@ -4,7 +4,7 @@
   "language": "Python",
   "tags": {
     "Complexity": ["Easy"],
-    "Technology": ["Read SDK"],
+    "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],
     "Vendor": ["Pushover"]

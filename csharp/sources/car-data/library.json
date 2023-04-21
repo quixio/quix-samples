@@ -3,7 +3,7 @@
     "name": "Car Data Generator",
     "language": "C#",
     "tags": {
-        "Technology": ["Write SDK"],
+        "Technology": ["QuixStreams"],
         "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },

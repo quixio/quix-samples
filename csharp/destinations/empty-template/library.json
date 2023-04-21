@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-        "Technology": ["Read SDK"],
+        "Technology": ["QuixStreams"],
         "Pipeline Stage": ["Destination"],
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]

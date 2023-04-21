@@ -3,7 +3,7 @@
 	"name": "Demo Data",
 	"language": "C#",
 	"tags": {
-		"Technology": ["Write SDK"],
+		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Source"],
 		"Popular Subjects": ["Quick Start", "Onboarding"],
 		"Type": ["Demos"]

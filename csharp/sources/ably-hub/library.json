@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-        "Technology": ["Write SDK"],
+        "Technology": ["QuixStreams"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
         "Vendor": ["Ably"]
