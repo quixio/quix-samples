@@ -4,7 +4,7 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
-		"SDK Usage": ["Write SDK"],
+		"Technology": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Vendor": ["Snowplow", "AWS"]
     },

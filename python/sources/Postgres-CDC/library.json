@@ -5,10 +5,9 @@
     "IconFile": "icon.png",
     "tags": {
       "Complexity": ["Medium"],
-      "SDK Usage": ["Read SDK"],
       "Type": ["Connectors"],
       "Pipeline Stage": ["Source"],
-      "Technology": ["Database"]
+      "Technology": ["Database", "QuixStreams"]
     },
     "shortDescription": "Stream data from Postgres Database CDC to Quix",
     "EntryPoint": "build/dockerfile",

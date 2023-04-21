@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Read SDK"],
+        "Technology": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
         "Vendor": ["Ably"]

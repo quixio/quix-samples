@@ -4,9 +4,8 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Use Case": ["Mobility", "Image Processing"]
+        "Use Case": ["Mobility", "Image Processing", "QuixStreams"]
     },
     "shortDescription": "Stream TFL's London traffic camera images",
     "DefaultFile": "main.py",

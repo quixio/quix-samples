@@ -4,7 +4,7 @@
 	"language": "NodeJs",
 	"tags": {
 		"Complexity": ["Medium"],
-		"SDK Usage": ["Read SDK"],
+		"Technology": ["Read SDK"],
 		"Type": ["Demos"],
 		"API Usage": ["Reader API (Websockets)", "Writer API (HTTP)"]
 	},

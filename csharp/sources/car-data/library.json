@@ -3,7 +3,7 @@
     "name": "Car Data Generator",
     "language": "C#",
     "tags": {
-        "SDK Usage": ["Write SDK"],
+        "Technology": ["Write SDK"],
         "Type": ["Code samples"],
         "Pipeline Stage": ["Source"]
     },

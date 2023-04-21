@@ -4,9 +4,9 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
-        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
-        "Type": ["Code samples"]
+        "Type": ["Code samples"],
+        "Technology": ["QuixStreams"]
     },
     "shortDescription": "Create a bridge to stream the game's telemetry to Quix",
     "longDescription": "Create a bridge to stream the local game's telemetry to Quix. Note that this bridge must be run locally on the same network as the game.",

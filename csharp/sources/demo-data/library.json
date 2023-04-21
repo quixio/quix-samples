@@ -3,7 +3,7 @@
 	"name": "Demo Data",
 	"language": "C#",
 	"tags": {
-		"SDK Usage": ["Write SDK"],
+		"Technology": ["Write SDK"],
 		"Pipeline Stage": ["Source"],
 		"Popular Subjects": ["Quick Start", "Onboarding"],
 		"Type": ["Demos"]

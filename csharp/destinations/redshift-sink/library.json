@@ -3,21 +3,11 @@
   "name": "Redshift",
   "language": "C#",
   "tags": {
-    "Complexity": [
-      "Advanced"
-    ],
-    "SDK Usage": [
-      "Read SDK"
-    ],
-    "Pipeline Stage": [
-      "Destination"
-    ],
-    "Type": [
-      "Connectors"
-    ],
-    "Vendor": [
-      "AWS"
-    ]
+    "Complexity": ["Advanced"],
+    "Technology": ["Read SDK"],
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Vendor": ["AWS"]
   },
   "shortDescription": "Publish data to AWS Redshift",
   "DefaultFile": "Quix.Redshift.Writer/Worker.cs",

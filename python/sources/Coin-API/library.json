@@ -4,10 +4,9 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
-        "Technology": ["API"]
+        "Technology": ["API", "QuixStreams"]
     },
     "shortDescription": "Consume currency data from the CoinAPI REST API",
     "DefaultFile": "quix_functions.py",

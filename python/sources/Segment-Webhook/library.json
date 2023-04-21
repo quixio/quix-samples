@@ -3,7 +3,7 @@
     "name": "Segment",
     "language": "Python",
     "tags": {
-        "SDK Usage": ["Write SDK"],
+        "Technology": ["Write SDK"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
         "Vendor": ["Segment"]

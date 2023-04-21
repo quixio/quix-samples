@@ -3,21 +3,11 @@
   "name": "Firehose",
   "language": "Python",
   "tags": {
-    "Complexity": [
-      "Easy"
-    ],
-    "SDK Usage": [
-      "Read SDK"
-    ],
-    "Pipeline Stage": [
-      "Destination"
-    ],
-    "Type": [
-      "Connectors"
-    ],
-    "Vendor": [
-      "AWS"
-    ]
+    "Complexity": ["Easy"],
+    "Technology": ["Read SDK"],
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Vendor": ["AWS"]
   },
   "shortDescription": "Publish Quix streams to Amazon Kinesis Data Firehose",
   "DefaultFile": "main.py",

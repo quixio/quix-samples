@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Read/Write SDK"],
+        "Technology": ["Read/Write SDK"],
         "Pipeline Stage": ["Transformation"],
         "Type": ["Code samples"],
         "Popular Subjects": ["Quick Start"]
