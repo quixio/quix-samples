@@ -1,6 +1,6 @@
 # Complete example
 
-[This project](https://github.com/quixio/quix-samples/tree/main/csharp/destinations/complete%20example) gives an example on how to connect to Kafka and read various messages. It is a complete example, in C#, of how to read data from a topic and the usage of all the [QuixStreams](https://quix.io/docs/client-library-intro.html) event handlers.
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/destinations/complete%20example) gives an example on how to connect to Kafka and read various messages. It is a complete example, in C#, of how to read data from a topic and the usage of all the [Quix Streams](https://quix.io/docs/client-library-intro.html) event handlers.
 
 ## How to run
 

@@ -2,7 +2,7 @@
 
 [This project](https://github.com/quixio/quix-samples/tree/main/csharp/sources/complete-example) is an example of how to connect to Kafka and write various messages.
 
-It is a complete example, in C#, of how to write data into a topic and the usage of all the QuixStreams methods.
+It is a complete example, in C#, of how to write data into a topic and the usage of all the Quix Streams methods.
 
 ## How to run
 
