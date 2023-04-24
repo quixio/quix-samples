@@ -1,6 +1,6 @@
 # Python example
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/Complete-Example) demonstrates how to connect to Kafka and publish data to it using the [Quix SDK](https://docs.quix.io/sdk-intro.html).
+[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/Complete-Example) demonstrates how to connect to Kafka and publish data to it using [Quix Streams](https://quix.io/docs/client-library-intro.html).
 
 ## How to run
 
