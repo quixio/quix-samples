@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Medium"],
-        "SDK Usage": ["Write SDK"],
+        "Technology": ["QuixStreams"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
         "Vendor": ["Azure"]

@@ -3,21 +3,11 @@
   "name": "Timestream",
   "language": "Python",
   "tags": {
-    "Complexity": [
-      "Easy"
-    ],
-    "SDK Usage": [
-      "Read SDK"
-    ],
-    "Pipeline Stage": [
-      "Destination"
-    ],
-    "Type": [
-      "Connectors"
-    ],
-    "Vendor": [
-      "AWS"
-    ]
+    "Complexity": ["Easy"],
+    "Technology": ["QuixStreams"],
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Vendor": ["AWS"]
   },
   "shortDescription": "Publish Quix streams to Timestream",
   "DefaultFile": "main.py",
