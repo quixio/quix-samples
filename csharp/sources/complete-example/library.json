@@ -9,7 +9,7 @@
         "Pipeline Stage": ["Source"]
     },
     "shortDescription": "A complete example of how to write data into a topic",
-    "longDescription": "This is a complete example, in C#, of how to write data into a topic and the usage of all the QuixStreams methods",
+    "longDescription": "This is a complete example, in C#, of how to write data into a topic and the usage of all the Quix Streams methods",
     "DefaultFile": "WriteCompleteExample/Program.cs",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "WriteCompleteExample.csproj",
