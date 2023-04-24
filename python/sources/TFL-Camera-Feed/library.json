@@ -5,7 +5,7 @@
     "tags": {
         "Complexity": ["Easy"],
         "Pipeline Stage": ["Source"],
-        "Use Case": ["Mobility", "Image Processing", "QuixStreams"]
+        "Use Case": ["Mobility", "Image Processing"]
     },
     "shortDescription": "Stream TFL's London traffic camera images",
     "DefaultFile": "main.py",
