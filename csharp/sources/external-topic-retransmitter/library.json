@@ -18,7 +18,7 @@
         "Name": "Source__Workspace__SdkToken",
         "Type": "EnvironmentVariable",
         "InputType": "HiddenText",
-        "Description": "The SDK token with permission to read from the source topic",
+        "Description": "The Quix Streams/SDK token with permission to read from the source topic",
         "DefaultValue": "",
         "Required": true
       },
