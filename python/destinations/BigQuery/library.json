@@ -5,7 +5,7 @@
     "IconFile": "icon.png",
     "tags": {
       "Complexity": ["Medium"],
-      "SDK Usage": ["Read SDK"],
+      "Technology": ["QuixStreams"],
       "Type": ["Connectors"],
       "Pipeline Stage": ["Destination"],
       "Vendor": ["Google", "GCP"]

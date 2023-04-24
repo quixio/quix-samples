@@ -4,7 +4,7 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Read/Write SDK"],
+        "Technology": ["QuixStreams"],
         "Pipeline Stage": ["Transformation"],
         "Use Case": ["Utility"]
     },

@@ -4,11 +4,10 @@
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
         "Vendor": ["Confluent"],
-        "Technology": ["Kafka"]
+        "Technology": ["Kafka", "QuixStreams"]
     },
     "shortDescription": "Publish data to your Confluent Kafka topic with this bridge",
     "DefaultFile": "quix_function.py",

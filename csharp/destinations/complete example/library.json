@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Medium"],
-        "SDK Usage": ["Read SDK"],
+        "Technology": ["QuixStreams"],
         "Type": ["Code samples"],
         "Pipeline Stage": ["Destination"]
     },

@@ -4,7 +4,7 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
-        "API Usage": ["Writer API (Websockets)", "Reader API (Websockets)"],
+        "Technology": [ "Quix APIs" ],
         "Pipeline Stage": ["Source"],
         "Type": ["Code samples"],
         "Use Case": ["Mobility"]

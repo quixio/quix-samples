@@ -5,10 +5,9 @@
     "IconFile": "icon.png",
     "tags": {
       "Complexity": ["Medium"],
-      "SDK Usage": ["Read SDK"],
       "Type": ["Connectors"],
       "Pipeline Stage": ["Destination"],
-      "Technology": ["SQL"]
+      "Technology": ["SQL", "QuixStreams"]
     },
     "shortDescription": "Stream data from Quix to a Postgres Database",
     "EntryPoint": "build/dockerfile",

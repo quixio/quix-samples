@@ -5,11 +5,10 @@
     "IconFile": "icon.png",
     "tags": {
       "Complexity": ["Medium"],
-      "SDK Usage": ["Read SDK"],
       "Type": ["Connectors"],
       "Pipeline Stage": ["Destination"],
       "Vendor": ["Timescale"],
-      "Technology": ["Database"]
+      "Technology": ["Database", "QuixStreams"]
     },
     "shortDescription": "Stream data from Quix to a Timescale Database",
     "EntryPoint": "build/dockerfile",
