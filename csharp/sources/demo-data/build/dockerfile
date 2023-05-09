@@ -1,7 +1,8 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-bionic as build
 WORKDIR /project
 COPY --from=git /project .
-RUN dotnet build ./Bridge.Console/Bridge.Console.csproj -o /buildoutput
+RUN dotnet restore
+RUN dotnet publish -c Release ./Bridge.Console/Bridge.Console.csproj -o /buildoutput
 
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-bionic
