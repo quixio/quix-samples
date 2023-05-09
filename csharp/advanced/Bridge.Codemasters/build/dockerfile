@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-bionic as build
 WORKDIR /project
 COPY --from=git /project .
-RUN dotnet restore
 RUN dotnet publish -c Release ./Bridge.Codemasters.Console/Bridge.Codemasters.Console.csproj -o /buildoutput
 
 
