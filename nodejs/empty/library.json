@@ -1,12 +1,12 @@
 {
     "libraryItemId": "50b9c8da-a101-4383-ad94-49b263b80633",
-    "name": "Empty template",
+    "name": "Sample template",
     "language": "NodeJs",
     "tags": {
         "Complexity": ["Easy"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "An empty template for NodeJs applications",
+    "shortDescription": "A template for Quix Samples NodeJs applications",
     "DefaultFile": "main.js",
     "EntryPoint": "build/dockerfile",
     "Variables": [ 

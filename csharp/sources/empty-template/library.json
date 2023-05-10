@@ -1,6 +1,6 @@
 {
     "libraryItemId": "cf45110d-2e36-4acd-81cc-c36bb4fefa22",
-    "name": "Empty template",
+    "name": "Starter source",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "The most basic and essential 'Hello World' write sample",
+    "shortDescription": "The most basic and essential 'Hello World' publish sample",
     "DefaultFile": "WriteHelloWorld/Program.cs",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "WriteHelloWorld.csproj",

@@ -1,6 +1,6 @@
-# Empty template
+# Sample template
 
-[This project](https://github.com/quixio/quix-samples/tree/main/csharp/empty) is an empty template for C# applications in the Quix serverless environment.
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/empty) is a template for developing C# Quic Samples.
 
 ## How to run
 

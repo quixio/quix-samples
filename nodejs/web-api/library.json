@@ -10,7 +10,7 @@
       "Basic templates"
     ]
   },
-  "shortDescription": "An empty template for creating web APIs with NodeJs",
+  "shortDescription": "A template for creating web APIs with NodeJs",
   "DefaultFile": "app.js",
   "EntryPoint": "build/dockerfile",
   "Variables": [

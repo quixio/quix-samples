@@ -1,6 +1,6 @@
 # NodeJs Web API Template
 
-[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/web-api) is an empty template for a web API using Node.js and Express in the Quix serverless environment.
+[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/web-api) is a template for a web API using Node.js and Express in the Quix serverless environment.
 
 ## How to run
 
