@@ -1,7 +1,7 @@
 {
     "libraryItemId": "81cd2592-0e83-4733-bdb0-6710f8dcca04",
     "name": "Image processing - Webcam input",
-    "language": "Node.js",
+    "language": "nodejs",
     "tags": {
       "Complexity": [ "Medium" ],
       "Technology": [ "Quix APIs" ],
