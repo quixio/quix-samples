@@ -1,7 +1,7 @@
 {
 	"libraryItemId": "b7cd4cb0-9209-4968-b491-fbac95575960",
 	"name": "QR Settings Share",
-	"language": "nodejs",
+	"language": "NodeJs",
 	"tags": {
 		"Complexity": ["Medium"],
 		"Popular Subjects": ["Quick Start"]

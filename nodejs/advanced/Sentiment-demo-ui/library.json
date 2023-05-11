@@ -1,7 +1,7 @@
 {
 	"libraryItemId": "0ceed698-7b4f-4549-b209-7d5ab5bc88f6",
 	"name": "Sentiment Demo UI",
-	"language": "nodejs",
+	"language": "NodeJs",
 	"tags": {
 		"Complexity": ["Medium"],
 		"Technology": ["QuixStreams", "Quix APIs"],

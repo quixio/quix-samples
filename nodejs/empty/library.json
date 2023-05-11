@@ -1,7 +1,7 @@
 {
     "libraryItemId": "50b9c8da-a101-4383-ad94-49b263b80633",
     "name": "Sample template",
-    "language": "nodejs",
+    "language": "NodeJs",
     "tags": {
         "Complexity": ["Easy"],
         "Type": ["Basic templates"]
