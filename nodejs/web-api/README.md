@@ -1,6 +1,6 @@
-# NodeJs Web API Template
+# Node.js Web API Template
 
-[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/web-api) is an empty template for a web API using Node.js and Express in the Quix serverless environment.
+[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/web-api) is a template for a web API using Node.js and Express in the Quix serverless environment.
 
 ## How to run
 
@@ -23,20 +23,20 @@ This code sample uses the following environment variables:
  
 ### Run locally
 
-To run the web api on your local machine, you need to have NodeJs and npm (comes with NodeJs) installed on your machine. You can find the installers for different platforms below.
+To run the web api on your local machine, you need to have Node.js and npm (comes with Node.js) installed on your machine. You can find the installers for different platforms below.
  
- - Windows: [NodeJs download](https://nodejs.org/en/download/)
- - macOS: [NodeJs download](https://nodejs.org/en/download/)
+ - Windows: [Node.js download](https://nodejs.org/en/download/)
+ - macOS: [Node.js download](https://nodejs.org/en/download/)
  - Linux: download from the package repository for your Linux distribution (recommended) or install from [source](https://nodejs.org/en/download/).
 
-Note that if you need to work with multiple versions of NodeJS (especially on platforms that only allows installing one version of NodeJS such as rolling release Linux distributions), it is recommended to use [nvm](https://github.com/nvm-sh/nvm) when installing NodeJs.
+Note that if you need to work with multiple versions of Node.js (especially on platforms that only allows installing one version of Node.js such as rolling release Linux distributions), it is recommended to use [nvm](https://github.com/nvm-sh/nvm) when installing Node.js.
 
 Run the following commands on your terminal (e.g. PowerShell on Windows or terminal emulators on macOS or Linux).
 
-1. Verify that you have both NodeJs and npm installed:
+1. Verify that you have both Node.js and npm installed:
 
 ```
-# below commands should display the versions of NodeJs and npm if they are installed.
+# below commands should display the versions of Node.js and npm if they are installed.
 node --version
 npm --version
 ```

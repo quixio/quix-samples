@@ -1,6 +1,6 @@
-# Empty template
+# Starter destination
 
-[This project](https://github.com/quixio/quix-samples/tree/main/csharp/destinations/empty-template) covers the most basic and essential "hello world" read sample. 
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/destinations/empty-template) covers the most basic and essential "hello world" subscribe sample. 
 
 It gives an example on how to connect to Kafka and detect the arrival of a new stream and read the 'HelloWorld' parameter.
 

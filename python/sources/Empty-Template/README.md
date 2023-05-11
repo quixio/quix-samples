@@ -1,4 +1,4 @@
-# Empty template
+# Starter transformation
 
 [This project](https://github.com/quixio/quix-samples/tree/main/python/sources/Empty-Template) is an example of how to connect and start a new stream with some values.
 

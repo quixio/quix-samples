@@ -1,6 +1,6 @@
-# Empty template
+# Sample template
 
-[This project]() is an empty template for Python applications using the Quix serverless environment.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/empty) is a template for developing Quix Code Samples with Python.
 
 ## How to run
 

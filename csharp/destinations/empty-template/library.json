@@ -1,6 +1,6 @@
 {
     "libraryItemId": "0d7400c4-39da-4ab2-8717-c906252c2237",
-    "name": "Empty template",
+    "name": "Starter destination",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "The most basic and essential 'Hello World' read sample",
+    "shortDescription": "The most basic and essential 'Hello World' subscribe sample",
     "DefaultFile": "ReadHelloWorld/Program.cs",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "ReadHelloWorld.csproj",
