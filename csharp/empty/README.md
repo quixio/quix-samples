@@ -1,6 +1,6 @@
 # Sample template
 
-[This project](https://github.com/quixio/quix-samples/tree/main/csharp/empty) is a template for developing C# Quix Samples.
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/empty) is a template for developing C# Quix Code Samples.
 
 ## How to run
 

@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "A template for Quix Samples Node.js applications",
+    "shortDescription": "A template for Quix Code Samples Node.js applications",
     "DefaultFile": "main.js",
     "EntryPoint": "build/dockerfile",
     "Variables": [ 
