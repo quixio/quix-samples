@@ -1,6 +1,6 @@
 # Sample template
 
-[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/empty) is a template for a Quix Samples website, hosted using Node JS Express in the Quix serverless environment.
+[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/empty) is a template for an [express](https://expressjs.com/) web application that can be hosted on the Quix platform.
 
 ## How to run
 

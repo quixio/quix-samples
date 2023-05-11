@@ -1,7 +1,7 @@
 {
   "libraryItemId": "f86e7b37-2fa2-4df6-a96c-8ca75a0cffc3",
   "name": "Web API Template",
-  "language": "NodeJs",
+  "language": "Node.js",
   "tags": {
     "Complexity": [
       "Easy"
@@ -10,7 +10,7 @@
       "Basic templates"
     ]
   },
-  "shortDescription": "A template for creating web APIs with NodeJs",
+  "shortDescription": "A template for creating web APIs with Node.js",
   "DefaultFile": "app.js",
   "EntryPoint": "build/dockerfile",
   "Variables": [

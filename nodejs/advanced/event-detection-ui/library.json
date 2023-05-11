@@ -1,7 +1,7 @@
 {
 	"libraryItemId": "dee1e22b-b8e4-4f88-ac16-475f709ff053",
 	"name": "Event Detection Demo UI",
-	"language": "NodeJs",
+	"language": "Node.js",
 	"tags": {
 		"Complexity": ["Medium"],
 		"Technology": ["QuixStreams"]

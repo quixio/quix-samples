@@ -1,7 +1,7 @@
 {
 	"libraryItemId": "5976fcd9-2ed6-407c-bc5f-795891340bb5",
 	"name": "TfL image processing UI",
-	"language": "NodeJs",
+	"language": "Node.js",
 	"tags": {
 		"Complexity": ["Medium"],
 		"Technology": ["QuixStreams", "Quix APIs"],

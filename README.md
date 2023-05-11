@@ -87,7 +87,7 @@ Create a GUID using an online generator like [Free Online GUID Generator](https:
 The display name for your project. Keep it short (<30 chars) and try to make it unique.
 
 **"language"**
-The projects language (Python, C#, NodeJs, Shell Script, Javascript etc)
+The projects language (Python, C#, Node.js, Shell Script, Javascript etc)
 
 See here for a current list of languages.
 
