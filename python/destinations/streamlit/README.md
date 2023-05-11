@@ -18,7 +18,7 @@ This code sample uses the following environment variables:
 
 ## Requirements
 
-Deploy the `Demo Data` source from the Quix Samples. This will stream Codemasters&reg; F1&reg; 2019 telemetry data into a topic called `f1-data`
+Deploy the `Demo Data` source from the Quix Code Samples. This will stream Codemasters&reg; F1&reg; 2019 telemetry data into a topic called `f1-data`
 
 ## Contribute
 

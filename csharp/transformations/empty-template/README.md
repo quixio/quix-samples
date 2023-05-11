@@ -1,6 +1,6 @@
-# Empty template
+# Starter transformation
 
-[This project](https://github.com/quixio/quix-samples/tree/main/csharp/transformations/empty-template) covers the most basic and essential "hello world" read sample. 
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/transformations/empty-template) covers the most basic and essential "hello world" transformation sample. 
 
 It gives an example on how to connect to Kafka and detect the arrival of a new stream.
 It also shows you where to place your data processing code.
