@@ -1,6 +1,6 @@
-# Open Weather API
+# Visual Crossing API weather
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/Open-Weather) shows you how to connect to the Open Weather API.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/visualcrossing-weather) shows you how to connect to the Visual Crossing API.
 
 ## How to run
 
@@ -15,11 +15,11 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 The code sample uses the following environment variables:
 
 - **output**: This is the output topic for OpenWeather data.
-- **openweatherkey**: This is your OpenWeather API Key.
+- **api_token**: This is your VisualCrossing API token. Obtain from [https://www.visualcrossing.com/account](https://www.visualcrossing.com/account)
 
 ## Requirements/prerequisites
 
-You will need an [OpenWeather (free) account](https://home.openweathermap.org/users/sign_up/) to complete this project.
+You will need a [VisualCrossing (free) account](https://www.visualcrossing.com) to complete this project. Signup and get your `key` from the account details page.
 
 This is part of the Quix [data science tutorial](https://docs.quix.io/platform/tutorials/data-science/data-science.html). 
 
