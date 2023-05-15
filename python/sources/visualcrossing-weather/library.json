@@ -1,6 +1,6 @@
 {
-    "libraryItemId": "d6c0152c-a4cd-4f56-b5af-8c7844e9eb76",
-    "name": "Open Weather API",
+    "libraryItemId": "0e95880b-4d77-434a-80f6-d7290fc00dec",
+    "name": "VisualCrossing Weather",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -9,7 +9,7 @@
         "Use Case": ["Mobility", "Weather"],
         "Technology": ["API", "QuixStreams"]
     },
-    "shortDescription": "Publish Open Weather API data to a stream",
+    "shortDescription": "Publish weather API data to a stream",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",
@@ -18,15 +18,15 @@
             "Name" : "output",
             "Type" : "EnvironmentVariable",
             "InputType" : "OutputTopic",
-            "Description" : "This is the output topic for OpenWeather data",
+            "Description" : "This is the output topic for weather data",
             "DefaultValue" : "weather-topic",
             "Required": true
         },
         {
-            "Name" : "openweatherkey",
+            "Name" : "api_token",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "This is your OpenWeather API Key",
+            "Description" : "This is your VisualCrossing API token. Obtain from https://www.visualcrossing.com/account",
             "DefaultValue" : "",
             "Required": true
         }
