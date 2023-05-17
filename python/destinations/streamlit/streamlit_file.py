@@ -1,86 +1,104 @@
-import quixstreams as qx
+import time
 
-qx.Logging.update_factory(qx.LogLevel.Debug)
+import streamlit as st
 
-import threading as thread
-import os
+from app.conf import (
+    STREAMLIT_DATAFRAME_POLL_PERIOD,
+)
+from app.streamlit_utils import get_stream_df, draw_line_chart_concurrently
 
-import time  # to simulate a real time data, time loop
-
-import pandas as pd  # read csv, df manipulation
-import streamlit as st  # 🎈 data web app development
-from streamlit.scriptrunner.script_run_context import add_script_run_ctx
-
-client = qx.QuixStreamingClient()
-
-consumer_topic = client.get_topic_consumer(os.environ["input"], None, auto_offset_reset = qx.AutoOffsetReset.Latest)
-
+# Basic configuration of the Streamlit dashboard
 st.set_page_config(
-    page_title = "Real-Time Data Science Dashboard",
-    page_icon = "✅",
-    layout = "wide",
+    page_title="Real-Time Data Science Dashboard",
+    page_icon="✅",
+    layout="wide",
 )
 
-# data frame for the data
-df = pd.DataFrame()
-# creating a single-element container
-placeholder = st.empty()
+# PARAMETERS SECTION
+# Define a list of parameters to show in select widgets.
+AVAILABLE_PARAMS = [
+    "Steer",
+    "Speed",
+    "LapDistance",
+    "Gear",
+    "EngineTemp",
+    "EngineRPM",
+    "Brake",
+]
 
-# callback called for each incoming data frame
-def on_read_pandas_data(stream_consumer: qx.StreamConsumer, df_i: pd.DataFrame):
-    global df
+# DASHBOARD LAYOUT SECTION
+# The dashboard layout will consist of 2 columns and one row.
+# Each column will have a select widget with available parameters to plot,
+# and a chart with the real-time data from Quix, that will be updated in real-time.
+# The last row will have a table with raw data.
+col1, col2 = st.columns(2)
+with col1:
+    # Header of the first column
+    st.markdown("### Chart 1 Title")
+    # Select for the first chart
+    parameter1 = st.selectbox(
+        label="PARAMETER",
+        options=AVAILABLE_PARAMS,
+        index=0,
+        key="parameter1",
+        label_visibility="visible",
+    )
+    # A placeholder for the first chart to update it later with data
+    placeholder_col1 = st.empty()
 
-    # format the datetime
-    df_i['datetime'] = pd.to_datetime(df_i['timestamp'])
+with col2:
+    # Header of the second column
+    st.markdown("### Chart 2 Title")
+    # Select for the second chart
+    parameter2 = st.selectbox(
+        label="PARAMETER",
+        options=AVAILABLE_PARAMS,
+        index=1,
+        key="parameter2",
+        label_visibility="visible",
+    )
+    # A placeholder for the second chart to update it later with data
+    placeholder_col2 = st.empty()
 
-    # append the new data
-    df = df.append(df_i)
-    # keep the last 500 data points
-    df = df.iloc[-500:, :]
+# A placeholder for the raw data table
+placeholder_raw = st.empty()
 
-# callback called for each incoming stream
-def read_stream(stream_consumer: qx.StreamConsumer):        
-    # React to new data received from input topic.
-    stream_consumer.timeseries.on_dataframe_received = on_read_pandas_data
+# REAL-TIME METRICS SECTION
+# Below we update the charts with the data we receive from Quix in real time.
+# Each 0.5s Streamlit requests new data from Quix and updates the charts.
+# Keep the dashboard layout code before "while" loop, otherwise new elements
+# will be appended on each iteration.
+while True:
+    # Wait for the streaming data to become available
+    real_time_df = get_stream_df()
+    print(f"Receive data from Quix. Total rows: {len(real_time_df)}")
+    # The df can be shared between threads and changed over time, so we copy it
+    real_time_df_copy = real_time_df[:]
 
-# hook up the read_stream callback
-consumer_topic.on_stream_received = read_stream
+    with placeholder_col1.container():
+        # Plot line chart in the first column
+        draw_line_chart_concurrently(
+            real_time_df_copy,
+            # Use "datetime" column for X axis
+            x="datetime",
+            # Use a column from the first select widget for Y axis
+            # You may also plot multiple values
+            y=[parameter1],
+        )
 
-def update_dashboard():
-    global df
-    
-    # use the in memory dataframe to refresh the dashboard
-    while True:
+    # Plot line chart in the second column
+    with placeholder_col2.container():
+        draw_line_chart_concurrently(
+            real_time_df_copy,
+            x="datetime",
+            # Use a column from the second select widget for Y axis
+            y=[parameter2],
+        )
 
-        local_df = df.copy(deep = True)  # copy reference, so df can be changed outside of this loop while we're working on it
+    # Display the raw dataframe data
+    with placeholder_raw.container():
+        st.markdown("### Raw Data View")
+        st.dataframe(real_time_df_copy)
 
-        # show the spinner while we wait for data
-        with st.spinner('Loading data..'):
-            while local_df is None or "Speed" not in local_df.columns:
-                time.sleep(0.2) # wait a moment for more data to arrive
-                local_df = df.copy(deep = True)  # copy reference, so df can be changed outside of this loop while we're working on it
-
-        with placeholder.container():
-            fig_col1, fig_col2 = st.columns(2)
-            with fig_col1:
-                st.markdown("### Chart 1 Title")
-                st.line_chart(local_df[["datetime", 'Speed', 'EngineRPM']].set_index("datetime"))
-
-            with fig_col2:
-                st.markdown("### Chart 2 Title")
-                st.line_chart(local_df[["datetime", 'Gear', 'Brake']].set_index("datetime"))
-
-            # display the raw data from the buffer
-            st.markdown("### Raw Data View")
-            st.dataframe(local_df)
-
-        # take a nap
-        time.sleep(0.1)
-
-# setup the thread to update the ui
-ui_updater_thread = thread.Thread(target = update_dashboard)
-add_script_run_ctx(ui_updater_thread)
-ui_updater_thread.start()
-
-# run the app, open the topic, listen for shutdown events
-qx.App.run()
+    # Wait for 0.5s before asking for new data from Quix
+    time.sleep(STREAMLIT_DATAFRAME_POLL_PERIOD)
