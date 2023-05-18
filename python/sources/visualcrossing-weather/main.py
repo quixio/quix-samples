@@ -1,5 +1,5 @@
 import quixstreams as qx
-from ny_weather_API import perform_API_request, get_current_weather, get_tomorrow_weather
+from weather_API import perform_API_request, get_current_weather, get_tomorrow_weather
 from datetime import datetime
 import time
 from datetime import timezone
@@ -64,10 +64,10 @@ def get_data():
             print(traceback.format_exc())
 
         finally:
-            # We sleep for 30 minutes, so we don't reach free account limit.
+            # We sleep for 120 seconds, so we don't reach free account limit.
             # Stop sleeping if process termination requested
             sleeping = 0
-            while sleeping <= (1800 - int_sec) and run:
+            while sleeping <= (120 - int_sec) and run:
                 sleeping = sleeping + 1
                 time.sleep(1)
 
