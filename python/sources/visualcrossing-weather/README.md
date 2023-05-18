@@ -14,7 +14,7 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 
 The code sample uses the following environment variables:
 
-- **output**: This is the output topic for OpenWeather data.
+- **output**: This is the output topic for VisualCrossing data.
 - **api_token**: This is your VisualCrossing API token. Obtain from [https://www.visualcrossing.com/account](https://www.visualcrossing.com/account)
 
 ## Requirements/prerequisites
@@ -24,7 +24,7 @@ You will need a [VisualCrossing (free) account](https://www.visualcrossing.com) 
 This is part of the Quix [data science tutorial](https://docs.quix.io/platform/tutorials/data-science/data-science.html). 
 
 - NY bikes I - Citibikes: get real-time availability of New York bikes.
-- NY bikes II - OpenWeather API (this one): get real-time weather forecasts for New York.
+- NY bikes II - VisualCrossing Weather (this one): get real-time weather forecasts for New York.
 - NY bikes III - prediction: predict near-future bikes availability in New York based on current bikes and weather forecasts.
 
 ## Contribute

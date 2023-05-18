@@ -19,7 +19,7 @@ The code sample uses the following environment variables:
 
 ## Requirements/prerequisites
 
-You will need an [OpenWeather (free) account](https://home.openweathermap.org/users/sign_up/) to complete this project.
+You will need an [OpenWeather account](https://home.openweathermap.org/users/sign_up/) to complete this project. (Free for upto 1000 calls per day - this project make 1 call every 30 minutes)
 
 This is part of the Quix [data science tutorial](https://docs.quix.io/platform/tutorials/data-science/data-science.html). 
 
