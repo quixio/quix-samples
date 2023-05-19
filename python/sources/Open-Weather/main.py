@@ -30,6 +30,8 @@ stream_producer.properties.location = "/NY_Real_Time"
 
 
 def get_data():
+    
+    int_sec = 0
 
     while run:
         try:
@@ -38,6 +40,9 @@ def get_data():
 
             # ToL API Request
             json_response = perform_API_request(openweather_api_key)
+
+            print(json_response)
+            
             df_now = get_current_weather(json_response)
             df_1d = get_tomorrow_weather(json_response)
             list_dfs = [df_now, df_1d]
@@ -56,15 +61,16 @@ def get_data():
             int_sec = int((current_time_j - current_time).seconds)
             print(current_time, current_time_j, int_sec)
 
+        except Exception:
+            print(traceback.format_exc())
+
+        finally:
             # We sleep for 30 minutes, so we don't reach free account limit.
             # Stop sleeping if process termination requested
             sleeping = 0
             while sleeping <= (1800 - int_sec) and run:
                 sleeping = sleeping + 1
                 time.sleep(1)
-
-        except Exception:
-            print(traceback.format_exc())
 
 
 def before_shutdown():
