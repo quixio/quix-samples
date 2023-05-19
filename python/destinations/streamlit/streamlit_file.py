@@ -5,7 +5,7 @@ import streamlit as st
 from app.conf import (
     STREAMLIT_DATAFRAME_POLL_PERIOD,
 )
-from app.streamlit_utils import get_stream_df, draw_line_chart_concurrently
+from app.streamlit_utils import get_stream_df, draw_line_chart_failsafe
 
 # Basic configuration of the Streamlit dashboard
 st.set_page_config(
@@ -77,7 +77,7 @@ while True:
 
     with placeholder_col1.container():
         # Plot line chart in the first column
-        draw_line_chart_concurrently(
+        draw_line_chart_failsafe(
             real_time_df_copy,
             # Use "datetime" column for X axis
             x="datetime",
@@ -88,7 +88,7 @@ while True:
 
     # Plot line chart in the second column
     with placeholder_col2.container():
-        draw_line_chart_concurrently(
+        draw_line_chart_failsafe(
             real_time_df_copy,
             x="datetime",
             # Use a column from the second select widget for Y axis
