@@ -1,6 +1,5 @@
 import io
 import logging
-import threading
 import time
 import urllib.request
 from typing import Union, Sequence
@@ -17,7 +16,7 @@ from app.conf import (
 
 logger = logging.getLogger(__name__)
 
-__all__ = ("get_stream_df", "draw_line_chart_concurrently")
+__all__ = ("get_stream_df", "draw_line_chart_failsafe")
 
 
 def _read_df_from_url(url: str, timeout: int):
@@ -69,26 +68,24 @@ def get_stream_df(
         continue
 
 
-@st.cache_resource
-def _get_render_lock() -> threading.Lock:
-    """
-    A shared lock used to prevent charts from rendering concurrently.
-    """
-
-    return threading.Lock()
-
-
-def draw_line_chart_concurrently(
+def draw_line_chart_failsafe(
     data: pd.DataFrame,
     *,
     x: Union[str, None] = None,
     y: Union[str, Sequence[str], None] = None,
 ):
     """
-    Draw line chart in a locking fashion.
+    Draw line chart in fail-safe way.
+
     Otherwise, streamlit.line_chart occasionally fails with
-    "RuntimeError: dictionary changed size during iteration"
+    "RuntimeError: dictionary changed size during iteration".
+    If it happens, we skip drawing and print a traceback, assuming that
+    the chart will be rendered correctly on next iteration.
     """
 
-    with _get_render_lock():
+    try:
         st.line_chart(data, x=x, y=y)
+    except RuntimeError as exc:
+        if "dictionary changed size during iteration" not in str(exc):
+            raise
+        logger.warning("Failed to draw the chart in Streamlit", exc_info=True)
