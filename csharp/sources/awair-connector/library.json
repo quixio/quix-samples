@@ -4,12 +4,12 @@
     "language": "C#",
     "tags": {
       "Complexity": ["Medium"],
-      "SDK Usage": ["Write SDK"],
+      "Technology": ["QuixStreams"],
       "Pipeline Stage": ["Source"]
     },
     "shortDescription": "Awair smart home integration",
     "longDescription": "This sample will connect to Awair's background services to continuously scrape and publish data for your devices.",
-      "defaultFile": "Service/Program.cs",
+    "defaultFile": "Service/Program.cs",
     "iconFile": "icon.png",
     "entryPoint": "build/dockerfile",
     "runEntryPoint": "Service/Service.csproj",

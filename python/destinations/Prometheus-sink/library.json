@@ -1,43 +1,34 @@
 {
-    "libraryItemId": "8ba520a1-40f5-42e9-ab92-1f71ac717416",
-    "name": "Prometheus",
-    "language": "Python",
-    "tags": {
-        "Complexity": [
-            "Medium"
-        ],
-        "SDK Usage": [
-            "Read SDK"
-        ],
-        "Pipeline Stage": [
-            "Destination"
-        ],
-        "Type": ["Connectors"],
-        "Vendor": [
-            "Prometheus"
-        ]
-    },
-    "shortDescription": "Prometheus metrics for a topic",
-    "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
-    "RunEntryPoint": "main.py",
-    "Variables": [
-        {
-            "Name": "input",
-            "Type": "EnvironmentVariable",
-            "InputType": "InputTopic",
-            "Description": "Name of the input topic to listen to.",
-            "Required": true
-        }
-    ],
-    "DeploySettings":
+  "libraryItemId": "8ba520a1-40f5-42e9-ab92-1f71ac717416",
+  "name": "Prometheus",
+  "language": "Python",
+  "tags": {
+    "Complexity": ["Medium"],
+    "Technology": ["QuixStreams"],
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Vendor": ["Prometheus"]
+  },
+  "shortDescription": "Prometheus metrics for a topic",
+  "DefaultFile": "main.py",
+  "EntryPoint": "build/dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
     {
-        "DeploymentType": "Service",
-        "CpuMillicores": 200,
-        "MemoryInMb": 200,
-        "Replicas": 1,
-        "PublicAccess": true,
-        "UrlPrefix": "prometheus",
-        "ValidateConnection": false
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "Name of the input topic to listen to.",
+      "Required": true
     }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "UrlPrefix": "prometheus",
+    "ValidateConnection": false
+  }
 }

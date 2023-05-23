@@ -1,6 +1,6 @@
 # Open Weather API
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/Open-Weather) shows you hot to connect to the Open Weather API.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/Open-Weather) shows you how to connect to the Open Weather API.
 
 ## How to run
 
@@ -19,7 +19,7 @@ The code sample uses the following environment variables:
 
 ## Requirements/prerequisites
 
-You will need an [OpenWeather (free) account](https://home.openweathermap.org/users/sign_up/) to complete this project.
+You will need an [OpenWeather account](https://home.openweathermap.org/users/sign_up/) to complete this project. Free for up to 1000 calls per day - this project makes 1 call every 30 minutes.
 
 This is part of the Quix [data science tutorial](https://docs.quix.io/platform/tutorials/data-science/data-science.html). 
 

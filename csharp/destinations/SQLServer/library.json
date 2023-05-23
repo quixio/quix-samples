@@ -4,10 +4,9 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Advanced"],
-        "SDK Usage": ["Read SDK"],
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
-        "Technology": ["SQL"]
+        "Technology": ["SQL", "QuixStreams"]
     },
     "shortDescription": "Publish data to a SQL Database",
     "DefaultFile": "Quix.SqlServer.Writer/Worker.cs",

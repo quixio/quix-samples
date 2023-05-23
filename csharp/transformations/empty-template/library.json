@@ -1,15 +1,15 @@
 {
     "libraryItemId": "0556c692-6c8b-4283-9443-7456fc686b87",
-    "name": "Empty template",
+    "name": "Starter transformation",
     "language": "C#",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Read/Write SDK"],
+        "Technology": ["QuixStreams"],
         "Pipeline Stage": ["Transformation"],
         "Type": ["Code samples"],
         "Popular Subjects": ["Quick Start"]
     },
-    "shortDescription": "Use this template to start your own transformation",
+    "shortDescription": "Use this template to start building your own transformation",
     "DefaultFile": "HelloWorldModel/Program.cs",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "HelloWorldModel.csproj",

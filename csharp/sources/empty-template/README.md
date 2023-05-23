@@ -1,6 +1,6 @@
-# Empty template
+# Starter source
 
-[This project](https://github.com/quixio/quix-samples/tree/main/csharp/sources/empty-template) gives an example of how to connect to Kafka and start a new stream with a few "HelloWorld" parameter values.
+[This project](https://github.com/quixio/quix-samples/tree/main/csharp/sources/empty-template) gives an example of how to connect to Kafka and start a new stream to publish "HelloWorld" parameter values.
 
 ## How to run
 

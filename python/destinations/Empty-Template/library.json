@@ -1,15 +1,15 @@
 {
     "libraryItemId": "e406d509-930e-4ae3-bfe8-57bfb8befe9d",
-    "name": "Empty template",
+    "name": "Starter destination",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Read SDK"],
+        "Technology": ["QuixStreams"],
         "Pipeline Stage": ["Destination"],
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "The most basic and essential 'Hello World' read sample",
+    "shortDescription": "The most basic and essential 'Hello World' subscribe sample",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

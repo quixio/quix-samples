@@ -1,6 +1,6 @@
 # Sentiment demo UI
 
-[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/advanced/Sentiment-demo-ui) is an example of how to use Quix with NodeJs.
+[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/advanced/Sentiment-demo-ui) is an example of how to use Quix with Node.js.
 
  - It implements a system of chat rooms where people can communicate
  - QR codes are used to invite new participants into the chat room

@@ -1,8 +1,8 @@
-# Quix samples
+# Quix Code Samples
 
 ## Samples repository for the [Quix](https://quix.io) platform. 
 
-The Quix Samples contains pre-built, open source code samples that you can use to quickly create a pipeline that transforms data in real time while it travels from source to destination. 
+The Quix Code Samples contains pre-built, open source code samples that you can use to quickly create a pipeline that transforms data in real time while it travels from source to destination. 
 
 ## The samples includes three types of samples: 
 
@@ -87,20 +87,20 @@ Create a GUID using an online generator like [Free Online GUID Generator](https:
 The display name for your project. Keep it short (<30 chars) and try to make it unique.
 
 **"language"**
-The projects language (Python, C#, NodeJs, Shell Script, Javascript etc)
+The projects language (Python, C#, Node.js, Shell Script, Javascript etc)
 
 See here for a current list of languages.
 
 **"tags"**
 Additional search filters that show-up in the samples. Pick two or three of the most important tags like "Complexity," "SDK Usage" and "Pipeline State."
-See Quix Samples for a current list of tags.
+See Quix Code Samples for a current list of tags.
 Add new tags with discretion — they may not be accepted.
 
 **"shortDescription"**
 A unique description of your project. Keep it less than 80 characters.
 
 **"DefaultFile"**
-Defines the default file to show when loading the project in a Code Explorer and is the default file displayed in the code preview in the Quix Samples.
+Defines the default file to show when loading the project in a Code Explorer and is the default file displayed in the code preview in the Quix Code Samples.
 
 **"EntryPoint"**
 
@@ -114,9 +114,9 @@ The Run entry point (main code file to run).
 
 Defines the external variables of the project. 
 
-Variables are used to configure the project during setup in the Quix Samples or programatically from your application.
+Variables are used to configure the project during setup in the Quix Code Samples or programatically from your application.
 
-Each variable will create a unique setup field in the Quix Samples.
+Each variable will create a unique setup field in the Quix Code Samples.
 
 **"Name"** The display name for your variable
 
@@ -158,7 +158,7 @@ Recommended size: 48x48 pixels
 
 Defines the Instant Deploy settings for the project. Optional.
 
-If you configure these properties, the project will have the "Setup & Deploy" button enabled in the Quix Samples. This provides users with the option to deploy the project without cloning it to their own repo. It’s particularly useful for connectors (source and destinations) and applications that don’t require customization.
+If you configure these properties, the project will have the "Setup & Deploy" button enabled in the Quix Code Samples. This provides users with the option to deploy the project without cloning it to their own repo. It’s particularly useful for connectors (source and destinations) and applications that don’t require customization.
 
 If the settings are null, a Docker Image for this project will not be generated and the Deploy actions will not be available in the UI.
 

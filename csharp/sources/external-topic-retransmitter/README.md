@@ -14,7 +14,7 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 
 This code sample uses the following environment variables:
 
-- **Source__Workspace__SdkToken**: The SDK token to use when reading from the source topic. 
+- **Source__Workspace__SdkToken**: The Quix Streams/SDK token to use when reading from the source topic. 
 - **Source__Workspace__Topic**: The name or id of the source topic.
 - **Output__Topic**: The name or id of the target topic
 - **Source__UseConsumerGroup**: (Optional) Whether a consumer group should be used.

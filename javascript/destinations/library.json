@@ -4,7 +4,7 @@
     "language": "Javascript",
     "tags": {
         "Complexity": ["Easy"],
-        "API Usage": ["Reader API (Websockets)"],
+        "Technology": [ "Quix APIs" ],
         "Type": ["Code samples"],
         "Popular Subjects": ["Quick Start"]
     },

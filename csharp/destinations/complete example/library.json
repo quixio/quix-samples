@@ -4,12 +4,12 @@
     "language": "C#",
     "tags": {
         "Complexity": ["Medium"],
-        "SDK Usage": ["Read SDK"],
+        "Technology": ["QuixStreams"],
         "Type": ["Code samples"],
         "Pipeline Stage": ["Destination"]
     },
     "shortDescription": "A complete example of how to read data from a topic",
-    "longDescription": "This is a complete example in C# of how to read data from a topic and the usage of all the SDK event handlers",
+    "longDescription": "This is a complete example in C# of how to read data from a topic and the usage of all the Quix Streams event handlers",
     "DefaultFile": "ReadCompleteExample/Program.cs",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "ReadCompleteExample.csproj",

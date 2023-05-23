@@ -1,10 +1,10 @@
 {
     "libraryItemId": "e8102920-b815-4c53-9dcd-f477ff865b1c",
-    "name": "Empty template",
+    "name": "Starter source",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
-        "SDK Usage": ["Write SDK"],
+        "Technology": ["QuixStreams"],
         "Pipeline Stage": ["Source"],
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
