@@ -14,7 +14,7 @@ Use this template to deploy transformations that use MATLAB functions. Upload yo
 
 ## Build variables
 
- - To start MATLAB engine you must set the MLM_LICENSE_FILE environment variable to your license server port and URL in the `build/dockerfile` file (line 23) 
+ - To start MATLAB engine you must set the MLM_LICENSE_FILE environment variable to your license server port and URL in the `build/dockerfile` file (line 23). E.g., `MLM_LICENSE_FILE=27000@0.0.0.0`.
 
 ## Environment variable
  - `INPUT_TOPIC`: Kafka topic to receive input data from.

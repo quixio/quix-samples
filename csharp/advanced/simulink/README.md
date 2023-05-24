@@ -9,7 +9,6 @@ This project template contains a modified version of [simulation of a four-cylin
   <img src="img/img2.png" /> 
 </p>
 
-
 Following links contain useful information about using the MATLAB engine for .NET:
  - [Execute MATLAB functions from .NET](https://www.mathworks.com/help/matlab/matlab_external/execute-matlab-functions-from-net.html)
  - [MATLAB Engine](https://www.mathworks.com/help/matlab/apiref/mathworks.matlab.engine.matlabengine.html#mw_ba179c55-e64b-4a3b-a091-73db6a587d62)
@@ -24,7 +23,7 @@ Following links contain useful information about using the MATLAB engine for .NE
 
 ## Build variables
 
- - To start MATLAB engine you must set the MLM_LICENSE_FILE environment variable to your license server port and URL in the `build/dockerfile` file (line 23) 
+ - To start MATLAB engine you must set the `MLM_LICENSE_FILE` environment variable to your license server port and URL in the `build/dockerfile` file (line 23). E.g., `MLM_LICENSE_FILE=27000@0.0.0.0`.
 
 ## Environment variable
  - `INPUT_TOPIC`: Kafka topic to receive input data from.
