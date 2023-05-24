@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+   <ItemGroup>
+    <!-- Enables interop between .NET and MATLAB -->
+    <Reference Include="MathWorks.MATLAB.Types" >
+      <HintPath>/opt/matlab/R2023a/extern/dotnet/netstandard2.0/MathWorks.MATLAB.Types.dll</HintPath>
+    </Reference>
+    
+    <!-- Provides an interface to MATLAB Engine API -->
+    <Reference Include="MathWorks.MATLAB.Engine" >
+      <HintPath>/opt/matlab/R2023a/extern/dotnet/netstandard2.0/MathWorks.MATLAB.Engine.dll</HintPath>
+    </Reference>
+
+    <PackageReference Include="QuixStreams.Streaming" Version="0.5.0" />
+    
+    <!-- Enables using the 'dynamic' keyword -->
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+FROM mathworks/matlab:r2023a as build
+WORKDIR /src
+RUN sudo chmod -R 777 /src
+RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+    && sudo dpkg -i packages-microsoft-prod.deb \
+    && rm packages-microsoft-prod.deb
+RUN sudo apt-get update && sudo apt-get install -y dotnet-sdk-5.0
+COPY --from=git /project/Service.csproj .
+RUN dotnet restore Service.csproj
+COPY --from=git /project/ /src/
+RUN sudo dotnet publish "Service.csproj" --no-restore -c Release -o /publish
+
+FROM quixanalytics/matlab-simulink:r2023a as final
+WORKDIR /app
+RUN sudo chmod -R 777 /app
+RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+    && sudo dpkg -i packages-microsoft-prod.deb \
+    && rm packages-microsoft-prod.deb
+RUN sudo apt-get update && sudo apt-get install -y dotnet-runtime-5.0
+COPY --from=build /publish .
+COPY --from=build /src/MATLAB/ .
+# replace *** below with your license server
+ENV MLM_LICENSE_FILE=***
+ENTRYPOINT [ "dotnet", "Service.dll" ]
