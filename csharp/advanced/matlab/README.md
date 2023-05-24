@@ -6,7 +6,7 @@ Use this template to deploy transformations that use MATLAB functions. Upload yo
  - [Pass .NET data types to MATLAB](https://www.mathworks.com/help/matlab/matlab_external/pass-data-to-matlab-from-net.html)
  - [Handle MATLAB data in .NET](https://www.mathworks.com/help/matlab/matlab_external/handle-matlab-data-in-net-applications.html)
 
-*It is recommended that you deloy MATLAB engine with at least 2 CPU and 4GB memory.*
+**It is recommended that you deloy MATLAB engine with at least 2 CPU and 4GB memory.**
 
 ## Requirements
  - A license server that is accessible from the Quix environment.
