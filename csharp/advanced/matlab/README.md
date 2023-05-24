@@ -1,35 +1,21 @@
-# Empty template
+# MATLAB
 
-[This project](https://github.com/quixio/quix-samples/tree/main/csharp/empty) is an empty template for C# applications in the Quix serverless environment.
+Use this template to deploy transformations that use MATLAB functions. Upload your *.m files containing MATLAB code to the MATLAB directory in this project. Then you can call them using MATLAB engine for .NET. The template contains an example in which a MATLAB function `rot`, which rotates a 2-D vector counter-clockwise by a specified angle, rotating vectors input via Quix Streams. Following links contain useful information about using the MATLAB engine for .NET:
+ - [Execute MATLAB functions from .NET](https://www.mathworks.com/help/matlab/matlab_external/execute-matlab-functions-from-net.html)
+ - [MATLAB Engine](https://www.mathworks.com/help/matlab/apiref/mathworks.matlab.engine.matlabengine.html#mw_ba179c55-e64b-4a3b-a091-73db6a587d62)
+ - [Pass .NET data types to MATLAB](https://www.mathworks.com/help/matlab/matlab_external/pass-data-to-matlab-from-net.html)
+ - [Handle MATLAB data in .NET](https://www.mathworks.com/help/matlab/matlab_external/handle-matlab-data-in-net-applications.html)
 
-## How to run
+*It is recommended that you deloy MATLAB engine with at least 2 CPU and 4GB memory.*
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+## Requirements
+ - A license server that is accessible from the Quix environment.
+ - MATLAB concurrent license (standalone or named network licenses do not work).
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+## Build variables
 
-## Requirements/prerequisites (optional)
+ - To start MATLAB engine you must set the MLM_LICENSE_FILE environment variable to your license server port and URL in the `build/dockerfile` file (line 23) 
 
-{List any external resource needed to run this sample and the instructions to get them.}
-
-## Environment variables
-
-This code sample uses the following environment variables:
-
-- **VariableName**: {Description of the variable}
-- **input**: {Description of the variable}
-- **output**: {Description of the variable}
-
-## Docs (optional)
-
-{This will contain any reference/link to additional documentation or resource related with the code.}
-
-## Contribute
-
-Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
-
-## Open source
-
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
-
-Please star us and mention us on social to show your appreciation.
+## Environment variable
+ - `INPUT_TOPIC`: Kafka topic to receive input data from.
+ - `OUTPUT_TOPIC`: Kafka topic to write the results of the transformation.
