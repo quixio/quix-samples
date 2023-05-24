@@ -1,6 +1,6 @@
 {
   "libraryItemId": "f7169a9d-edef-417f-94d6-4cbfb89ba22b",
-  "name": "MATLAB Simulink",
+  "name": "Simulink",
   "language": "C#",
   "tags": {
     "Complexity": [
@@ -17,11 +17,13 @@
     ],
     "Popular Subjects": [
       "MathWorks",
+      "MATLAB",
+      "Simulink",
       "Scientific Computing"
     ]
   },
-  "shortDescription": "Transform Quix streams using MATLAB",
-  "longDescription": "Run arbitrary MATLAB programs on Quix streams using the MATLAB engine for .NET",
+  "shortDescription": "Deploy Simulink models to Quix",
+  "longDescription": "Run arbitrary live simulations using Simulink via MATLAB engine for .NET",
   "DefaultFile": "Program.cs",
   "Variables": [
     {
