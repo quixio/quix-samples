@@ -28,7 +28,7 @@ namespace Service
                 {
                     foreach (var ts in args.Data.Timestamps)
                     {
-                        var tin = new double[] { ts.TimestampMilliseconds };
+                        var tin = new double[] { ts.TimestampMilliseconds / 1000.0 };
                         var din = new double[] { ts.Parameters["throttle_angle"].NumericValue.Value };
                     sim:
                         double rv;
