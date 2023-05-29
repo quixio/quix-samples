@@ -19,7 +19,7 @@ Following links contain useful information about using the MATLAB engine for .NE
 
 ## Requirements
  - A license server that is accessible from the Quix environment.
- - MATLAB concurrent license (standalone or named network licenses do not work).
+ - MATLAB concurrent license.
 
 ## Build variables
 

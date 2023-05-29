@@ -10,7 +10,7 @@ Use this template to deploy transformations that use MATLAB functions. Upload yo
 
 ## Requirements
  - A license server that is accessible from the Quix environment.
- - MATLAB concurrent license (standalone or named network licenses do not work).
+ - MATLAB concurrent license.
 
 ## Build variables
 
