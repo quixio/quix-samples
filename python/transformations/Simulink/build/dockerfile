@@ -1,5 +1,4 @@
-FROM quixanalytics/matlab-simulink:r2023a
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/matlab/bin/glnxa64"
+FROM quixanalytics/python-matlab-simulink:r2023a
 WORKDIR /app
 RUN sudo chmod -R 777 /app
 COPY --from=git /project/requirements.txt requirements.txt
