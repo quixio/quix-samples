@@ -1,4 +1,4 @@
-# MATLAB
+# Simulink
 
 Use this template to deploy Simulink models to Quix. Upload your *.slx files containing Simulink model with any other assets required to run the model to the MATLAB directory of this project. Use MATLAB workspace variables send input signals based on Quix Streams to the simulink model and receive output signals. The best way to do this is write a simple MATLAB function like `engine.m` in the example that receives input data from Python, set a workspace variable, call the simulink model return output result to a MATLAB workspace variable. 
 
@@ -17,7 +17,7 @@ This project template contains a modified version of [simulation of a four-cylin
 
 ## Requirements
  - A license server that is accessible from the Quix environment.
- - MATLAB concurrent license.
+ - MATLAB and Simulink concurrent license.
 
 ## Build variables
 
