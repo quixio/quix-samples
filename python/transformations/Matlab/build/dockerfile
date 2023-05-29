@@ -1,4 +1,6 @@
 FROM mathworks/matlab:r2023a
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONIOENCODING=UTF-8
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/matlab/R2023a/bin/glnxa64"
 WORKDIR /app
 RUN sudo chmod -R 777 /app
