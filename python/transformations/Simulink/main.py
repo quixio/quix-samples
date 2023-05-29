@@ -7,17 +7,17 @@ matlab_engine = matlab.engine.start_matlab()
 print("INFO: started MATLAB engine")
 
 client = qx.QuixStreamingClient()
-input_topic = client.get_topic_consumer(os.environ["input"])
-output_topic = client.get_topic_producer(os.environ["output"])
+input_topic = client.get_topic_consumer("simulink-input")
+output_topic = client.get_topic_producer("simulink-output")
 
 def on_data_received_handler(input_stream: qx.StreamConsumer, data: qx.TimeseriesData):
     with data:
         for ts in data.timestamps:    
-            throttle_angle = ts.parameters["throttle_angle"].numeric_value
-            timestamp = ts.timestamp_milliseconds / 1000.0
-            rv = matlab_engine.engine([throttle_angle], [timestamp])
+            throttle_angles = matlab.double([ts.parameters["throttle_angle"].numeric_value])
+            timestamps = matlab.double([ts.timestamp_milliseconds / 1000])
+            rv = matlab_engine.engine(throttle_angles, timestamps)
             ts.add_value("engine_speed", rv)
-            print("throttle angle:{}, engine speed:{}".format(throttle_angle, rv))
+            print("throttle angle:{}, engine speed:{}".format(throttle_angles[0][0], rv))
         output_stream = output_topic.get_or_create_stream(input_stream.stream_id)
         output_stream.timeseries.publish(data)
 
