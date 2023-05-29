@@ -7,8 +7,8 @@ matlab_engine = matlab.engine.start_matlab()
 print("INFO: started MATLAB engine")
 
 client = qx.QuixStreamingClient()
-input_topic = client.get_topic_consumer("simulink-input")
-output_topic = client.get_topic_producer("simulink-output")
+input_topic = client.get_topic_consumer(os.environ["input"])
+output_topic = client.get_topic_producer(os.environ["output"])
 
 def on_data_received_handler(input_stream: qx.StreamConsumer, data: qx.TimeseriesData):
     with data:
