@@ -111,5 +111,7 @@ app.get('/heartbeat', (req, res) => {
     res.status(200).send("ALL GOOD HERE!");
 })
 
+console.log("Listening on port 80");
+
 let httpServer = http.createServer(app);
 httpServer.listen(80);
