@@ -19,10 +19,6 @@ This project template contains a modified version of [simulation of a four-cylin
  - A license server that is accessible from the Quix environment.
  - MATLAB and Simulink concurrent license.
 
-## Build variables
-
- - To start MATLAB engine you must set the MLM_LICENSE_FILE environment variable to your license server port and URL in the `build/dockerfile` file (line 23). E.g., `MLM_LICENSE_FILE=27000@0.0.0.0`.
-
 ## Environment variable
  - `INPUT_TOPIC`: Kafka topic to receive input data from.
  - `OUTPUT_TOPIC`: Kafka topic to write the results of the transformation.
