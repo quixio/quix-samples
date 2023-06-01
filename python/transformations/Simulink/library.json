@@ -46,7 +46,7 @@
         },
         {
             "Name": "MLM_LICENSE_FILE",
-            "Type": "Placeholder",
+            "Type": "EnvironmentVariable",
             "InputType": "HiddenText",
             "Description": "License server port and address. E.g., 27000@hostname_or_ip_addr",
             "DefaultValue": "",
