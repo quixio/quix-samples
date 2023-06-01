@@ -26,3 +26,4 @@ This project template contains a modified version of [simulation of a four-cylin
 ## Environment variable
  - `INPUT_TOPIC`: Kafka topic to receive input data from.
  - `OUTPUT_TOPIC`: Kafka topic to write the results of the transformation.
+ - `MLM_LICENSE_FILE`: License server port and address. E.g., 27000@hostname_or_ip_addr.

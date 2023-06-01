@@ -12,6 +12,4 @@ RUN python3 -m pip install -i http://pip-cache.pip-cache.svc.cluster.local/simpl
 COPY --from=git /project .
 RUN sudo rm -rf /app/MATLAB
 COPY --from=git /project/MATLAB/ /app/
-# replace *** below with your license server
-ENV MLM_LICENSE_FILE=***
 ENTRYPOINT [ "python3", "main.py" ]
