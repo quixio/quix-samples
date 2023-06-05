@@ -19,6 +19,4 @@ RUN wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-p
 RUN sudo apt-get update && sudo apt-get install -y dotnet-runtime-5.0
 COPY --from=build /publish .
 COPY --from=build /src/MATLAB/ .
-# replace *** below with your license server
-ENV MLM_LICENSE_FILE=***
 ENTRYPOINT [ "dotnet", "Service.dll" ]

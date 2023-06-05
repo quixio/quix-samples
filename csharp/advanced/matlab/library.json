@@ -40,6 +40,14 @@
       "Description": "This is the output topic where to write data out",
       "DefaultValue": "",
       "Required": true
+    },
+    {
+      "Name": "MLM_LICENSE_FILE",
+      "Type": "EnvironmentVariable",
+      "InputType": "HiddenText",
+      "Description": "License server port and address. E.g., 27000@hostname_or_ip_addr",
+      "DefaultValue": "",
+      "Required": true
     }
   ],
   "EntryPoint": "build/dockerfile",
