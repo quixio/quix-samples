@@ -4,7 +4,7 @@ Use this template to deploy transformations that use MATLAB and Simulink.
 
 ## Requirements
 
-To create Python packages from MATLAB functions you need the following MathWorks products
+To compile MATLAB and Simulink to .NET, you need the following MathWorks products
  - MATLAB
  - MATLAB Compiler
  - MATLAB Compiler SDK 
