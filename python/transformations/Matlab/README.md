@@ -14,8 +14,8 @@ To create Python packages from Simulink products, in addition to the above list,
  - Simulink Compiler
 
 ## Environment variables
- - `INPUT_TOPIC`: Kafka topic to receive input data from.
- - `OUTPUT_TOPIC`: Kafka topic to write the results of the transformation.
+ - `input`: Kafka topic to receive input data from.
+ - `output`: Kafka topic to write the results of the transformation.
 
 ## Preparing Python packages from MATLAB and Simulink
 

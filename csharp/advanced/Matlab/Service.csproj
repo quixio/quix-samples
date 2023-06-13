@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="QuixStreams.Streaming" Version="0.5.3" />
+    </ItemGroup>
+
+		<ItemGroup>
+        <Reference Include="MathWorks.MATLAB.Runtime">
+            <HintPath>/opt/matlab/R2023a/extern/dotnet/netstandard2.0/MathWorks.MATLAB.Runtime.dll</HintPath>
+        </Reference>
+        <Reference Include="MathWorks.MATLAB.Types">
+            <HintPath>/opt/matlab/R2023a/extern/dotnet/netstandard2.0/MathWorks.MATLAB.Types.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+</Project>
