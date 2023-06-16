@@ -19,7 +19,13 @@ To create Python packages from Simulink products, in addition to the above list,
 
 ## Preparing Python packages from MATLAB and Simulink
 
-Package your MATLAB and Simulink assets as a Python package using the MATLAB compiler SDK. Upload the resulting package (package directory that contains the `__init__.py` and a `*.ctf` file, `pyproject.toml` and `setup.py`) to the `MATLAB` directory in this template.
+`MATLAB` directory in the project has pre-compiled packages from MATLAB and Simulink assets. So, you can simply deploy and run this project. However, if you'd like to create the Python package from the source files, you can find them in the `assets` directory of this project. You can compile them using the following command:
+
+```
+mcc -W python:quixmatlab engine.m rot.m -d ../MATLAB
+```
+
+You only need the package directory that contains the `__init__.py` and a `*.ctf` file, `pyproject.toml` and `setup.py` in the `MATLAB` directory in this template.
 
 ## Resources for MATLAB Compiler SDK and MATLAB Runtime APIs
 

@@ -19,7 +19,13 @@ To create Python packages from Simulink products, in addition to the above list,
 
 ## Preparing .NET assemblies from MATLAB and Simulink
 
-Package your MATLAB and Simulink assets as a .NET assembly using the MATLAB compiler SDK. Upload the resulting package (`*.ctf` file) to the `MATLAB` directory in this template.
+`MATLAB` directory in the project has pre-compiled assemblies from MATLAB and Simulink assets. So, you can simply deploy and run this project. However, if you'd like to compile the .NET assemblies from source files, you can find them in the `assets` directory of this project. You can compile them using the following command:
+
+```
+mcc -W 'dotnet:quixmatlab,api=matlab-data,framework_version=6.0' rot.m engine.m -d ../MATLAB
+```
+
+You only need the `*.ctf` file in the `MATLAB` directory in this template. Please refer to MATLAB Compiler SDK documentation listed below for available compiler flags.
 
 ## Resources for MATLAB Compiler SDK and MATLAB Runtime APIs
 
