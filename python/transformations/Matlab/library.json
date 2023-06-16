@@ -1,0 +1,55 @@
+{
+    "libraryItemId": "f7169a9d-edef-417f-94d6-4cbfb89ba22c",
+    "name": "MATLAB",
+    "language": "Python",
+    "tags": {
+        "Complexity": [
+            "Advanced"
+        ],
+        "Technology": [
+            "QuixStreams"
+        ],
+        "Type": [
+            "Code samples"
+        ],
+        "Pipeline Stage": [
+            "Transformation"
+        ],
+        "Popular Subjects": [
+            "MathWorks",
+            "MATLAB",
+            "Scientific Computing"
+        ]
+    },
+    "shortDescription": "Transform Quix streams using MATLAB and Simulink",
+    "longDescription": "Run MATLAB and Simulink models on Quix using the MATLAB runtime for Python",
+    "DefaultFile": "main.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name": "input",
+            "Type": "EnvironmentVariable",
+            "InputType": "InputTopic",
+            "Description": "Input topic.",
+            "DefaultValue": "input-topic",
+            "Required": true
+        },
+        {
+            "Name": "output",
+            "Type": "EnvironmentVariable",
+            "InputType": "OutputTopic",
+            "Description": "Output topic.",
+            "DefaultValue": "output-topic",
+            "Required": true
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 2000,
+        "MemoryInMb": 4000,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}

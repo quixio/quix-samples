@@ -1,0 +1,11 @@
+FROM quixanalytics/matlab-runtime:r2023a-python310
+WORKDIR /app
+COPY --from=git /project/requirements.txt requirements.txt
+RUN python3 -m pip install -i http://pip-cache.pip-cache.svc.cluster.local/simple \
+    --trusted-host pip-cache.pip-cache.svc.cluster.local -r requirements.txt \
+    --extra-index-url https://pypi.org/simple \
+    --extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/
+COPY --from=git /project/MATLAB/ .
+RUN python3 setup.py install
+COPY --from=git /project .
+ENTRYPOINT [ "python3", "main.py" ]
