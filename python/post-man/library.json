@@ -11,16 +11,5 @@
     },
     "shortDescription": "Something about Postman",
     "DefaultFile": "quix.json",
-    "EntryPoint": "build/dockerfile",
-    "RunEntryPoint": "main.py",
-    "Variables": [
-        {
-            "Name" : "output",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "OutputTopic",
-            "Description" : "This is the output topic for hello world data",
-            "DefaultValue" : "hello-world-source",
-            "Required": true
-        }
-    ]    
+    "EntryPoint": "build/dockerfile"
 }
