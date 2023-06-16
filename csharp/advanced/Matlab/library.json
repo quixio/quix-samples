@@ -1,0 +1,47 @@
+{
+  "libraryItemId": "f7169a9d-edef-417f-94d6-4cbfb89ba22a",
+  "name": "MATLAB",
+  "language": "C#",
+  "tags": {
+    "Complexity": [
+      "Advanced"
+    ],
+    "Technology": [
+      "QuixStreams"
+    ],
+    "Pipeline Stage": [
+      "Transformation"
+    ],
+    "Type": [
+      "Code samples"
+    ],
+    "Popular Subjects": [
+      "MathWorks",
+      "MATLAB",
+      "Scientific Computing"
+    ]
+  },
+  "shortDescription": "Transform Quix streams using MATLAB and Simulink",
+  "longDescription": "Run MATLAB and Simulink apps with Quix streams using the MATLAB runtime for .NET",
+  "DefaultFile": "Program.cs",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "This is the input topic where to read data in",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the output topic where to write data out",
+      "DefaultValue": "",
+      "Required": true
+    }
+  ],
+  "EntryPoint": "build/dockerfile",
+  "RunEntryPoint": "Service.csproj"
+}
