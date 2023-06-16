@@ -10,6 +10,5 @@
         "Type": ["Basic templates"]
     },
     "shortDescription": "Something about Postman",
-    "DefaultFile": "quix.json",
-    "EntryPoint": "build/dockerfile"
+    "DefaultFile": "quix.json"
 }
