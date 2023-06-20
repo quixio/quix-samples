@@ -15,7 +15,7 @@ client = qx.QuixStreamingClient()
 print("Opening producer topic.")
 # The producer topic is where the data will be published to
 # It's the output from this demo data source code.
-producer_topic = client.get_topic_producer(os.environ["Topic"])
+producer_topic = client.get_topic_producer(os.environ["output"])
 
 # CREATE A NEW STREAM
 # A stream is a collection of data that belong to a single session of a single source.
@@ -91,6 +91,6 @@ def process_csv_file(csv_file):
 # start processing the CSV
 process_csv_file('demo-data.csv')
 
-print("All rows published.")
+print("All rows piblished.")
 print("Exiting.")
 
