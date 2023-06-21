@@ -2,7 +2,7 @@
 
 [This project](https://github.com/quixio/quix-samples/tree/main/python/sources/demo-data) streams F1&reg; telemetry data into a topic from a recorded Codemasters&reg; F1&reg; 2019 game session.
 
-You'll have access to the speed, acceleration, breaking and other detailed data from a real F1&reg; car, rebroadcast in real time.
+You'll have access to the speed, acceleration, braking and other detailed data from a real F1&reg; car, rebroadcast in real time.
 
 ## How to run
 
