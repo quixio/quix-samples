@@ -1,18 +1,18 @@
 {
-	"libraryItemId": "8abe02e1-1e75-4783-864c-46b930b42afe",
+	"libraryItemId": "7abe02e1-1e75-4783-864c-46b930b42afe",
 	"name": "Demo Data",
-	"language": "C#",
+	"language": "Python",
 	"tags": {
 		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Source"],
 		"Popular Subjects": ["Quick Start", "Onboarding"],
 		"Type": ["Demos"]
 	},
-	"shortDescription": "Stream F1 Telemetry data into a topic from a recorded game session",
-	"longDescription": "Stream F1 Telemetry data into a topic from a recorded game session. <br/>You'll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
-	"DefaultFile": "Bridge.Console/Program.cs",
+	"shortDescription": "Stream F1 Telemetry data from a CSV file",
+	"longDescription": "Stream F1 Telemetry data, recorded from an F1 game session into a topic. <br/>You'll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
+	"DefaultFile": "main.py",
 	"EntryPoint": "build/dockerfile",
-	"RunEntryPoint": "Bridge.Console.csproj",
+	"RunEntryPoint": "main.py",
 	"Variables": [
 		{
 			"Name" : "Topic",
@@ -30,6 +30,6 @@
 		"MemoryInMb": 200,
 		"Replicas": 1,
 		"PublicAccess": false,
-		"ValidateConnection": true
+		"ValidateConnection": false
 	}
 }
