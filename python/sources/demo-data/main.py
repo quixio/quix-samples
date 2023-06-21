@@ -91,6 +91,6 @@ def process_csv_file(csv_file):
 # start processing the CSV
 process_csv_file('demo-data.csv')
 
-print("All rows piblished.")
+print("All rows published.")
 print("Exiting.")
 
