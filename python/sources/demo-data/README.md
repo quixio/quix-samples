@@ -4,6 +4,8 @@
 
 You'll have access to the speed, acceleration, braking and other detailed data from a real F1&reg; car, rebroadcast in real time.
 
+The CSV data is repeated 10 times to give you time to explore the platform with live data being published. You can increase this by changing the `iterations` variable.
+
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
