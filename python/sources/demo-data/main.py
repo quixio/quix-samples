@@ -217,8 +217,5 @@ def before_shutdown():
     # set the flag to True to stop the loops as soon as possible.
     shutting_down = True
 
-
-qx.App.run(before_shutdown = before_shutdown)
-
 # keep the app running and handle termination signals.
-qx.App.run()
+qx.App.run(before_shutdown = before_shutdown)
