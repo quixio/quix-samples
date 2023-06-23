@@ -1,4 +1,3 @@
-
 # This code will publish the CSV data to a stream as if the data were being generated in real-time.
 
 import quixstreams as qx
@@ -8,6 +7,14 @@ from datetime import datetime
 import os
 import threading
 
+# True = keep original timings.
+# False = No delay! Speed through it as fast as possible.
+keep_timing = True
+
+# If the process is terminated on the command line or by the container
+# setting this flag to True will tell the loops to stop and the code
+# to exit gracefully.
+shutting_down = False
 
 # Quix Platform injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
@@ -22,14 +29,27 @@ producer_topic = client.get_topic_producer(os.environ["Topic"])
 # A stream is a collection of data that belong to a single session of a single source.
 stream_producer = producer_topic.create_stream()
 
+# Configure the buffer to publish data as desired.
+# In this case every 100 rows.
+# See docs for more options. Search "using-a-buffer"
+stream_producer.timeseries.buffer.time_span_in_milliseconds = 100
+
 # EDIT STREAM PROPERTIES
 # stream = producer_topic.create_stream("my-own-stream-id")  # To append data into the stream later, assign a stream id manually.
 stream_producer.properties.name = "Demo Data"  # Give the stream a human readable name (for the data catalogue).
 stream_producer.properties.location = "/demo data"  # Save stream in specific folder to organize your workspace.
 # stream_producer.properties.metadata["version"] = "Version 1"  # Add stream metadata to add context to time series data.
 
+# counters for the status messages
+row_counter = 0
+published_total = 0
+
+# how many times you want to loop through the data
+iterations = 10
 
 def publish_row(row):
+    global row_counter
+    global published_total
 
     # create a DataFrame using the row
     df_row = pd.DataFrame([row])
@@ -39,13 +59,26 @@ def publish_row(row):
 
     # publish the data to the Quix stream created earlier
     stream_producer.timeseries.publish(df_row)
+
+    row_counter += 1
+
+    if row_counter == 10:
+        row_counter = 0
+        published_total += 10
+        print(f"Published {published_total} rows")
     
 
 def process_csv_file(csv_file):
+    global shutting_down
+    global iterations
 
     # Read the CSV file into a pandas DataFrame
+    print("CSV file loading.")
     df = pd.read_csv(csv_file)
     print("File loaded.")
+
+    row_count = len(df)
+    print(f"Publishing {row_count * iterations} rows.")
 
     has_timestamp_column = False
 
@@ -61,18 +94,25 @@ def process_csv_file(csv_file):
 
     # repeat the data 10 times to ensure the replay lasts long enough to 
     # inspect and play with the data
-    for _ in range(0, 10):
-        row_count = len(df)
-        print(f"Publishing {row_count} rows.")
+    for _ in range(0, iterations):
 
+         # If shutdown has been requested, exit the loop.
+        if shutting_down:
+            break
+        
         # Iterate over the rows and send them to the API
         for index, row in df.iterrows():
+
+             # If shutdown has been requested, exit the loop.
+            if shutting_down:
+                break
+
             # Create a dictionary that includes both column headers and row values
             row_data = {header: row[header] for header in headers}
             publish_row(row_data)
 
-            if not has_timestamp_column:
-                # No timestamp? Thats ok, just sleep for 200ms
+            if not keep_timing or not has_timestamp_column:
+                # Don't want to keep the original timing or no timestamp? Thats ok, just sleep for 200ms
                 time.sleep(0.2)
             else:
                 # Delay sending the next row if it exists
@@ -83,6 +123,11 @@ def process_csv_file(csv_file):
                     next_timestamp = pd.to_datetime(df.at[index + 1, 'original_timestamp'])
                     time_difference = next_timestamp - current_timestamp
                     delay_seconds = time_difference.total_seconds()
+                    
+                    # handle < 0 delays
+                    if delay_seconds < 0:
+                        delay_seconds = 0
+
                     time.sleep(delay_seconds)
 
 
@@ -104,6 +149,4 @@ def before_shutdown():
 # keep the app running and handle termination signals.
 qx.App.run(before_shutdown = before_shutdown)
 
-print("All rows published.")
 print("Exiting.")
-
