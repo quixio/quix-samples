@@ -47,10 +47,12 @@ df['acc_delta_s_'+date_col_name] = df['delta_s_'+date_col_name].expanding(1).sum
 
 # Let's generate the new timestamps
 print("Generate new timestamps")
-timestamp_now = pd.Timestamp(pd.Timestamp.now(), unit = 'ns').timestamp()
-df['timestamp'] = timestamp_now + df['acc_delta_s_'+date_col_name]
+timestamp_now = pd.Timestamp.now().timestamp()
+df['timestamp'] = (timestamp_now * 1e9) + (df['acc_delta_s_'+date_col_name] * 1e9)
 
 def get_data():
+    global df
+
     # Iterate over file
     while run:
 
@@ -59,7 +61,7 @@ def get_data():
             break
 
         # Get df_to_write
-        filter_df_to_write = (df['timestamp'] <= pd.Timestamp(pd.Timestamp.now(), unit = 'ns').timestamp())
+        filter_df_to_write = (df['timestamp'] <= pd.Timestamp.now().timestamp() * 1e9)
 
         # If there are rows to write to the stream at this time
         if filter_df_to_write.sum() > 0:
@@ -67,6 +69,7 @@ def get_data():
             # Get the rows to write and write them to the stream
             df_to_write = df.loc[filter_df_to_write, ['timestamp', 'Original_' + date_col_name] + original_cols]
             print("Writing {} rows of data".format(len(df_to_write)))
+
             stream_producer.timeseries.publish(df_to_write)
             print(df_to_write.to_string(index = False))
 
