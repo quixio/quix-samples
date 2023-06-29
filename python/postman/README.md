@@ -18,7 +18,10 @@ Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) accou
 
 Clicking `Copy code` on the Sample in the Quix Portal, allows you to copy and paste the Postman JSON into a file on your local machine and then import the file into Postman via the File -> Import menu.
 
-Note: If you obtain the code via the Quix Portal, the `auth_token` will be prepopulated. If you obtained the code from GitHub or another source you will have to login to the Quix Portal and obtain an auth token from Settings -> APIs and Tokens -> Personal Access Tokens.
+You will need to create the `postman` topic in the Quix Portal.
+To use the Data Catalogue API, please also enable persistence on the topic.
+
+Note: If you obtained the code via the Quix Portal, the `quix_bearer_token` will be prepopulated. If you obtained the code from GitHub or another source you will have to login to the Quix Portal and obtain an auth token from Settings -> APIs and Tokens -> Personal Access Tokens.
 
 ## Contribute
 
