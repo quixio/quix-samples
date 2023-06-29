@@ -12,7 +12,7 @@
 		},
 		{
 			"key": "topic",
-			"value": "{placeholder:topic}",
+			"value": "postman",
 			"type": "string"
 		},
 		{
