@@ -1,0 +1,15 @@
+{
+    "libraryItemId": "e8102920-b815-4c53-9dcd-f47712345b1c",
+    "name": "Postman",
+    "language": "Javascript",
+    "tags": {
+        "Complexity": ["Easy"],
+        "Technology": ["APIs"],
+        "Pipeline Stage": ["All"]
+    },
+    "shortDescription": "Use our Postman collection to get started with the Quix APIs",
+    "longDescription": "Use our Postman collection to get started with the Quix APIs<br/><br/><ul><li>Click `Copy code` to copy the Postman JSON to your clipboard.</li><li>Paste the JSON into a new file</li><li>Save it</li><li>Import it into Postman.</li><li>Create a topic called `postman` in the Quix Portal</li><li>Enable persistence on the `postman` topic</li></ul>",
+    "DefaultFile": "quix-postman.json",
+    "IconFile": "postman-logo.svg",
+    "sampleTemplate": true
+}
