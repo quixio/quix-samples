@@ -1,4 +1,30 @@
 {
+	"variable": [
+		{
+			"key": "quix_bearer_token",
+			"value": "{placeholder:token}",
+			"type": "string"
+		},
+		{
+			"key": "workspaceId",
+			"value": "{placeholder:workspaceId}",
+			"type": "string"
+		},
+		{
+			"key": "topic",
+			"value": "{placeholder:topic}",
+			"type": "string"
+		},
+		{
+			"key": "stream",
+			"value": "postman"
+		},
+		{
+			"key": "baseUrl",
+			"value": "https://portal-api.platform.quix.ai",
+			"type": "string"
+		}
+	],
 	"info": {
 		"_postman_id": "51afd8e1-6f67-4483-a3b2-59c9abdbb9df",
 		"name": "Quix Samples Collection",
@@ -26,7 +52,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "//Parameter data is published as an object.\r\n//This sample data contains: \r\n//  2 timestamps (1 and 2).\r\n//  2 numeric values and 2 string values.\r\n//  notice that the numeric and string values each have 2 values.\r\n//  One value for each timestamp.\r\n// The number of values must match the number of timestamps.\r\n// The stringValue and numericValue keys can be any string value you require.\r\n// For example 'property1' can be anything you require like 'gForce_X' or 'lattitude'.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n// https://writer-quix-{{your-workspace-id}}.platform.quix.ai/swagger/index.html\r\n{\r\n    \"epoch\": 0,\r\n    \"timestamps\": [1, 2],\r\n    \"numericValues\": {\r\n        \"property1\": [1, 3],\r\n        \"property2\": [2, 6]\r\n    },\r\n    \"stringValues\": {\r\n        \"s1\": [\"10\", \"20\"],\r\n        \"s2\": [\"Timestamp 1\", \"Timestamp 2\"]\r\n    }\r\n}",
+							"raw": "//Parameter data is published as an object.\r\n//This sample data contains: \r\n//  2 timestamps (1 and 2).\r\n//  2 numeric values and 2 string values.\r\n//  notice that the numeric and string values each have 2 values.\r\n//  One value for each timestamp.\r\n// The number of values must match the number of timestamps.\r\n// The stringValue and numericValue keys can be any string value you require.\r\n// For example 'property1' can be anything you require like 'gForce_X' or 'lattitude'.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n// https://writer-quix-{{workspaceId}}.platform.quix.ai/swagger/index.html\r\n{\r\n    \"epoch\": 0,\r\n    \"timestamps\": [1, 2],\r\n    \"numericValues\": {\r\n        \"property1\": [1, 3],\r\n        \"property2\": [2, 6]\r\n    },\r\n    \"stringValues\": {\r\n        \"s1\": [\"10\", \"20\"],\r\n        \"s2\": [\"Timestamp 1\", \"Timestamp 2\"]\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -34,7 +60,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://writer-quix-{{workspace}}.platform.quix.ai/topics/{{topic}}/streams/{{stream}}/parameters/data",
+							"raw": "https://writer-{{workspaceId}}.platform.quix.ai/topics/{{topic}}/streams/{{stream}}/parameters/data",
 							"protocol": "https",
 							"host": [
 								"writer-quix-{{workspace}}",
@@ -97,7 +123,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// Events are published as an array of objects.\r\n// Each event requires:\r\n// timestamp, id and value\r\n// You may optionally add as many tags as you need\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n// https://writer-quix-{{your-workspace-id}}.platform.quix.ai/swagger/index.html\r\n[ \r\n  {\r\n    \"timestamp\": 1,\r\n    \"id\": \"event_001\",\r\n    \"value\": \"Hello Quix\",\r\n    \"tags\": {\r\n        \"tag1\": \"Tag 1 value\",\r\n        \"tag2\": \"Tag 2 value\"\r\n    }\r\n  }\r\n  // repeat for more events\r\n]",
+							"raw": "// Events are published as an array of objects.\r\n// Each event requires:\r\n// timestamp, id and value\r\n// You may optionally add as many tags as you need\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n// https://writer-quix-{{workspaceId}}.platform.quix.ai/swagger/index.html\r\n[ \r\n  {\r\n    \"timestamp\": 1,\r\n    \"id\": \"event_001\",\r\n    \"value\": \"Hello Quix\",\r\n    \"tags\": {\r\n        \"tag1\": \"Tag 1 value\",\r\n        \"tag2\": \"Tag 2 value\"\r\n    }\r\n  }\r\n  // repeat for more events\r\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -161,7 +187,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// To retrieve data via this API you must persist the topic either in the Quix Platform or via the Portal API.\r\n//  This query will return all data associated with this topic and event ID list.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n//  https://writer-quix-{{your-workspace-id}}.platform.quix.ai/swagger/index.html\r\n{\r\n    \"topic\": \"postman\",\r\n    \"eventIds\": [\r\n        \"event_001\"\r\n    ]\r\n}"
+							"raw": "// To retrieve data via this API you must persist the topic either in the Quix Platform or via the Portal API.\r\n//  This query will return all data associated with this topic and event ID list.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n//  https://writer-quix-{{workspaceId}}.platform.quix.ai/swagger/index.html\r\n{\r\n    \"topic\": \"postman\",\r\n    \"eventIds\": [\r\n        \"event_001\"\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "https://telemetry-query-quix-{{workspace}}.platform.quix.ai/data",
@@ -211,7 +237,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// To retrieve data via this API you must persist the topic either in the Quix Platform or via the Portal API.\r\n//  This query will return all data associated with a list of topic and event IDs.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n//  https://writer-quix-{{your-workspace-id}}.platform.quix.ai/swagger/index.html\r\n{\r\n    \"topics\": [\r\n        \"{{topic}}\"\r\n    ],\r\n    \"eventIds\": [\r\n        \"event_001\"\r\n    ]\r\n}",
+							"raw": "// To retrieve data via this API you must persist the topic either in the Quix Platform or via the Portal API.\r\n//  This query will return all data associated with a list of topic and event IDs.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n//  https://writer-quix-{{workspaceId}}.platform.quix.ai/swagger/index.html\r\n{\r\n    \"topics\": [\r\n        \"{{topic}}\"\r\n    ],\r\n    \"eventIds\": [\r\n        \"event_001\"\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -266,7 +292,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// To retrieve data via this API you must persist the topic either in the Quix Platform or via the Portal API.\r\n\r\n//  This query will return all parameter data associated with a list of stream ID's.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n//  https://writer-quix-{{your-workspace-id}}.platform.quix.ai/swagger/index.html\r\n{\r\n  \"streamIds\": [\r\n    \"postman\"\r\n  ]\r\n}",
+							"raw": "// To retrieve data via this API you must persist the topic either in the Quix Platform or via the Portal API.\r\n\r\n//  This query will return all parameter data associated with a list of stream ID's.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n//  https://writer-quix-{{workspaceId}}.platform.quix.ai/swagger/index.html\r\n{\r\n  \"streamIds\": [\r\n    \"postman\"\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -321,7 +347,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "// To retrieve data via this API you must persist the topic either in the Quix Platform or via the Portal API.\r\n//  This query will return all streams in the streamId's list.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n//  https://writer-quix-{{your-workspace-id}}.platform.quix.ai/swagger/index.html\r\n{\r\n    \"streamIds\": [\r\n        \"postman\"\r\n    ]\r\n}",
+							"raw": "// To retrieve data via this API you must persist the topic either in the Quix Platform or via the Portal API.\r\n//  This query will return all streams in the streamId's list.\r\n//  For more info, including the full list of filters, see swagger and quix docs.\r\n//  https://writer-quix-{{workspaceId}}.platform.quix.ai/swagger/index.html\r\n{\r\n    \"streamIds\": [\r\n        \"postman\"\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -12019,36 +12045,5 @@
 				]
 			}
 		}
-	],
-	"variable": [
-		{
-			"key": "quix_bearer_token",
-			"value": "{placeholder:token}",
-			"type": "string"
-		},
-		{
-			"key": "workspace",
-			"value": "{placeholder:workspace}",
-			"type": "string"
-		},
-		{
-			"key": "{placeholder:workspaceId}",
-			"value": "quix-steve",
-			"type": "string"
-		},
-		{
-			"key": "{placeholder:topic}",
-			"value": "postman",
-			"type": "string"
-		},
-		{
-			"key": "stream",
-			"value": "postman"
-		},
-		{
-			"key": "baseUrl",
-			"value": "https://portal-api.platform.quix.ai",
-			"type": "string"
-		}
-	]
+	]	
 }
