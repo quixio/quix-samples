@@ -10,5 +10,15 @@
         "Type": ["Basic templates"]
     },
     "shortDescription": "Something about Postman",
-    "DefaultFile": "quix.json"
+    "DefaultFile": "quix-postman.json",
+    "Variables": [
+        {
+            "Name" : "topic",
+            "Type" : "Placeholder",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the topic for the streaming reader and streaming writer to use",
+            "DefaultValue" : "postman",
+            "Required": true
+        }
+    ]
 }
