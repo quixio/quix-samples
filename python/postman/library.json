@@ -10,18 +10,8 @@
         "Type": ["Basic templates"]
     },
     "shortDescription": "Use our Postman collection to get started with the Quix APIs",
-    "longDescription": "Use our Postman <img src='https://voyager.postman.com/logo/postman-logo-icon-orange.svg' /> collection to get started with the Quix APIs<br/><br/><ul><li>Click `Copy code` to copy the Postman JSON to your clipboard.</li><li>Paste the JSON into a new file</li><li>Save it</li><li>Import it into Postman.</li><li>Create a topic called `postman` in the Quix Portal</li>Enable persistence on the `postman` topic<li></li></ul>",
+    "longDescription": "Use our Postman collection to get started with the Quix APIs<br/><br/><ul><li>Click `Copy code` to copy the Postman JSON to your clipboard.</li><li>Paste the JSON into a new file</li><li>Save it</li><li>Import it into Postman.</li><li>Create a topic called `postman` in the Quix Portal</li>Enable persistence on the `postman` topic<li></li></ul>",
     "DefaultFile": "quix-postman.json",
-    "IconFile": "postman.png",
-    "sampleTemplate": true,
-    "Variables": [
-        {
-            "Name" : "topic",
-            "Type" : "Placeholder",
-            "InputType" : "OutputTopic",
-            "Description" : "This is the topic for the streaming reader and streaming writer to use",
-            "DefaultValue" : "postman",
-            "Required": true
-        }
-    ]
+    "IconFile": "postman-logo.svg",
+    "sampleTemplate": true
 }
