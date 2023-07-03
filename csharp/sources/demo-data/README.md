@@ -2,13 +2,13 @@
 
 [This project](https://github.com/quixio/quix-samples/tree/main/csharp/sources/demo-data) streams F1&reg; telemetry data into a topic from a recorded Codemasters&reg; F1&reg; 2019 game session.
 
-You'll have access to the speed, acceleration, breaking and other detailed data from a real F1&reg; car, rebroadcast in real time.
+You'll have access to the speed, acceleration, braking and other detailed data from a real F1&reg; car, rebroadcast in real time.
 
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
 
-Clicking `Setup & deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 

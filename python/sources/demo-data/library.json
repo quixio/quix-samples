@@ -1,0 +1,35 @@
+{
+	"libraryItemId": "7abe02e1-1e75-4783-864c-46b930b42afe",
+	"name": "Demo Data",
+	"language": "Python",
+	"tags": {
+		"Technology": ["QuixStreams"],
+		"Pipeline Stage": ["Source"],
+		"Popular Subjects": ["Quick Start", "Onboarding"],
+		"Type": ["Demos"]
+	},
+	"shortDescription": "Stream F1 Telemetry data from a CSV file",
+	"longDescription": "Stream F1 Telemetry data, recorded from an F1 game session into a topic. <br/>You'll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
+	"DefaultFile": "main.py",
+	"EntryPoint": "build/dockerfile",
+	"RunEntryPoint": "main.py",
+	"Variables": [
+		{
+			"Name" : "Topic",
+			"Type" : "EnvironmentVariable",
+			"InputType" : "OutputTopic",
+			"Description" : "Name of the output topic to write into",
+			"DefaultValue" : "f1-data",
+			"Required": true
+		}
+	],
+	"DeploySettings":
+	{
+		"DeploymentType": "Job",
+		"CpuMillicores": 200,
+		"MemoryInMb": 200,
+		"Replicas": 1,
+		"PublicAccess": false,
+		"ValidateConnection": false
+	}
+}

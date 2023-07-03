@@ -1,0 +1,12 @@
+FROM quixanalytics/matlab-runtime:r2023a-dotnet-sdk6 as build
+WORKDIR /src
+COPY --from=git /project/Service.csproj .
+RUN dotnet restore Service.csproj
+COPY --from=git /project /src/
+RUN dotnet publish "Service.csproj" --no-restore -c Release -o /publish
+
+FROM quixanalytics/matlab-runtime:r2023a-dotnet-runtime6
+WORKDIR /app
+COPY --from=build /publish .
+COPY --from=build /src/MATLAB/ .
+ENTRYPOINT dotnet Service.dll
