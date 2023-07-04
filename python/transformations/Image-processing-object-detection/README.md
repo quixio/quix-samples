@@ -1,5 +1,5 @@
 # Computer vision object detection
- 
+
 [This project](https://github.com/quixio/quix-samples/tree/main/python/transformations/Image-processing-object-detection) performs object recognition using a 'YOLO' V3 model.
 
 ## How to run
