@@ -7,7 +7,6 @@ ENV PYTHONIOENCODING=UTF-8
 WORKDIR /app
 COPY --from=git /project .
 RUN apt-get update && apt-get install -y wget unzip
-RUN apt-get update && apt-get install python3-opencv -y
 RUN wget https://quixstorageaccount.blob.core.windows.net/libraryassets/19519-yolov3.zip && unzip 19519-yolov3.zip && rm 19519-yolov3.zip
 RUN find | grep requirements.txt | xargs -I '{}' python3 -m pip install -r '{}' --extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/
 
