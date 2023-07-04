@@ -1,5 +1,5 @@
 quixstreams==0.5.2
 numpy==1.21.0
 wget==3.2
-opencv-python==4.5.3.56
+opencv-python==4.8.0.74
 pandas==1.5.3
