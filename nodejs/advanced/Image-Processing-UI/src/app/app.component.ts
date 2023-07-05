@@ -92,10 +92,10 @@ export class AppComponent implements OnInit {
 
     });
 
-    this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", "image");
-    this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", "lat");
-    this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", this.selectedObject);
-    this.connection.invoke("SubscribeToParameter", quixTopic, "input-image", "lon");
+    this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "image");
+    this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "lat");
+    this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", this.selectedObject);
+    this.connection.invoke("SubscribeToParameter", quixTopic, "image-feed", "lon");
   }
 
   /**
