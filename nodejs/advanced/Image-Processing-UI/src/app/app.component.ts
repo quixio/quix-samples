@@ -120,8 +120,8 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < this.markers.length; i++) {
       this.markers[i].setMap(null);
     }
-    this.connection?.invoke("UnsubscribeFromParameter", this.topic, "input-image", this.selectedObject);
-    this.connection?.invoke("SubscribeToParameter", this.topic, "input-image", value);
+    this.connection?.invoke("UnsubscribeFromParameter", this.topic, "image-feed", this.selectedObject);
+    this.connection?.invoke("SubscribeToParameter", this.topic, "image-feed", value);
     this.selectedObject = value;
   }
 
@@ -134,10 +134,10 @@ export class AppComponent implements OnInit {
   public toggleFeed() {
     this.showImages =! this.showImages;
     if (!this.showImages) {
-      this.connection.invoke("UnsubscribeFromParameter", this.topic, "input-image", "image");
+      this.connection.invoke("UnsubscribeFromParameter", this.topic, "image-feed", "image");
     }
     else {
-      this.connection.invoke("SubscribeToParameter", this.topic, "input-image", "image");
+      this.connection.invoke("SubscribeToParameter", this.topic, "image-feed", "image");
     }
   }
 }
