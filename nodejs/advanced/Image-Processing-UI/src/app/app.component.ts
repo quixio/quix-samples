@@ -56,8 +56,8 @@ export class AppComponent implements OnInit {
    */
   subscribeToData(quixTopic: string) {
     this.connection.on("ParameterDataReceived", (data: ParameterData) => {
-      if (data.binaryValues["image"]) {
-        let imageBinary = data.binaryValues["image"][0];
+      if (data.stringValues["image"]) {
+        let imageBinary = data.stringValues["image"][0];
         this.last_image = "data:image/png;base64," + imageBinary;
       }
 
