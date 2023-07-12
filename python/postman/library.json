@@ -4,7 +4,7 @@
     "language": "Javascript",
     "tags": {
         "Complexity": ["Easy"],
-        "Technology": ["APIs"],
+        "Technology": ["Quix APIs"], 
         "Pipeline Stage": ["All"]
     },
     "shortDescription": "Use our Postman collection to get started with the Quix APIs",
