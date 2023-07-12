@@ -7,7 +7,7 @@
         "Pipeline Stage": ["Source"],
         "Type": ["Code samples"],
         "Use Case": ["Mobility", "Weather"],
-        "Technology": ["API", "QuixStreams"]
+        "Technology": ["External APIs", "QuixStreams"]
     },
     "shortDescription": "Publish weather API data to a stream",
     "DefaultFile": "main.py",
