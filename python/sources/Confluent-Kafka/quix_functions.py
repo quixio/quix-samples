@@ -9,7 +9,7 @@ class QuixFunctions:
     def __init__(self, stream_producer: qx.StreamProducer):
         self.stream_producer = stream_producer
 
-    def raw_message_handler(self, msg):
+    def raw_message_handler(self, topic, msg):
 
         if not self.is_connected:
             # show once
