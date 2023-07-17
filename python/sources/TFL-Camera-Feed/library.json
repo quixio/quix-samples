@@ -21,14 +21,6 @@
             "Required": true
         },
         {
-            "Name" : "frame_rate",
-            "Type" : "EnvironmentVariable",
-            "InputType" : "FreeText",
-            "Description" : "The frame rate you want to use",
-            "DefaultValue" : "100",
-            "Required": true
-        },
-        {
             "Name" : "api_key",
             "Type" : "EnvironmentVariable",
             "InputType" : "HiddenText",

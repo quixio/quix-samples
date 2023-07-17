@@ -6,7 +6,7 @@
         "Complexity": ["Easy"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
-        "Technology": ["API", "QuixStreams"]
+        "Technology": ["External APIs", "QuixStreams"]
     },
     "shortDescription": "Consume currency data from the CoinAPI REST API",
     "DefaultFile": "quix_functions.py",
