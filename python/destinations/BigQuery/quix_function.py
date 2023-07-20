@@ -134,7 +134,7 @@ class QuixFunction:
         self.event_insert_queue.put(row, block = True)
 
 
-    def on_stream_properties_changed(self):
+    def on_stream_properties_changed(self, stream_consumer: qx.StreamConsumer):
         logger.debug("on_stream_properties_changed")
         self.insert_metadata()
         self.insert_properties("open")

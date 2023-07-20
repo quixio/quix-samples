@@ -41,7 +41,7 @@ create_properties_table(conn, TABLE_NAME["PROPERTIES_TABLE_NAME"])
 client = qx.QuixStreamingClient()
 
 logger.info("Opening input topic")
-consumer_topic = client.get_topic_consumer(os.environ["input"], CONSUMER_GROUP)
+consumer_topic = client.get_topic_consumer(os.environ["input"], CONSUMER_GROUP, auto_offset_reset=qx.AutoOffsetReset.Earliest)
 logger.info(os.environ["input"])
 
 # Initialize Queue
