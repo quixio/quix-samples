@@ -5,7 +5,7 @@
 	"tags": {
 		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Source"],
-		"Popular Subjects": ["Quick Start", "Onboarding"],
+		"Popular Subjects": ["Quick Start"],
 		"Type": ["Demos"]
 	},
 	"shortDescription": "Stream F1 Telemetry data into a topic from a recorded game session",
