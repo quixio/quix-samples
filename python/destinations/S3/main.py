@@ -22,6 +22,7 @@ bucket = os.environ["s3_bucket"]
 s3_folder = os.environ["s3_folder"]
 # if set to true, new folders will be created in s3 for each stream using stream id as name 
 s3_folder_per_stream = os.environ["s3_folder_per_stream"].lower() == "true"
+separator = os.environ["separator"]
 
 # files created in s3 will have this prefix
 prefix = os.environ["prefix"]
@@ -71,6 +72,7 @@ s3 = boto3.client(
 def upload(stream_id: str, fname: str):
     if os.path.exists(fname):
         try:
+            print("Uploading file")
             if s3_folder:
                 if s3_folder_per_stream:
                     path = "/".join([s3_folder, stream_id, fname])
@@ -119,10 +121,15 @@ def save(stream_id: str, data: qx.TimeseriesData):
                     print("Warn: data contains more than one timestamp: batch size may not be accurate")
                 with gzip.open(batch.fname, "at") as fd:
                     for ts in data.timestamps:
-                        # to save something other than string data (e.g. binary data), change access to the correct value type
+                        # to save something other than string or numeric data (e.g. binary data), change access to the correct value type
                         if ts.parameters[param].string_value is not None:
                             fd.write(ts.parameters[param].string_value)
                             batch.count += 1
+                            fd.write(separator)
+                        if ts.parameters[param].numeric_value is not None:
+                            fd.write(str(ts.parameters[param].numeric_value))
+                            batch.count += 1
+                            fd.write(separator)
                 if is_new_batch(batch):
                     if batch.count > 0:
                         upload(stream_id, batch.fname)
@@ -160,6 +167,7 @@ topic.on_stream_received = stream_received_handler
 def job():
     while run:
         print("Debug: started batch job at " + str(datetime.now()))
+        print(len(batches))
         for key in batches.keys():
             mutex.acquire()
             try:

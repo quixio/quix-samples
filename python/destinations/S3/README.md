@@ -26,6 +26,7 @@ The code sample uses the following environment variables:
 - **prefix**: File name prefix.
 - **suffix**: File suffix (e.g. file type extension).
 - **timezone**: A valid timezone from the IANA Time Zone Database e.g. GMT or US/Eastern or Asia/Singapore used for orchestrating time-based batching and file naming.
+- **separator**: The value separator to be used when writing to the S3 file. Defaults to comma.
 
 ## Requirements / Prerequisites
 

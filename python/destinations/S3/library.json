@@ -110,6 +110,14 @@
       "Description": "Timezone from the IANA Time Zone Database (e.g. Asia/Singapore) for orchestrating time-based batching and file naming.",
       "DefaultValue": "GMT",
       "Required": true
+    },
+    {
+      "Name": "separator",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Value separator.",
+      "DefaultValue": ",",
+      "Required": true
     }
   ],
   "DeploySettings": {
