@@ -17,7 +17,7 @@ The code sample uses the following environment variables:
 - **input**: Name of the input topic to listen to.
 - **batch_time_interval**: Time interval in seconds to save data to S3 (set -1 to disable batching based on tme)
 - **batch_msg_count**: Message count in the batch (0 saves data as they arrive, -1 disables batching based on message count).
-- **parameter**: Name of the parameter to save to S3.
+- **parameters**: Comma separated list of parameters to look for in the received data.
 - **aws_access_key_id**: AWS S3 access key id.
 - **aws_access_key**: AWS S3 access key
 - **s3_bucket**: AWS S3 bucket.
@@ -40,4 +40,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-
