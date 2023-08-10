@@ -40,10 +40,10 @@
       "Required": false
     },
     {
-      "Name": "parameter",
+      "Name": "parameters",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Name of the parameter to save to S3",
+      "Description": "Comma separated list of parameters to look for in the received data",
       "DefaultValue": "",
       "Required": true
     },
