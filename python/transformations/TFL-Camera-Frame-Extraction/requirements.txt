@@ -1,2 +1,2 @@
-quixstreams==0.5.2
+quixstreams==0.5.5
 opencv-python==4.5.3.56
