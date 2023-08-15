@@ -1,0 +1,3 @@
+quixstreams==0.5.2
+influxdb3-python
+pandas
