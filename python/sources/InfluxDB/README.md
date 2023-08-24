@@ -1,19 +1,14 @@
+# InfluxDB 3.0
 
+Read data from InfluxDB 3.0 with [this project](https://github.com/quixio/quix-samples/tree/main/python/sources/InfluxDB).
 
-# InfluxDB-3.0 Destination Plugin
+## How to run
 
-## Introduction
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
 
-The InfluxDB-3.0 destination plugin allows you to publish Quix streams to InfluxDB 3.0. It's written in Python and is designed to be both easy to use and versatile.
+Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
-## Requirements
-
-To set up and run the InfluxDB-3.0 destination plugin, you need the following dependencies:
-```
-quixstreams==0.5.2
-influxdb3-python
-pandas
-```
+Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
 ## Configuration Details
 
