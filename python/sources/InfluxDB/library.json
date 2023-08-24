@@ -5,7 +5,7 @@
   "tags": {
     "Complexity": ["Easy"],
     "Technology": ["QuixStreams"],
-    "Pipeline Stage": ["Destination"],
+    "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
