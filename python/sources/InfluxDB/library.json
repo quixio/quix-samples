@@ -9,7 +9,7 @@
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
-  "shortDescription": "Publish Quix streams to InfluxDB 3.0",
+  "shortDescription": "Read from InfluxDB 3.0 and publish to Quix streams",
   "DefaultFile": "main.py",
   "EntryPoint": "build/dockerfile",
   "RunEntryPoint": "main.py",
