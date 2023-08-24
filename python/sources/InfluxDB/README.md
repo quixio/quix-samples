@@ -10,24 +10,21 @@ Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
-## Configuration Details
+## Environment Variables
 
-To configure the InfluxDB-3.0 destination plugin, you'll need to set up the following variables:
+The code sample uses the following environment variables:
 
-- **output**: This is the Quix Topic that will receive the stream (Default: `influxdb`, Required: `True`)
+- **output**: This is the ouput topic that will receive the stream (Default: `influxdb`, Required: `True`)
 - **task_interval**: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1mo, 1y (Default: `5m`, Required: `True`)
 - **INFLUXDB_HOST**: Host address for the InfluxDB instance. (Default: `eu-central-1-1.aws.cloud2.influxdata.com`, Required: `True`)
 - **INFLUXDB_TOKEN**: Authentication token to access InfluxDB. (Default: `<TOKEN>`, Required: `True`)
 - **INFLUXDB_ORG**: Organization name in InfluxDB. (Default: `<ORG>`, Required: `False`)
-- **INFLUXDB_DATABASE**: Database name in InfluxDB where data should be stored. (Default: `<DATABASE>`, Required: `True`)
-- **INFLUXDB_MEASUREMENT_NAME**: The InfluxDB measurment to write data to. If not specified, the name of the input topic will be used (Default: `<INSERT MEASUREMENT>`, Required: `False`)
+- **INFLUXDB_DATABASE**: Database name in InfluxDB where data is stored. (Default: `<DATABASE>`, Required: `True`)
+- **INFLUXDB_MEASUREMENT_NAME**: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used (Default: `<INSERT MEASUREMENT>`, Required: `False`)
 
+## Requirements / Prerequisites
 
-## Setup and Usage
-
-1. Ensure you have all the required dependencies installed.
-2. Configure the necessary variables as mentioned above.
-3. Use the provided `main.py` as the entry point for the plugin.
+You will need to have an InfluxDB 3.0 instance available and an API authentication token.
 
 ## Contribute
 
