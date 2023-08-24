@@ -19,7 +19,7 @@
       "Name" : "output",
       "Type" : "EnvironmentVariable",
       "InputType" : "OutputTopic",
-      "Description" : "This is the Quix Topic that will receive the stream",
+      "Description" : "This is the Quix topic that will receive the stream",
       "DefaultValue" : "influxdb",
       "Required": true
   },
