@@ -65,7 +65,7 @@ client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          database=os.environ["INFLUXDB_DATABASE"])
 
 
-measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', 'MEASUREMENT')
+measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", os.environ["output"])
 interval = os.environ.get('task_interval', '5m')
 interval_seconds = interval_to_seconds(interval)
 
