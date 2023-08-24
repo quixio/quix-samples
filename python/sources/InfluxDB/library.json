@@ -59,7 +59,7 @@
       "Name": "INFLUXDB_DATABASE",
       "Type": "Placeholder",
       "InputType": "FreeText",
-      "Description": "Database name in InfluxDB where data should be stored.",
+      "Description": "Database name in InfluxDB where data is stored.",
       "DefaultValue": "<DATABASE>",
       "Required": true
     },
