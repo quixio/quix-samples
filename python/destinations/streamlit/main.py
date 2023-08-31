@@ -17,36 +17,54 @@ with open("style.css") as f:
 
 st.header("Streamlit Dashboard")
 
-col1, col2, col3 = st.columns([0.5, 0.25, 0.25])
+# PARAMETERS SECTION
+# Define a list of parameters to show in select widgets.
+AVAILABLE_PARAMS = [
+    "Steer",
+    "Speed",
+    "LapDistance",
+    "Gear",
+    "EngineTemp",
+    "EngineRPM",
+    "Brake",
+]
+
+# DASHBOARD LAYOUT SECTION
+# The dashboard layout will consist of 2 columns and one row.
+# Each column will have a select widget with available parameters to plot,
+# and a chart with the real-time data from Quix, that will be updated in real-time.
+# The last row will have a table with raw data.
+col1, col2 = st.columns(2)
 with col1:
+    # Header of the first column
+    st.markdown("### Chart 1 Title")
+    # Select for the first chart
     parameter1 = st.selectbox(
         label="PARAMETER",
-        options=["LapNumber"],
+        options=AVAILABLE_PARAMS,
         index=0,
         key="parameter1",
-        label_visibility="hidden",
+        label_visibility="visible",
     )
-    col1_row1 = st.empty()
+    # A placeholder for the first chart to update it later with data
+    placeholder_col1 = st.empty()
 
 with col2:
+    # Header of the second column
+    st.markdown("### Chart 2 Title")
+    # Select for the second chart
     parameter2 = st.selectbox(
         label="PARAMETER",
-        options=["Speed"],
-        index=0,
+        options=AVAILABLE_PARAMS,
+        index=1,
         key="parameter2",
-        label_visibility="hidden",
+        label_visibility="visible",
     )
-    col2_row1 = st.empty()
+    # A placeholder for the second chart to update it later with data
+    placeholder_col2 = st.empty()
 
-with col3:
-    parameter3 = st.selectbox(
-        label="PARAMETER",
-        options=["EngineTemp"],
-        index=0,
-        key="parameter3",
-        label_visibility="hidden",
-    )
-    col3_row1 = st.empty()
+# A placeholder for the raw data table
+placeholder_raw = st.empty()
 
 @st.cache_resource
 def queue_init():
@@ -65,12 +83,10 @@ queue =  queue_init()
 data_consumer = data_consumer_init(queue)
 
 while True:
-    data = queue.get(conid)
-    if "f1_telemetry" in data:
-        df = data["f1_telemetry"]
-        if parameter1 in df and not pd.isna(df[parameter1].iloc[-1]):
-            col1_row1.metric(label="label1", value=round(df[parameter2].iloc[-1], 1), label_visibility="hidden")
-        if parameter2 in df and not pd.isna(df[parameter2].iloc[-1]):
-            col2_row1.metric(label="label2", value=round(df[parameter3].iloc[-1], 1), label_visibility="hidden")
-        if parameter3 in df and not pd.isna(df[parameter3].iloc[-1]):
-            col3_row1.metric(label="label3", value=int(df[parameter3].iloc[-1]), label_visibility="hidden")
+    # todo
+    df = queue.get(conid)
+    placeholder_col1.line_chart(df, x="datetime", y=[parameter1])
+    placeholder_col2.line_chart(df, x="datetime", y=[parameter2])
+    with placeholder_raw.container():
+        st.markdown("### Raw Data View")
+        st.dataframe(df)

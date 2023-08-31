@@ -15,8 +15,9 @@ class DataConsumer():
     
     def _on_stream_recv_handler(self, sc: qx.StreamConsumer):
         def on_data_recv_handler(_: qx.StreamConsumer, df: pd.DataFrame):
-            self.queue.put({"f1_telemetry": df})
+            df["datetime"] = pd.to_datetime(df["timestamp"])
+            self.queue.put(df)
 
         print("New stream: {}".format(sc.stream_id))
-        buf = sc.timeseries.create_buffer("Speed", "LapNumber", "EngineTemp")
+        buf = sc.timeseries.create_buffer()
         buf.on_dataframe_released = on_data_recv_handler
