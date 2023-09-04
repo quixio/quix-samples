@@ -10,8 +10,8 @@ st.set_page_config(
     layout="wide",
 )
 
-# Basic changes to the default theme can be done via the .streamlit/config.toml file. For custom css
-# update the style.css file 
+# Basic changes to the default theme can be done via the .streamlit/config.toml file.
+# For custom css update the style.css file 
 with open("style.css") as f:
     st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
 
@@ -78,10 +78,17 @@ def data_consumer_init(_queue: DataQueue):
     dc.start()
     return dc
 
+# Unique client connection id generated per browser tab.
 conid = threading.current_thread().ident
+
+# Blocking queue that exposes Quix data to Streamlit components.
 queue =  queue_init()
+
+# Data consumer that generates the view model from Quix data for the Streamlit components.
 data_consumer = data_consumer_init(queue)
 
+# Event loop to update streamlit components. Try not to copy/modify the dataframes within
+# this loop.
 while True:
     df = queue.get(conid)
     placeholder_col1.line_chart(df, x="datetime", y=[parameter1])

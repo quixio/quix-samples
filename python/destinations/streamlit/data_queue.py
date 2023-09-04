@@ -3,8 +3,12 @@ import threading
 from queue import Queue
 from threading import Lock, Thread
 
+# This class manages communication between the data source (Kafka) and
+# streamlit.
 class DataQueue:
     def __init__(self, maxlen=0) -> None:
+
+        # Removes resources associated inactive client connections (e.g., closed browser tabs)
         def _clean_up_queues(connections: {}, lock: Lock):
             while True:
                 active_c = set([x.ident for x in threading.enumerate()])
@@ -16,7 +20,6 @@ class DataQueue:
                     with lock:
                         for key in inactive_c:
                             connections.pop(key)
-                    print("DEBUG: Removed {} inactive client connections".format(len(inactive_c)))
                 time.sleep(30)
 
         self.connections = {}
