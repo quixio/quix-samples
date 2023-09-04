@@ -83,7 +83,6 @@ queue =  queue_init()
 data_consumer = data_consumer_init(queue)
 
 while True:
-    # todo
     df = queue.get(conid)
     placeholder_col1.line_chart(df, x="datetime", y=[parameter1])
     placeholder_col2.line_chart(df, x="datetime", y=[parameter2])
