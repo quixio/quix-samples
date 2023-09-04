@@ -8,7 +8,7 @@ from threading import Lock, Thread
 class DataQueue:
     def __init__(self, maxlen=0) -> None:
 
-        # Removes resources associated inactive client connections (e.g., closed browser tabs)
+        # Removes resources associated with inactive client connections (e.g., closed browser tabs)
         def _clean_up_queues(connections: {}, lock: Lock):
             while True:
                 active_c = set([x.ident for x in threading.enumerate()])
