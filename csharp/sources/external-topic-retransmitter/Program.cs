@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
-using Quix.Sdk.Process.Kafka;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Raw;
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Raw;
+using QuixStreams.Telemetry.Kafka;
 
 namespace Retransmitter
 {
@@ -14,9 +14,9 @@ namespace Retransmitter
         static void Main(string[] args)
         {
             QuixStreamingClient sourceClient;
-            IRawInputTopic sourceTopic;
+            IRawTopicConsumer sourceTopicConsumer;
             QuixStreamingClient targetClient; // reading SDK token from environment variables
-            IRawOutputTopic targetTopic;
+            IRawTopicProducer targetTopicProducer;
             try
             {
                 GetConfiguration(out var sourceWorkspaceSdkToken,
@@ -26,10 +26,10 @@ namespace Retransmitter
                     out var outputTopic);
 
                 sourceClient = new QuixStreamingClient(sourceWorkspaceSdkToken, false);
-                sourceTopic = sourceClient.OpenRawInputTopic(sourceTopicIdOrName, consumerGroup, autoOffsetReset);
+                sourceTopicConsumer = sourceClient.GetRawTopicConsumer(sourceTopicIdOrName, consumerGroup, autoOffsetReset);
 
                 targetClient = new QuixStreamingClient();
-                targetTopic = targetClient.OpenRawOutputTopic(outputTopic);
+                targetTopicProducer = targetClient.GetRawTopicProducer(outputTopic);
             }
             catch (Exception ex)
             {
@@ -42,12 +42,12 @@ namespace Retransmitter
             long packageRead = 0;
             DateTime nextPrint = DateTime.UtcNow.AddSeconds(5);
 
-            sourceTopic.OnErrorOccurred += (sender, exception) =>
+            sourceTopicConsumer.OnErrorOccurred += (sender, exception) =>
             {
                 Console.WriteLine(exception);
             };
 
-            sourceTopic.OnMessageRead += message =>
+            sourceTopicConsumer.OnMessageReceived += (sender, message) =>
             {
                 packageRead++;
                 if (DateTime.UtcNow > nextPrint)
@@ -55,7 +55,7 @@ namespace Retransmitter
                     nextPrint = DateTime.UtcNow.AddSeconds(10);
                     Console.WriteLine($"Total packages read: {packageRead}");
                 }
-                targetTopic.Write(message);
+                targetTopicProducer.Publish(message);
             };
             
             App.Run(beforeShutdown: () =>
