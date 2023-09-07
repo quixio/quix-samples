@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Models;
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Models;
 
 namespace ReadCompleteExample
 {
@@ -16,13 +16,13 @@ namespace ReadCompleteExample
             // Create a client which holds generic details for creating input and output topics
             var client = new QuixStreamingClient();
 
-            var inputTopicName = Environment.GetEnvironmentVariable("input");
+            var consumerTopicName = Environment.GetEnvironmentVariable("input");
 
             // Create an output topic using the client's configuration
-            using var inputTopic = client.OpenInputTopic(inputTopicName, "complete-example"); // consumer group is optional, if not provided defaults to POD_NAMESPACE environment variable or a default one if that is not set
-            
+            using var consumer = client.GetTopicConsumer(consumerTopicName, "complete-example"); // consumer group is optional, if not provided defaults to POD_NAMESPACE environment variable or a default one if that is not set
+
             // Hook up events before initiating read to avoid losing out on any data
-            inputTopic.OnStreamReceived += OnStreamReceivedHandler; 
+            consumer.OnStreamReceived += OnStreamReceivedHandler; 
 
             // Hook up to termination signal (for docker image) and CTRL-C and open streams
             App.Run();
@@ -32,40 +32,40 @@ namespace ReadCompleteExample
         /// Invoked when new stream is picked up from the topic
         /// </summary>
         /// <param name="sender">Streaming client raising the event we're handling</param>
-        /// <param name="streamReader">The stream reader for the newly picked up stream</param>
-        private static void OnStreamReceivedHandler(object sender, IStreamReader streamReader)
+        /// <param name="streamConsumer">The stream consumer for the newly picked up stream</param>
+        private static void OnStreamReceivedHandler(object sender, IStreamConsumer streamConsumer)
         {
             // Subscribe to the events of the stream reader
-            Console.WriteLine($"New stream read: {streamReader.StreamId}");
-            streamReader.Properties.OnChanged += () =>
+            Console.WriteLine($"New stream read: {streamConsumer.StreamId}");
+            streamConsumer.Properties.OnChanged += (s, data) =>
             {
-                Console.WriteLine($"Stream properties for stream {streamReader.StreamId}:");
-                Console.WriteLine($"  Location: {streamReader.Properties.Location}");
-                Console.WriteLine($"  Time of recording: {streamReader.Properties.TimeOfRecording}");
-                Console.WriteLine($"  Name: {streamReader.Properties.Name}");
+                Console.WriteLine($"Stream properties for stream {data.Stream.StreamId}:");
+                Console.WriteLine($"  Location: {data.Stream.Properties.Location}");
+                Console.WriteLine($"  Time of recording: {data.Stream.Properties.TimeOfRecording}");
+                Console.WriteLine($"  Name: {data.Stream.Properties.Name}");
                 // Note: There are additional properties available, please feel free to explore the types
             };
 
-            streamReader.Parameters.OnDefinitionsChanged += () =>
+            streamConsumer.Timeseries.OnDefinitionsChanged += (s, data) =>
             {
-                Console.WriteLine($"Parameter definitions changed for stream {streamReader.StreamId}");
+                Console.WriteLine($"Parameter definitions changed for stream {data.Stream.StreamId}");
                 // The parameter definitions provide additional context for the parameters, like their human friendly display name, min/max, their location among other
-                // var definitions = streamReader.Parameters.Definitions;
+                // var definitions = streamConsumer.Parameters.Definitions;
                 // var definition = definitions[0];
                 // definition.Description
             };
 
             // create a read buffer which will give the parameters received for the stream 
             // in 100 ms batches, or if no data is read for 100 ms, gives whatever it has
-            var buffer = streamReader.Parameters.CreateBuffer();
+            var buffer = streamConsumer.Timeseries.CreateBuffer();
             buffer.TimeSpanInMilliseconds = 100;
             buffer.BufferTimeout = 100;
             // Note: If you wish to get values as they are read, just set all buffer properties to null (or not set them at all, as that is default)
-            buffer.OnRead += (data) =>
+            buffer.OnDataReleased += (s, data) =>
             {
-                // note: sr and streamReader are the same. sr is provided in case your handler is created where streamReader is not available
-                Console.WriteLine($"Parameter data read for stream {streamReader.StreamId} containing {GetSampleCount(data)} values.");
-                foreach (var timestamp in data.Timestamps)
+                // note: sr and streamConsumer are the same. sr is provided in case your handler is created where streamConsumer is not available
+                Console.WriteLine($"Parameter data read for stream {streamConsumer.StreamId} containing {GetSampleCount(data.Data)} values.");
+                foreach (var timestamp in data.Data.Timestamps)
                 {
                     //parameters are accessible as a dictionary of [ParameterId to ParameterValue] at  timestamp.Parameters
                     var parameter = timestamp.Parameters.First();
@@ -86,25 +86,25 @@ namespace ReadCompleteExample
                 // Explore the properties of the types to gain more insight into what else they contain
             };
 
-            streamReader.Events.OnDefinitionsChanged += () =>
+            streamConsumer.Events.OnDefinitionsChanged += (s, data) =>
             {
-                Console.WriteLine($"Event definitions changed for stream {streamReader.StreamId}");
+                Console.WriteLine($"Event definitions changed for stream {streamConsumer.StreamId}");
                 // The event definitions provide additional context for the parameters, like their human friendly display name, description, severity, their location among other
-                // var definitions = streamReader.Events.Definitions;
+                // var definitions = streamConsumer.Events.Definitions;
                 // var definition = definitions[0];
                 // definition.Description
             };
             
-            streamReader.Events.OnRead += (data) =>
+            streamConsumer.Events.OnDataReceived += (s, data) =>
             {
                 // Because events are treated in a different manner to parameters, there is no buffering capability for them. They're immediately given when read
-                Console.WriteLine($"Event read for stream {streamReader.StreamId}, Event Id: {data.Id}");
+                Console.WriteLine($"Event read for stream {streamConsumer.StreamId}, Event Id: {data.Data.Id}");
             };
 
-            streamReader.OnStreamClosed += (sr, endType) =>
+            streamConsumer.OnStreamClosed += (s, data) =>
             {
-                // note: sr and streamReader are the same. sr is provided in case your handler is created where streamReader is not available
-                Console.WriteLine($"Stream {sr.StreamId} closed with '{endType}'");
+                // note: sr and streamConsumer are the same. sr is provided in case your handler is created where streamConsumer is not available
+                Console.WriteLine($"Stream {data.Stream.StreamId} closed with '{data.EndType}'");
                 // the stream closed event occurs when the sending side closes the stream. No more data is to be expected in this case, but the stream may still be reopened by sender if they chose to
             };
         }
@@ -112,7 +112,7 @@ namespace ReadCompleteExample
         /// <summary>
         /// Returns the number of samples found in <see cref="ParameterData"/> 
         /// </summary>
-        static int GetSampleCount(ParameterData data)
+        static int GetSampleCount(TimeseriesData data)
         {
             return data.Timestamps.Sum(x => x.Parameters.Count);
         }
