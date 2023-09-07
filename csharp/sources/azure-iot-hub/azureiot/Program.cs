@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs.Consumer;
 using Newtonsoft.Json;
-using Quix.Sdk.Streaming;
+using QuixStreams.Streaming;
 
 namespace azureIot
 {
@@ -26,11 +26,11 @@ namespace azureIot
             var connectionString = Environment.GetEnvironmentVariable("connectionString");
             var hubName = Environment.GetEnvironmentVariable("eventHubName");
 
-            // Create a client which holds generic details for creating input and output topics
-            var client = new Quix.Sdk.Streaming.QuixStreamingClient();
+            // Create a client which holds generic details for creating topic producers and consumers
+            var client = new QuixStreamingClient();
             
-            // Create an output topic where to write data out
-            using var outputTopic = client.OpenOutputTopic(outputTopicName);
+            // Create a topic producer where to write data out
+            using var topicProducer = client.GetTopicProducer(outputTopicName);
 
             // az iot hub show --query properties.eventHubEndpoints.events.path --name {your IoT Hub name}
             var eventHubName = hubName;
@@ -43,7 +43,7 @@ namespace azureIot
                 new EventHubConsumerClient(EventHubConsumerClient.DefaultConsumerGroupName, connectionString,
                     eventHubName);
 
-            var stream = outputTopic.CreateStream();
+            var stream = topicProducer.CreateStream();
             stream.Properties.Name = "Azure Hub data";
 
             Console.WriteLine("Listening for messages on all partitions");
@@ -75,13 +75,13 @@ namespace azureIot
                             SystemProperties = partitionEvent.Data.SystemProperties,
                             Properties = partitionEvent.Data.Properties
                         };
-                        
-                        
-                        outputTopic.GetOrCreateStream($"{hubName} - Partition {partitionEvent.Partition.PartitionId}")
+
+
+                        topicProducer.GetOrCreateStream($"{hubName} - Partition {partitionEvent.Partition.PartitionId}")
                             .Events
                             .AddTimestamp(partitionEvent.Data.EnqueuedTime.ToUniversalTime().DateTime)
                             .AddValue("message", JsonConvert.SerializeObject(message).ToString())
-                            .Write();
+                            .Publish();
 
                         Console.WriteLine("\t{0}:", JsonConvert.SerializeObject(message).ToString());
 
