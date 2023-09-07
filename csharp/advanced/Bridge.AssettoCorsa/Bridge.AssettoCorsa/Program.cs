@@ -1,9 +1,9 @@
-﻿using Quix.Sdk.Process.Models;
-using Quix.Sdk.Process.Models.Utility;
-using Quix.Sdk.Streaming;
-using Bridge.AssettoCorsa.Reader;
+﻿using Bridge.AssettoCorsa.Reader;
 using System;
 using System.Threading;
+using QuixStreams.Streaming;
+using QuixStreams.Telemetry.Models;
+using QuixStreams.Telemetry.Models.Utility;
 
 namespace Bridge.AssettoCorsa
 {
@@ -11,8 +11,8 @@ namespace Bridge.AssettoCorsa
     {
         private static readonly CancellationTokenSource cToken = new CancellationTokenSource();
 
-        private static IStreamWriter stream;
-        private static IOutputTopic outputTopic;
+        private static IStreamProducer stream;
+        private static ITopicProducer topicProducer;
 
         static void Main()
         {
@@ -22,7 +22,7 @@ namespace Bridge.AssettoCorsa
             var outputTopicName = "{placeholder:output}";
 
             // Quix output topic
-            outputTopic = new QuixStreamingClient().OpenOutputTopic(outputTopicName);
+            topicProducer = new QuixStreamingClient().GetTopicProducer(outputTopicName);
 
             var acServer = "{placeholder:HostName}";
             var acPort = "{placeholder:Port}";
@@ -43,7 +43,7 @@ namespace Bridge.AssettoCorsa
         private static void OnSessionStart(HandshackerResponse data)
         {
             // Create new stream
-            stream = outputTopic.CreateStream();
+            stream = topicProducer.CreateStream();
 
             // Set stream properties
             stream.Properties.TimeOfRecording = DateTime.UtcNow;
@@ -58,10 +58,10 @@ namespace Bridge.AssettoCorsa
 
             // Some extra configuration tune
             stream.Epoch = DateTime.UtcNow;
-            stream.Parameters.Buffer.PacketSize = 100;
-            stream.Parameters.Buffer.BufferTimeout = 1000;
-            stream.Parameters.Buffer.DefaultTags["Default1"] = "1";
-            stream.Parameters.Buffer.DefaultTags["Default2"] = "2";
+            stream.Timeseries.Buffer.PacketSize = 100;
+            stream.Timeseries.Buffer.BufferTimeout = 1000;
+            stream.Timeseries.Buffer.DefaultTags["Default1"] = "1";
+            stream.Timeseries.Buffer.DefaultTags["Default2"] = "2";
             stream.Events.DefaultTags["Default1"] = "1";
             stream.Events.DefaultTags["Default2"] = "2";
 
@@ -82,7 +82,7 @@ namespace Bridge.AssettoCorsa
         // Telemetry Data and tagging
         private static void OnDataReceived(long time, int lapNumber, DataResponse data)
         {
-            stream.Parameters.Buffer.AddTimestampMilliseconds(time)
+            stream.Timeseries.Buffer.AddTimestampMilliseconds(time)
                 .AddValue("speed_Kmh", data.Speed_Kmh)
                 .AddValue("speed_Mph", data.Speed_Mph)
                 .AddValue("speed_Ms", data.Speed_Ms)
@@ -184,7 +184,7 @@ namespace Bridge.AssettoCorsa
                 .AddTag("isInPit", data.IsInPit.ToString())
                 .AddTag("isEngineLimiterOn", data.IsEngineLimiterOn.ToString())
 
-                .Write();
+                .Publish();
 
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.Write($"-> Timestamp: {time} - LapNumber {lapNumber} - Steer: {data.Steer}".PadRight(Console.WindowWidth));
@@ -202,45 +202,45 @@ namespace Bridge.AssettoCorsa
                 .AddTag("Tag1", "1")
                 .AddTag("Tag2", "2")
                 .AddTag("Tag3", "3")
-                .Write();
+                .Publish();
 
             if (bestLap)
             {
                 stream.Events.AddTimestampMilliseconds(time)
                     .AddValue("BestLap", $"Best Lap time {(lapTime * (long)1e6).FromNanoseconds().ToString()}.")
-                    .Write();
+                    .Publish();
             }
         }
 
         private static void SetParameterDefinitions()
         {
-            stream.Parameters.DefaultLocation = "/";
-            stream.Parameters.AddDefinition("lapTime", "Lap time", "Indicates the current lap time in progress");
-            stream.Parameters.AddDefinition("lastLap", "Last Lap time", "Last lap time");
-            stream.Parameters.AddDefinition("bestLap", "Best Lap time", "Indicates the best lap timeof the session");
-            stream.Parameters.AddDefinition("lapCount", "Number of laps completed").SetUnit("lap");
+            stream.Timeseries.DefaultLocation = "/";
+            stream.Timeseries.AddDefinition("lapTime", "Lap time", "Indicates the current lap time in progress");
+            stream.Timeseries.AddDefinition("lastLap", "Last Lap time", "Last lap time");
+            stream.Timeseries.AddDefinition("bestLap", "Best Lap time", "Indicates the best lap timeof the session");
+            stream.Timeseries.AddDefinition("lapCount", "Number of laps completed").SetUnit("lap");
 
-            stream.Parameters.DefaultLocation = "/Ecu";
-            stream.Parameters.AddDefinition("isAbsEnabled", "Abs is Enabled");
-            stream.Parameters.AddDefinition("isAbsInAction", "Abs is in Action");
-            stream.Parameters.AddDefinition("isTcInAction", "Traction control is in Action");
-            stream.Parameters.AddDefinition("isTcEnabled", "Traction control is Enabled");
-            stream.Parameters.AddDefinition("isInPit", "Car is in Pit lane");
-            stream.Parameters.AddDefinition("isEngineLimiterOn", "Engine Limiter is On");
+            stream.Timeseries.DefaultLocation = "/Ecu";
+            stream.Timeseries.AddDefinition("isAbsEnabled", "Abs is Enabled");
+            stream.Timeseries.AddDefinition("isAbsInAction", "Abs is in Action");
+            stream.Timeseries.AddDefinition("isTcInAction", "Traction control is in Action");
+            stream.Timeseries.AddDefinition("isTcEnabled", "Traction control is Enabled");
+            stream.Timeseries.AddDefinition("isInPit", "Car is in Pit lane");
+            stream.Timeseries.AddDefinition("isEngineLimiterOn", "Engine Limiter is On");
 
-            stream.Parameters.DefaultLocation = "/Chassis/Speed";
-            stream.Parameters.AddDefinition("speed_Kmh", "Speed in Kmh").SetUnit("kmh");
-            stream.Parameters.AddDefinition("speed_Mph", "Speed in Mph").SetUnit("Mph").SetFormat("Format");
-            stream.Parameters.AddDefinition("speed_Kmh", "Speed in Kmh", "Description").SetUnit("kmh").SetRange(0, 300);
-            stream.Parameters.AddDefinition("speed_Kmh", "Speed in Kmh", "Description").SetUnit("kmh").SetRange(0, 300);
+            stream.Timeseries.DefaultLocation = "/Chassis/Speed";
+            stream.Timeseries.AddDefinition("speed_Kmh", "Speed in Kmh").SetUnit("kmh");
+            stream.Timeseries.AddDefinition("speed_Mph", "Speed in Mph").SetUnit("Mph").SetFormat("Format");
+            stream.Timeseries.AddDefinition("speed_Kmh", "Speed in Kmh", "Description").SetUnit("kmh").SetRange(0, 300);
+            stream.Timeseries.AddDefinition("speed_Kmh", "Speed in Kmh", "Description").SetUnit("kmh").SetRange(0, 300);
 
-            stream.Parameters.DefaultLocation = "/Chassis/Acc";
-            stream.Parameters.AddDefinition("accG_vertical").SetCustomProperties("Patrick");
-            stream.Parameters.AddDefinition("accG_horizontal").SetCustomProperties("Patrick");
-            stream.Parameters.AddDefinition("accG_frontal").SetCustomProperties("Patrick");
+            stream.Timeseries.DefaultLocation = "/Chassis/Acc";
+            stream.Timeseries.AddDefinition("accG_vertical").SetCustomProperties("Patrick");
+            stream.Timeseries.AddDefinition("accG_horizontal").SetCustomProperties("Patrick");
+            stream.Timeseries.AddDefinition("accG_frontal").SetCustomProperties("Patrick");
 
             //stream.Parameters.Location = "/Chassis/Controls";
-            stream.Parameters.AddLocation("/Chassis/Controls")
+            stream.Timeseries.AddLocation("/Chassis/Controls")
                 .AddDefinition("gas", "Gas throttle", "Indicates gas throttle %").SetRange(0, 1)
                 .AddDefinition("brake", "Brake", "Brake pedal pressure %").SetRange(0, 1)
                 .AddDefinition("clutch", "Clutch")
