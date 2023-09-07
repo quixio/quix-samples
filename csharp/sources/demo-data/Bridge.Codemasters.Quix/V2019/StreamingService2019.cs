@@ -12,11 +12,10 @@ using Bridge.Codemasters.V2019.Models.Participants;
 using Bridge.Codemasters.V2019.Models.Session;
 using Microsoft.Extensions.Logging;
 using Quix.Sdk;
-using Quix.Sdk.Process.Models;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Exceptions;
-using Quix.Sdk.Streaming.Models;
-using ParameterData = Quix.Sdk.Streaming.Models.ParameterData;
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Exceptions;
+using QuixStreams.Streaming.Models;
+using QuixStreams.Telemetry.Models;
 
 namespace Bridge.Codemasters.Quix.V2019
 {
@@ -25,7 +24,7 @@ namespace Bridge.Codemasters.Quix.V2019
         private readonly bool includeOtherDrivers;
         private readonly string streamId;
         private Dictionary<ulong, List<I2019CodemastersPacket>> delayedEvents = new Dictionary<ulong, List<I2019CodemastersPacket>>();
-        private readonly Lazy<IOutputTopic> outputTopic;
+        private readonly Lazy<ITopicProducer> topicProducer;
         private ConcurrentDictionary<ulong, StreamWrap> streams = new ConcurrentDictionary<ulong, StreamWrap>();
         private object streamLock = new object();
         private QuixStreamingClient client;
@@ -37,7 +36,7 @@ namespace Bridge.Codemasters.Quix.V2019
             this.includeOtherDrivers = includeOtherDrivers;
             this.streamId = streamId;
             this.client = client;
-            this.outputTopic = new Lazy<IOutputTopic>(() => this.client.OpenOutputTopic(topic));
+            this.topicProducer = new Lazy<ITopicProducer>(() => this.client.GetTopicProducer(topic));
         }
 
         public void AddData(I2019CodemastersPacket converted)
@@ -112,13 +111,13 @@ namespace Bridge.Codemasters.Quix.V2019
                 if (!streams.TryGetValue(converted.SessionId, out streamWrap))
                 {
                     this.logger.LogDebug("Package creating stream: " + converted.PacketType.ToString());
-                    var stream = this.outputTopic.Value.GetOrCreateStream(this.streamId);
+                    var stream = this.topicProducer.Value.GetOrCreateStream(this.streamId);
                     streamWrap = new StreamWrap
                     {
                         Stream = stream
                     };
                     stream.Epoch = DateTime.UtcNow - TimeSpan.FromSeconds(converted.Header.SessionTime);
-                    stream.Parameters.Buffer.TimeSpanInMilliseconds = 200;
+                    stream.Timeseries.Buffer.TimeSpanInMilliseconds = 200;
                     streams[converted.SessionId] = streamWrap;
                     this.SetupStreamProperties(stream, converted);
                     this.SetupParameterMetaInfo(streamWrap);
@@ -136,7 +135,7 @@ namespace Bridge.Codemasters.Quix.V2019
             return streamWrap;
         }
 
-        private void SetupStreamProperties(IStreamWriter stream, I2019CodemastersPacket converted)
+        private void SetupStreamProperties(IStreamProducer stream, I2019CodemastersPacket converted)
         {
             var props = stream.Properties;
             props.Metadata["GameVersion"] = $"{converted.Header.GameMajorVersion}.{converted.Header.GameMinorVersion}";
@@ -157,14 +156,14 @@ namespace Bridge.Codemasters.Quix.V2019
                 var isPlayer = index == converted.Header.PlayerCarIndex;
                 if (!this.includeOtherDrivers && !isPlayer) continue;
                 var carStatusData = converted.CarStatusData[index];
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendStatusDataToParameterDataTimestamp(ts, carStatusData, index, isPlayer);
-                stream.Stream.Parameters.Buffer.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
                 /* TODO
                  var prefix = isPlayer ? "" : $"Player{index}_";
                   var engineRpm = stream.Stream..GetParameterProperties($"{prefix}EngineRPM");
@@ -174,7 +173,7 @@ namespace Bridge.Codemasters.Quix.V2019
             }
         }
         
-        private void AppendStatusDataToParameterDataTimestamp(ParameterDataTimestamp builder, CarStatusData carData, int carIndex, bool isPlayer)
+        private void AppendStatusDataToParameterDataTimestamp(TimeseriesDataTimestamp builder, CarStatusData carData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
             builder.AddValue($"{playerPrefix}Status_DrsAllowed", carData.DrsAllowed);
@@ -221,18 +220,18 @@ namespace Bridge.Codemasters.Quix.V2019
                 var isPlayer = index == converted.Header.PlayerCarIndex;
                 if (!this.includeOtherDrivers && !isPlayer) continue;
                 var carTelemetryData = converted.CarTelemetryData[index];
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarTelemetryDataToParameterData(ts, carTelemetryData, index, isPlayer);
-                stream.Stream.Parameters.Buffer.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
             }
         }
         
-        private void AppendCarTelemetryDataToParameterData(ParameterDataTimestamp builder, CarTelemetryData carTelemetryData, int carIndex, bool isPlayer)
+        private void AppendCarTelemetryDataToParameterData(TimeseriesDataTimestamp builder, CarTelemetryData carTelemetryData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
             builder.AddValue($"{playerPrefix}Speed", carTelemetryData.Speed);
@@ -277,18 +276,18 @@ namespace Bridge.Codemasters.Quix.V2019
                 var isPlayer = index == converted.Header.PlayerCarIndex;
                 if (!this.includeOtherDrivers && !isPlayer) continue;                
                 var carSetupData = converted.CarSetups[index];
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarSetupDataToParameterData(ts, carSetupData, index, isPlayer);
-                stream.Stream.Parameters.Buffer.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
             }
         }
         
-        private void AppendCarSetupDataToParameterData(ParameterDataTimestamp builder, CarSetupData carSetupData, int carIndex, bool isPlayer)
+        private void AppendCarSetupDataToParameterData(TimeseriesDataTimestamp builder, CarSetupData carSetupData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
             builder.AddValue($"{playerPrefix}Setup_Ballast", carSetupData.Ballast );
@@ -333,13 +332,13 @@ namespace Bridge.Codemasters.Quix.V2019
                 stream.Stream.Properties.Metadata[$"Player{index}_Id"] = data.DriverId.ToString();
                 encounteredIds.Add(data.DriverId);
                 stream.CarActive[index] = true;
-                var writer = new ParameterDefinitionsWriter(stream.Stream.Parameters, isPlayer, index);
+                var writer = new TimeseriesDefinitionsWriter(stream.Stream.Timeseries, isPlayer, index);
                 writer
                     .AddMotion()
                     .AddSetup()
                     .AddStatus()
                     .AddTelemetry();
-                stream.Stream.Parameters.Flush();
+                stream.Stream.Timeseries.Flush();
             }
             var props = stream.Stream.Properties;
             var player = converted.Participants[converted.Header.PlayerCarIndex];
@@ -359,35 +358,35 @@ namespace Bridge.Codemasters.Quix.V2019
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("ChequeredFlagWaved", "waved")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation("Checkered flag waved");
                     break;
                 case DRSEnabledEventDetails drsEnabledEventDetails:
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("DRSEnabledChanged", drsEnabledEventDetails.IsEnabled ? "enabled" : "disabled")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"DRS {(drsEnabledEventDetails.IsEnabled ? "enabled" : "disabled")}");
                     break;
                 case FastestLapEventDetails fastestLapEventDetails:
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("FastestLap", $"DriverID: {fastestLapEventDetails.vehicleIdx}, time: {TimeSpan.FromSeconds(fastestLapEventDetails.lapTime):g}s")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"New fastest lap for DriverID: {fastestLapEventDetails.vehicleIdx}, time: {TimeSpan.FromSeconds(fastestLapEventDetails.lapTime):g}s");
                     break;
                 case RaceWinnerEventDetails raceWinnerEventDetails:
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("RaceWinner", $"DriverID: {raceWinnerEventDetails.vehicleIdx}")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"Race won by DriverID: {raceWinnerEventDetails.vehicleIdx}");
                     break;
                 case RetirementEventDetails retirementEventDetails:
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("Retired", $"DriverID: {retirementEventDetails.vehicleIdx}")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"Retired DriverID: {retirementEventDetails.vehicleIdx}");
                     break;
                 case SessionFinishedEventDetails fed:
@@ -403,7 +402,7 @@ namespace Bridge.Codemasters.Quix.V2019
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("TeamMateInPits", $"DriverId: {teamMateInPitsEventDetails.vehicleIdx}")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"Team mate in pits, DriverId: {teamMateInPitsEventDetails.vehicleIdx}");
                     break;
             }
@@ -424,14 +423,14 @@ namespace Bridge.Codemasters.Quix.V2019
                 stream.Tags[index]["Sector"] = lapData.Sector.ToString();
                 stream.Tags[index]["DriverStatus"] = lapData.DriverStatus == 0 ? "In_garage" : "Flying_lap";
                 
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendLapDataToParameterData(ts, lapData, index, isPlayer);
-                stream.Stream.Parameters.Buffer.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
                 
                 if (!isPlayer || stream.LastPacketLapData == null) continue;
                 // add a few events for players
@@ -441,21 +440,21 @@ namespace Bridge.Codemasters.Quix.V2019
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("Player_Position_Changed", $"Position {lastPlayerLapData.CarPosition} -> {lapData.CarPosition}")
-                        .Write();
+                        .Publish();
                 }
                 if (lastPlayerLapData.CurrentLapNum != lapData.CurrentLapNum)
                 {
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("Player_NewLap", $"Lap {lapData.CurrentLapNum} started")
-                        .Write();
+                        .Publish();
                 }
             }
 
             stream.LastPacketLapData = converted;
         }
         
-        private void AppendLapDataToParameterData(ParameterDataTimestamp builder, LapData lapData, int carIndex, bool isPlayer)
+        private void AppendLapDataToParameterData(TimeseriesDataTimestamp builder, LapData lapData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
             builder.AddValue($"{playerPrefix}LapDistance", lapData.LapDistance );
@@ -495,19 +494,19 @@ namespace Bridge.Codemasters.Quix.V2019
                 if (!this.includeOtherDrivers && !isPlayer) continue;
                 var carMotionData = converted.CarMotionData[index];
 
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarMotionDataToParameterData(ts, carMotionData, index, isPlayer);
-                stream.Stream.Parameters.Buffer.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
             }
         }
 
 
-        private void AppendCarMotionDataToParameterData(ParameterDataTimestamp builder, CarMotionData carMotionData, int carIndex, bool isPlayer)
+        private void AppendCarMotionDataToParameterData(TimeseriesDataTimestamp builder, CarMotionData carMotionData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
             // builder.AddValue($"{playerPrefix}Motion_Pitch", carMotionData.Pitch);
@@ -571,7 +570,7 @@ namespace Bridge.Codemasters.Quix.V2019
                 }
             }
 
-            public IStreamWriter Stream { get; set; }
+            public IStreamProducer Stream { get; set; }
             public bool ParticipantAdded { get; set; }
             
             public bool[] CarActive = new bool[20];

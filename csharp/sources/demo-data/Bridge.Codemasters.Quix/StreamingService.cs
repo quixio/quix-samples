@@ -1,7 +1,7 @@
 ﻿using System;
 using Bridge.Codemasters.Quix.V2019;
 using Bridge.Codemasters.V2019.Models;
-using Quix.Sdk.Streaming;
+using QuixStreams.Streaming;
 
 namespace Bridge.Codemasters.Quix
 {
