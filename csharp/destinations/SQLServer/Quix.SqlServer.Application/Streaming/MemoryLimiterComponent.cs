@@ -2,8 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.Extensions.Logging;
-using Quix.Sdk.Process;
-using Quix.Sdk.Process.Models;
+using QuixStreams.Telemetry;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.SqlServer.Application.Streaming
 {
