@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Process.Models;
-using ParameterData = Quix.Sdk.Streaming.Models.ParameterData;
+using QuixStreams.Streaming;
+using QuixStreams.Telemetry.Models;
+using TimeseriesData = QuixStreams.Streaming.Models.TimeseriesData;
 
 namespace CarDataGeneratorConnector
 {
@@ -42,12 +42,12 @@ namespace CarDataGeneratorConnector
                     throw new Exception("DataFrequency should be between 1 and 10000 Hz.");
                 }
 
-                // Create a client which holds generic details for creating input and output topics
+                // Create a client which holds generic details for creating topic producers and consumers
                 var client = new QuixStreamingClient();
 
-                // Create an output topic using the client's configuration
-                using var outputTopic = client.OpenOutputTopic(configuration.Topic);
-                var stream = outputTopic.CreateStream();
+                // Create a topic producer using the client's configuration
+                using var topicProducer = client.GetTopicProducer(configuration.Topic);
+                var stream = topicProducer.CreateStream();
 
                 // Standard log indicating the Connector has started the connection successfully
                 Console.WriteLine("CONNECTED!");
@@ -71,7 +71,7 @@ namespace CarDataGeneratorConnector
         /// </summary>
         /// <param name="stream">The stream to generate the data to</param>
         /// <param name="ctsToken">Application exit cancellation token</param>
-        static void GenerateData(IStreamWriter stream, int dataFrequency, CancellationToken ctsToken)
+        static void GenerateData(IStreamProducer stream, int dataFrequency, CancellationToken ctsToken)
         {
             var interval = (int)((double)(1 * 1000) / dataFrequency); // calc how many ms should be the interval between samples
             
@@ -94,12 +94,12 @@ namespace CarDataGeneratorConnector
             stream.Properties.Metadata["Connector"] = "Car Data Generator"; // Updating the value during stream overwrites previous value
 
             // While this is entirely optional, the protocol functions without it, lets describe some of the parameters and events present in the stream so consumers can better understand and work with the data                                            
-            stream.Parameters.DefaultLocation = "/car"; // the default location will determine where parameters will be placed if you add them after this line
-            stream.Parameters
+            stream.Timeseries.DefaultLocation = "/car"; // the default location will determine where parameters will be placed if you add them after this line
+            stream.Timeseries
                 .AddDefinition("car_speed", "Car speed", "Speed of the car") // name (2nd param) and description (3rd param) are optional. The name will default to the parameter id if none provided.
                 .SetUnit("kph")
                 .SetRange(0, 210);
-            stream.Parameters
+            stream.Timeseries
                 .AddLocation("/car/engine") // optionally you can overwrite the default location by specifying location like this
                 .AddDefinition("car_gear", "Gear").SetRange(0, 6)
                 .AddDefinition("car_engine_rpm", "Engine RPM"); // the definition builder allows you to set as many parameters at once as you wish 
@@ -112,11 +112,11 @@ namespace CarDataGeneratorConnector
 
             Console.WriteLine($"Streaming data at {dataFrequency}Hz");
 
-            stream.Events.AddTimestamp(DateTime.UtcNow).AddValue("car_started", "Car started!").Write();
+            stream.Events.AddTimestamp(DateTime.UtcNow).AddValue("car_started", "Car started!").Publish();
             
             while (!ctsToken.IsCancellationRequested) // exit if CTRL-C is invoked
             {
-                var data = new ParameterData();
+                var data = new TimeseriesData();
                 var timestamp = data.AddTimestamp(DateTime.UtcNow); // not necessary to set builder to a variable, but I wish to have the same timestamp for all values within an iteration
                                                                             // therefore saving it like this.
                 if (GetGearValue(out var newGear))
@@ -126,20 +126,20 @@ namespace CarDataGeneratorConnector
                     timestamp.AddValue("car_gear", newGear); // If you don't have a lot of parameter identifiers and know them ahead of time, might be best to use a constant instead for name
                     Console.WriteLine("GEAR CHANGE: {0}", newGear);
 
-                    stream.Events.AddTimestamp(DateTime.UtcNow).AddValue("gear_changed", $"Gear changed to {newGear}").Write();
+                    stream.Events.AddTimestamp(DateTime.UtcNow).AddValue("gear_changed", $"Gear changed to {newGear}").Publish();
                 }
 
                 currentSpeed = GetSpeed();
                 var currentRPM = GetRPM();
                 timestamp.AddValue("car_speed", currentSpeed);
                 timestamp.AddValue("car_engine_rpm", currentRPM);
-                stream.Parameters.Write(data);
+                stream.Timeseries.Publish(data);
                 Console.WriteLine("Speed: {0,20} - Rpm: {1,5}", currentSpeed, currentRPM);
 
                 Thread.Sleep(interval); // sleep the interval
             }
             
-            stream.Events.AddTimestamp(DateTime.UtcNow).AddValue("car_stopped", "Car stopped!").Write();
+            stream.Events.AddTimestamp(DateTime.UtcNow).AddValue("car_stopped", "Car stopped!").Publish();
             
             // some local helper functions kept here to not clutter class too much. Feel free to ignore them
             bool GetGearValue(out int newGearValue)
