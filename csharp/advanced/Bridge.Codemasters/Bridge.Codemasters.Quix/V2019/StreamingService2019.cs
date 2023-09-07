@@ -12,11 +12,10 @@ using Bridge.Codemasters.V2019.Models.Participants;
 using Bridge.Codemasters.V2019.Models.Session;
 using Microsoft.Extensions.Logging;
 using Quix.Sdk;
-using Quix.Sdk.Process.Models;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Exceptions;
-using Quix.Sdk.Streaming.Models;
-using ParameterData = Quix.Sdk.Streaming.Models.ParameterData;
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Exceptions;
+using QuixStreams.Streaming.Models;
+using QuixStreams.Telemetry.Models;
 
 namespace Bridge.Codemasters.Quix.V2019
 {
@@ -24,20 +23,19 @@ namespace Bridge.Codemasters.Quix.V2019
     {
         private readonly bool includeOtherDrivers;
         private Dictionary<ulong, List<I2019CodemastersPacket>> delayedEvents = new Dictionary<ulong, List<I2019CodemastersPacket>>();
-        
+        private readonly Lazy<ITopicProducer> topicProducer;
+        private ConcurrentDictionary<ulong, StreamWrap> streams = new ConcurrentDictionary<ulong, StreamWrap>();
+        private object streamLock = new object();
+        private QuixStreamingClient client;
+        private ILogger logger;
+
         public StreamingService2019(QuixStreamingClient client, string topic, bool includeOtherDrivers)
         {
             this.logger = Logging.CreateLogger<StreamingService2019>();
             this.includeOtherDrivers = includeOtherDrivers;
             this.client = client;
-            this.topic = topic;
+            this.topicProducer = new Lazy<ITopicProducer>(() => this.client.GetTopicProducer(topic));
         }
-
-        private ConcurrentDictionary<ulong, StreamWrap> streams = new ConcurrentDictionary<ulong, StreamWrap>();
-        private object streamLock = new object();
-        private QuixStreamingClient client;
-        private readonly string topic;
-        private ILogger logger;
 
         public void AddData(I2019CodemastersPacket converted)
         {
@@ -93,7 +91,7 @@ namespace Bridge.Codemasters.Quix.V2019
             }
 
             if (!Delayed()) return false;
-            
+
             if (!this.delayedEvents.TryGetValue(converted.Header.SessionUID, out var list))
             {
                 list = new List<I2019CodemastersPacket>();
@@ -111,13 +109,13 @@ namespace Bridge.Codemasters.Quix.V2019
                 if (!streams.TryGetValue(converted.SessionId, out streamWrap))
                 {
                     this.logger.LogInformation("Package creating stream: " + converted.PacketType.ToString());
-                    var stream = this.client.OpenOutputTopic(this.topic).CreateStream();
+                    var stream = this.topicProducer.Value.CreateStream();
                     streamWrap = new StreamWrap
                     {
                         Stream = stream
                     };
                     stream.Epoch = DateTime.UtcNow - TimeSpan.FromSeconds(converted.Header.SessionTime);
-                    stream.Parameters.Buffer.TimeSpanInMilliseconds = 100;
+                    stream.Timeseries.Buffer.TimeSpanInMilliseconds = 100;
                     streams[converted.SessionId] = streamWrap;
                     this.SetupStreamProperties(stream, converted);
                     this.SetupParameterMetaInfo(streamWrap);
@@ -128,14 +126,14 @@ namespace Bridge.Codemasters.Quix.V2019
                             HandlePacket(codemastersPacket, streamWrap);
                         }
                     }
-                    
+
                 }
             }
 
             return streamWrap;
         }
 
-        private void SetupStreamProperties(IStreamWriter stream, I2019CodemastersPacket converted)
+        private void SetupStreamProperties(IStreamProducer stream, I2019CodemastersPacket converted)
         {
             var props = stream.Properties;
             props.Metadata["GameVersion"] = $"{converted.Header.GameMajorVersion}.{converted.Header.GameMinorVersion}";
@@ -143,11 +141,11 @@ namespace Bridge.Codemasters.Quix.V2019
             props.Location = "/Game/Codemasters/F1-2019"; // this might not be correct always, maybe there is some info in a packet to help with this
             props.TimeOfRecording = DateTime.UtcNow;
             props.Name = $"F1 Game - [player] - [track] {props.TimeOfRecording:yyyy-MM-dd-HH:mm:ss}";
-            
+
             this.logger.LogInformation($"Setting up new stream {stream.StreamId} with name '{props.Name}'");
         }
 
-        private void AddCarStatusPacketData(PacketCarStatusData converted,StreamWrap stream)
+        private void AddCarStatusPacketData(PacketCarStatusData converted, StreamWrap stream)
         {
             for (var index = 0; index < stream.CarActive.Length; index++)
             {
@@ -156,14 +154,14 @@ namespace Bridge.Codemasters.Quix.V2019
                 var isPlayer = index == converted.Header.PlayerCarIndex;
                 if (!this.includeOtherDrivers && !isPlayer) continue;
                 var carStatusData = converted.CarStatusData[index];
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendStatusDataToParameterDataTimestamp(ts, carStatusData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
                 /* TODO
                  var prefix = isPlayer ? "" : $"Player{index}_";
                   var engineRpm = stream.Stream..GetParameterProperties($"{prefix}EngineRPM");
@@ -172,8 +170,8 @@ namespace Bridge.Codemasters.Quix.V2019
                 if (playGear != null) playGear.MaximumValue = carStatusData.m_maxGears;*/
             }
         }
-        
-        private void AppendStatusDataToParameterDataTimestamp(ParameterDataTimestamp builder, CarStatusData carData, int carIndex, bool isPlayer)
+
+        private void AppendStatusDataToParameterDataTimestamp(TimeseriesDataTimestamp builder, CarStatusData carData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
             builder.AddValue($"{playerPrefix}Status_DrsAllowed", carData.DrsAllowed);
@@ -212,7 +210,7 @@ namespace Bridge.Codemasters.Quix.V2019
 
         }
 
-        private void AddCarTelemetryPacketData(PacketCarTelemetryData converted,StreamWrap stream)
+        private void AddCarTelemetryPacketData(PacketCarTelemetryData converted, StreamWrap stream)
         {
             for (var index = 0; index < stream.CarActive.Length; index++)
             {
@@ -220,18 +218,18 @@ namespace Bridge.Codemasters.Quix.V2019
                 var isPlayer = index == converted.Header.PlayerCarIndex;
                 if (!this.includeOtherDrivers && !isPlayer) continue;
                 var carTelemetryData = converted.CarTelemetryData[index];
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarTelemetryDataToParameterData(ts, carTelemetryData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
             }
         }
-        
-        private void AppendCarTelemetryDataToParameterData(ParameterDataTimestamp builder, CarTelemetryData carTelemetryData, int carIndex, bool isPlayer)
+
+        private void AppendCarTelemetryDataToParameterData(TimeseriesDataTimestamp builder, CarTelemetryData carTelemetryData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
             builder.AddValue($"{playerPrefix}Speed", carTelemetryData.Speed);
@@ -260,59 +258,59 @@ namespace Bridge.Codemasters.Quix.V2019
             builder.AddValue($"{playerPrefix}TyreSurfaceTemp_RearRight", carTelemetryData.TyresSurfaceTemperature[1]);
             builder.AddValue($"{playerPrefix}TyreSurfaceTemp_FrontLeft", carTelemetryData.TyresSurfaceTemperature[2]);
             builder.AddValue($"{playerPrefix}TyreSurfaceTemp_FrontRight", carTelemetryData.TyresSurfaceTemperature[3]);
-	
+
             builder.AddValue($"{playerPrefix}SurfaceType_RearLeft", ValueConverter.ConvertSurfaceId(carTelemetryData.SurfaceType[0]));
             builder.AddValue($"{playerPrefix}SurfaceType_RearRight", ValueConverter.ConvertSurfaceId(carTelemetryData.SurfaceType[1]));
-            builder.AddValue($"{playerPrefix}SurfaceType_FrontLeft",  ValueConverter.ConvertSurfaceId(carTelemetryData.SurfaceType[2]));
-            builder.AddValue($"{playerPrefix}SurfaceType_FrontRight",ValueConverter.ConvertSurfaceId(carTelemetryData.SurfaceType[3]));
+            builder.AddValue($"{playerPrefix}SurfaceType_FrontLeft", ValueConverter.ConvertSurfaceId(carTelemetryData.SurfaceType[2]));
+            builder.AddValue($"{playerPrefix}SurfaceType_FrontRight", ValueConverter.ConvertSurfaceId(carTelemetryData.SurfaceType[3]));
         }
 
-        private void AddCarSetupPacketData(PacketCarSetupData converted,StreamWrap stream)
+        private void AddCarSetupPacketData(PacketCarSetupData converted, StreamWrap stream)
         {
             for (var index = 0; index < stream.CarActive.Length; index++)
             {
                 var isCarActive = stream.CarActive[index];
                 if (!isCarActive) continue;
                 var isPlayer = index == converted.Header.PlayerCarIndex;
-                if (!this.includeOtherDrivers && !isPlayer) continue;                
+                if (!this.includeOtherDrivers && !isPlayer) continue;
                 var carSetupData = converted.CarSetups[index];
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarSetupDataToParameterData(ts, carSetupData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
             }
         }
-        
-        private void AppendCarSetupDataToParameterData(ParameterDataTimestamp builder, CarSetupData carSetupData, int carIndex, bool isPlayer)
+
+        private void AppendCarSetupDataToParameterData(TimeseriesDataTimestamp builder, CarSetupData carSetupData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
-            builder.AddValue($"{playerPrefix}Setup_Ballast", carSetupData.Ballast );
-            builder.AddValue($"{playerPrefix}Setup_BrakeBias",  carSetupData.BrakeBias );
-            builder.AddValue($"{playerPrefix}Setup_BrakePressure",  carSetupData.BrakePressure );
-            builder.AddValue($"{playerPrefix}Setup_FrontCamber",  carSetupData.FrontCamber );
-            builder.AddValue($"{playerPrefix}Setup_FrontSuspension",  carSetupData.FrontSuspension );
-            builder.AddValue($"{playerPrefix}Setup_FrontToe",  carSetupData.FrontToe );
-            builder.AddValue($"{playerPrefix}Setup_FrontWing",  carSetupData.FrontWing );
-            builder.AddValue($"{playerPrefix}Setup_FuelLoad",  carSetupData.FuelLoad );
-            builder.AddValue($"{playerPrefix}Setup_OffThrottle",  carSetupData.OffThrottle );
-            builder.AddValue($"{playerPrefix}Setup_OnThrottle",  carSetupData.OnThrottle );
-            builder.AddValue($"{playerPrefix}Setup_RearCamber",  carSetupData.RearCamber );
-            builder.AddValue($"{playerPrefix}Setup_RearSuspension",  carSetupData.RearSuspension );
-            builder.AddValue($"{playerPrefix}Setup_RearToe",  carSetupData.RearToe );
-            builder.AddValue($"{playerPrefix}Setup_RearWing",  carSetupData.RearWing );
-            builder.AddValue($"{playerPrefix}Setup_FrontSuspensionHeight",  carSetupData.FrontSuspensionHeight );
-            builder.AddValue($"{playerPrefix}Setup_FrontTyrePressure",  carSetupData.FrontTyrePressure );
-            builder.AddValue($"{playerPrefix}Setup_RearSuspensionHeight",  carSetupData.RearSuspensionHeight );
-            builder.AddValue($"{playerPrefix}Setup_RearTyrePressure",  carSetupData.RearTyrePressure );
-            builder.AddValue($"{playerPrefix}Setup_FrontAntiRollBar",  carSetupData.FrontAntiRollBar );
-            builder.AddValue($"{playerPrefix}Setup_RearAntiRollBar",  carSetupData.RearAntiRollBar );
+            builder.AddValue($"{playerPrefix}Setup_Ballast", carSetupData.Ballast);
+            builder.AddValue($"{playerPrefix}Setup_BrakeBias", carSetupData.BrakeBias);
+            builder.AddValue($"{playerPrefix}Setup_BrakePressure", carSetupData.BrakePressure);
+            builder.AddValue($"{playerPrefix}Setup_FrontCamber", carSetupData.FrontCamber);
+            builder.AddValue($"{playerPrefix}Setup_FrontSuspension", carSetupData.FrontSuspension);
+            builder.AddValue($"{playerPrefix}Setup_FrontToe", carSetupData.FrontToe);
+            builder.AddValue($"{playerPrefix}Setup_FrontWing", carSetupData.FrontWing);
+            builder.AddValue($"{playerPrefix}Setup_FuelLoad", carSetupData.FuelLoad);
+            builder.AddValue($"{playerPrefix}Setup_OffThrottle", carSetupData.OffThrottle);
+            builder.AddValue($"{playerPrefix}Setup_OnThrottle", carSetupData.OnThrottle);
+            builder.AddValue($"{playerPrefix}Setup_RearCamber", carSetupData.RearCamber);
+            builder.AddValue($"{playerPrefix}Setup_RearSuspension", carSetupData.RearSuspension);
+            builder.AddValue($"{playerPrefix}Setup_RearToe", carSetupData.RearToe);
+            builder.AddValue($"{playerPrefix}Setup_RearWing", carSetupData.RearWing);
+            builder.AddValue($"{playerPrefix}Setup_FrontSuspensionHeight", carSetupData.FrontSuspensionHeight);
+            builder.AddValue($"{playerPrefix}Setup_FrontTyrePressure", carSetupData.FrontTyrePressure);
+            builder.AddValue($"{playerPrefix}Setup_RearSuspensionHeight", carSetupData.RearSuspensionHeight);
+            builder.AddValue($"{playerPrefix}Setup_RearTyrePressure", carSetupData.RearTyrePressure);
+            builder.AddValue($"{playerPrefix}Setup_FrontAntiRollBar", carSetupData.FrontAntiRollBar);
+            builder.AddValue($"{playerPrefix}Setup_RearAntiRollBar", carSetupData.RearAntiRollBar);
         }
 
-        private void AddParticipantsPacketData(PacketParticipantsData converted,StreamWrap stream)
+        private void AddParticipantsPacketData(PacketParticipantsData converted, StreamWrap stream)
         {
             if (stream.ParticipantAdded) return;
             stream.ParticipantAdded = true;
@@ -332,9 +330,13 @@ namespace Bridge.Codemasters.Quix.V2019
                 stream.Stream.Properties.Metadata[$"Player{index}_Id"] = data.DriverId.ToString();
                 encounteredIds.Add(data.DriverId);
                 stream.CarActive[index] = true;
-                var writer = new ParameterDefinitionsWriter(stream.Stream.Parameters, isPlayer, index);
-                writer.AddMotion().AddSetup().AddStatus().AddTelemetry();
-                stream.Stream.Parameters.Flush();
+                var writer = new TimeseriesDefinitionsWriter(stream.Stream.Timeseries, isPlayer, index);
+                writer
+                    .AddMotion()
+                    .AddSetup()
+                    .AddStatus()
+                    .AddTelemetry();
+                stream.Stream.Timeseries.Flush();
             }
             var props = stream.Stream.Properties;
             var player = converted.Participants[converted.Header.PlayerCarIndex];
@@ -354,35 +356,35 @@ namespace Bridge.Codemasters.Quix.V2019
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("ChequeredFlagWaved", "waved")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation("Checkered flag waved");
                     break;
                 case DRSEnabledEventDetails drsEnabledEventDetails:
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("DRSEnabledChanged", drsEnabledEventDetails.IsEnabled ? "enabled" : "disabled")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"DRS {(drsEnabledEventDetails.IsEnabled ? "enabled" : "disabled")}");
                     break;
                 case FastestLapEventDetails fastestLapEventDetails:
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("FastestLap", $"DriverID: {fastestLapEventDetails.vehicleIdx}, time: {TimeSpan.FromSeconds(fastestLapEventDetails.lapTime):g}s")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"New fastest lap for DriverID: {fastestLapEventDetails.vehicleIdx}, time: {TimeSpan.FromSeconds(fastestLapEventDetails.lapTime):g}s");
                     break;
                 case RaceWinnerEventDetails raceWinnerEventDetails:
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("RaceWinner", $"DriverID: {raceWinnerEventDetails.vehicleIdx}")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"Race won by DriverID: {raceWinnerEventDetails.vehicleIdx}");
                     break;
                 case RetirementEventDetails retirementEventDetails:
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("Retired", $"DriverID: {retirementEventDetails.vehicleIdx}")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"Retired DriverID: {retirementEventDetails.vehicleIdx}");
                     break;
                 case SessionFinishedEventDetails fed:
@@ -396,13 +398,13 @@ namespace Bridge.Codemasters.Quix.V2019
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("TeamMateInPits", $"DriverId: {teamMateInPitsEventDetails.vehicleIdx}")
-                        .Write();
+                        .Publish();
                     this.logger.LogInformation($"Team mate in pits, DriverId: {teamMateInPitsEventDetails.vehicleIdx}");
                     break;
             }
         }
 
-        private void AddLapPacketData(PacketLapData converted,StreamWrap stream)
+        private void AddLapPacketData(PacketLapData converted, StreamWrap stream)
         {
             for (var index = 0; index < converted.LapData.Length; index++)
             {
@@ -416,16 +418,16 @@ namespace Bridge.Codemasters.Quix.V2019
                     : (lapData.PitStatus == 1 ? "Pitting" : "In_Pit_Area");
                 stream.Tags[index]["Sector"] = lapData.Sector.ToString();
                 stream.Tags[index]["DriverStatus"] = lapData.DriverStatus == 0 ? "In_garage" : "Flying_lap";
-                
-                var pdata = new ParameterData();
+
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendLapDataToParameterData(ts, lapData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
-                
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
+
                 if (!isPlayer || stream.LastPacketLapData == null) continue;
                 // add a few events for players
                 var lastPlayerLapData = stream.LastPacketLapData.Value.LapData[converted.Header.PlayerCarIndex];
@@ -434,28 +436,28 @@ namespace Bridge.Codemasters.Quix.V2019
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("Player_Position_Changed", $"Position {lastPlayerLapData.CarPosition} -> {lapData.CarPosition}")
-                        .Write();
+                        .Publish();
                 }
                 if (lastPlayerLapData.CurrentLapNum != lapData.CurrentLapNum)
                 {
                     stream.Stream.Events
                         .AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime))
                         .AddValue("Player_NewLap", $"Lap {lapData.CurrentLapNum} started")
-                        .Write();
+                        .Publish();
                 }
             }
 
             stream.LastPacketLapData = converted;
         }
-        
-        private void AppendLapDataToParameterData(ParameterDataTimestamp builder, LapData lapData, int carIndex, bool isPlayer)
+
+        private void AppendLapDataToParameterData(TimeseriesDataTimestamp builder, LapData lapData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
-            builder.AddValue($"{playerPrefix}LapDistance", lapData.LapDistance );
-            builder.AddValue($"{playerPrefix}TotalLapDistance",  lapData.TotalDistance );
+            builder.AddValue($"{playerPrefix}LapDistance", lapData.LapDistance);
+            builder.AddValue($"{playerPrefix}TotalLapDistance", lapData.TotalDistance);
         }
 
-        private void AddSessionPacketData(PacketSessionData converted,StreamWrap stream)
+        private void AddSessionPacketData(PacketSessionData converted, StreamWrap stream)
         {
             var props = stream.Stream.Properties;
             props.Metadata["Track"] = converted.Track;
@@ -471,15 +473,15 @@ namespace Bridge.Codemasters.Quix.V2019
             }
 
             props.Location = $"/Game/Codemasters/F1-2019/{converted.Track}";
-
-            var pdata = new ParameterData();
+            
+            var pdata = new TimeseriesData();
             var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
             ts.AddValue("Session_Weather", converted.Weather)
                 .AddValue("Session_SafetyCarStatus", converted.SafetyCarStatus);
-            stream.Stream.Parameters.Write(pdata);
+            stream.Stream.Timeseries.Buffer.Publish(pdata);
         }
 
-        private void AddMotionPacketData(PacketMotionData converted,StreamWrap stream)
+        private void AddMotionPacketData(PacketMotionData converted, StreamWrap stream)
         {
             for (var index = 0; index < stream.CarActive.Length; index++)
             {
@@ -488,19 +490,19 @@ namespace Bridge.Codemasters.Quix.V2019
                 if (!this.includeOtherDrivers && !isPlayer) continue;
                 var carMotionData = converted.CarMotionData[index];
 
-                var pdata = new ParameterData();
+                var pdata = new TimeseriesData();
                 var ts = pdata.AddTimestamp(TimeSpan.FromSeconds(converted.Header.SessionTime));
                 foreach (var kpair in stream.Tags[index])
                 {
                     ts.AddTag(kpair.Key, kpair.Value);
                 }
                 AppendCarMotionDataToParameterData(ts, carMotionData, index, isPlayer);
-                stream.Stream.Parameters.Write(pdata);
+                stream.Stream.Timeseries.Buffer.Publish(pdata);
             }
         }
 
 
-        private void AppendCarMotionDataToParameterData(ParameterDataTimestamp builder, CarMotionData carMotionData, int carIndex, bool isPlayer)
+        private void AppendCarMotionDataToParameterData(TimeseriesDataTimestamp builder, CarMotionData carMotionData, int carIndex, bool isPlayer)
         {
             var playerPrefix = isPlayer ? "" : $"Player{carIndex}_";
             builder.AddValue($"{playerPrefix}Motion_Pitch", carMotionData.Pitch);
@@ -533,7 +535,7 @@ namespace Bridge.Codemasters.Quix.V2019
                 }
                 catch (StreamClosedException)
                 {
-                    
+
                 }
 
                 stream.Stream.Dispose();
@@ -542,10 +544,10 @@ namespace Bridge.Codemasters.Quix.V2019
 
         private void SetupParameterMetaInfo(StreamWrap streamWrap)
         {
-            streamWrap.Stream.Parameters
-                .AddLocation("session")
-                .AddDefinition("Session_Weather", "Weather")
-                .AddDefinition("Session_SafetyCarStatus", "SafetyCarStatus");
+             streamWrap.Stream.Timeseries
+                 .AddLocation("session")
+                 .AddDefinition("Session_Weather", "Weather")
+                 .AddDefinition("Session_SafetyCarStatus", "SafetyCarStatus");
 
             streamWrap.Stream.Events.AddDefinition("Player_NewLap", "Player NewLap").SetLevel(EventLevel.Information)
                 .AddDefinition("Player_Position_Changed", "Player Position Changed").SetLevel(EventLevel.Critical)
@@ -564,11 +566,11 @@ namespace Bridge.Codemasters.Quix.V2019
                 }
             }
 
-            public IStreamWriter Stream { get; set; }
+            public IStreamProducer Stream { get; set; }
             public bool ParticipantAdded { get; set; }
-            
+
             public bool[] CarActive = new bool[20];
-            
+
             public PacketLapData? LastPacketLapData { get; set; }
 
             public Dictionary<string, string>[] Tags { get; set; }
