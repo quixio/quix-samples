@@ -14,11 +14,11 @@ using Newtonsoft.Json;
 using Quix.Snowflake.Writer.Configuration;
 using Quix.Snowflake.Writer.Helpers.QuixApi.Portal;
 using Quix.Snowflake.Writer.Helpers.QuixApi.Portal.Requests;
-using Quix.Sdk.Process.Configuration;
-using Quix.Sdk.Process.Kafka;
-using Quix.Sdk.Streaming.Exceptions;
-using Quix.Sdk.Streaming.QuixApi;
-using Quix.Sdk.Transport.Fw;
+using QuixStreams.Streaming.Exceptions;
+using QuixStreams.Streaming.QuixApi;
+using QuixStreams.Telemetry.Configuration;
+using QuixStreams.Telemetry.Kafka;
+using QuixStreams.Transport.Fw;
 using Exception = System.Exception;
 using Workspace = Quix.Snowflake.Writer.Helpers.QuixApi.Portal.Workspace;
 
@@ -34,7 +34,7 @@ namespace Quix.Snowflake.Writer.Helpers
         private const string WorkspaceIdEnvironmentKey = "Quix__Workspace__Id";
         private const string PortalApiEnvironmentKey = "Quix__Portal__Api";
         private const string SdkTokenKey = "Quix__Sdk__Token";
-        private (KafkaReaderConfiguration config, string topicId) config;
+        private (TelemetryKafkaConsumerConfiguration config, string topicId) config;
         
 
         public QuixConfigHelper(ILoggerFactory loggerFactory, HttpClient httpClient, BrokerConfiguration brokerConfiguration)
@@ -58,7 +58,7 @@ namespace Quix.Snowflake.Writer.Helpers
             this.apiUrl = new Uri(envUri);
         }
         
-        public async Task<(KafkaReaderConfiguration config, string topicId)> GetConfiguration()
+        public async Task<(TelemetryKafkaConsumerConfiguration config, string topicId)> GetConfiguration()
         {
             if (config != default)
             {
@@ -152,7 +152,7 @@ namespace Quix.Snowflake.Writer.Helpers
             throw new InvalidConfigurationException($"No workspace could be identified for topic {topicName}. Verify the topic name is correct. If name is provided then {WorkspaceIdEnvironmentKey} environment variable or token with access to 1 workspace only must be provided. Current token has access to {workspaces.Count} workspaces and env var is unset.");
         }
 
-        private async Task<KafkaReaderConfiguration> GetKafkaReaderConfigurationForWorkspace(Workspace ws)
+        private async Task<TelemetryKafkaConsumerConfiguration> GetKafkaReaderConfigurationForWorkspace(Workspace ws)
         {
             if (ws.Broker == null)
             {
@@ -189,7 +189,7 @@ namespace Quix.Snowflake.Writer.Helpers
                 throw new Exception("CommitAfterEveryCount can not be set to null to avoid deadlocks");
             }
 
-            return new KafkaReaderConfiguration(ws.Broker.Address, $"{ws.WorkspaceId}-writer.Snowflake", brokerProperties)
+            return new TelemetryKafkaConsumerConfiguration(ws.Broker.Address, $"{ws.WorkspaceId}-writer.Snowflake", brokerProperties)
             {
                 CommitOptions = new CommitOptions()
                 {
