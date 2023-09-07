@@ -5,11 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Bridge.Readers\Bridge.Readers.csproj" />
+      <PackageReference Include="QuixStreams.Streaming" Version="0.5.5" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Quix.Sdk.Logging" Version="0.4.10-20230127.2"/>
+      <ProjectReference Include="..\Bridge.Readers\Bridge.Readers.csproj" />
     </ItemGroup>
 
 </Project>

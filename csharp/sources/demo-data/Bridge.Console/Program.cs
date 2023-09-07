@@ -11,7 +11,7 @@ using Bridge.Udp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Logging = Quix.Sdk.Logging;
+using QuixStreams;
 
 namespace Bridge.Codemasters.Console
 {

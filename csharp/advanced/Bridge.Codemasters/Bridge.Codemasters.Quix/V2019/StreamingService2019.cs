@@ -11,7 +11,7 @@ using Bridge.Codemasters.V2019.Models.Motion;
 using Bridge.Codemasters.V2019.Models.Participants;
 using Bridge.Codemasters.V2019.Models.Session;
 using Microsoft.Extensions.Logging;
-using Quix.Sdk;
+using QuixStreams;
 using QuixStreams.Streaming;
 using QuixStreams.Streaming.Exceptions;
 using QuixStreams.Streaming.Models;
