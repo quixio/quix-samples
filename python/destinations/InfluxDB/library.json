@@ -49,7 +49,7 @@
     },
     {
       "Name": "INFLUXDB_DATABASE",
-      "Type": "Placeholder",
+      "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Database name in InfluxDB where data should be stored.",
       "DefaultValue": "<DATABASE>",
