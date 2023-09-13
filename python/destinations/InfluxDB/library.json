@@ -57,7 +57,7 @@
     },
     {
       "Name": "INFLUXDB_TAG_COLUMNS",
-      "Type": "Placeholder",
+      "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Columns to be used as tags when writing data to InfluxDB.",
       "DefaultValue": "['tag1', 'tag2']",
