@@ -4,7 +4,7 @@ Read data from InfluxDB 3.0 with [this project](https://github.com/quixio/quix-s
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log in and visit the Code Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
