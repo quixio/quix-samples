@@ -33,7 +33,7 @@
     },
     {
       "Name": "INFLUXDB_HOST",
-      "Type": "Placeholder",
+      "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Host address for the InfluxDB instance.",
       "DefaultValue": "eu-central-1-1.aws.cloud2.influxdata.com",
