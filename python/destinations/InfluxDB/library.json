@@ -41,7 +41,7 @@
     },
     {
       "Name": "INFLUXDB_ORG",
-      "Type": "Placeholder",
+      "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Organization name in InfluxDB.",
       "DefaultValue": "<ORG>",
