@@ -1,6 +1,6 @@
 {
   "libraryItemId": "3f9f4c8d-9590-456b-a7c1-89daa1155a6c",
-  "name": "InfluxDB-3.0",
+  "name": "InfluxDB 3.0",
   "language": "Python",
   "tags": {
     "Complexity": ["Easy"],
