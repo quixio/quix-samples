@@ -65,7 +65,7 @@
     },
     {
       "Name": "INFLUXDB_MEASUREMENT_NAME",
-      "Type": "Placeholder",
+      "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used",
       "DefaultValue": "<INSERT MEASUREMENT>",
