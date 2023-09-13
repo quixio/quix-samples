@@ -25,7 +25,7 @@
   },
     {
       "Name": "task_interval",
-      "Type": "Placeholder",
+      "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1mo, 1y",
       "DefaultValue": "5m",
