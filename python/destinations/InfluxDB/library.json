@@ -36,7 +36,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Authentication token to access InfluxDB.",
-      "DefaultValue": "<TOKEN>",
+      "DefaultValue": "",
       "Required": true
     },
     {
@@ -44,7 +44,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Organization name in InfluxDB.",
-      "DefaultValue": "<ORG>",
+      "DefaultValue": "",
       "Required": false
     },
     {
@@ -52,7 +52,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Database name in InfluxDB where data should be stored.",
-      "DefaultValue": "<DATABASE>",
+      "DefaultValue": "",
       "Required": true
     },
     {
@@ -68,7 +68,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used",
-      "DefaultValue": "<INSERT MEASUREMENT>",
+      "DefaultValue": "",
       "Required": false
     }
   ]
