@@ -53,7 +53,7 @@
       "InputType": "FreeText",
       "Description": "Organization name in InfluxDB.",
       "DefaultValue": "<ORG>",
-      "Required": false
+      "Required": true
     },
     {
       "Name": "INFLUXDB_DATABASE",
