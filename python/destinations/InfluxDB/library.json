@@ -1,0 +1,75 @@
+{
+  "libraryItemId": "bcc847c2-f8a5-47c5-9291-45e95ce9777a",
+  "name": "InfluxDB 3.0",
+  "language": "Python",
+  "tags": {
+    "Complexity": ["Easy"],
+    "Technology": ["QuixStreams"],
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Vendor": ["InfluxData"]
+  },
+  "shortDescription": "Publish Quix streams to InfluxDB 3.0",
+  "DefaultFile": "main.py",
+  "EntryPoint": "build/dockerfile",
+  "RunEntryPoint": "main.py",
+  "IconFile": "icon.png",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "This is the input topic",
+      "DefaultValue": "detection-result",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Host address for the InfluxDB instance.",
+      "DefaultValue": "eu-central-1-1.aws.cloud2.influxdata.com",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_TOKEN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Authentication token to access InfluxDB.",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_ORG",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Organization name in InfluxDB.",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_DATABASE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Database name in InfluxDB where data should be stored.",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_TAG_COLUMNS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Columns to be used as tags when writing data to InfluxDB.",
+      "DefaultValue": "['tag1', 'tag2']",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_MEASUREMENT_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used",
+      "DefaultValue": "",
+      "Required": false
+    }
+  ]
+}
