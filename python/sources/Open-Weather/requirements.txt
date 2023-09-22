@@ -1,2 +1,2 @@
-quixstreams==0.5.5
+quixstreams==0.5.6
 requests
