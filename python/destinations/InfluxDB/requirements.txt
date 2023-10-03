@@ -1,3 +1,2 @@
 quixstreams==0.5.5
 influxdb3-python==0.3.0
-pandas==2.0.3
