@@ -24,7 +24,6 @@ client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          database=os.environ["INFLUXDB_DATABASE"])
 
 
-
 def on_dataframe_received_handler(stream_consumer: qx.StreamConsumer, df: pd.DataFrame):
     try:
         # Reformat the dataframe to match the InfluxDB format
@@ -38,7 +37,6 @@ def on_dataframe_received_handler(stream_consumer: qx.StreamConsumer, df: pd.Dat
     except Exception as e:
         print("{str(datetime.datetime.utcnow())}: Write failed")
         print(e)
-
 
 
 def on_stream_received_handler(stream_consumer: qx.StreamConsumer):
