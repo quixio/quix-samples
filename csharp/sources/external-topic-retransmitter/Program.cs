@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
+using System.Threading.Tasks;
 using Quix.Sdk.Process.Kafka;
 using Quix.Sdk.Streaming;
 using Quix.Sdk.Streaming.Raw;
@@ -17,6 +19,9 @@ namespace Retransmitter
             IRawInputTopic sourceTopic;
             QuixStreamingClient targetClient; // reading SDK token from environment variables
             IRawOutputTopic targetTopic;
+
+            BlockingCollection<RawMessage> queue = new BlockingCollection<RawMessage>(100);
+
             try
             {
                 GetConfiguration(out var sourceWorkspaceSdkToken,
@@ -39,7 +44,6 @@ namespace Retransmitter
             }
             System.Console.WriteLine("CONNECTED!");
 
-            long packageRead = 0;
             DateTime nextPrint = DateTime.UtcNow.AddSeconds(5);
 
             sourceTopic.OnErrorOccurred += (sender, exception) =>
@@ -49,18 +53,28 @@ namespace Retransmitter
 
             sourceTopic.OnMessageRead += message =>
             {
-                packageRead++;
-                if (DateTime.UtcNow > nextPrint)
-                {
-                    nextPrint = DateTime.UtcNow.AddSeconds(10);
-                    Console.WriteLine($"Total packages read: {packageRead}");
-                }
-                targetTopic.Write(message);
+                queue.Add(message);
             };
+
+            Task.Factory.StartNew(() => {
+                while(!queue.IsCompleted)
+                {
+                    var message = queue.Take();
+
+                    targetTopic.Write(message);
+
+                    if (DateTime.UtcNow > nextPrint)
+                    {
+                        nextPrint = DateTime.UtcNow.AddSeconds(1);
+                        Console.WriteLine($"Queue: {queue.Count}");
+                    }
+                }
+            });
             
             App.Run(beforeShutdown: () =>
             {
                 Console.WriteLine("Shutting down.");
+                queue.CompleteAdding();
             });
             Console.WriteLine("Exiting.");
         }
