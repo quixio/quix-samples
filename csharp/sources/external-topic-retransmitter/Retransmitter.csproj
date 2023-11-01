@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="QuixStreams.Streaming" Version="0.5.6" />
+        <PackageReference Include="QuixStreams.Streaming" Version="0.5.7" />
     </ItemGroup>
 
 </Project>

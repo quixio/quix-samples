@@ -1,4 +1,4 @@
-quixstreams==0.5.6
+quixstreams==0.5.7
 requests
 websocket-client
 rel
