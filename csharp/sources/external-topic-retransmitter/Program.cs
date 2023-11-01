@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
 using QuixStreams.Streaming;
 using QuixStreams.Streaming.Raw;
 using QuixStreams.Telemetry.Kafka;
+using System.Threading.Tasks;
 
 namespace Retransmitter
 {
@@ -17,6 +19,7 @@ namespace Retransmitter
             IRawTopicConsumer sourceTopicConsumer;
             QuixStreamingClient targetClient; // reading SDK token from environment variables
             IRawTopicProducer targetTopicProducer;
+            BlockingCollection<RawMessage> queue = new BlockingCollection<RawMessage>(100);
             try
             {
                 GetConfiguration(out var sourceWorkspaceSdkToken,
@@ -39,7 +42,6 @@ namespace Retransmitter
             }
             System.Console.WriteLine("CONNECTED!");
 
-            long packageRead = 0;
             DateTime nextPrint = DateTime.UtcNow.AddSeconds(5);
 
             sourceTopicConsumer.OnErrorOccurred += (sender, exception) =>
@@ -49,18 +51,28 @@ namespace Retransmitter
 
             sourceTopicConsumer.OnMessageReceived += (sender, message) =>
             {
-                packageRead++;
-                if (DateTime.UtcNow > nextPrint)
-                {
-                    nextPrint = DateTime.UtcNow.AddSeconds(10);
-                    Console.WriteLine($"Total packages read: {packageRead}");
-                }
-                targetTopicProducer.Publish(message);
+                queue.Add(message);
             };
+
+            Task.Factory.StartNew(() => {
+                while(!queue.IsCompleted)
+                {
+                    var message = queue.Take();
+
+                    targetTopicProducer.Publish(message);
+
+                    if (DateTime.UtcNow > nextPrint)
+                    {
+                        nextPrint = DateTime.UtcNow.AddSeconds(1);
+                        Console.WriteLine($"Queue: {queue.Count}");
+                    }
+                }
+            });
             
             App.Run(beforeShutdown: () =>
             {
                 Console.WriteLine("Shutting down.");
+                queue.CompleteAdding();
             });
             Console.WriteLine("Exiting.");
         }
