@@ -1,2 +1,2 @@
-quixstreams==0.5.2
+quixstreams==0.5.7
 pandas==1.5.3

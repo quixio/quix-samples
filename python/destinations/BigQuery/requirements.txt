@@ -1,2 +1,2 @@
-quixstreams==0.5.2
+quixstreams==0.5.7
 google-cloud-bigquery

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Quix.Sdk.Process;
-using Quix.Sdk.Process.Kafka;
-using Quix.Sdk.Process.Models;
 using Quix.SqlServer.Application.Metadata;
 using Quix.SqlServer.Application.Streaming;
 using Quix.SqlServer.Application.TimeSeries;
 using Quix.SqlServer.Writer.Helpers;
+using QuixStreams.Telemetry;
+using QuixStreams.Telemetry.Kafka;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.SqlServer.Writer
 {
@@ -47,7 +47,7 @@ namespace Quix.SqlServer.Writer
 
             var (kafkaConfiguration, topicId) = quixConfigHelper.GetConfiguration().GetAwaiter().GetResult();
 
-            var kafkaReader = new KafkaReader(kafkaConfiguration, topicId);
+            var kafkaReader = new TelemetryKafkaConsumer(kafkaConfiguration, topicId);
 
             kafkaReader.OnCommitting += async (sender, args) =>
             {
@@ -66,11 +66,11 @@ namespace Quix.SqlServer.Writer
                 var memoryLimiter = scope.ServiceProvider.GetRequiredService<MemoryLimiterComponent>();
                 var persistingComponent = scope.ServiceProvider.GetRequiredService<StreamPersistingComponent>();
 
-                var streamProcess = new StreamProcess(streamId)
+                var streamPipeline = new StreamPipeline(streamId)
                     .AddComponent(memoryLimiter)
                     .AddComponent(persistingComponent);
                 
-                return streamProcess;
+                return streamPipeline;
             });
 
             kafkaReader.OnStreamsRevoked += streams =>
@@ -80,7 +80,7 @@ namespace Quix.SqlServer.Writer
                 this.timeSeriesBufferedPersistingService.ClearBuffer(streamIds);
             };
 
-            kafkaReader.OnReadException += (s, e) =>
+            kafkaReader.OnReceiveException += (s, e) =>
             {
                 this.logger.LogError(e, "Kafka reader exception");
             };

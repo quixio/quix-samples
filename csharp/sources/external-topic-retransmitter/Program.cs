@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Raw;
+using QuixStreams.Telemetry.Kafka;
 using System.Threading.Tasks;
-using Quix.Sdk.Process.Kafka;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Raw;
 
 namespace Retransmitter
 {
@@ -16,12 +16,10 @@ namespace Retransmitter
         static void Main(string[] args)
         {
             QuixStreamingClient sourceClient;
-            IRawInputTopic sourceTopic;
+            IRawTopicConsumer sourceTopicConsumer;
             QuixStreamingClient targetClient; // reading SDK token from environment variables
-            IRawOutputTopic targetTopic;
-
+            IRawTopicProducer targetTopicProducer;
             BlockingCollection<RawMessage> queue = new BlockingCollection<RawMessage>(100);
-
             try
             {
                 GetConfiguration(out var sourceWorkspaceSdkToken,
@@ -31,10 +29,10 @@ namespace Retransmitter
                     out var outputTopic);
 
                 sourceClient = new QuixStreamingClient(sourceWorkspaceSdkToken, false);
-                sourceTopic = sourceClient.OpenRawInputTopic(sourceTopicIdOrName, consumerGroup, autoOffsetReset);
+                sourceTopicConsumer = sourceClient.GetRawTopicConsumer(sourceTopicIdOrName, consumerGroup, autoOffsetReset);
 
                 targetClient = new QuixStreamingClient();
-                targetTopic = targetClient.OpenRawOutputTopic(outputTopic);
+                targetTopicProducer = targetClient.GetRawTopicProducer(outputTopic);
             }
             catch (Exception ex)
             {
@@ -46,12 +44,12 @@ namespace Retransmitter
 
             DateTime nextPrint = DateTime.UtcNow.AddSeconds(5);
 
-            sourceTopic.OnErrorOccurred += (sender, exception) =>
+            sourceTopicConsumer.OnErrorOccurred += (sender, exception) =>
             {
                 Console.WriteLine(exception);
             };
 
-            sourceTopic.OnMessageRead += message =>
+            sourceTopicConsumer.OnMessageReceived += (sender, message) =>
             {
                 queue.Add(message);
             };
@@ -61,7 +59,7 @@ namespace Retransmitter
                 {
                     var message = queue.Take();
 
-                    targetTopic.Write(message);
+                    targetTopicProducer.Publish(message);
 
                     if (DateTime.UtcNow > nextPrint)
                     {

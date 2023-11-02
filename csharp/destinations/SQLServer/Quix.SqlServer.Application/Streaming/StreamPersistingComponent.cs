@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Sdk.Process;
-using Quix.Sdk.Process.Models;
 using Quix.SqlServer.Application.Metadata;
 using Quix.SqlServer.Application.TimeSeries;
+using QuixStreams.Telemetry;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.SqlServer.Application.Streaming
 {
@@ -25,7 +25,7 @@ namespace Quix.SqlServer.Application.Streaming
             this.Input.LinkTo(this.Output);
             
             // main data
-            this.Input.Subscribe<ParameterDataRaw>(this.OnParameterDataReceived);
+            this.Input.Subscribe<TimeseriesDataRaw>(this.OnParameterDataReceived);
             this.Input.Subscribe<EventDataRaw[]>(this.OnMultipleEventDataReceived);
             this.Input.Subscribe<EventDataRaw>(this.OnEventDataReceived);
             
@@ -40,41 +40,41 @@ namespace Quix.SqlServer.Application.Streaming
         {
             var asArray = new[] {arg};
 
-            await this.metadataBufferedPersistingService.Buffer(this.StreamProcess.StreamId, asArray);
-            await this.timeSeriesBufferedPersistingService.Buffer(this.StreamProcess.StreamId, asArray);
+            await this.metadataBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, asArray);
+            await this.timeSeriesBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, asArray);
         }
 
         private async Task OnMultipleEventDataReceived(EventDataRaw[] arg)
         {
-            await metadataBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
-            await this.timeSeriesBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
+            await metadataBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, arg);
+            await this.timeSeriesBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, arg);
         }
 
-        private async Task OnParameterDataReceived(ParameterDataRaw arg)
+        private async Task OnParameterDataReceived(TimeseriesDataRaw arg)
         {
-            var discardRange = await this.metadataBufferedPersistingService.GetDiscardRange(this.StreamProcess.StreamId, arg.Epoch + arg.Timestamps.Min());
-            await metadataBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
-            await this.timeSeriesBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
+            var discardRange = await this.metadataBufferedPersistingService.GetDiscardRange(this.StreamPipeline.StreamId, arg.Epoch + arg.Timestamps.Min());
+            await metadataBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, arg);
+            await this.timeSeriesBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, arg);
         }
 
         private Task OnStreamEndReceived(StreamEnd arg)
         {
-            return metadataBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
+            return metadataBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, arg);
         }
 
         private Task OnStreamPropertiesReceived(StreamProperties arg)
         {
-            return metadataBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
+            return metadataBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, arg);
         }
 
         private Task OnEventDefinitionsReceived(EventDefinitions arg)
         {
-            return metadataBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
+            return metadataBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, arg);
         }
 
         private Task OnParameterDefinitionsReceived(ParameterDefinitions arg)
         {
-            return metadataBufferedPersistingService.Buffer(this.StreamProcess.StreamId, arg);
+            return metadataBufferedPersistingService.Buffer(this.StreamPipeline.StreamId, arg);
         }
         
         public void Dispose()
