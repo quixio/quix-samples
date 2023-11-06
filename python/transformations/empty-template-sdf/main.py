@@ -1,22 +1,18 @@
 import os
-from streamingdataframes import Application, MessageContext, State
-from streamingdataframes.models.rows import Row
-from streamingdataframes.models.serializers import (
-    QuixTimeseriesSerializer,
-    QuixDeserializer,
-    JSONDeserializer
-)
+from quixstreams import Application, State
+from quixstreams.models.serializers.quix import QuixDeserializer, QuixTimeseriesSerializer
 
-app = Application.Quix("big-query-sink-v5", auto_offset_reset="latest", )
+
+app = Application.Quix("transformation-v1", auto_offset_reset="latest")
+
 input_topic = app.topic(os.environ["input"], value_deserializer=QuixDeserializer())
 output_topic = app.topic(os.environ["output"], value_serializer=QuixTimeseriesSerializer())
 
-
 sdf = app.dataframe(input_topic)
 
-sdf.apply(lambda row,ctx: print(row))  # easy way to print out
+sdf.apply(lambda row, ctx: print(row))
 
 sdf.to_topic(output_topic)
 
-print("Listening to streams. Press CTRL-C to exit.")
-app.run(sdf)
+if __name__ == "__main__":
+    app.run(sdf)
