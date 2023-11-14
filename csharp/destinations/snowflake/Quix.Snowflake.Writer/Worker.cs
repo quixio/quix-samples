@@ -11,10 +11,11 @@ using Quix.Snowflake.Application.Streaming;
 using Quix.Snowflake.Application.TimeSeries;
 using Quix.Snowflake.Writer.Configuration;
 using Quix.Snowflake.Writer.Helpers;
-using Quix.Sdk.Process;
-using Quix.Sdk.Process.Kafka;
-using Quix.Sdk.Process.Models;
 using Quix.Snowflake.Application.Metadata;
+using QuixStreams.Telemetry;
+using QuixStreams.Telemetry.Kafka;
+using QuixStreams.Telemetry.Models;
+using QuixStreams.Transport.Kafka;
 
 namespace Quix.Snowflake.Writer
 {
@@ -49,7 +50,7 @@ namespace Quix.Snowflake.Writer
 
             var (kafkaConfiguration, topicId) = quixConfigHelper.GetConfiguration().GetAwaiter().GetResult();
 
-            var kafkaReader = new KafkaReader(kafkaConfiguration, topicId);
+            var kafkaReader = new TelemetryKafkaConsumer(kafkaConfiguration, topicId);
 
             kafkaReader.OnCommitting += (sender, args) =>
             {
@@ -68,11 +69,11 @@ namespace Quix.Snowflake.Writer
                 var memoryLimiter = scope.ServiceProvider.GetRequiredService<MemoryLimiterComponent>();
                 var persistingComponent = scope.ServiceProvider.GetRequiredService<StreamPersistingComponent>();
 
-                var streamProcess = new StreamProcess(streamId)
+                var streamPipeline = new StreamPipeline(streamId)
                     .AddComponent(memoryLimiter)
                     .AddComponent(persistingComponent);
                 
-                return streamProcess;
+                return streamPipeline;
             });
 
             kafkaReader.OnStreamsRevoked += streams =>
@@ -82,7 +83,7 @@ namespace Quix.Snowflake.Writer
                 this.timeSeriesBufferedPersistingService.ClearBuffer(streamIds);
             };
 
-            kafkaReader.OnReadException += (s, e) =>
+            kafkaReader.OnReceiveException += (s, e) =>
             {
                 this.logger.LogError(e, "Kafka reader exception");
             };

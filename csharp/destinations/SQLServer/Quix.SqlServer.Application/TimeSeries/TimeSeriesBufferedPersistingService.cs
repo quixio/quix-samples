@@ -6,18 +6,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Sdk.Process.Models;
 using Quix.SqlServer.Application.Helpers;
 using Quix.SqlServer.Domain.Models;
 using Quix.SqlServer.Domain.TimeSeries.Models;
 using Quix.SqlServer.Domain.TimeSeries.Repositories;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.SqlServer.Application.TimeSeries
 {
     public interface ITimeSeriesBufferedPersistingService
     {
         Task Buffer(string sourceStreamId, EventDataRaw[] eventDataRaws);
-        Task Buffer(string sourceStreamId, ParameterDataRaw parameterDataRaw);
+        Task Buffer(string sourceStreamId, TimeseriesDataRaw parameterDataRaw);
         
         void ClearBuffer(string[] sourceStreamIds);
         Task Save();
@@ -342,7 +342,7 @@ namespace Quix.SqlServer.Application.TimeSeries
             return Task.CompletedTask;
         }
 
-        public Task Buffer(string sourceStreamId, ParameterDataRaw parameterDataRaw)
+        public Task Buffer(string sourceStreamId, TimeseriesDataRaw parameterDataRaw)
         {
             this.logger.LogTrace("Received {0} parameter data for {1}", parameterDataRaw.Timestamps.Length, sourceStreamId);
             var totalQueued = 0;
@@ -401,7 +401,7 @@ namespace Quix.SqlServer.Application.TimeSeries
             return Task.CompletedTask;
         }
         
-        private ParameterDataRowForWrite CreateRowFromParameterData(ParameterDataRaw source, int index)
+        private ParameterDataRowForWrite CreateRowFromParameterData(TimeseriesDataRaw source, int index)
         {
             try
             {

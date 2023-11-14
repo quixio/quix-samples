@@ -8,12 +8,12 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Sdk.Process.Models;
 using Quix.Snowflake.Application.Helpers;
 using Quix.Snowflake.Application.Models;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.Snowflake.Application.Metadata
 {
@@ -21,7 +21,7 @@ namespace Quix.Snowflake.Application.Metadata
     {
         Task Buffer(string sourceStreamId, EventDataRaw[] eventDataRaws, DiscardRange discardRange = null);
         Task Buffer(string sourceStreamId, StreamEnd streamEnd);
-        Task Buffer(string sourceStreamId, ParameterDataRaw parameterDataRaw, DiscardRange discardRange = null);
+        Task Buffer(string sourceStreamId, TimeseriesDataRaw parameterDataRaw, DiscardRange discardRange = null);
         Task Buffer(string sourceStreamId, ParameterDefinitions parameterDefinitions);
         Task Buffer(string sourceStreamId, EventDefinitions eventDefinitions);
         Task Buffer(string sourceStreamId, StreamProperties streamProperties);
@@ -269,7 +269,7 @@ namespace Quix.Snowflake.Application.Metadata
                     case EventDefinitions eventDefinitions:
                         ApplyMessageChanges(eventDefinitions, pendingStreamUpdates);
                         break;
-                    case ParameterDataRaw parameterDataRaw:
+                    case TimeseriesDataRaw parameterDataRaw:
                         ApplyMessageChanges(parameterDataRaw, pendingStreamUpdates, dequeued.DiscardRange);
                         break;
                     case EventDataRaw[] eventDataRaw:
@@ -503,7 +503,7 @@ namespace Quix.Snowflake.Application.Metadata
             pendingStreamUpdates.Status = StreamStatus.Open;
         }
 
-        private static void ApplyMessageChanges(ParameterDataRaw parameterDataRaw, PendingStreamUpdates pendingStreamUpdates, DiscardRange discardRange)
+        private static void ApplyMessageChanges(TimeseriesDataRaw parameterDataRaw, PendingStreamUpdates pendingStreamUpdates, DiscardRange discardRange)
         {
             if (!parameterDataRaw.HasValues()) return; // how is that possible
             if (parameterDataRaw.TryGetStartEndNanoseconds(out var start, out var end, discardRange))
@@ -606,7 +606,7 @@ namespace Quix.Snowflake.Application.Metadata
             return Task.CompletedTask;
         }
 
-        public Task Buffer(string sourceStreamId, ParameterDataRaw parameterDataRaw, DiscardRange discardRange = null)
+        public Task Buffer(string sourceStreamId, TimeseriesDataRaw parameterDataRaw, DiscardRange discardRange = null)
         {
             discardRange = discardRange ?? DiscardRange.NoDiscard;
             this.queue.Enqueue(new StreamMetaDataItem() { StreamId = sourceStreamId, MetaDataItem = parameterDataRaw, DiscardRange = discardRange});

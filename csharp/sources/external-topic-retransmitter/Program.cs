@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Concurrent;
 using System.Threading;
-using Quix.Sdk.Process.Kafka;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Raw;
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Raw;
+using QuixStreams.Telemetry.Kafka;
+using System.Threading.Tasks;
 
 namespace Retransmitter
 {
@@ -14,9 +16,10 @@ namespace Retransmitter
         static void Main(string[] args)
         {
             QuixStreamingClient sourceClient;
-            IRawInputTopic sourceTopic;
+            IRawTopicConsumer sourceTopicConsumer;
             QuixStreamingClient targetClient; // reading SDK token from environment variables
-            IRawOutputTopic targetTopic;
+            IRawTopicProducer targetTopicProducer;
+            BlockingCollection<RawMessage> queue = new BlockingCollection<RawMessage>(100);
             try
             {
                 GetConfiguration(out var sourceWorkspaceSdkToken,
@@ -26,10 +29,10 @@ namespace Retransmitter
                     out var outputTopic);
 
                 sourceClient = new QuixStreamingClient(sourceWorkspaceSdkToken, false);
-                sourceTopic = sourceClient.OpenRawInputTopic(sourceTopicIdOrName, consumerGroup, autoOffsetReset);
+                sourceTopicConsumer = sourceClient.GetRawTopicConsumer(sourceTopicIdOrName, consumerGroup, autoOffsetReset);
 
                 targetClient = new QuixStreamingClient();
-                targetTopic = targetClient.OpenRawOutputTopic(outputTopic);
+                targetTopicProducer = targetClient.GetRawTopicProducer(outputTopic);
             }
             catch (Exception ex)
             {
@@ -39,28 +42,37 @@ namespace Retransmitter
             }
             System.Console.WriteLine("CONNECTED!");
 
-            long packageRead = 0;
             DateTime nextPrint = DateTime.UtcNow.AddSeconds(5);
 
-            sourceTopic.OnErrorOccurred += (sender, exception) =>
+            sourceTopicConsumer.OnErrorOccurred += (sender, exception) =>
             {
                 Console.WriteLine(exception);
             };
 
-            sourceTopic.OnMessageRead += message =>
+            sourceTopicConsumer.OnMessageReceived += (sender, message) =>
             {
-                packageRead++;
-                if (DateTime.UtcNow > nextPrint)
-                {
-                    nextPrint = DateTime.UtcNow.AddSeconds(10);
-                    Console.WriteLine($"Total packages read: {packageRead}");
-                }
-                targetTopic.Write(message);
+                queue.Add(message);
             };
+
+            Task.Factory.StartNew(() => {
+                while(!queue.IsCompleted)
+                {
+                    var message = queue.Take();
+
+                    targetTopicProducer.Publish(message);
+
+                    if (DateTime.UtcNow > nextPrint)
+                    {
+                        nextPrint = DateTime.UtcNow.AddSeconds(1);
+                        Console.WriteLine($"Queue: {queue.Count}");
+                    }
+                }
+            });
             
             App.Run(beforeShutdown: () =>
             {
                 Console.WriteLine("Shutting down.");
+                queue.CompleteAdding();
             });
             Console.WriteLine("Exiting.");
         }

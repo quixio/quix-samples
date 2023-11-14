@@ -1,16 +1,16 @@
 using System;
-using Quix.Sdk.Streaming.Models.StreamWriter;
+using QuixStreams.Streaming.Models.StreamProducer;
 
 namespace Bridge.Codemasters.Quix.V2019
 {
-    public class ParameterDefinitionsWriter
+    public class TimeseriesDefinitionsWriter
     {
-        private readonly StreamParametersWriter parameters;
+        private readonly StreamTimeseriesProducer parameters;
         private readonly int? playerIndex;
         private readonly bool isPlayer;
         private readonly string root;
 
-        public ParameterDefinitionsWriter(StreamParametersWriter parameters, bool isPlayer, int? playerIndex = null)
+        public TimeseriesDefinitionsWriter(StreamTimeseriesProducer parameters, bool isPlayer, int? playerIndex = null)
         {
             if (!isPlayer && playerIndex == null)
             {
@@ -23,7 +23,7 @@ namespace Bridge.Codemasters.Quix.V2019
             root = isPlayer ? "/Player/" : $"/Player{playerIndex}/";
         }
 
-        public ParameterDefinitionsWriter AddStatus()
+        public TimeseriesDefinitionsWriter AddStatus()
         {
             var playerPrefix = isPlayer ? "" : $"Player{playerIndex}_";
             // parameters.AddLocation($"{root}Status/Misc")
@@ -58,7 +58,7 @@ namespace Bridge.Codemasters.Quix.V2019
             return this;
         }
 
-        public ParameterDefinitionsWriter AddMotion()
+        public TimeseriesDefinitionsWriter AddMotion()
         {
             var playerPrefix = isPlayer ? "" : $"Player{playerIndex}_";
             // parameters.AddLocation($"{root}Motion/Car")
@@ -84,7 +84,7 @@ namespace Bridge.Codemasters.Quix.V2019
             return this;
         }
 
-        public ParameterDefinitionsWriter AddTelemetry()
+        public TimeseriesDefinitionsWriter AddTelemetry()
         {
             var playerPrefix = isPlayer ? "" : $"Player{playerIndex}_";
             parameters.AddLocation($"{root}Telemetry/Input")
@@ -137,7 +137,7 @@ namespace Bridge.Codemasters.Quix.V2019
             return this;
         }
 
-        public ParameterDefinitionsWriter AddSetup()
+        public TimeseriesDefinitionsWriter AddSetup()
         {
             var playerPrefix = isPlayer ? "" : $"Player{playerIndex}_";
             // parameters.AddLocation($"{root}Setup/Misc")

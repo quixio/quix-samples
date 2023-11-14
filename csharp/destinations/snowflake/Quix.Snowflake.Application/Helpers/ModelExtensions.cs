@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Quix.Sdk.Process.Models;
 using Quix.Snowflake.Application.Models;
 using Quix.Snowflake.Domain.Models;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.Snowflake.Application.Helpers
 {
     public static class ModelExtensions
     {
-        public static bool HasValues(this ParameterDataRaw data)
+        public static bool HasValues(this TimeseriesDataRaw data)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
             if (data.NumericValues != null)
@@ -52,7 +52,7 @@ namespace Quix.Snowflake.Application.Helpers
         /// </summary>
         /// <param name="tData">The telemetry data to retrieve the identifiers from</param>
         /// <returns>The unique parameter identifiers with their type</returns>
-        public static IEnumerable<(string Id, ParameterType Type)> GetParameters(this ParameterDataRaw tData)
+        public static IEnumerable<(string Id, ParameterType Type)> GetParameters(this TimeseriesDataRaw tData)
         {
             if (tData.NumericValues != null)
             {
@@ -83,7 +83,7 @@ namespace Quix.Snowflake.Application.Helpers
         /// Returns the earliest and latest times in the data
         /// </summary>
         /// <returns>The first sample time in unix nanoseconds</returns>
-        public static bool TryGetStartEndNanoseconds(this ParameterDataRaw tData, out long start, out long end, DiscardRange discardRange)
+        public static bool TryGetStartEndNanoseconds(this TimeseriesDataRaw tData, out long start, out long end, DiscardRange discardRange)
         {
             if (tData == null) throw new ArgumentNullException(nameof(tData));
             var min = long.MaxValue;

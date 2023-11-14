@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Quix.Sdk.Process.Models;
 using Quix.SqlServer.Domain.Models;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.SqlServer.Application.Metadata
 {

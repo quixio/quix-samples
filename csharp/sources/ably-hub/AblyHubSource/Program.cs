@@ -1,7 +1,7 @@
 using System;
 using IO.Ably;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Models;
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Models;
 
 namespace AblyHubSource
 {
@@ -19,22 +19,22 @@ namespace AblyHubSource
             var chanName = Environment.GetEnvironmentVariable("AblyChannel");
             var channel = ably.Channels.Get(chanName);
             
-            // Create a client which holds generic details for creating input and output topics
-            var client = new Quix.Sdk.Streaming.QuixStreamingClient();
+            // Create a client which holds generic details for creating topic producers and consumers
+            var client = new QuixStreamingClient();
             
             var outputTopicName = Environment.GetEnvironmentVariable("output");
             
-            using var outputTopic = client.OpenOutputTopic(outputTopicName);
+            using var topicProducer = client.GetTopicProducer(outputTopicName);
             
             Console.WriteLine("Creating stream");
-            var stream = outputTopic.CreateStream(Environment.GetEnvironmentVariable("StreamId"));
+            var stream = topicProducer.CreateStream(Environment.GetEnvironmentVariable("StreamId"));
             
             channel.Subscribe(message => {
                 Console.WriteLine($"Message received: {message.Data}");
 
                 // Messages received from Ably will be written to a Quix Event
                 var ed = new EventData(message.Name, DateTime.UtcNow, message.Data.ToString());
-                stream.Events.Write(ed);
+                stream.Events.Publish(ed);
             });
 
             Console.WriteLine("Listening for data from Ably");

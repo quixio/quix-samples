@@ -4,7 +4,7 @@ import pandas as pd
 import influxdb_client_3 as InfluxDBClient3
 import ast
 import datetime
-
+ 
 
 client = qx.QuixStreamingClient()
 

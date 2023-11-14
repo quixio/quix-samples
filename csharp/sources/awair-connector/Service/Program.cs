@@ -5,8 +5,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using Quix.Sdk.Streaming;
 using Microsoft.Extensions.Configuration;
+using QuixStreams.Streaming;
 using Service.Models;
 
 namespace Service
@@ -57,10 +57,10 @@ namespace Service
             var client = new QuixStreamingClient(); // Pick up token from env variable
 
             // Create a StreamingClient (using the factory) in order to easily created new streams using the configured kafka and topic which you set up above
-            var outputTopic = client.OpenOutputTopic(configuration.Topic);
+            var topicProducer = client.GetTopicProducer(configuration.Topic);
 
             var cts = new CancellationTokenSource();
-            var task = ImportData(outputTopic, devices, configuration.Awair, cts.Token);
+            var task = ImportData(topicProducer, devices, configuration.Awair, cts.Token);
             task.ContinueWith(t =>
             {
                 exitEvent.Set();
@@ -72,11 +72,11 @@ namespace Service
             Console.WriteLine($"{DateTime.UtcNow:g} Waiting for streams data import to stop");
             await task;
             Console.WriteLine($"{DateTime.UtcNow:g} Waiting for topic to close");
-            outputTopic.Dispose();
+            topicProducer.Dispose();
             Console.WriteLine($"{DateTime.UtcNow:g} Streams closed. Bye!");
         }
 
-        public static async Task ImportData(IOutputTopic topic, List<Device> devices, AwairConfiguration awairConfiguration, CancellationToken cancellationToken)
+        public static async Task ImportData(ITopicProducer topic, List<Device> devices, AwairConfiguration awairConfiguration, CancellationToken cancellationToken)
         {
 
                 var periodToGet = TimeSpan.FromMinutes(5);
@@ -107,7 +107,7 @@ namespace Service
                                 md["DeviceLongitude"] = device.Longitude.ToString();
                                 md["DeviceLatitude"] = device.Latitude.ToString();
 
-                                var parameters = sw.Parameters;
+                                var parameters = sw.Timeseries;
                                 parameters.AddDefinition("humid", "Humidity").SetRange(0, 100);
                                 parameters.AddDefinition("co2", "CO2").SetRange(0, 5000);
                                 parameters.AddDefinition("pm25", "PM2.5").SetRange(0, 1000);
@@ -126,14 +126,14 @@ namespace Service
                             foreach (var dataPoint in points)
                             {
                                 if (ignoreBeforeOrAt >= dataPoint.Timestamp) continue;
-                                var ts = stream.Parameters.Buffer.AddTimestamp(dataPoint.Timestamp);
+                                var ts = stream.Timeseries.Buffer.AddTimestamp(dataPoint.Timestamp);
                                 foreach (var pointSensor in dataPoint.Sensors)
                                 {
                                     ts.AddValue(pointSensor.Comp, pointSensor.Value);
                                 }
 
                                 ts.AddValue("score", dataPoint.Score);
-                                ts.Write();
+                                ts.Publish();
                                 if (latestImported < dataPoint.Timestamp)
                                 {
                                     latestImported = dataPoint.Timestamp;
