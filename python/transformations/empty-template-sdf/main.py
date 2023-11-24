@@ -14,7 +14,7 @@ sdf = app.dataframe(input_topic)
 
 sdf = sdf.update(lambda row: print(row))
 
-sdf.to_topic(output_topic)
+sdf = sdf.to_topic(output_topic)
 
 if __name__ == "__main__":
     app.run(sdf)
