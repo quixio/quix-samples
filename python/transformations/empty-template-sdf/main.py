@@ -12,7 +12,7 @@ sdf = app.dataframe(input_topic)
 
 # Here put transformation logic.
 
-sdf.apply(lambda row, ctx: print(row))
+sdf = sdf.update(lambda row: print(row))
 
 sdf.to_topic(output_topic)
 
