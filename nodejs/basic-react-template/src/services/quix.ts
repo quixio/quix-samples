@@ -22,7 +22,7 @@ export class QuixLiveService  {
     private workingLocally = false;
     private token = '';
     private workspaceId: string = "";
-    private subdomain = "dev";//"portal"
+    private subdomain = "platform";
 
 
     public async getWorkspaceIdAndToken(doneCallback): Promise<void>{
@@ -91,7 +91,7 @@ export class QuixLiveService  {
             .withAutomaticReconnect()
             .build();
 
-        console.log("Starting conneciton");
+        console.log("Starting connection");
         await hubConnection.start();
 
         return hubConnection;
