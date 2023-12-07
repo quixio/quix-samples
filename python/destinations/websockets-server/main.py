@@ -90,7 +90,8 @@ async def handle_websocket(websocket, path):
     finally:
         # Remove the connection from the list when it's closed
         print("Removing client from connection list")
-        websocket_connections.remove(websocket)
+        if websocket in websocket_connections:
+            websocket_connections.remove(websocket)
 
 
 # start the server. Listen on port 80

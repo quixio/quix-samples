@@ -24,10 +24,10 @@
   ],
   "DeploySettings": {
     "DeploymentType": "Service",
-    "CpuMillicores": 200,
-    "MemoryInMb": 200,
+    "CpuMillicores": 1000,
+    "MemoryInMb": 1000,
     "Replicas": 1,
-    "PublicAccess": false,
+    "PublicAccess": true,
     "ValidateConnection": false
   }
 }
