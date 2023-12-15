@@ -1,0 +1,2 @@
+quixstreams==2.1.2a0
+redis
