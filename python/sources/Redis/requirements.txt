@@ -1,0 +1,4 @@
+quixstreams==0.5.7
+influxdb-client==1.39.0
+pandas
+
