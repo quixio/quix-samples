@@ -25,7 +25,6 @@ stream_producer.timeseries.buffer.time_span_in_milliseconds = 1000
 
 # This function is used only to print the information about the keys
 def print_info(key_name, key_info):
-    print(f"Key: {key_name}")
     print(f"\tTotal samples: {key_info.total_samples}")
     print(f"\tFirst timestamp: {key_info.first_timestamp}")
     print(f"\tLast timestamp: {key_info.last_timestamp}")
@@ -42,12 +41,7 @@ def get_data():
 
     while True:
         # Get data from Redis
-        data = r.ts().mrange(first_timestamp, "+", filters=["source=quix"], count=100, with_labels=True)
-
-        # If no data, wait and try again
-        if len(data) == 0:
-            time.sleep(0.5)
-            continue
+        data = r.ts().mrange(first_timestamp, "+", filters=["ts=true"], count=1000, with_labels=True)
 
         # Convert data to DataFrame
         data_by_timestamp = defaultdict(dict)
@@ -63,19 +57,33 @@ def get_data():
                 if first_timestamp == "-" or ts > first_timestamp:
                     first_timestamp = ts + 1
 
-        for data in data_by_timestamp.items():
-            print(data)
-            df = pd.DataFrame([data[1]])
-            df["Timestamp"] = pd.to_datetime(data[0], unit="ms")
-            stream_producer.timeseries.publish(df)
+        # If no data, wait and try again
+        number_of_samples = len(data_by_timestamp)
+        if number_of_samples == 0:
+            print("No data, waiting")
+            time.sleep(0.5)
+        else:
+            print(f"Publishing {number_of_samples} samples")
+            for data in data_by_timestamp.items():
+                df = pd.DataFrame([data[1]])
+                df["Timestamp"] = pd.to_datetime(data[0], unit="ms")
+                stream_producer.timeseries.publish(df)
 
 
 def main():
     keys = r.keys()
 
     for key in keys:
-        info = r.ts().info(key)
-        print_info(key, info)
+        try:
+            print(f"Key: {key}")
+            info = r.ts().info(key)
+            existing_labels = info.labels
+            existing_labels["ts"] = "true"
+            r.ts().alter(key, labels=existing_labels)
+            info = r.ts().info(key)
+            print_info(key, info)
+        except:
+            print(f"Key {key} is not a ts key")
 
     get_data()
 
