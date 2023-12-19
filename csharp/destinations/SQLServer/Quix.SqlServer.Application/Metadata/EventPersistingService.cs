@@ -7,10 +7,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Sdk.Process.Models;
 using Quix.SqlServer.Domain.Common;
 using Quix.SqlServer.Domain.Models;
 using Quix.SqlServer.Domain.Repositories;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.SqlServer.Application.Metadata
 {

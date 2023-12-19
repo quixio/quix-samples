@@ -1,0 +1,15 @@
+name: Basic React App
+language: nodejs
+variables:
+  - name: input
+    inputType: InputTopic
+    description: The topic to read from
+    defaultValue: hello-world-source
+    required: true
+  - name: bearer_token
+    inputType: FreeText
+    description: ''
+    defaultValue: ''
+    required: false
+dockerfile: src/build/dockerfile
+defaultFile: src/services/quix.ts

@@ -10,14 +10,14 @@ using Quix.Redshift.Application.Helpers;
 using Quix.Redshift.Domain.Models;
 using Quix.Redshift.Domain.TimeSeries.Models;
 using Quix.Redshift.Domain.TimeSeries.Repositories;
-using Quix.Sdk.Process.Models;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.Redshift.Application.TimeSeries
 {
     public interface ITimeSeriesBufferedPersistingService
     {
         Task Buffer(string sourceStreamId, EventDataRaw[] eventDataRaws);
-        Task Buffer(string sourceStreamId, ParameterDataRaw parameterDataRaw);
+        Task Buffer(string sourceStreamId, TimeseriesDataRaw parameterDataRaw);
         
         void ClearBuffer(string[] sourceStreamIds);
         Task Save();
@@ -336,7 +336,7 @@ namespace Quix.Redshift.Application.TimeSeries
             return Task.CompletedTask;
         }
 
-        public Task Buffer(string sourceStreamId, ParameterDataRaw parameterDataRaw)
+        public Task Buffer(string sourceStreamId, TimeseriesDataRaw parameterDataRaw)
         {
             this.logger.LogTrace("Received {0} parameter data for {1}", parameterDataRaw.Timestamps.Length, sourceStreamId);
             var totalQueued = 0;
@@ -395,7 +395,7 @@ namespace Quix.Redshift.Application.TimeSeries
             return Task.CompletedTask;
         }
         
-        private ParameterDataRowForWrite CreateRowFromParameterData(ParameterDataRaw source, int index)
+        private ParameterDataRowForWrite CreateRowFromParameterData(TimeseriesDataRaw source, int index)
         {
             try
             {

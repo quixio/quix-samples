@@ -1,7 +1,7 @@
 using System;
 using IO.Ably;
 using Newtonsoft.Json;
-using Quix.Sdk.Streaming;
+using QuixStreams.Streaming;
 
 namespace AblySink
 {
@@ -14,9 +14,9 @@ namespace AblySink
         {
             // Create a client which holds generic details for creating input and output topics
             var client = new QuixStreamingClient();
-            var inputTopicName = Environment.GetEnvironmentVariable("input");
-            
-            using var inputTopic = client.OpenInputTopic(inputTopicName);
+            var consumerTopicName = Environment.GetEnvironmentVariable("input");
+
+            using var topicConsumer = client.GetTopicConsumer(consumerTopicName);
 
             var ably = new AblyRealtime(Environment.GetEnvironmentVariable("AblyToken"));
             var chanName = Environment.GetEnvironmentVariable("AblyChannel");
@@ -28,21 +28,21 @@ namespace AblySink
             var ablyEventDataMessageName = $"{ablyMessageName}-event-data";
             
             // Hook up events before initiating read to avoid losing out on any data
-            inputTopic.OnStreamReceived += (s, streamReader) =>
+            topicConsumer.OnStreamReceived += (s, streamReader) =>
             {
                 Console.WriteLine($"New stream read: {streamReader.StreamId}");
                 
-                streamReader.Parameters.OnRead += parameterData =>
+                streamReader.Timeseries.OnDataReceived += (s, timeseriesData) =>
                 {
-                    var payload = JsonConvert.SerializeObject(parameterData);
+                    var payload = JsonConvert.SerializeObject(timeseriesData.Data);
                     channel.Publish(ablyParameterDataMessageName, payload);
                     
                     Console.WriteLine("Parameter Payload synced to Ably");
                 };
 
-                streamReader.Events.OnRead += eventData =>
+                streamReader.Events.OnDataReceived += (s, eventData) =>
                 {
-                    var payload = JsonConvert.SerializeObject(eventData);
+                    var payload = JsonConvert.SerializeObject(eventData.Data);
                     channel.Publish(ablyEventDataMessageName, payload);
                     
                     Console.WriteLine("Event Payload synced to Ably");

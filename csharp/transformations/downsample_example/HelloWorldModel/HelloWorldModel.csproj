@@ -2,11 +2,11 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Quix.Sdk.Streaming" Version="0.4.10-20230127.2" />
+        <PackageReference Include="QuixStreams.Streaming" Version="0.5.7" />
     </ItemGroup>
 
 </Project>

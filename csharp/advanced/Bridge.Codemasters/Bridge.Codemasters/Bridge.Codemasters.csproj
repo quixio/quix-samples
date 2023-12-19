@@ -4,8 +4,4 @@
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Quix.Sdk.Logging" Version="0.4.10-20230127.2"/>
-    </ItemGroup>
-
 </Project>

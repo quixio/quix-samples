@@ -7,10 +7,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Quix.Sdk.Process.Models;
 using Quix.Snowflake.Domain.Common;
 using Quix.Snowflake.Domain.Models;
 using Quix.Snowflake.Domain.Repositories;
+using QuixStreams.Telemetry.Models;
 
 namespace Quix.Snowflake.Application.Metadata
 {
