@@ -1,3 +1,2 @@
-quixstreams==0.5.3
+quixstreams==0.5.7
 streamlit==1.22
-cherrypy==18.8.0

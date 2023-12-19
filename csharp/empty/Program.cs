@@ -1,6 +1,5 @@
 ﻿using System;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Streaming.Models;
+using QuixStreams.Streaming;
 
 namespace Service
 {
@@ -13,7 +12,7 @@ namespace Service
         {
             var client = new QuixStreamingClient();
            
-            using var inputTopic = client.OpenInputTopic(Environment.GetEnvironmentVariable("input"));
+            using var topicConsumer = client.GetTopicConsumer(Environment.GetEnvironmentVariable("input"));
             
             // for more samples, please see samples or docs
             throw new NotImplementedException(""); //

@@ -14,11 +14,12 @@ using Newtonsoft.Json;
 using Quix.Redshift.Writer.Configuration;
 using Quix.Redshift.Writer.Helpers.QuixApi.Portal;
 using Quix.Redshift.Writer.Helpers.QuixApi.Portal.Requests;
-using Quix.Sdk.Process.Configuration;
-using Quix.Sdk.Process.Kafka;
-using Quix.Sdk.Streaming.Exceptions;
-using Quix.Sdk.Streaming.QuixApi;
-using Quix.Sdk.Transport.Fw;
+using QuixStreams.Streaming.Exceptions;
+using QuixStreams.Streaming.QuixApi;
+using QuixStreams.Telemetry.Configuration;
+using QuixStreams.Telemetry.Kafka;
+using QuixStreams.Transport.Fw;
+using QuixStreams.Transport.Kafka;
 using Exception = System.Exception;
 
 namespace Quix.Redshift.Writer.Helpers
@@ -55,7 +56,7 @@ namespace Quix.Redshift.Writer.Helpers
             this.apiUrl = new Uri(envUri);
         }
         
-        public async Task<(KafkaReaderConfiguration config, string topicId)> GetConfiguration()
+        public async Task<(TelemetryKafkaConsumerConfiguration config, string topicId)> GetConfiguration()
         {
             var sw = Stopwatch.StartNew();
             var ws = await this.GetWorkspaceFromConfiguration(this.brokerConfiguration.TopicName);
@@ -144,7 +145,7 @@ namespace Quix.Redshift.Writer.Helpers
             throw new InvalidConfigurationException($"No workspace could be identified for topic {topicName}. Verify the topic name is correct. If name is provided then {WorkspaceIdEnvironmentKey} environment variable or token with access to 1 workspace only must be provided. Current token has access to {workspaces.Count} workspaces and env var is unset.");
         }
 
-        private async Task<KafkaReaderConfiguration> GetKafkaReaderConfigurationForWorkspace(Workspace ws)
+        private async Task<TelemetryKafkaConsumerConfiguration> GetKafkaReaderConfigurationForWorkspace(Workspace ws)
         {
             if (ws.Broker == null)
             {
@@ -181,7 +182,7 @@ namespace Quix.Redshift.Writer.Helpers
                 throw new Exception("CommitAfterEveryCount can not be set to null to avoid deadlocks");
             }
 
-            return new KafkaReaderConfiguration(ws.Broker.Address, $"{ws.WorkspaceId}-writer.redshift", brokerProperties)
+            return new TelemetryKafkaConsumerConfiguration(ws.Broker.Address, $"{ws.WorkspaceId}-writer.redshift", brokerProperties)
             {
                 CommitOptions = new CommitOptions()
                 {

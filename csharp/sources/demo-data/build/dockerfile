@@ -1,10 +1,10 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-bionic as build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-bookworm-slim as build
 WORKDIR /project
 COPY --from=git /project .
 RUN dotnet build ./Bridge.Console/Bridge.Console.csproj -o /buildoutput
 
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-bionic
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-bookworm-slim
 WORKDIR /app
 COPY --from=build /buildoutput .
 ENTRYPOINT dotnet Bridge.Console.dll

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Quix.Sdk.Streaming;
-using Quix.Sdk.Process.Models;
-using ParameterData = Quix.Sdk.Streaming.Models.ParameterData;
+using QuixStreams.Streaming;
+using QuixStreams.Streaming.Models;
+using QuixStreams.Telemetry.Models;
 
 namespace WriteCompleteExample
 {
@@ -24,15 +24,15 @@ namespace WriteCompleteExample
         {
             var cts = new CancellationTokenSource();
             
-            // Create a client which holds generic details for creating input and output topics
+            // Create a client which holds generic details for creating topic consumers and producers
             var client = new QuixStreamingClient();
 
             var outputTopicName = Environment.GetEnvironmentVariable("output");
             
-            // Create an output topic using the client's configuration
-            using var outputTopic = client.OpenOutputTopic(outputTopicName);
+            // Create a topic producer using the client's configuration
+            using var topicProducer = client.GetTopicProducer(outputTopicName);
 
-            var stream = outputTopic.CreateStream(); // Note, you can also create a stream with a stream id of your choice. Useful if you wish to continuously stream under the same stream id.
+            var stream = topicProducer.CreateStream(); // Note, you can also create a stream with a stream id of your choice. Useful if you wish to continuously stream under the same stream id.
                                                 // Stream id is what is grouping together individual messages. If you send messages under different stream Id, they are considered unrelated.
 
             stream.Epoch = DateTime.UtcNow; // It is useful to set the epoch in order to avoid having to add it to each parameter sample and event. Explore other properties of the classes used
@@ -48,13 +48,13 @@ namespace WriteCompleteExample
             // Note: Properties do not need to be manually sent. They will be sent after the last change with a bit of delay (less than a second), but if stream closes, before stream close message.
 
             // While this is entirely optional, the protocol functions without it, lets describe some of the parameters and events present in the stream so consumers can better understand and work with the data                                            
-            stream.Parameters.DefaultLocation = "/car"; // the default location will determine where parameters will be placed if you add them after this line
-            stream.Parameters
+            stream.Timeseries.DefaultLocation = "/car"; // the default location will determine where parameters will be placed if you add them after this line
+            stream.Timeseries
                 .AddDefinition("car_speed", "Car speed", "speed of the card") // name (2nd param) and description (3rd param) are optional. The name will default to the parameter id if none provided.
                                                                                                           // Parameter id has to be unique within the stream, because this is what you will use to link the data to the parameter 
                 .SetUnit("kph")
                 .SetRange(0, 210);
-            stream.Parameters
+            stream.Timeseries
                 .AddLocation("/car/engine") // optionally you can overwrite the default location by specifying location like this
                 .AddDefinition("car_gear", "Gear").SetRange(0, 6)
                 .AddDefinition("car_engine_rpm", "Engine RPM"); // the definition builder allows you to set as many parameters at once as you wish 
@@ -72,17 +72,17 @@ namespace WriteCompleteExample
             stream.Events
                 .AddTimestamp(DateTime.UtcNow) // when you wish to add data, you always need to start with .AddTimestamp or .AddTimestampMilliseconds//Nanoseconds. Read the documentation of each to know exactly how they work
                 .AddValue("Example Event pretty id", "You can add as many events as you wish, All will all be added at this timestamp")
-                .Write();
+                .Publish();
 
             stream.Events
                 .AddTimestampNanoseconds(150)
                 .AddValue("Example Event pretty id", "event at 150 nanoseconds after previously configured Epoch");
 
-            var data = new ParameterData();
+            var data = new TimeseriesData();
             data.AddTimestamp(DateTime.UtcNow) // Note: When adding timestamp using DateTime, epoch is ignored.
                 .AddValue("car_engine_on", "true") // as previously mentioned, you do not need to define parameters ahead of time, but if you don't, there will be no additional context provided for them, like min/max value or human friendly name
                 .AddValue("car_engine_on_num", 1);// also, parameter value can be string, not just double
-            stream.Parameters.Write(data);
+            stream.Timeseries.Publish(data);
 
             Console.WriteLine("Generating stream data");
             // Generate some data, similarly to above, but a bit more.
@@ -106,7 +106,7 @@ namespace WriteCompleteExample
         /// </summary>
         /// <param name="stream">The stream to generate the data to</param>
         /// <param name="ctsToken">Application exit cancellation token</param>
-        static void GenerateData(IStreamWriter stream, CancellationToken ctsToken)
+        static void GenerateData(IStreamProducer stream, CancellationToken ctsToken)
         {
             var interval = (int)((double)(1 * 1000) / DataFrequency); // calc how many ms should be the interval between samples
             
@@ -123,7 +123,7 @@ namespace WriteCompleteExample
             
             while (!ctsToken.IsCancellationRequested) // exit if CTRL-C is invoked
             {
-                var data = new ParameterData();
+                var data = new TimeseriesData();
                 var timestampValues = data.AddTimestamp(DateTime.UtcNow); // not necessary to set builder to a variable, but I wish to have the same timestamp for all values within an iteration
                                                                             // therefore saving it like this.
                 if (GetGearValue(out var newGear))
@@ -136,7 +136,7 @@ namespace WriteCompleteExample
                 currentSpeed = GetSpeed();
                 timestampValues.AddValue("car_speed", currentSpeed);
                 timestampValues.AddValue("car_engine_rpm", GetRPM());
-                stream.Parameters.Write(data);
+                stream.Timeseries.Publish(data);
                 Thread.Sleep(interval); // sleep the interval
             }
             
