@@ -8,7 +8,7 @@
         "Type": ["Basic templates"]
     },
     "shortDescription": "A template for creating Quix Code Samples using Python",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "DefaultFile": "main.py",
     "Variables": [ 
