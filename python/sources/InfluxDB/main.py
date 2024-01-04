@@ -77,7 +77,7 @@ def get_data():
     while run:
         try:
             # Query InfluxDB 3.0 usinfg influxql or sql
-            table = client.query(query=f"SELECT * FROM {measurement_name} WHERE time >= now() - {interval}", language="influxql")
+            table = client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}', language="influxql")
 
             # Convert the result to a pandas dataframe. Required to be processed through Quix. 
             df = table.to_pandas().drop(columns=["iox::measurement"])
