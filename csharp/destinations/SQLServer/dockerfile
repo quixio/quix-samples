@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0-bookworm-slim as build
 WORKDIR /project
-COPY --from=git /project .
+COPY . .
 RUN dotnet publish ./Quix.SqlServer.Writer/Quix.SqlServer.Writer.csproj -o /buildoutput -r linux-x64 -c Release
 
 
