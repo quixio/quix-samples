@@ -10,7 +10,7 @@
     },
     "shortDescription": "Write vehicle telemetry data from a CSV file into a stream",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

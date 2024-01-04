@@ -10,7 +10,7 @@
     },
     "shortDescription": "Consume currency data from the CoinAPI REST API",
     "DefaultFile": "quix_functions.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

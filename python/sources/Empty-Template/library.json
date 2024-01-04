@@ -11,7 +11,7 @@
     },
     "shortDescription": "The most basic and essential 'Hello World' source sample",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
