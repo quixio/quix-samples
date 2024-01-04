@@ -1,10 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0-bookworm-slim as build
 WORKDIR /project
-COPY --from=git /project .
-RUN dotnet build ./Service/Service.csproj -o /buildoutput
+COPY . .
+RUN dotnet build ./CarDataGenerator/CarDataGenerator.csproj -o /buildoutput
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0-bookworm-slim
 WORKDIR /app
 COPY --from=build /buildoutput .
-ENTRYPOINT dotnet Service.dll
+ENTRYPOINT dotnet CarDataGenerator.dll
