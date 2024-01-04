@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 as build
 WORKDIR /project
-COPY --from=git /project .
+COPY . .
 RUN dotnet build ./HelloWorldModel/HelloWorldModel.csproj -o /buildoutput
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0
