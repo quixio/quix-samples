@@ -1,10 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0-bookworm-slim as build
 WORKDIR /project
-COPY --from=git /project .
-RUN dotnet build ./Bridge.Codemasters.Console/Bridge.Codemasters.Console.csproj -o /buildoutput
+COPY . .
+RUN dotnet build ./Bridge.AssettoCorsa/Bridge.AssettoCorsa.csproj -o /buildoutput
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0-bookworm-slim
 WORKDIR /app
 COPY --from=build /buildoutput .
-ENTRYPOINT dotnet Bridge.Codemasters.Console.dll
+ENTRYPOINT dotnet Bridge.AssettoCorsa.dll
