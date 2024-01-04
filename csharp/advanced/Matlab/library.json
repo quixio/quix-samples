@@ -42,6 +42,6 @@
       "Required": true
     }
   ],
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "RunEntryPoint": "Service.csproj"
 }

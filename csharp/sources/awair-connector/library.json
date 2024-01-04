@@ -11,7 +11,7 @@
     "longDescription": "This sample will connect to Awair's background services to continuously scrape and publish data for your devices.",
     "defaultFile": "Service/Program.cs",
     "iconFile": "icon.png",
-    "entryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "runEntryPoint": "Service/Service.csproj",
     "variables": [
       {

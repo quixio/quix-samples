@@ -11,7 +11,7 @@
     },
     "shortDescription": "Use this template to start building your own transformation",
     "DefaultFile": "HelloWorldModel/Program.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "HelloWorldModel.csproj",
     "Variables": [ 
         {
