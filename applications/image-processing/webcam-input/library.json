@@ -19,7 +19,7 @@
             "Required": true
         }
     ],
-    "EntryPoint": "src/build/dockerfile",
+    "EntryPoint": "dockerfile",
     "DefaultFile": "src/app/services/quix.service.ts",
     "DeploySettings":
     {
