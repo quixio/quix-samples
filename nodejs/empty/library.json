@@ -8,7 +8,7 @@
     },
     "shortDescription": "A template for Quix Code Samples Node.js applications",
     "DefaultFile": "main.js",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "Variables": [ 
         {
             "Name" : "input",

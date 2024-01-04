@@ -12,7 +12,7 @@
   },
   "shortDescription": "A template for creating a UI with React",
   "DefaultFile": "src/services/quix.ts",
-  "EntryPoint": "src/build/dockerfile",
+  "EntryPoint": "dockerfile",
   "Variables": [
     {
       "Name": "input",
