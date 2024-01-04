@@ -11,7 +11,7 @@
     },
     "shortDescription": "Template of how to build realtime dashboard with Dash",
     "DefaultFile": "in_memory_view.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {
