@@ -10,7 +10,7 @@
 	},
 	"shortDescription": "Computer vision using YOLO v3",
 	"DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "main.py",
 	"Variables": [
 		{

@@ -10,7 +10,7 @@
     },
     "shortDescription": "Deploy a Hugging Face model that generates predictions based on the input data",
     "DefaultFile": "hugging_face_model.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
