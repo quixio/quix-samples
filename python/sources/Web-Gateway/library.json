@@ -1,6 +1,6 @@
 {
     "libraryItemId": "e8102920-b815-4c53-9dcd-f477ff865eee",
-    "name": "Web gateway",
+    "name": "Flask Web Gateway",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "Web API gateway example to ingest data into the topic from any source.",
+    "shortDescription": "Flask Web API gateway example to ingest data into the topic from any source.",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

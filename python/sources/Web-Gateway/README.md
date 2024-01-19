@@ -1,4 +1,4 @@
-# Starter transformation
+# Flask Web Gateway
 
 [This project](https://github.com/quixio/quix-samples/tree/main/python/sources/Web-Gateway) is Flask Web API gateway example to ingest data into the topic from any source.
 

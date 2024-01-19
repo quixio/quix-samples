@@ -1,1 +1,4 @@
-quixstreams==0.5.7
+quixstreams>=2.0a
+flask
+flask_cors
+waitress
