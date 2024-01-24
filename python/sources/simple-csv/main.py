@@ -123,7 +123,7 @@ def process_csv_file(csv_file):
             row_data = {header: row[header] for header in headers}
             
             # add a new timestamp column with the current data and time
-            row_data['Timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            row_data['Timestamp'] = int(time.time() * 1e9)
 
             #payload = json.dumps(row_data)
             publish_row(row_data)
