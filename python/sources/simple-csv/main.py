@@ -1,8 +1,5 @@
 # This code will publish the CSV data to a stream as if the data were being generated in real-time.
 
-# Import the main Quix Streams module for data processing and transformation:
-from quixstreams import Application, State
-
 # Import the supplimentary Quix Streams modules for interacting with Kafka: 
 from quixstreams.kafka import Producer
 from quixstreams.platforms.quix import QuixKafkaConfigsBuilder, TopicCreationConfigs
@@ -14,7 +11,6 @@ import pandas as pd
 import threading
 import time
 import uuid
-import json
 import os
 
 # import the dotenv module to load environment variables from a file
@@ -153,7 +149,7 @@ def process_csv_file(csv_file):
 
 
 # Run the CSV processing in a thread
-processing_thread = threading.Thread(target=process_csv_file, args=("C:\Code\Quix\GitHub\quix-samples\python\sources\simple-csv\demo-data.csv",))
+processing_thread = threading.Thread(target=process_csv_file, args=("demo-data.csv",))
 processing_thread.start()
 
 
