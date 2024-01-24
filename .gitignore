@@ -2,6 +2,7 @@
 **/obj/
 **/bin/
 **/Lib/
+**/.idea/
 myenv/
 DotSettings.user
 **DotSettings.user
@@ -17,3 +18,4 @@ repo.json
 .vs/
 launchsettings.json
 .env
+**venv/
