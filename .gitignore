@@ -2,6 +2,7 @@
 **/obj/
 **/bin/
 **/Lib/
+**/myvenv/
 DotSettings.user
 **DotSettings.user
 ca.cert
