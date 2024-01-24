@@ -10,7 +10,7 @@
     },
     "shortDescription": "Stream changes to data in a SQL Database",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "IconFile": "icon.png",
     "Variables": [

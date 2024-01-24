@@ -11,7 +11,7 @@
     },
     "shortDescription": "Clean the data before fraud detection stage",
     "DefaultFile": "quix_function.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

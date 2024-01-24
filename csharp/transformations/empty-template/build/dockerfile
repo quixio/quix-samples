@@ -1,9 +1,0 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 as build
-WORKDIR /project
-COPY --from=git /project .
-RUN dotnet build ./HelloWorldModel/HelloWorldModel.csproj -o /buildoutput
-
-FROM mcr.microsoft.com/dotnet/sdk:7.0
-WORKDIR /app
-COPY --from=build /buildoutput .
-ENTRYPOINT dotnet HelloWorldModel.dll

@@ -12,7 +12,7 @@
     "shortDescription": "Performs a rolling window function.",
     "longDescription": "Performs a rolling window function. Predetermined moving average. Window can be defined as a time period or as a number of observations",
     "DefaultFile": "rolling_function.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

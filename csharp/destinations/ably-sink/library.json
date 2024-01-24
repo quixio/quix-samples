@@ -11,7 +11,7 @@
     },
     "shortDescription": "Publish data to an Ably Channel",
     "DefaultFile": "AblySink/Program.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "AblySink/AblySink.csproj",
     "IconFile": "icon.png",
     "Variables": [ 

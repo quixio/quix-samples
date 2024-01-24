@@ -10,7 +10,7 @@
     },
     "shortDescription": "Integrate an RSS feed into your Quix pipeline",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

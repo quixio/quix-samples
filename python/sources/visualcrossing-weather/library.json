@@ -11,7 +11,7 @@
     },
     "shortDescription": "Publish weather API data to a stream",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

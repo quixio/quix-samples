@@ -11,7 +11,7 @@
     },
     "shortDescription": "Template using Streaming Data Frames to transform data between source and destination.",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

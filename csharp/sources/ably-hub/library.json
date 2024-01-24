@@ -11,7 +11,7 @@
     },
     "shortDescription": "Subscribe to data in an Ably channel",
     "DefaultFile": "AblyHubSource/Program.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "AblyHubSource/AblyHubSource.csproj",
     "IconFile": "icon.png",
     "Variables": [ 

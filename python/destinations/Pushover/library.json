@@ -11,7 +11,7 @@
   },
   "shortDescription": "Push notifications and messages to your mobile with Pushover",
   "DefaultFile": "quix_functions.py",
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "Variables": [
     {

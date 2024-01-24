@@ -10,7 +10,7 @@
 	},
 	"shortDescription": "Merge the streams from one topic into a single stream on another topic",
 	"DefaultFile": "quix_function.py",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "main.py",
 	"Variables": [
 		{

@@ -8,7 +8,7 @@
 	},
 	"shortDescription": "Share settings to external apps",
 	"DefaultFile": "ui/src/app/services/quix.service.ts",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"Variables": [
 		{
 			"Name" : "BearerToken",

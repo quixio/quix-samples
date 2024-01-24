@@ -11,7 +11,7 @@
     "shortDescription": "Clone topic external to your workspace",
     "longDescription": "Service which reads from an external topic and writes the content into a topic in current workspace.",
     "defaultFile": "Program.cs",
-    "entryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "runEntryPoint": "Retransmitter.csproj",
     "variables": [
       {

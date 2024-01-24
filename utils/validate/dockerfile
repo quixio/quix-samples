@@ -1,0 +1,17 @@
+# Use Alpine as the base image
+FROM alpine:latest
+
+# Install jq
+RUN apk add --no-cache jq util-linux
+
+# Copy the script into the image
+COPY script.sh /script.sh
+
+# Make the script executable
+RUN chmod +x /script.sh
+
+# Set the working directory to /data
+WORKDIR /data
+
+# Run the script on container startup
+CMD ["/script.sh"]

@@ -12,7 +12,7 @@
     "shortDescription": "Predict availability of bikes in New York",
     "longDescription": "In this sample, you'll see how to predict near-future bikes availability in New York based on current bikes and weather forecasts",
     "DefaultFile": "model_functions.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

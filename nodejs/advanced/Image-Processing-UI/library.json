@@ -10,7 +10,7 @@
 	},
 	"shortDescription": "An Angular UI for the TfL image processing demo",
 	"DefaultFile": "src/app/services/quix.service.ts",
-	"EntryPoint": "src/build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"Variables": [
 		{
 			"Name" : "processed",

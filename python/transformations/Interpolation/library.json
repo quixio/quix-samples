@@ -12,7 +12,7 @@
     "shortDescription": "Performs an interpolation function",
     "longDescription": "Performs an interpolation function: calculates time delta and parameter average for the last parameter points",
     "DefaultFile": "interpolating_function.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {
