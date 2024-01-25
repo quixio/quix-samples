@@ -8,7 +8,8 @@
         "Type": ["Connectors"],
         "Technology": ["Kafka"]
     },
-    "shortDescription": "Publish weather API data to a stream",
+    "IconFile": "icon.png",
+    "shortDescription": "Publish a Kafka Connect source connector to Quix platform",
     "EntryPoint": "dockerfile",
     "Variables": [
         {
