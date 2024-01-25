@@ -1,0 +1,64 @@
+{
+    "libraryItemId": "9514c27e-c924-4d3b-ab47-9ecfe6570293",
+    "name": "Kafka Connect Source",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Advanced"],
+        "Pipeline Stage": ["Source"],
+        "Type": ["Connectors"],
+        "Technology": ["Kafka"]
+    },
+    "shortDescription": "Publish weather API data to a stream",
+    "EntryPoint": "dockerfile",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for sourced data",
+            "DefaultValue" : "kafka-connect-source-topic",
+            "Required": true
+        },
+        {
+            "Name" : "CONNECT_OFFSET_STORAGE_TOPIC",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Topic name to use for storing kafka connect offsets",
+            "DefaultValue" : "connect-offsets-source",
+            "Required": true
+        },
+        {
+            "Name" : "CONNECT_CONFIG_STORAGE_TOPIC",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Topic name to use for storing connector and task configurations for kafka connect",
+            "DefaultValue" : "connect-configs-source",
+            "Required": true
+        },
+        {
+            "Name" : "CONNECT_STATUS_STORAGE_TOPIC",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "Topic name to use for storing statuses for kafka connect",
+            "DefaultValue" : "connect-status-source",
+            "Required": true
+        },
+        {
+            "Name" : "CONNECTOR_NAME",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "FreeText",
+            "Description" : "The confluent hub (https://www.confluent.io/hub, free connectors only for now) kafka connector to use",
+            "DefaultValue" : "",
+            "Required": true
+        }
+    ],
+    "DeploySettings":
+    {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 500,
+        "Replicas": 1,
+        "PublicAccess": true,
+        "ValidateConnection": false
+    } 
+}
