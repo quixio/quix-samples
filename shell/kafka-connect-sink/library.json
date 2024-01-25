@@ -1,6 +1,7 @@
 {
     "libraryItemId": "9514c27e-c924-4d3b-ab47-9ecfe6570294",
     "name": "Kafka Connect Sink",
+    "language": "Python",
     "tags": {
         "Complexity": ["Advanced"],
         "Pipeline Stage": ["Destination"],
