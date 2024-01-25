@@ -4,6 +4,7 @@
 from quixstreams.kafka import Producer
 from quixstreams.platforms.quix import QuixKafkaConfigsBuilder, TopicCreationConfigs
 from quixstreams.models.serializers.quix import JSONSerializer, QuixSerializer, SerializationContext
+
 # (see https://quix.io/docs/quix-streams/v2-0-latest/api-reference/quixstreams.html for more details)
 
 from datetime import datetime
@@ -151,7 +152,6 @@ def process_csv_file(csv_file):
 # Run the CSV processing in a thread
 processing_thread = threading.Thread(target=process_csv_file, args=("demo-data.csv",))
 processing_thread.start()
-
 
 # Run this method before shutting down.
 # In this case we set a flag to tell the loops to exit gracefully.
