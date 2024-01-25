@@ -59,7 +59,7 @@
         "CpuMillicores": 200,
         "MemoryInMb": 500,
         "Replicas": 1,
-        "PublicAccess": true,
+        "PublicAccess": false,
         "ValidateConnection": false
     } 
 }
