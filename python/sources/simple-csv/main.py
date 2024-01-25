@@ -3,14 +3,14 @@
 # Import the supplimentary Quix Streams modules for interacting with Kafka: 
 from quixstreams.kafka import Producer
 from quixstreams.platforms.quix import QuixKafkaConfigsBuilder, TopicCreationConfigs
-from quixstreams.models.serializers.quix import QuixTimeseriesSerializer, SerializationContext
+from quixstreams.models.serializers.quix import JSONSerializer, QuixSerializer, SerializationContext
 # (see https://quix.io/docs/quix-streams/v2-0-latest/api-reference/quixstreams.html for more details)
 
 from datetime import datetime
 import pandas as pd
 import threading
+import random
 import time
-import uuid
 import os
 
 # import the dotenv module to load environment variables from a file
@@ -33,7 +33,6 @@ published_total = 0
 # how many times you want to loop through the data
 iterations = 10
 
-
 # configure/create everything needed to publish data with the Producer class
 
 # Load the relevant configurations from environment variables
@@ -49,22 +48,27 @@ cfgs, topics, _ = cfg_builder.get_confluent_client_configs([os.environ["output"]
 cfg_builder.create_topics([TopicCreationConfigs(name=topics[0])])
 
 # Define a serializer for adding the extra headers
-serializer = QuixTimeseriesSerializer()
+# here we are using the JSONSerializer
+serializer = JSONSerializer()
+
+# NOTE: if you have existing services in Quix, possibly using a version of the SDK before v2
+# and want to subscribe to data from there, use the QuixSerializer like this:
+# serializer = QuixSerializer()
+
 
 brokers=cfgs.pop("bootstrap.servers")
 
-def publish_row(row_data: dict):
+def publish_row(stream_id: str, row_data: dict):
     global row_counter
     global published_total
     global cfgs
 
-    stream_id = str(uuid.uuid4)
-    # Add the chat_id as an extra header so that we can use to partition the different conversation streams
-    #headers = {**serializer.extra_headers, "uuid": stream_id}
-
     # Initialize a Kafka Producer using the stream ID as the message key
     with Producer(broker_address=brokers, extra_config=cfgs) as producer:
+
+        # serialize the row (dictionary)
         ser = serializer(value=row_data, ctx=SerializationContext(topic=topics[0]))
+
         producer.produce(
             topic=topics[0],
             key=stream_id,
@@ -101,51 +105,47 @@ def process_csv_file(csv_file):
         df = df.rename(columns={"Timestamp": "original_timestamp"})
         print("Timestamp column renamed.")
 
+
+    # generate a unique stream id for this data stream
+    stream_id = f"CSV_DATA_{str(random.randint(1, 100)).zfill(3)}"
+
     # Get the column headers as a list
     headers = df.columns.tolist()
+        
+    # Iterate over the rows and send them to the API
+    for index, row in df.iterrows():
 
-    # repeat the data 10 times to ensure the replay lasts long enough to 
-    # inspect and play with the data
-    for _ in range(0, iterations):
-
-         # If shutdown has been requested, exit the loop.
+        # If shutdown has been requested, exit the loop.
         if shutting_down:
             break
+
+        # Create a dictionary that includes both column headers and row values
+        row_data = {header: row[header] for header in headers}
         
-        # Iterate over the rows and send them to the API
-        for index, row in df.iterrows():
+        # add a new timestamp column with the current data and time
+        row_data['Timestamp'] = int(time.time() * 1e9)
 
-             # If shutdown has been requested, exit the loop.
-            if shutting_down:
-                break
+        # publish the row via the wrapper function
+        publish_row(stream_id, row_data)
 
-            # Create a dictionary that includes both column headers and row values
-            row_data = {header: row[header] for header in headers}
-            
-            # add a new timestamp column with the current data and time
-            row_data['Timestamp'] = int(time.time() * 1e9)
+        if not keep_timing or not has_timestamp_column:
+            # Don't want to keep the original timing or no timestamp? Thats ok, just sleep for 200ms
+            time.sleep(0.2)
+        else:
+            # Delay sending the next row if it exists
+            # The delay is calculated using the original timestamps and ensure the data 
+            # is published at a rate similar to the original data rates
+            if index + 1 < len(df):
+                current_timestamp = pd.to_datetime(row['original_timestamp'])
+                next_timestamp = pd.to_datetime(df.at[index + 1, 'original_timestamp'])
+                time_difference = next_timestamp - current_timestamp
+                delay_seconds = time_difference.total_seconds()
+                
+                # handle < 0 delays
+                if delay_seconds < 0:
+                    delay_seconds = 0
 
-            #payload = json.dumps(row_data)
-            publish_row(row_data)
-
-            if not keep_timing or not has_timestamp_column:
-                # Don't want to keep the original timing or no timestamp? Thats ok, just sleep for 200ms
-                time.sleep(0.2)
-            else:
-                # Delay sending the next row if it exists
-                # The delay is calculated using the original timestamps and ensure the data 
-                # is published at a rate similar to the original data rates
-                if index + 1 < len(df):
-                    current_timestamp = pd.to_datetime(row['original_timestamp'])
-                    next_timestamp = pd.to_datetime(df.at[index + 1, 'original_timestamp'])
-                    time_difference = next_timestamp - current_timestamp
-                    delay_seconds = time_difference.total_seconds()
-                    
-                    # handle < 0 delays
-                    if delay_seconds < 0:
-                        delay_seconds = 0
-
-                    time.sleep(delay_seconds)
+                time.sleep(delay_seconds)
 
 
 # Run the CSV processing in a thread
