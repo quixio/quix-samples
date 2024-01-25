@@ -11,5 +11,5 @@ variables:
     description: ''
     defaultValue: ''
     required: false
-dockerfile: src/build/dockerfile
+dockerfile: dockerfile
 defaultFile: src/services/quix.ts

@@ -11,7 +11,7 @@
     },
     "shortDescription": "Publish data to your Confluent Kafka topic with this bridge",
     "DefaultFile": "quix_function.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "IconFile": "icon.png",
     "Variables": [

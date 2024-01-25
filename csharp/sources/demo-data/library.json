@@ -11,7 +11,7 @@
 	"shortDescription": "Stream F1 Telemetry data into a topic from a recorded game session",
 	"longDescription": "Stream F1 Telemetry data into a topic from a recorded game session. <br/>You'll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
 	"DefaultFile": "Bridge.Console/Program.cs",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "Bridge.Console.csproj",
 	"Variables": [
 		{

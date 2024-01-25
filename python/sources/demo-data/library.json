@@ -11,7 +11,7 @@
 	"shortDescription": "Stream F1 Telemetry data from a CSV file",
 	"longDescription": "Stream F1 Telemetry data, recorded from an F1 game session into a topic. <br/>You'll have access to the speed, acceleration, break usage and other detailed data from a real F1 car, rebroadcast in real time.",
 	"DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "main.py",
 	"Variables": [
 		{

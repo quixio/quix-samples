@@ -12,7 +12,7 @@
     "shortDescription": "Stream Codemasters F1 2019 telemetry to Quix",
     "longDescription": "Stream Codemasters F1 2019 telemetry to Quix. This bridge is capable of streaming the game's telemetry from a PC or console. Note that this bridge must be run locally on a PC on the same network as the game",
     "DefaultFile": "Bridge.Codemasters.Console/Program.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "Bridge.Codemasters.Console/Bridge.Codemasters.Console.csproj",
     "Variables": [ 
         {

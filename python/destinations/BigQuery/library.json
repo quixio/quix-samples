@@ -11,7 +11,7 @@
       "Vendor": ["Google", "GCP"]
     },
     "shortDescription": "Stream data from Quix to BigQuery",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "DefaultFile": "main.py",
     "Variables": [

@@ -12,7 +12,7 @@
 	},
 	"shortDescription": "Generate fake credit card transaction data, including fraudulent transactions",
 	"DefaultFile": "datagen.py",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "datagen.py",
 	"Variables": [
 		{

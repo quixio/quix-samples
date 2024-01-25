@@ -11,7 +11,7 @@
     },
     "shortDescription": "The most basic and essential 'Hello World' subscribe sample",
     "DefaultFile": "ReadHelloWorld/Program.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "ReadHelloWorld.csproj",
     "Variables": [ 
         {

@@ -11,11 +11,11 @@
 	"shortDescription": "Stream data from a CSV file",
 	"longDescription": "Stream our simple CSV data file or your own CSV data into a topic",
 	"DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "main.py",
 	"Variables": [
 		{
-			"Name" : "Topic",
+			"Name" : "output",
 			"Type" : "EnvironmentVariable",
 			"InputType" : "OutputTopic",
 			"Description" : "Name of the output topic to write into",

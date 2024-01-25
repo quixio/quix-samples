@@ -1,0 +1,17 @@
+FROM node:14 AS ui-build
+WORKDIR /my-app
+COPY ./ui /my-app/
+COPY ./ui/package*.json /my-app/
+RUN npm install @angular/cli && npm install
+RUN npm run build -- --output-path=./dist/out --configuration production
+
+FROM node:14 AS server-build
+COPY --from=ui-build /my-app/dist/out/ ./my-app/api/ui/
+COPY ./api/ ./my-app/api/
+WORKDIR ./my-app/api/
+RUN npm install
+EXPOSE 80
+
+COPY ./run_server.sh /
+RUN chmod +x /run_server.sh
+CMD ["/run_server.sh"]

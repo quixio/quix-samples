@@ -11,7 +11,7 @@
   },
   "shortDescription": "Prometheus metrics for a topic",
   "DefaultFile": "main.py",
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "Variables": [
     {

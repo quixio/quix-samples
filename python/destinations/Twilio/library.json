@@ -11,7 +11,7 @@
   },
   "shortDescription": "The most basic code example how to send data in Quix using Twilio",
   "DefaultFile": "twilio_sink.py",
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "IconFile": "icon.png",
   "Variables": [

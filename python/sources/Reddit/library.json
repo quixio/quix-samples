@@ -10,7 +10,7 @@
     },
     "shortDescription": "A Reddit scraper data feed for your Quix pipeline",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
     {

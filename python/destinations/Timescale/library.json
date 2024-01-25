@@ -11,7 +11,7 @@
       "Technology": ["Database", "QuixStreams"]
     },
     "shortDescription": "Stream data from Quix to a Timescale Database",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "DefaultFile": "main.py",
     "Variables": [

@@ -10,7 +10,7 @@
       "Technology": ["Database", "QuixStreams"]
     },
     "shortDescription": "Stream data from Postgres Database CDC to Quix",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "DefaultFile": "main.py",
     "Variables": [

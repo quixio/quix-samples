@@ -9,7 +9,7 @@
 	},
 	"shortDescription": "Stream data from a JSON file.",
 	"DefaultFile": "main.py",
-	"EntryPoint": "build/dockerfile",
+	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "main.py",
 	"Variables": [
 		{
