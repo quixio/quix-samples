@@ -9,7 +9,7 @@
     },
     "shortDescription": "Generates an alert when certain percentage increase or decrease is achieved",
     "DefaultFile": "percentage_function.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

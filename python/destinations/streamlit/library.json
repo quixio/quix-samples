@@ -11,7 +11,7 @@
   "shortDescription": "Build a Streamlit real time dashboard",
   "longDescription": "Streamlit real time dashboard. Use this with the 'Demo Data' source from the Quix library.",
   "DefaultFile": "streamlit_file.py",
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "Variables": [
     {

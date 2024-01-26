@@ -11,7 +11,7 @@
     },
     "shortDescription": "Subscribe to Azure IoT and publish data to Kafka",
     "DefaultFile": "azureiot/Program.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "azureIot.csproj",
     "IconFile": "icon.png",
     "Variables": [ 

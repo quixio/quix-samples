@@ -10,7 +10,7 @@
     },
     "shortDescription": "Publish data from a CSV file into a stream respecting the original time deltas",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

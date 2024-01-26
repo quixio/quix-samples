@@ -10,7 +10,7 @@
     },
     "shortDescription": "Replay currency exchange rates of September 2021 as if they happened today",
     "DefaultFile": "functions.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

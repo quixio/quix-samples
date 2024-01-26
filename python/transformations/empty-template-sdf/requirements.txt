@@ -1,1 +1,1 @@
-quixstreams>=2.0a
+quixstreams>=2.2a

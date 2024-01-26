@@ -10,7 +10,7 @@
     },
     "shortDescription": "Write data from a CSV into a stream in realtime at a given rate",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

@@ -9,7 +9,7 @@
     },
     "shortDescription": "Stream TFL's London traffic camera images",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

@@ -11,7 +11,7 @@
     },
     "shortDescription": "The most basic and essential 'Hello World' publish sample",
     "DefaultFile": "WriteHelloWorld/Program.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "WriteHelloWorld.csproj",
     "Variables": [ 
         {

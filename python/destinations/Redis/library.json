@@ -22,7 +22,7 @@
   },
   "shortDescription": "Publish Quix streams to Redis Stack",
   "DefaultFile": "main.py",
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "IconFile": "icon.png",
   "Variables": [

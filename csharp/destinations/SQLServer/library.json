@@ -10,7 +10,7 @@
     },
     "shortDescription": "Publish data to a SQL Database",
     "DefaultFile": "Quix.SqlServer.Writer/Worker.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "Quix.SqlServer.Writer/Quix.SqlServer.Writer.csproj",
     "IconFile": "icon.png",
     "Variables": [

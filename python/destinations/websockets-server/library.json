@@ -10,7 +10,7 @@
   },
   "shortDescription": "Publish timeseries and events to websocket clients",
   "DefaultFile": "main.py",
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "Variables": [
     {

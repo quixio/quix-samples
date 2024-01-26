@@ -9,7 +9,7 @@
     },
     "shortDescription": "Stream telemetry car data generated from a simple simulation algorithm",
     "DefaultFile": "CarDataGenerator/Program.cs",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "CarDataGenerator/CarDataGenerator.csproj",
     "Variables": [ 
         {

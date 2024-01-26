@@ -8,7 +8,7 @@
         "Type": ["Basic templates"]
     },
     "shortDescription": "A sample template for C# applications. Use this project as the starting point your own C# Quix Sample.",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "Service.csproj",
     "DefaultFile": "Program.cs",
     "Variables": [ 

@@ -10,7 +10,7 @@
     },
     "shortDescription": "A template demonstrating how to build an in-memory view.",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

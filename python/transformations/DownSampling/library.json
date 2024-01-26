@@ -10,7 +10,7 @@
     },
     "shortDescription": "Down sample data from 100hz to 10hz",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [ 
         {

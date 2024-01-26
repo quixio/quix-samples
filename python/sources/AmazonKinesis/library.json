@@ -11,7 +11,7 @@
     },
     "shortDescription": "Connect your Kinesis data to a Quix topic with this connector",
     "DefaultFile": "quix_functions.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "IconFile": "icon.png",
     "Variables": [

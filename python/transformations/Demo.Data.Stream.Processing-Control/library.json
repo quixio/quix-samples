@@ -10,7 +10,7 @@
     },
     "shortDescription": "Processes input data and sends coordinates, speed and angle to the output topic",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

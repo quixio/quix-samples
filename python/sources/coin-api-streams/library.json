@@ -10,7 +10,7 @@
     },
     "shortDescription": "Publish real-time currency data from the CoinAPI WebSocket API to a stream",
     "DefaultFile": "quix_functions.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
 			{

@@ -10,7 +10,7 @@
     "shortDescription": "A complete example of how to write data into a topic",
     "longDescription": "This is a complete example in Python of how to write data into a topic and the usage of all the Quix Streams methods",
     "DefaultFile": "quix_functions.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

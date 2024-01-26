@@ -12,7 +12,7 @@
   },
   "shortDescription": "A template for creating web APIs with Node.js",
   "DefaultFile": "app.js",
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "Variables": [
     {
       "Name": "JWT_AUTH_ISSUER",
