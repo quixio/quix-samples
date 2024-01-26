@@ -5,7 +5,7 @@ source /usr/bin/get-quix-broker-certs.sh
 
 echo "Bootstrap servers: $BOOTSTRAP_SERVERS"
 echo "Kafka Username: $kafkaUsername"
-echo "Kafka Password: $kafkaPassword"
+echo "Kafka Password: ***"
 echo "Kafka Security Mode: $kafkaSecurityMode"
 echo "Kafka SASL Mechanism: $kafkaSaslMechanism"
 echo "Quix Broker Truststore File: $quixBrokerTruststoreFile"
@@ -116,5 +116,3 @@ fi
 
 
 echo "Bootstrap servers updated ($BOOTSTRAP_SERVERS) successfully in $file_path"
-
-cat "$file_path"

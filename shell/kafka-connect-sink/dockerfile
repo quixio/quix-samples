@@ -36,9 +36,7 @@ RUN apk update \
 
 # COPY Kafka and ConfluentHub Connectors
 COPY --from=builder /opt/kafka /opt/kafka
-#COPY --from=builder /opt/connectors /opt/kafka/plugins
 COPY --from=builder /confluent-hub /opt/confluent
-COPY src/connectors/mongo-kafka-connect-1.11.1-all.jar /opt/kafka/plugins/mongodb-kafka-connect-1.11.1-all.jar
 
 # Kafka Connect config files
 COPY src/etc/connect-standalone.properties /opt/kafka/config/
