@@ -17,7 +17,7 @@ RUN apk update \
 
 FROM alpine:3.19
 
-ENV CONNECT_MODE=standalone
+ENV CONNECT_MODE=distributed
 ENV BOOTSTRAP_SERVERS=localhost:9091
 ENV CONNECTOR_NAME=connector-name
 ENV CONNECT_OFFSET_STORAGE_TOPIC=connect-offsets
