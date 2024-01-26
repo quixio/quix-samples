@@ -106,6 +106,10 @@ if [ "$CONNECT_MODE" == "distributed" ]; then
     create_and_wait_for_topic "$kafkaStatusStatusTopicName" "$kafkaStatusStorageTopic" &
     pid3=$!
 
+    if [ -n "$input" ]; then
+        create_and_wait_for_topic "${input}" "${Quix__Workspace__Id}-${input}" &
+    fi
+
     # Wait for all the topics to be created
     wait "$pid1" "$pid2" "$pid3"
 
