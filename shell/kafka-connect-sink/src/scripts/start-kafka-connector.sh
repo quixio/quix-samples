@@ -12,9 +12,9 @@ sh /usr/bin/update-bootstrapservers.sh
 #exec "/opt/kafka/bin/connect-distributed.sh" "/opt/kafka/config/connect-distributed.properties" 
 
 if [ -z "$CONNECT_MODE" ] || [ "$CONNECT_MODE" == "standalone" ]; then
-    exec "/opt/kafka/bin/connect-standalone.sh" "/opt/kafka/config/connect-standalone.properties"
+    exec "/opt/kafka/bin/connect-standalone.sh" "/opt/kafka/config/connect-standalone.properties" "/opt/kafka/config/connector.properties"
 else
-    exec "/opt/kafka/bin/connect-distributed.sh" "/opt/kafka/config/connect-distributed.properties"
+    exec "/opt/kafka/bin/connect-distributed.sh" "/opt/kafka/config/connect-distributed.properties" "/opt/kafka/config/connector.properties"
 fi
 
 #   If you want to automatically start the connector, the connector propertries file must be passed as a second argument.
@@ -39,6 +39,3 @@ fi
 #     "rabbitmq.queue": "test",
 #     "confluent.topic.bootstrap.servers": "broker-1:29091"
 #    }
-
-
-# exec "/opt/kafka/bin/connect-distributed.sh" "/opt/kafka/config/connect-distributed.properties" "/opt/kafka/config/myconnector.properties"

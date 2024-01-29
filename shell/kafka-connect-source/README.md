@@ -10,6 +10,8 @@ Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
+After forking the project, a file at the root directory named `connector.properties` should be filled with your connector configuration before being deployed.
+
 ## Environment variables
 
 The code sample uses the following environment variables:
