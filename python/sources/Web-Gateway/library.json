@@ -1,0 +1,35 @@
+{
+    "libraryItemId": "e8102920-b815-4c53-9dcd-f477ff865eee",
+    "name": "Flask Web Gateway",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "Technology": ["QuixStreams"],
+        "Pipeline Stage": ["Source"],
+        "Popular Subjects": ["Quick Start"],
+        "Type": ["Basic templates"]
+    },
+    "shortDescription": "Flask Web API gateway example to ingest data into the topic from any source.",
+    "DefaultFile": "main.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for hello world data",
+            "DefaultValue" : "hello-world-source",
+            "Required": true
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 500,
+        "Replicas": 1,
+        "PublicAccess": true,
+        "UrlPrefix": "gateway",
+        "ValidateConnection": false
+      }
+}
