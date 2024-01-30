@@ -31,9 +31,6 @@ shutting_down = False
 row_counter = 0
 published_total = 0
 
-# how many times you want to loop through the data
-iterations = 10
-
 # configure/create everything needed to publish data with the Producer class
 
 # Load the relevant configurations from environment variables
@@ -86,7 +83,6 @@ def publish_row(stream_id: str, row_data: dict):
 
 def process_csv_file(csv_file):
     global shutting_down
-    global iterations
 
     # Read the CSV file into a pandas DataFrame
     print("CSV file loading.")
@@ -95,7 +91,7 @@ def process_csv_file(csv_file):
     print("File loaded.")
 
     row_count = len(df)
-    print(f"Publishing {row_count * iterations} rows.")
+    print(f"Publishing {row_count} rows.")
 
     has_timestamp_column = False
 

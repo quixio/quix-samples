@@ -1,2 +1,3 @@
 quixstreams==2.2.0a0
 python-dotenv
+pandas
