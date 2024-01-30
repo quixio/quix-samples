@@ -41,6 +41,7 @@ COPY --from=builder /confluent-hub /opt/confluent
 # Kafka Connect config files
 COPY src/etc/connect-standalone.properties /opt/kafka/config/
 COPY src/etc/connect-distributed.properties /opt/kafka/config/
+COPY connector.properties /opt/kafka/config/
 
 # Quix bootstrap files
 COPY src/scripts/start-kafka-connector.sh /usr/bin/
