@@ -1,166 +1,105 @@
-# This code will publish the CSV data to a stream as if the data were being generated in real-time.
-
-# Import the supplimentary Quix Streams modules for interacting with Kafka: 
-from quixstreams.kafka import Producer
-from quixstreams.platforms.quix import QuixKafkaConfigsBuilder, TopicCreationConfigs
-from quixstreams.models.serializers.quix import JSONSerializer, QuixSerializer, SerializationContext
+# Import the Quix Streams modules for interacting with Kafka:
+from quixstreams import Application
+from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 
 # (see https://quix.io/docs/quix-streams/v2-0-latest/api-reference/quixstreams.html for more details)
 
-from datetime import datetime
+# Import additional modules as needed
 import pandas as pd
-import threading
 import random
 import time
 import os
 
-# import the dotenv module to load environment variables from a file
-from dotenv import load_dotenv
-load_dotenv(override=False)
 
-# True = keep original timings.
-# False = No delay! Speed through it as fast as possible.
-keep_timing = False
-
-# If the process is terminated on the command line or by the container
-# setting this flag to True will tell the loops to stop and the code
-# to exit gracefully.
-shutting_down = False
-
-# counters for the status messages
-row_counter = 0
-published_total = 0
-
-# how many times you want to loop through the data
-iterations = 10
-
-# configure/create everything needed to publish data with the Producer class
-
-# Load the relevant configurations from environment variables
-# In Quix Cloud, These variables are already preconfigured with defaults
-# When running locally, you need to define 'Quix__Sdk__Token' as an environment variable
-# Defining 'Quix__Workspace__Id' is also preferable, but often the workspace ID can be inferred.
-cfg_builder = QuixKafkaConfigsBuilder()
-
-# Get the input topic name from an environment variable
-cfgs, topics, _ = cfg_builder.get_confluent_client_configs([os.environ["output"]])
-
-# Create the topic if it doesn't yet exist
-cfg_builder.create_topics([TopicCreationConfigs(name=topics[0])])
-
-# Define a serializer for adding the extra headers
-# here we are using the JSONSerializer
+# Create an Application
+app = Application.Quix(consumer_group="csv_sample", auto_create_topics=True)
+# Define a serializer for messages, using JSON Serializer for ease
 serializer = JSONSerializer()
 
-# NOTE: if you have existing services in Quix, possibly using a version of the SDK before v2
-# and want to subscribe to data from there, use the QuixSerializer like this:
-# serializer = QuixSerializer()
+# Define the topic using the "output" environment variable
+topic_name = os.environ["output"]
+topic = app.topic(topic_name)
+
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.realpath(__file__))
+# Construct the path to the CSV file
+csv_file_path = os.path.join(script_dir, "demo-data.csv")
 
 
-brokers=cfgs.pop("bootstrap.servers")
 
-def publish_row(stream_id: str, row_data: dict):
-    global row_counter
-    global published_total
-    global cfgs
+# this function loads the file and sends each row to the publisher
+def read_csv_file(file_path: str):
+    """
+    A function to read data from a CSV file in an endless manner.
+    It returns a generator with stream_id and rows
+    """
 
-    # Initialize a Kafka Producer using the stream ID as the message key
-    with Producer(broker_address=brokers, extra_config=cfgs) as producer:
-
-        # serialize the row (dictionary)
-        ser = serializer(value=row_data, ctx=SerializationContext(topic=topics[0]))
-
-        producer.produce(
-            topic=topics[0],
-            key=stream_id,
-            value=ser,
-        )
-
-    row_counter += 1
-
-    if row_counter == 10:
-        row_counter = 0
-        published_total += 10
-        print(f"Published {published_total} rows")
-    
-
-def process_csv_file(csv_file):
-    global shutting_down
-    global iterations
-
-    # Read the CSV file into a pandas DataFrame
+    # Read the CSV file into a pandas.DataFrame
     print("CSV file loading.")
-
-    df = pd.read_csv(csv_file)
+    df = pd.read_csv(file_path)
     print("File loaded.")
 
+    # Get the number of rows in the dataFrame for printing out later
     row_count = len(df)
-    print(f"Publishing {row_count * iterations} rows.")
 
-    has_timestamp_column = False
-
-    # If the data contains a 'Timestamp'
-    if "Timestamp" in df:
-        has_timestamp_column = True
-        # keep the original timestamp to ensure the original timing is maintained
-        df = df.rename(columns={"Timestamp": "original_timestamp"})
-        print("Timestamp column renamed.")
-
-
-    # generate a unique stream id for this data stream
+    # Generate a unique ID for this data stream.
+    # It will be used as a message key in Kafka
     stream_id = f"CSV_DATA_{str(random.randint(1, 100)).zfill(3)}"
 
     # Get the column headers as a list
     headers = df.columns.tolist()
-        
-    # Iterate over the rows and send them to the API
-    for index, row in df.iterrows():
 
-        # If shutdown has been requested, exit the loop.
-        if shutting_down:
-            break
+    # Continuously loop over the data
+    while True:
+        # Print a message to the console for each iteration
+        print(f"Publishing {row_count} rows.")
 
-        # Create a dictionary that includes both column headers and row values
-        row_data = {header: row[header] for header in headers}
-        
-        # add a new timestamp column with the current data and time
-        row_data['Timestamp'] = int(time.time() * 1e9)
+        # Iterate over the rows and convert them to
+        for _, row in df.iterrows():
+            # Create a dictionary that includes both column headers and row values
+            row_data = {header: row[header] for header in headers}
 
-        # publish the row via the wrapper function
-        publish_row(stream_id, row_data)
+            # add a new timestamp column with the current data and time
+            row_data["Timestamp"] = time.time_ns()
 
-        if not keep_timing or not has_timestamp_column:
-            # Don't want to keep the original timing or no timestamp? Thats ok, just sleep for 200ms
-            time.sleep(0.2)
-        else:
-            # Delay sending the next row if it exists
-            # The delay is calculated using the original timestamps and ensure the data 
-            # is published at a rate similar to the original data rates
-            if index + 1 < len(df):
-                current_timestamp = pd.to_datetime(row['original_timestamp'])
-                next_timestamp = pd.to_datetime(df.at[index + 1, 'original_timestamp'])
-                time_difference = next_timestamp - current_timestamp
-                delay_seconds = time_difference.total_seconds()
-                
-                # handle < 0 delays
-                if delay_seconds < 0:
-                    delay_seconds = 0
+            # Yield the stream ID and the row data
+            yield stream_id, row_data
 
-                time.sleep(delay_seconds)
+        print("All rows published")
+
+        # Wait a moment before outputting more data.
+        time.sleep(1)
 
 
-# Run the CSV processing in a thread
-processing_thread = threading.Thread(target=process_csv_file, args=("demo-data.csv",))
-processing_thread.start()
+def main():
+    """
+    Read data from the CSV file and publish it to Kafka
+    """
 
-# Run this method before shutting down.
-# In this case we set a flag to tell the loops to exit gracefully.
-def before_shutdown():
-    global shutting_down
-    print("Shutting down")
+    # Create a pre-configured Producer object.
+    # Producer is already setup to use Quix brokers.
+    # It will also ensure that the topics exist before producing to them if
+    # Application.Quix is initiliazed with "auto_create_topics=True".
+    producer = app.get_producer()
 
-    # set the flag to True to stop the loops as soon as possible.
-    shutting_down = True
+    with producer:
+        # Iterate over the data from CSV file
+        for message_key, row_data in read_csv_file(file_path=csv_file_path):
+            # Serialize row value to bytes
+            serialized_value = serializer(
+                value=row_data, ctx=SerializationContext(topic=topic.name)
+            )
+
+            # publish the data to the topic
+            producer.produce(
+                topic=topic.name,
+                key=message_key,
+                value=serialized_value,
+            )
 
 
-print("Exiting.")
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting.")
