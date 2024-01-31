@@ -9,7 +9,6 @@ import random
 import time
 import os
 
-
 # Create an Application.
 # Consumer group is irrelevant for Producer and is a random string here
 app = Application.Quix(consumer_group="csv_sample", auto_create_topics=True)

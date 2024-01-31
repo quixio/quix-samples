@@ -1,0 +1,57 @@
+FROM alpine:3.19 as builder
+
+ENV KAFKA_VERSION=3.6.1
+ENV SCALA_VERSION=2.13
+
+COPY src/scripts/install-kafka.sh /bin/
+
+RUN apk update \
+  && apk add --no-cache bash curl jq \
+  && chmod a+x /bin/install-kafka.sh \
+  && /bin/install-kafka.sh \
+  && apk del curl jq \
+  && apk add --no-cache bash openjdk17-jre \
+  && wget https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz \
+  && mkdir confluent-hub \
+  && tar -xvzf confluent-hub-client-latest.tar.gz -C confluent-hub 
+
+FROM alpine:3.19
+
+ENV CONNECT_MODE=distributed
+ENV BOOTSTRAP_SERVERS=localhost:9091
+ENV CONNECTOR_NAME=connector-name
+ENV CONNECT_OFFSET_STORAGE_TOPIC=connect-offsets
+ENV CONNECT_CONFIG_STORAGE_TOPIC=connect-configs
+ENV CONNECT_STATUS_STORAGE_TOPIC=connect-status
+ENV Quix__Portal__Api=0
+ENV Quix__Workspace__Id=0
+ENV Quix__Sdk__Token=0
+
+EXPOSE 80
+
+RUN apk update \
+  && apk search openjdk \
+  && apk add --no-cache bash openjdk17-jre curl jq unzip \
+  && mkdir -p /opt/kafka/plugins
+
+# COPY Kafka and ConfluentHub Connectors
+COPY --from=builder /opt/kafka /opt/kafka
+COPY --from=builder /confluent-hub /opt/confluent
+
+# Kafka Connect config files
+COPY src/etc/connect-standalone.properties /opt/kafka/config/
+COPY src/etc/connect-distributed.properties /opt/kafka/config/
+COPY connector.properties /opt/kafka/config/
+
+# Quix bootstrap files
+COPY src/scripts/start-kafka-connector.sh /usr/bin/
+COPY src/scripts/update-bootstrapservers.sh /usr/bin/
+COPY src/scripts/get-quix-broker-certs.sh /usr/bin/
+COPY src/scripts/download-connector.sh /usr/bin/
+
+RUN chmod a+x /usr/bin/start-kafka-connector.sh \
+  && chmod a+x /usr/bin/update-bootstrapservers.sh \
+  && chmod a+x /usr/bin/get-quix-broker-certs.sh \
+  && chmod a+x /usr/bin/download-connector.sh
+
+CMD [ "/usr/bin/start-kafka-connector.sh" ]
