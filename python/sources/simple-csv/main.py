@@ -26,6 +26,7 @@ script_dir = os.path.dirname(os.path.realpath(__file__))
 csv_file_path = os.path.join(script_dir, "demo-data.csv")
 
 
+
 # this function loads the file and sends each row to the publisher
 def read_csv_file(file_path: str):
     """
