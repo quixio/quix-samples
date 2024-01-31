@@ -41,6 +41,7 @@ def publish_row(stream_id: str, row_data: dict):
         value=serialized_value,
     )
 
+
 # this function loads the file and sends each row to the publisher
 def process_csv_file(csv_file):
 
