@@ -9,7 +9,6 @@ import random
 import time
 import os
 
-
 # Create an Application.
 # Consumer group is irrelevant for Producer and is a random string here
 app = Application.Quix(consumer_group="csv_sample", auto_create_topics=True)
@@ -20,27 +19,27 @@ serializer = JSONSerializer()
 topic_name = os.environ["output"]
 topic = app.topic(topic_name)
 
+# Create a pre-configured Producer object.
+# Producer is already setup to use Quix brokers.
+# It will also ensure that the topics are created before producing to them if
+# Application.Quix is initiliazed with "auto_create_topics=True".
+producer = app.get_producer()
+
 # wrap the Quix producer code in a function
 def publish_row(stream_id: str, row_data: dict):
+   
+    # Serialize value to bytes
+    serialized_value = serializer(
+        value=row_data,
+        ctx=SerializationContext(topic=topic.name)
+    )
 
-    # Create a pre-configured Producer object.
-    # Producer is already setup to use Quix brokers.
-    # It will also ensure that the topics are created before producing to them if
-    # Application.Quix is initiliazed with "auto_create_topics=True".
-    with app.get_producer() as producer:
-        
-        # Serialize value to bytes
-        serialized_value = serializer(
-            value=row_data,
-            ctx=SerializationContext(topic=topic.name)
-        )
-
-        # publish the data to the topic
-        producer.produce(
-            topic=topic.name,
-            key=stream_id,
-            value=serialized_value,
-        )
+    # publish the data to the topic
+    producer.produce(
+        topic=topic.name,
+        key=stream_id,
+        value=serialized_value,
+    )
 
 # this function loads the file and sends each row to the publisher
 def process_csv_file(csv_file):
