@@ -9,14 +9,14 @@
         "Technology": ["Kafka"]
     },
     "IconFile": "icon.png",
-    "shortDescription": "Publish a Kafka Connect sink connector to Quix platform",
+    "shortDescription": "Install a Kafka Connect sink connector in the Quix platform",
     "EntryPoint": "dockerfile",
     "Variables": [
         {
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "This is the input topic from which to sink from",
+            "Description" : "The name of the input topic to sink data from",
             "DefaultValue" : "kafka-connect-sink-topic",
             "Required": true
         },
@@ -24,31 +24,31 @@
             "Name" : "CONNECT_OFFSET_STORAGE_TOPIC",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "Topic name to use for storing kafka connect offsets",
-            "DefaultValue" : "connect-offsets-sink",
+            "Description" : "Topic name to use for storing offsets for Kafka Connect",
+            "DefaultValue" : "kafka-connect-offsets-sink",
             "Required": true
         },
         {
             "Name" : "CONNECT_CONFIG_STORAGE_TOPIC",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "Topic name to use for storing connector and task configurations for kafka connect",
-            "DefaultValue" : "connect-configs-sink",
+            "Description" : "Topic name to use for storing connector and task configurations for Kafka Connect",
+            "DefaultValue" : "kafka-connect-configs-sink",
             "Required": true
         },
         {
             "Name" : "CONNECT_STATUS_STORAGE_TOPIC",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "Topic name to use for storing statuses for kafka connect",
-            "DefaultValue" : "connect-status-sink",
+            "Description" : "Topic name to use for storing statuses for Kafka Connect",
+            "DefaultValue" : "kafka-connect-status-sink",
             "Required": true
         },
         {
             "Name" : "CONNECTOR_NAME",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "The confluent hub (https://www.confluent.io/hub, free connectors only for now) kafka connector to use",
+            "Description" : "The Confluent Hub (https://www.confluent.io/hub) Kafka connector to use (Free licence connectors only for now)",
             "DefaultValue" : "",
             "Required": true
         }
