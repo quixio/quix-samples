@@ -12,7 +12,7 @@ Enable *public access* to be able to call API externally.
 
 ### Calling the API
 ```javascript
-await fetch("https://<YOUR_DNS_PREFIX>.deployments.quix.io/data", {
+await fetch("<YOUR_DEPLOYMENT_URI>/data", {
       headers: {
         "Content-Type": "application/json"
       },
