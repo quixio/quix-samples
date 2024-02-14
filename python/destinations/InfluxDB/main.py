@@ -34,7 +34,7 @@ def send_data_to_influx(row):
         client._write_api.write(
             bucket=os.environ["INFLUXDB_DATABASE"], 
             record=row_df, 
-            data_frame_measurement_name='conversationstest', 
+            data_frame_measurement_name=measurement_name, 
             data_frame_tag_columns=tag_columns)
 
         print(f"{str(datetime.datetime.utcnow())}: Persisted {row_df.shape[0]} rows.")
