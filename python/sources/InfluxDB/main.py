@@ -1,9 +1,32 @@
 # Importing necessary libraries and modules
-import quixstreams as qx
+from quixstreams import Application
+from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 import os
-from threading import Thread
+import random
 import influxdb_client_3 as InfluxDBClient3
 from time import sleep
+
+# Create an Application
+app = Application.Quix(auto_create_topics=True)
+
+# Define a serializer for messages, using JSON Serializer for ease
+serializer = JSONSerializer()
+
+# Define the topic using the "output" environment variable
+topic_name = os.environ["output"]
+topic = app.topic(topic_name)
+
+client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
+                         host=os.environ["INFLUXDB_HOST"],
+                         org=os.environ["INFLUXDB_ORG"],
+                         database=os.environ["INFLUXDB_DATABASE"])
+
+measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", os.environ["output"])
+interval = os.environ.get("task_interval", "5m")
+
+# should the main loop run?
+# Global variable to control the main loop's execution
+run = True
 
 # Helper function to convert time intervals (like 1h, 2m) into seconds for easier processing.
 # This function is useful for determining the frequency of certain operations.
@@ -32,95 +55,78 @@ def interval_to_seconds(interval):
     else:
         raise ValueError(f"Unknown interval unit: {unit}")
 
-
-# should the main loop run?
-# Global variable to control the main loop's execution
-run = True
-
-# Quix provides automatic credential injection for the client.
-# However, if needed, the SDK token can be provided manually.
-# Alternatively, you can always pass an SDK token manually as an argument.
-client = qx.QuixStreamingClient()
-
-# Initializing the Quix output topic for data streaming
-print("Opening output topic")
-producer_topic = client.get_topic_producer(os.environ["output"])
-
-# Creating a new data stream for Quix
-# A stream represents a collection of data belonging to a single session of a source.
-# A stream is a collection of data that belong to a single session of a single source.
-stream_producer = producer_topic.create_stream()
-# Editing the properties of the stream
-# Assigning a stream ID allows for appending data to the stream later on.
-# stream = producer_topic.create_stream("my-own-stream-id")  # To append data into the stream later, assign a stream id.
-stream_producer.properties.name = "influxdb-query"  # Give the stream a human readable name (for the data catalogue).
-stream_producer.properties.location = "/influxdb"  # Save stream in specific folder to organize your workspace.
-stream_producer.properties.metadata["version"] = "Version 1"  # Add stream metadata to add context to time series data.
-
-
-
-client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
-                         host=os.environ["INFLUXDB_HOST"],
-                         org=os.environ["INFLUXDB_ORG"],
-                         database=os.environ["INFLUXDB_DATABASE"])
-
-
-measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", os.environ["output"])
-interval = os.environ.get("task_interval", "5m")
 interval_seconds = interval_to_seconds(interval)
 
 # Function to fetch data from InfluxDB and send it to Quix
 # It runs in a continuous loop, periodically fetching data based on the interval.
 def get_data():
-
     # Run in a loop until the main thread is terminated
     while run:
         try:
-            # Query InfluxDB 3.0 usinfg influxql or sql
-            table = client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}', language="influxql")
+            # Query InfluxDB 3.0 using influxql or sql
+            table = client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}',
+                                 language="influxql")
 
-            # Convert the result to a pandas dataframe. Required to be processed through Quix. 
-            df = table.to_pandas().drop(columns=["iox::measurement"])
+            # Convert the result to a pandas dataframe. Required to be processed through Quix.
+            influx_df = table.to_pandas().drop(columns=["iox::measurement"])
+
+            # Convert Timestamp columns to ISO 8601 formatted strings
+            datetime_cols = influx_df.select_dtypes(include=['datetime64[ns]']).columns
+            for col in datetime_cols:
+                influx_df[col] = influx_df[col].dt.isoformat()
 
             # If there are rows to write to the stream at this time
-            stream_producer.timeseries.buffer.publish(df)
-            print("query success")
+            if not influx_df.empty:
+                yield influx_df
+                print("query success")
+            else:
+                print("No new data to publish.")
 
             # Wait for the next interval
             sleep(interval_seconds)
-                 
+
         except Exception as e:
             print("query failed", flush=True)
-            print(f"error: {e}",  flush=True)
+            print(f"error: {e}", flush=True)
             sleep(1)
 
-
-
-
-# Function to handle shutdown procedures
-# This is triggered when the main application receives termination signals.
-def before_shutdown():
-    global run
-
-    # Stop the main loop
-    run = False
-
-
-# Main execution function
-# It starts a separate thread to fetch data from InfluxDB.
 def main():
-    thread = Thread(target = get_data)
-    thread.start()
+    """
+    Read data from the Query and publish it to Kafka
+    """
 
-    # handle termination signals and close streams
-    qx.App.run(before_shutdown = before_shutdown)
+    # Create a pre-configured Producer object.
+    # Producer is already setup to use Quix brokers.
+    # It will also ensure that the topics exist before producing to them if
+    # Application.Quix is initialized with "auto_create_topics=True".
+    producer = app.get_producer()
 
-    # wait for worker thread to end
-    thread.join()
+    with producer:
+    # Iterate over the data from query result
+        for df in get_data():
+            print(f"DATAFRAME:\n{df}\n")
+            # Generate a unique message_key for each row
+            for index, row in df.iterrows():
+                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
 
-    print("Exiting")
+                # Convert the row to a dictionary
+                row_data = row.to_dict()
+
+                # Serialize row value to bytes
+                serialized_value = serializer(
+                    value=row_data, ctx=SerializationContext(topic=topic.name)
+                )
+
+                # publish the data to the topic
+                producer.produce(
+                    topic=topic.name,
+                    key=message_key,
+                    value=serialized_value,
+                )
 
 
-# Main execution check: Ensures the script is being run as a standalone file and not imported as a module.
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting.")
