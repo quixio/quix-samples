@@ -1,2 +1,3 @@
-quixstreams==0.5.7
-influxdb3-python==0.3.0
+quixstreams==2.2.0a0
+influxdb3-python==0.3.6
+pandas
