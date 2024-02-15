@@ -1,3 +1,4 @@
 quixstreams==2.2.0a0
 influxdb3-python==0.3.6
 pandas
+polars
