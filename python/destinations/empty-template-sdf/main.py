@@ -1,7 +1,11 @@
-import os
 from quixstreams import Application, State
 from quixstreams.models.serializers.quix import QuixDeserializer, QuixTimeseriesSerializer
 
+import os
+from dotenv import load_dotenv
+
+with open("./.env", 'a+') as file: pass  # make sure the .env file exists
+load_dotenv("./.env")
 
 app = Application.Quix("destination-v1", auto_offset_reset="latest")
 
