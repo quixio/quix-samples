@@ -18,7 +18,8 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "Name of the input topic to listen to."
+            "Description" : "Name of the input topic to listen to.",
+            "DefaultValue" : "csv-data"
         },
         {
             "Name" : "output",
