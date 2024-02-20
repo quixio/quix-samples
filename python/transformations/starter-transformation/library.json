@@ -1,6 +1,6 @@
 {
     "libraryItemId": "a00cd311-988d-4966-8eb5-eb50ad71dedd",
-    "name": "Starter transformation SDF",
+    "name": "Starter transformation",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -18,7 +18,8 @@
             "Name" : "input",
             "Type" : "EnvironmentVariable",
             "InputType" : "InputTopic",
-            "Description" : "Name of the input topic to listen to."
+            "Description" : "Name of the input topic to listen to.",
+            "DefaultValue" : "csv-data"
         },
         {
             "Name" : "output",

@@ -1,14 +1,14 @@
-# Starter transformation
+# Starter data source
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/transformations/empty-template) is an example of how to transform data on the fly between source and destination.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/starter-source) streams data from hardcoded data into a topic.
 
-The default implementation subscribes to data from the source and publishes to the destination as-well-as printing content to console output. 
-
-Modify the Python code to transform your data on the fly.
+The sample is a demonstration of how you can publish data into Quix.
 
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+
+Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
@@ -16,8 +16,7 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 
 The code sample uses the following environment variables:
 
-- **input**: Name of the input topic to listen to.
-- **output**: Name of the output topic to write to.
+- **Topic**: Name of the output topic to write into.
 
 ## Contribute
 
