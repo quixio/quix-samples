@@ -87,16 +87,16 @@ def get_data():
             if not table.empty:
                 json_result = table.to_json(orient='records', date_format='iso')
                 yield json_result
-                print("query success")
+                logger.info("query success")
             else:
-                print("No new data to publish.")
+                logger.info("No new data to publish.")
 
             # Wait for the next interval
             sleep(interval_seconds)
 
         except Exception as e:
-            print("query failed", flush=True)
-            print(f"error: {e}", flush=True)
+            logger.info("query failed", flush=True)
+            logger.info(f"error: {e}", flush=True)
             sleep(1)
 
 def main():
@@ -135,4 +135,4 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("Exiting.")
+        logger.info("Exiting.")
