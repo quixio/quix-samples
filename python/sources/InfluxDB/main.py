@@ -105,9 +105,8 @@ def main():
     # Producer is already setup to use Quix brokers.
     # It will also ensure that the topics exist before producing to them if
     # Application.Quix is initialized with "auto_create_topics=True".
-    producer = app.get_producer()
 
-    with producer:
+    with app.get_producer() as producer:
         for res in get_data():
             # Parse the JSON string into a Python object
             records = json.loads(res)
