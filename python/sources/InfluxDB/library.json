@@ -20,14 +20,14 @@
       "Type" : "EnvironmentVariable",
       "InputType" : "OutputTopic",
       "Description" : "This is the Quix topic that will receive the stream",
-      "DefaultValue" : "influxdb",
+      "DefaultValue" : "influxdbv3-data",
       "Required": true
   },
     {
       "Name": "task_interval",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1mo, 1y",
+      "Description": "Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y",
       "DefaultValue": "5m",
       "Required": true
     },
