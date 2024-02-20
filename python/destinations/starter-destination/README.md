@@ -1,10 +1,10 @@
 # Starter transformation
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/transformations/empty-template-sdf) is an example of how to transform data on the fly between source and destination.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/destinations/starter-destination) is an example of how to transform data on the fly between source and destination.
 
-The default implementation subscribes to data from the source and publishes to the destination as-well-as printing content to console output. 
+The default implementation subscribes to data from the source topic and publishes to your destination as-well-as printing content to console output. 
 
-Modify the Python code to transform your data on the fly.
+Modify the Python code to publish to your chosen destination(s) on the fly.
 
 ## How to run
 
