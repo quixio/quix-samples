@@ -1,0 +1,25 @@
+{
+    "libraryItemId": "3ddc14c6-e07f-4092-b203-f969f9eb0b8d",
+    "name": "Starter destination SDF",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "Technology": ["QuixStreams", "SDF"],
+        "Pipeline Stage": ["Destination"],
+        "Popular Subjects": ["Quick Start"],
+        "Type": ["Basic templates"]
+    },
+    "shortDescription": "Template using Streaming Data Frames to sink data between to a destination.",
+    "DefaultFile": "main.py",
+    "EntryPoint": "dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "Name of the input topic to listen to.",
+			"DefaultValue" : "transform"
+        }
+    ]    
+}
