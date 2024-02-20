@@ -6,9 +6,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-print(os.environ["input"])
-
-
 with open("./.env", 'a+') as file: pass  # make sure the .env file exists
 load_dotenv("./.env")
 
