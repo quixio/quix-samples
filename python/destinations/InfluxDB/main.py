@@ -1,43 +1,60 @@
-from quixstreams import Application
-from quixstreams.models.serializers.quix import JSONDeserializer
+# import Utility modules
 import os
-import influxdb_client_3 as InfluxDBClient3
 import ast
 import datetime
-import pandas as pd
+import logging
+
+# import vendor-specific modules
+from quixstreams import Application
+from quixstreams.models.serializers.quix import JSONDeserializer
+from influxdb_client_3 import InfluxDBClient3
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Application.Quix(consumer_group="influx-destination",
                        auto_offset_reset="earliest")
 
 input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer())
 
-# Read the environment variable and convert it to a list
-tag_columns = ast.literal_eval(os.environ.get('INFLUXDB_TAG_COLUMNS', "[]"))
+# Read the environment variable and convert it to a dictionary
+tag_dict = ast.literal_eval(os.environ.get('INFLUXDB_TAG_COLUMNS', "{}"))
 
-# Read the environment variable for measurement name and convert it to a list
+# Read the environment variable for measurement name
 measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', os.environ["input"])
+
+# Read the environment variable for the field(s) to get.
+# For multiple fields, use a list "['field1','field2']"
+field_keys = os.environ.get("field_keys", "['field1']")
                                            
-client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
+influx3_client = InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
                          org=os.environ["INFLUXDB_ORG"],
                          database=os.environ["INFLUXDB_DATABASE"])
 
-def send_data_to_influx(row):
+def send_data_to_influx(message):
+    logger.info(f"Processing message: {message}")
     try:
-        # Convert the dictionary to a DataFrame
-        row_df = pd.DataFrame([row])
+        quixtime = message['time']
+        # Get the name(s) and value(s) of the selected field(s)
+        # Using just a single field in this example for simplicity
+        field1_name = field_keys[0]
+        field1_value = message[field_keys[0]]
 
-        # Reformat the dataframe to match the InfluxDB format
-        row_df = row_df.rename(columns={'timestamp': 'time'})
-        row_df = row_df.set_index('time')
+        logger.info(f"Using field keys: {', '.join(field_keys)}")
 
-        client._write_api.write(
-            bucket=os.environ["INFLUXDB_DATABASE"], 
-            record=row_df, 
-            data_frame_measurement_name=measurement_name, 
-            data_frame_tag_columns=tag_columns)
+        # Using point dictionary structure
+        # See: https://docs.influxdata.com/influxdb/cloud-dedicated/reference/client-libraries/v3/python/#write-data-using-a-dict
+        points = {
+            "measurement": measurement_name,
+            "tags": tag_dict,
+            "fields": {field1_name: field1_value},
+            "time": quixtime
+        }
 
-        print(f"{str(datetime.datetime.utcnow())}: Persisted {row_df.shape[0]} rows.")
+        influx3_client.write(record=points, write_precision="ms")
+        
+        print(f"{str(datetime.datetime.utcnow())}: Persisted measurement to influx.")
     except Exception as e:
         print(f"{str(datetime.datetime.utcnow())}: Write failed")
         print(e)
