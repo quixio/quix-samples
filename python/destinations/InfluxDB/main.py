@@ -25,7 +25,7 @@ measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', os.environ["input
 
 # Read the environment variable for the field(s) to get.
 # For multiple fields, use a list "['field1','field2']"
-field_keys = os.environ.get("field_keys", "['field1']")
+field_keys = os.environ.get("INFLUXDB_FIELD_KEYS", "['field1','field2']")
                                            
 influx3_client = InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
@@ -37,7 +37,7 @@ def send_data_to_influx(message):
     try:
         quixtime = message['time']
         # Get the name(s) and value(s) of the selected field(s)
-        # Using just a single field in this example for simplicity
+        # Using a single field in this example for simplicity
         field1_name = field_keys[0]
         field1_value = message[field_keys[0]]
 
