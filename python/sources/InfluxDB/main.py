@@ -69,11 +69,11 @@ def get_data():
     # Run in a loop until the main thread is terminated
     while run:
         try:
-            myquery = f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}'
-            print(f"sending query {myquery}")
+            query_definition = f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}'
+            print(f"Sending query {query_definition}")
             # Query InfluxDB 3.0 using influxql or sql
             table = influxdb3_client.query(
-                                    query=myquery,
+                                    query=query_definition,
                                     mode="pandas",
                                     language="influxql")
 
