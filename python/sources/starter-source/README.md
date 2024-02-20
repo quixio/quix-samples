@@ -1,6 +1,6 @@
 # Starter data source
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/sdf-data-source) streams data from hardcoded CSV data into a topic.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/starter-source) streams data from hardcoded data into a topic.
 
 The sample is a demonstration of how you can publish data into Quix.
 
