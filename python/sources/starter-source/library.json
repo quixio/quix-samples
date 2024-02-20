@@ -1,6 +1,6 @@
 {
 	"libraryItemId": "8dd9ecb9-d1aa-498c-84fb-054a042acc13",
-	"name": "Starter data source",
+	"name": "Starter source",
 	"language": "Python",
 	"tags": {
 		"Technology": ["QuixStreams", "SDF"],
@@ -8,8 +8,7 @@
 		"Popular Subjects": ["Quick Start"],
 		"Type": ["Demos"]
 	},
-	"shortDescription": "Stream data from hardcoded CSV data",
-	"longDescription": "Stream our simple CSV data into a topic",
+	"shortDescription": "Stream data from hardcoded comma seperated data",
 	"DefaultFile": "main.py",
 	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "main.py",

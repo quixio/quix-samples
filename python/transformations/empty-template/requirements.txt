@@ -1,1 +1,0 @@
-quixstreams==0.5.7
