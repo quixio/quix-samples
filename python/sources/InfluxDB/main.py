@@ -1,13 +1,22 @@
-# Importing necessary libraries and modules
-from quixstreams import Application
-from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
+# Import utility modules
 import os
 import random
-import influxdb_client_3 as InfluxDBClient3
+import json
+import logging
 from time import sleep
 
-# Create an Application
-app = Application.Quix(auto_create_topics=True)
+# import vendor-specific libraries
+from quixstreams import Application
+from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
+import influxdb_client_3 as InfluxDBClient3
+
+
+# Initialize logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Create a Quix Application
+app = Application.Quix(consumer_group="influxdb_sample", auto_create_topics=True)
 
 # Define a serializer for messages, using JSON Serializer for ease
 serializer = JSONSerializer()
@@ -16,7 +25,7 @@ serializer = JSONSerializer()
 topic_name = os.environ["output"]
 topic = app.topic(topic_name)
 
-client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
+influxdb3_client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
                          org=os.environ["INFLUXDB_ORG"],
                          database=os.environ["INFLUXDB_DATABASE"])
@@ -24,36 +33,33 @@ client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", os.environ["output"])
 interval = os.environ.get("task_interval", "5m")
 
-# should the main loop run?
 # Global variable to control the main loop's execution
 run = True
 
+# InfluxDB interval-to-seconds conversion dictionary
+UNIT_SECONDS = {
+    "s": 1,
+    "m": 60,
+    "h": 3600,
+    "d": 86400,
+    "w": 604800,
+    "y": 31536000,
+}
+
 # Helper function to convert time intervals (like 1h, 2m) into seconds for easier processing.
 # This function is useful for determining the frequency of certain operations.
-def interval_to_seconds(interval):
-    if not interval:
-        raise ValueError("Invalid interval string")
-
-    unit = interval[-1].lower()
+def interval_to_seconds(interval: str) -> int:
     try:
-        value = int(interval[:-1])
-    except ValueError:
-        raise ValueError("Invalid interval format")
-
-    if unit == 's':
-        return value
-    elif unit == 'm':
-        return value * 60
-    elif unit == 'h':
-        return value * 3600
-    elif unit == 'd':
-        return value * 3600 * 24
-    elif unit == 'mo':
-        return value * 3600 * 24 * 30
-    elif unit == 'y':
-        return value * 3600 * 24 * 365
-    else:
-        raise ValueError(f"Unknown interval unit: {unit}")
+        return int(interval[:-1]) * UNIT_SECONDS[interval[-1]]
+    except ValueError as e:
+        if "invalid literal" in str(e):
+            raise ValueError(
+                "interval format is {int}{unit} i.e. '10h'; "
+                f"valid units: {list(UNIT_SECONDS.keys())}")
+    except KeyError:
+        raise ValueError(
+            f"Unknown interval unit: {interval[-1]}; "
+            f"valid units: {list(UNIT_SECONDS.keys())}")
 
 interval_seconds = interval_to_seconds(interval)
 
@@ -63,21 +69,21 @@ def get_data():
     # Run in a loop until the main thread is terminated
     while run:
         try:
+            myquery = f'SELECT * FROM "10ms_activations" WHERE time >= now() - {interval}'
+            print(f"sending query {myquery}")
             # Query InfluxDB 3.0 using influxql or sql
-            table = client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}',
-                                 language="influxql")
+            table = influxdb3_client.query(
+                                    query=myquery,
+                                    mode="pandas",
+                                    language="influxql")
 
-            # Convert the result to a pandas dataframe. Required to be processed through Quix.
-            influx_df = table.to_pandas().drop(columns=["iox::measurement"])
-
-            # Convert Timestamp columns to ISO 8601 formatted strings
-            datetime_cols = influx_df.select_dtypes(include=['datetime64[ns]']).columns
-            for col in datetime_cols:
-                influx_df[col] = influx_df[col].dt.isoformat()
+            table = table.drop(columns=["iox::measurement"])
 
             # If there are rows to write to the stream at this time
-            if not influx_df.empty:
-                yield influx_df
+            if not table.empty:
+                # Convert to JSON for JSON-to-bytes serializer
+                json_result = table.to_json(orient='records', date_format='iso')
+                yield json_result
                 print("query success")
             else:
                 print("No new data to publish.")
@@ -102,19 +108,17 @@ def main():
     producer = app.get_producer()
 
     with producer:
-    # Iterate over the data from query result
-        for df in get_data():
-            print(f"DATAFRAME:\n{df}\n")
-            # Generate a unique message_key for each row
-            for index, row in df.iterrows():
+        for res in get_data():
+            # Parse the JSON string into a Python object
+            records = json.loads(res)
+            for index, obj in enumerate(records):
+                # Generate a unique message_key for each row
                 message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
-
-                # Convert the row to a dictionary
-                row_data = row.to_dict()
+                logger.info(f"Produced message with key:{message_key}, value:{obj}")
 
                 # Serialize row value to bytes
                 serialized_value = serializer(
-                    value=row_data, ctx=SerializationContext(topic=topic.name)
+                    value=obj, ctx=SerializationContext(topic=topic.name)
                 )
 
                 # publish the data to the topic
@@ -123,7 +127,6 @@ def main():
                     key=message_key,
                     value=serialized_value,
                 )
-
 
 if __name__ == "__main__":
     try:
