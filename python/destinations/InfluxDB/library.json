@@ -70,6 +70,14 @@
       "Description": "The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used",
       "DefaultValue": "",
       "Required": false
+        },
+    {
+      "Name": "INFLUXDB_FIELD_KEYS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The fields to include when writing the measurement data",
+      "DefaultValue": "['field1','field2']",
+      "Required": true
     }
   ]
 }

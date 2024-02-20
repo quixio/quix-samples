@@ -1,126 +1,134 @@
-# Importing necessary libraries and modules
-import quixstreams as qx
+# Import utility modules
 import os
-from threading import Thread
-import influxdb_client_3 as InfluxDBClient3
+import random
+import json
+import logging
 from time import sleep
 
-# Helper function to convert time intervals (like 1h, 2m) into seconds for easier processing.
-# This function is useful for determining the frequency of certain operations.
-def interval_to_seconds(interval):
-    if not interval:
-        raise ValueError("Invalid interval string")
-
-    unit = interval[-1].lower()
-    try:
-        value = int(interval[:-1])
-    except ValueError:
-        raise ValueError("Invalid interval format")
-
-    if unit == 's':
-        return value
-    elif unit == 'm':
-        return value * 60
-    elif unit == 'h':
-        return value * 3600
-    elif unit == 'd':
-        return value * 3600 * 24
-    elif unit == 'mo':
-        return value * 3600 * 24 * 30
-    elif unit == 'y':
-        return value * 3600 * 24 * 365
-    else:
-        raise ValueError(f"Unknown interval unit: {unit}")
+# import vendor-specific libraries
+from quixstreams import Application
+from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
+import influxdb_client_3 as InfluxDBClient3
 
 
-# should the main loop run?
-# Global variable to control the main loop's execution
-run = True
+# Initialize logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Quix provides automatic credential injection for the client.
-# However, if needed, the SDK token can be provided manually.
-# Alternatively, you can always pass an SDK token manually as an argument.
-client = qx.QuixStreamingClient()
+# Create a Quix Application
+app = Application.Quix(consumer_group="influxdb_sample", auto_create_topics=True)
 
-# Initializing the Quix output topic for data streaming
-print("Opening output topic")
-producer_topic = client.get_topic_producer(os.environ["output"])
+# Define a serializer for messages, using JSON Serializer for ease
+serializer = JSONSerializer()
 
-# Creating a new data stream for Quix
-# A stream represents a collection of data belonging to a single session of a source.
-# A stream is a collection of data that belong to a single session of a single source.
-stream_producer = producer_topic.create_stream()
-# Editing the properties of the stream
-# Assigning a stream ID allows for appending data to the stream later on.
-# stream = producer_topic.create_stream("my-own-stream-id")  # To append data into the stream later, assign a stream id.
-stream_producer.properties.name = "influxdb-query"  # Give the stream a human readable name (for the data catalogue).
-stream_producer.properties.location = "/influxdb"  # Save stream in specific folder to organize your workspace.
-stream_producer.properties.metadata["version"] = "Version 1"  # Add stream metadata to add context to time series data.
+# Define the topic using the "output" environment variable
+topic_name = os.environ["output"]
+topic = app.topic(topic_name)
 
-
-
-client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
+influxdb3_client = InfluxDBClient3.InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
                          org=os.environ["INFLUXDB_ORG"],
                          database=os.environ["INFLUXDB_DATABASE"])
 
-
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", os.environ["output"])
 interval = os.environ.get("task_interval", "5m")
+
+# Global variable to control the main loop's execution
+run = True
+
+# InfluxDB interval-to-seconds conversion dictionary
+UNIT_SECONDS = {
+    "s": 1,
+    "m": 60,
+    "h": 3600,
+    "d": 86400,
+    "w": 604800,
+    "y": 31536000,
+}
+
+# Helper function to convert time intervals (like 1h, 2m) into seconds for easier processing.
+# This function is useful for determining the frequency of certain operations.
+def interval_to_seconds(interval: str) -> int:
+    try:
+        return int(interval[:-1]) * UNIT_SECONDS[interval[-1]]
+    except ValueError as e:
+        if "invalid literal" in str(e):
+            raise ValueError(
+                "interval format is {int}{unit} i.e. '10h'; "
+                f"valid units: {list(UNIT_SECONDS.keys())}")
+    except KeyError:
+        raise ValueError(
+            f"Unknown interval unit: {interval[-1]}; "
+            f"valid units: {list(UNIT_SECONDS.keys())}")
+
 interval_seconds = interval_to_seconds(interval)
 
 # Function to fetch data from InfluxDB and send it to Quix
 # It runs in a continuous loop, periodically fetching data based on the interval.
 def get_data():
-
     # Run in a loop until the main thread is terminated
     while run:
         try:
-            # Query InfluxDB 3.0 usinfg influxql or sql
-            table = client.query(query=f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}', language="influxql")
+            query_definition = f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}'
+            print(f"Sending query {query_definition}")
+            # Query InfluxDB 3.0 using influxql or sql
+            table = influxdb3_client.query(
+                                    query=query_definition,
+                                    mode="pandas",
+                                    language="influxql")
 
-            # Convert the result to a pandas dataframe. Required to be processed through Quix. 
-            df = table.to_pandas().drop(columns=["iox::measurement"])
+            table = table.drop(columns=["iox::measurement"])
 
             # If there are rows to write to the stream at this time
-            stream_producer.timeseries.buffer.publish(df)
-            print("query success")
+            if not table.empty:
+                # Convert to JSON for JSON-to-bytes serializer
+                json_result = table.to_json(orient='records', date_format='iso')
+                yield json_result
+                print("query success")
+            else:
+                print("No new data to publish.")
 
             # Wait for the next interval
             sleep(interval_seconds)
-                 
+
         except Exception as e:
             print("query failed", flush=True)
-            print(f"error: {e}",  flush=True)
+            print(f"error: {e}", flush=True)
             sleep(1)
 
-
-
-
-# Function to handle shutdown procedures
-# This is triggered when the main application receives termination signals.
-def before_shutdown():
-    global run
-
-    # Stop the main loop
-    run = False
-
-
-# Main execution function
-# It starts a separate thread to fetch data from InfluxDB.
 def main():
-    thread = Thread(target = get_data)
-    thread.start()
+    """
+    Read data from the Query and publish it to Kafka
+    """
 
-    # handle termination signals and close streams
-    qx.App.run(before_shutdown = before_shutdown)
+    # Create a pre-configured Producer object.
+    # Producer is already setup to use Quix brokers.
+    # It will also ensure that the topics exist before producing to them if
+    # Application.Quix is initialized with "auto_create_topics=True".
 
-    # wait for worker thread to end
-    thread.join()
+    with app.get_producer() as producer:
+        for res in get_data():
+            # Parse the JSON string into a Python object
+            records = json.loads(res)
+            for index, obj in enumerate(records):
+                # Generate a unique message_key for each row
+                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
+                logger.info(f"Produced message with key:{message_key}, value:{obj}")
 
-    print("Exiting")
+                # Serialize row value to bytes
+                serialized_value = serializer(
+                    value=obj, ctx=SerializationContext(topic=topic.name)
+                )
 
+                # publish the data to the topic
+                producer.produce(
+                    topic=topic.name,
+                    key=message_key,
+                    value=serialized_value,
+                )
 
-# Main execution check: Ensures the script is being run as a standalone file and not imported as a module.
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting.")
