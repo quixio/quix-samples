@@ -1,2 +1,2 @@
 quixstreams==0.5.7
-paho-mqtt
+paho-mqtt==1.6.1
