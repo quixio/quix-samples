@@ -1,3 +1,0 @@
-quixstreams==0.5.7
-snowplow_analytics_sdk
-pandas==1.5.3
