@@ -20,7 +20,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "InputTopic",
       "Description": "This is the input topic",
-      "DefaultValue": "detection-result",
+      "DefaultValue": "input-data",
       "Required": true
     },
     {
