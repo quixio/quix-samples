@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create a Quix Application
-app = Application.Quix(consumer_group="influxdbv2_sample", auto_create_topics=True)
+app = Application.Quix(consumer_group="influxdbv2_source", auto_create_topics=True)
 
 # Define a serializer for messages, using JSON Serializer for ease
 serializer = JSONSerializer()
@@ -30,7 +30,6 @@ influxdb2_client = influxdb_client.InfluxDBClient(token=os.environ["INFLUXDB_TOK
 
 query_api = influxdb2_client.query_api()
 
-measurement = os.environ.get("INFLUXDB_MEASUREMENT_NAME", os.environ["output"])
 interval = os.environ.get("task_interval", "5m")
 bucket = os.environ.get("INFLUXDB_BUCKET", "placeholder-bucket")
 
@@ -63,6 +62,10 @@ def interval_to_seconds(interval: str) -> int:
 
 interval_seconds = interval_to_seconds(interval)
 
+
+def is_dataframe(result):
+    return type(result).__name__ == 'DataFrame'
+
 # Function to fetch data from InfluxDB and send it to Quix
 # It runs in a continuous loop, periodically fetching data based on the interval.
 def get_data():
@@ -73,7 +76,6 @@ def get_data():
             flux_query = f'''
             from(bucket: "{bucket}")
                 |> range(start: -{interval})
-                |> filter(fn: (r) => r._measurement == "{measurement}")
                 |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
             '''
             logger.info(f"Sending query: {flux_query}")
@@ -81,22 +83,30 @@ def get_data():
             table = query_api.query_data_frame(query=flux_query,org=os.environ['INFLUXDB_ORG'])
 
             # Renaming time column to distinguish it from other timestamp types
-            table.rename(columns={'_time': 'original_time'}, inplace=True)
+            # table.rename(columns={'_time': 'original_time'}, inplace=True)
 
-            # If there are rows to write to the stream at this time
-            if not table.empty:
-                json_result = table.to_json(orient='records', date_format='iso')
-                yield json_result
-                logger.info("query success")
-            else:
-                logger.info("No new data to publish.")
+            # If the query returns tables with different schemas, the result will be a list of dataframes.
+            if isinstance(table, list):
+                for item in table:
+                    item.rename(columns={'_time': 'original_time'}, inplace=True)
+                    json_result = item.to_json(orient='records', date_format='iso')
+                    yield json_result
+                    logger.info("Published multiple measurements to Quix")
+            elif is_dataframe(table) and len(table) > 0:
+                    table.rename(columns={'_time': 'original_time'}, inplace=True)
+                    json_result = table.to_json(orient='records', date_format='iso')
+                    yield json_result
+                    logger.info("Published single measurement to Quix")
+            elif is_dataframe(table) and len(table) < 1:
+                    logger.info("No results.")
 
-            # Wait for the next interval
+            logger.info(f"Trying again in {interval_seconds} seconds...")
             sleep(interval_seconds)
 
         except Exception as e:
-            logger.info("query failed", flush=True)
-            logger.info(f"error: {e}", flush=True)
+            logger.info("query failed")
+            logger.info(f"error: {e}")
+            flush=True
             sleep(1)
 
 def main():
@@ -108,8 +118,9 @@ def main():
     # Producer is already setup to use Quix brokers.
     # It will also ensure that the topics exist before producing to them if
     # Application.Quix is initialized with "auto_create_topics=True".
-  
-    with app.get_producer() as producer:
+    producer = app.get_producer()
+
+    with producer:
         for res in get_data():
             # Parse the JSON string into a Python object
             records = json.loads(res)
