@@ -48,6 +48,14 @@
       "Required": false
     },
     {
+      "Name": "INFLUXDB_MEASUREMENT_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
       "Name": "INFLUXDB_DATABASE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
@@ -56,27 +64,27 @@
       "Required": true
     },
     {
-      "Name": "INFLUXDB_TAG_COLUMNS",
+      "Name": "INFLUXDB_TAG_KEYS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Columns to be used as tags when writing data to InfluxDB.",
+      "Description": "The tags to include when writing the measurement data",
       "DefaultValue": "['tag1', 'tag2']",
       "Required": false
     },
-    {
-      "Name": "INFLUXDB_MEASUREMENT_NAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used",
-      "DefaultValue": "",
-      "Required": false
-        },
     {
       "Name": "INFLUXDB_FIELD_KEYS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The fields to include when writing the measurement data",
       "DefaultValue": "['field1','field2']",
+      "Required": true
+    },
+    {
+      "Name": "CONSUMER_GROUP_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The name of the consumer group to use when consuming from Kafka",
+      "DefaultValue": "influxdb-sink",
       "Required": true
     }
   ]
