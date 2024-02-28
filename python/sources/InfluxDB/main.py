@@ -112,7 +112,7 @@ def main():
             records = json.loads(res)
             for index, obj in enumerate(records):
                 # Generate a unique message_key for each row
-                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
+                message_key = f"INFLUX_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}" # Change to a tag name if you want to aggregate data by a specific tag such as "SensorID"
                 logger.info(f"Produced message with key:{message_key}, value:{obj}")
 
                 # Serialize row value to bytes
