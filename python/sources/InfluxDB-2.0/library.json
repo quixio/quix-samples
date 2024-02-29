@@ -62,14 +62,6 @@
       "Description": "Bucket name in InfluxDB where data is stored.",
       "DefaultValue": "<BUCKET>",
       "Required": true
-    },
-    {
-      "Name": "INFLUXDB_MEASUREMENT_NAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used",
-      "DefaultValue": "<INSERT MEASUREMENT>",
-      "Required": false
     }
   ]
 }
