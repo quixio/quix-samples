@@ -1,0 +1,34 @@
+{
+    "libraryItemId": "9b7f7253-22c3-41a4-a5e9-9f8ec084f879",
+    "name": "Event Detection",
+    "language": "Python",
+    "tags": {
+        "Complexity": ["Easy"],
+        "Technology": ["QuixStreams"],
+        "Pipeline Stage": ["Transformation"],
+        "Type": ["Code samples"],
+        "Popular Subjects": ["Onboarding"]
+    },
+    "shortDescription": "Filter data with this 'Hard Braking' model",
+    "DefaultFile": "quix_function.py",
+    "EntryPoint": "dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [ 
+        {
+            "Name" : "input",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "InputTopic",
+            "Description" : "This is the input topic for f1 data",
+            "DefaultValue" : "",
+            "Required": true
+        },
+        {
+            "Name" : "output",
+            "Type" : "EnvironmentVariable",
+            "InputType" : "OutputTopic",
+            "Description" : "This is the output topic for hard braking events",
+            "DefaultValue" : "hard-braking",
+            "Required": true
+        }
+    ]    
+}
