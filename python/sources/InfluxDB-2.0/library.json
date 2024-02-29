@@ -35,8 +35,8 @@
       "Name": "INFLUXDB_HOST",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Host address for the InfluxDB instance.",
-      "DefaultValue": "eu-central-1-1.aws.cloud2.influxdata.com",
+      "Description": "Host address for the InfluxDB instance. e.g. 'https://influxdb-production.acme.com'",
+      "DefaultValue": "<HOST_UTL>",
       "Required": true
     },
     {
