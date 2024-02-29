@@ -1,6 +1,6 @@
 # Kafka Connect Sink
 
-[This project](https://github.com/quixio/quix-samples/tree/main/shell/kafka-connect-sink) shows you how to install a kafka connect sink connector.
+[This project](https://github.com/quixio/quix-samples/tree/main/shell/kafka-connect-sink) shows you how to install any Kafka Connect sink connector using its Confluent Hub name.
 
 ## How to run
 
@@ -16,11 +16,11 @@ After forking the project, a file at the root directory named `connector.propert
 
 The code sample uses the following environment variables:
 
-- **output**: This is the output topic for VisualCrossing data.
-- **CONNECT_OFFSET_STORAGE_TOPIC**: Topic name to use for storing kafka connect offsets
-- **CONNECT_CONFIG_STORAGE_TOPIC**: Topic name to use for storing connector and task configurations for kafka connect
-- **CONNECT_STATUS_STORAGE_TOPIC**: Topic name to use for storing statuses for kafka connect
-- **CONNECTOR_NAME**: The [confluent hub](https://www.confluent.io/hub) (free connectors only for now) kafka connector to use. Example: `jcustenborder/kafka-connect-redis:0.0.5`
+- **input**: The name of the input topic to sink data from.
+- **CONNECT_OFFSET_STORAGE_TOPIC**: Topic name to use for storing offsets for Kafka Connect.
+- **CONNECT_CONFIG_STORAGE_TOPIC**: Topic name to use for storing connector and task configurations for Kafka Connect.
+- **CONNECT_STATUS_STORAGE_TOPIC**: Topic name to use for storing statuses for Kafka Connect.
+- **CONNECTOR_NAME**: The [Confluent Hub](https://www.confluent.io/hub) Kafka connector to use ("Free" licence connectors only for now). Example: `snowflakeinc/snowflake-kafka-connector:2.1.2`.
 
 ## Contribute
 
