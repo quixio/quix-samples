@@ -19,3 +19,5 @@ repo.json
 launchsettings.json
 .env
 **venv/
+.direnv/
+.envrc
