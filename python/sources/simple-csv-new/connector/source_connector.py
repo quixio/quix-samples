@@ -6,7 +6,7 @@ from typing import Optional, Union, Callable, Any, Iterator
 from .connector_templates import (
     SourceConsumer,
     SourceProducer,
-    SourceConnectorBase,
+    SourceConnector,
     setup_logging
 )
 from quixstreams.logging import LogLevel

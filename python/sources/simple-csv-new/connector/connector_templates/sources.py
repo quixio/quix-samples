@@ -16,7 +16,7 @@ from typing_extensions import Self
 
 logger = logging.getLogger(__name__)
 
-__all__ = ("SourceConsumer", "SourceProducer", "SourceConnectorBase")
+__all__ = ("SourceConsumer", "SourceProducer", "SourceConnector")
 
 
 class SourceConsumer(ABC):
