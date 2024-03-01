@@ -3,7 +3,12 @@ import logging
 import json
 from typing import Optional, Union, Callable, Any, Iterator
 
-from .connector_templates import SourceConsumer, SourceProducer, setup_logging
+from .connector_templates import (
+    SourceConsumer,
+    SourceProducer,
+    SourceConnectorBase,
+    setup_logging
+)
 from quixstreams.logging import LogLevel
 from quixstreams.models.messages import KafkaMessage
 from quixstreams.models.serializers import SerializerType
@@ -110,7 +115,7 @@ class CsvConsumer(SourceConsumer):
             return
 
 
-class CsvSourceConnector:
+class CsvSourceConnector(SourceConnectorBase):
     """
     A final connector class manages the interactions between consumer and producer.
 
@@ -161,7 +166,13 @@ class CsvSourceConnector:
             csv_path, key_parser, value_parser, **csv_reader_kwargs
         )
 
-    def run(self):
-        with self._consumer, self._producer:
+    def run(
+        self,
+        consumer: Optional[CsvConsumer] = None,
+        producer: Optional[SourceConsumer] = None
+    ):
+        producer = producer or self._producer
+        consumer = consumer or self._consumer
+        with consumer, producer:
             while msg := self._consumer.consume():
                 self._producer.produce(key=msg.key, value=msg.value)

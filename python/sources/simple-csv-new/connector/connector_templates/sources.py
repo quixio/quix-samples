@@ -16,7 +16,7 @@ from typing_extensions import Self
 
 logger = logging.getLogger(__name__)
 
-__all__ = ('SourceConsumer', 'SourceProducer')
+__all__ = ("SourceConsumer", "SourceProducer", "SourceConnectorBase")
 
 
 class SourceConsumer(ABC):
@@ -123,3 +123,9 @@ class SourceProducer:
     def stop(self):
         self._producer.flush()
 
+
+class SourceConnectorBase(ABC):
+
+    @abstractmethod
+    def run(self, consumer: SourceConsumer, producer: SourceProducer):
+        ...
