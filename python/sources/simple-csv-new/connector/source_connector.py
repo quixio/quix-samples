@@ -115,7 +115,7 @@ class CsvConsumer(SourceConsumer):
             return
 
 
-class CsvSourceConnector(SourceConnectorBase):
+class CsvSourceConnector(SourceConnector):
     """
     A final connector class manages the interactions between consumer and producer.
 

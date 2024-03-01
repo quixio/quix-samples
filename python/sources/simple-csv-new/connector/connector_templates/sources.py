@@ -124,7 +124,7 @@ class SourceProducer:
         self._producer.flush()
 
 
-class SourceConnectorBase(ABC):
+class SourceConnector(ABC):
 
     @abstractmethod
     def run(self, consumer: SourceConsumer, producer: SourceProducer):
