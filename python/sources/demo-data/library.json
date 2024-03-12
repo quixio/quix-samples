@@ -15,11 +15,11 @@
 	"RunEntryPoint": "main.py",
 	"Variables": [
 		{
-			"Name" : "Topic",
+			"Name" : "output-topic",
 			"Type" : "EnvironmentVariable",
 			"InputType" : "OutputTopic",
 			"Description" : "Name of the output topic to write into",
-			"DefaultValue" : "f1-data",
+			"DefaultValue" : "demo-data",
 			"Required": true
 		}
 	],
