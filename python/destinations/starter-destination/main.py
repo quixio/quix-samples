@@ -23,7 +23,7 @@ sdf = app.dataframe(input_topic)
 
 sdf = sdf.update(sink)
 
-sdf = sdf.update(lambda row: print(row))
+sdf = sdf.update(lambda row: logger.info(row))
 
 if __name__ == "__main__":
     app.run(sdf)

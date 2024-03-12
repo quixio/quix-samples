@@ -1,33 +1,41 @@
-import quixstreams as qx
-from quix_function import QuixFunction
+from quixstreams import Application
 import os
+import requests
 
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
-client = qx.QuixStreamingClient()
+app = Application.Quix(consumer_group="slack-notifications")
 
 print("Opening input and output topics")
-consumer_topic = client.get_topic_consumer(os.environ["input"], "default-consumer-group-5")
+input_topic = app.topic(os.getenv("input", ""))
 
-webhook_url = os.environ["webhook_url"]
+webhook_url = os.getenv("webhook_url", "")
 
-# Callback called for each incoming stream
-def read_stream(stream_consumer: qx.StreamConsumer):
+if input_topic is None:
+    raise ValueError("input topic is required")
 
-    # Create a new stream to output data
-    # handle the data in a function to simplify the example
-    quix_function = QuixFunction(webhook_url, stream_consumer)
-        
-    # React to new data received from input topic.
-    stream_consumer.timeseries.on_dataframe_received = quix_function.on_dataframe_handler
-    stream_consumer.events.on_data_received = quix_function.on_event_data_handler
+if webhook_url is None:
+    raise ValueError("webhook url is required")
 
-# Hook up events before initiating read to avoid losing out on any data
-consumer_topic.on_stream_received = read_stream
+# create the streaming dataframe
+sdf = app.dataframe(input_topic)
 
-# Hook up to termination signal (for docker image) and CTRL-C
-print("Listening to streams. Press CTRL-C to exit.")
+# filter out inbound data without the 'message' column
+sdf = sdf[sdf.contains("message")]
 
-# Handle graceful exit of the model.
-qx.App.run()
+# this code assumes the data contains a 'messages' column
+# which contains the message to be sent to slack
+def send_to_slack(data):
+    # transmit your message to slack immediately
+    # use a rolling window and state to batch sending
+    # https://quix.io/docs/quix-streams/windowing.html
+    slack_message = {"text": str(data["message"])}
+    requests.post(webhook_url, json = slack_message)
+
+# apply a function to the incoming data
+sdf = sdf.apply(send_to_slack)
+
+if __name__ == "__main__":
+    print("Starting application")
+    app.run(sdf)
