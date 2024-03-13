@@ -28,10 +28,10 @@ sdf = sdf[sdf.contains("message")]
 # which contains the message to be sent to slack
 def send_to_slack(data):
     # transmit your message to slack immediately
-    # use a rolling window and state to batch sending
-    # https://quix.io/docs/quix-streams/windowing.html
     slack_message = {"text": str(data["message"])}
     requests.post(webhook_url, json = slack_message)
+    # if you want to batch the messages, implement a rolling window using the 
+    # QuixStreams client library https://quix.io/docs/quix-streams/windowing.html
 
 # apply a function to the incoming data
 sdf = sdf.apply(send_to_slack)
