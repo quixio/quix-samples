@@ -1,13 +1,14 @@
 import psycopg2
 import os
-# Postgres Constants
-PG_HOST = os.environ["PG_HOST"]
-PG_PORT = os.environ["PG_PORT"]
-PG_USER = os.environ["PG_USER"]
-PG_PASSWORD = os.environ["PG_PASSWORD"]
-PG_DATABASE = os.environ["PG_DATABASE"]
 
 def connect_postgres():
+    # Postgres Constants
+    PG_HOST = os.environ["PG_HOST"]
+    PG_PORT = os.environ["PG_PORT"]
+    PG_USER = os.environ["PG_USER"]
+    PG_PASSWORD = os.environ["PG_PASSWORD"]
+    PG_DATABASE = os.environ["PG_DATABASE"]
+
     conn = psycopg2.connect(
         database = PG_DATABASE, user = PG_USER, password = PG_PASSWORD, host = PG_HOST, port = PG_PORT
     )
