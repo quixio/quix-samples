@@ -14,11 +14,7 @@ from dotenv import load_dotenv
 load_dotenv(override=False)
 
 # Create an Application.
-app = Application.Quix(
-            consumer_group="demo-data-consumer-group",
-            auto_offset_reset="earliest",
-            auto_create_topics=True,  # Quix app has an option to auto create topics
-        )
+app = Application.Quix()
 
 # Define the topic using the "output" environment variable
 topic_name = os.getenv("output_topic", "")
