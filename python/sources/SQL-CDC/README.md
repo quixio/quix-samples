@@ -2,6 +2,8 @@
 
 [This](https://github.com/quixio/quix-samples/tree/main/python/sources/SQL-CDC) SQL Change Detection Capture (CDC) project will stream changes detected in your SQL Server database to a Quix topic.
 
+It uses sqlite as a temporary storage to track the latest timestamp and QuixStreams Producer to publish data changes to kafka.
+
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.

@@ -1,5 +1,5 @@
 quixstreams==2.3.2
 pyodbc
 requests
-python-rocksdb
+SQLAlchemy
 python-dotenv
