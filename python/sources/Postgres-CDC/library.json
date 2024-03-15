@@ -7,7 +7,7 @@
       "Complexity": ["Medium"],
       "Type": ["Connectors"],
       "Pipeline Stage": ["Source"],
-      "Technology": ["Database", "QuixStreams"]
+      "Technology": ["Database", "QuixStreams", "CDC"]
     },
     "shortDescription": "Stream data from Postgres Database CDC to Quix",
     "EntryPoint": "dockerfile",

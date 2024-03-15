@@ -1,1 +1,1 @@
-quixstreams>=2.3
+quixstreams==2.3.2

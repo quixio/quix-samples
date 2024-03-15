@@ -1,221 +1,109 @@
-# This code will publish the CSV data to a stream as if the data were being generated in real-time.
+# Import the Quix Streams modules for interacting with Kafka:
+from quixstreams import Application
+# (see https://quix.io/docs/quix-streams/v2-0-latest/api-reference/quixstreams.html for more details)
 
-import quixstreams as qx
+# Import additional modules as needed
 import pandas as pd
+import json
+import random
 import time
-from datetime import datetime
 import os
-import threading
 
-# True = keep original timings
-# False = No delay, speed through it as fast as possible
-keep_timing = True
+# import the dotenv module to load environment variables from a file
+from dotenv import load_dotenv
+load_dotenv(override=False)
 
-# If the process is terminated on the command line or by the container
-# setting this flag to True will tell the loops to stop and the code
-# to exit gracefully.
-shutting_down = False
+# Create an Application.
+app = Application.Quix()
 
-# Quix Platform injects credentials automatically to the client.
-# Alternatively, you can always pass an SDK token manually as an argument.
-client = qx.QuixStreamingClient()
+# Define the topic using the "output" environment variable
+topic_name = os.getenv("output", "")
+if topic_name == "":
+    raise ValueError("The 'output' environment variable is required. This is the output topic that data will be published to.")
 
-print("Opening producer topic.")
-# The producer topic is where the data will be published to
-# It's the output from this demo data source code.
-producer_topic = client.get_topic_producer(os.environ["Topic"])
+topic = app.topic(topic_name)
 
-#####################
-# Create a new stream
-#####################
-# A stream is a collection of data that belong to a single session of a single source.
-# `.create_stream()` will create a stream with a random unique ID.
-stream_producer = producer_topic.create_stream()
-
-# To append data into the same stream at a later time, assign a stream id manually.
-# stream = producer_topic.create_stream("my-own-stream-id")
-
-# Configure the buffer to publish data as desired.
-# In this case every 100 rows.
-# See docs for more options. Search "using-a-buffer"
-stream_producer.timeseries.buffer.time_span_in_milliseconds = 100
+# Get the directory of the current script
+script_dir = os.path.dirname(os.path.realpath(__file__))
+# Construct the path to the CSV file
+csv_file_path = os.path.join(script_dir, "demo-data.csv")
 
 
-###########################################
-# Add / Edit stream properties and metadata
-###########################################
-stream_producer.properties.name = "F1 Demo Data"  # Give the stream a human-readable name (for the data catalogue).
-stream_producer.properties.location = "/demo data"  # Save stream in specific folder to organize your workspace.
+# this function loads the file and sends each row to the publisher
+def read_csv_file(file_path: str):
+    """
+    A function to read data from a CSV file in an endless manner.
+    It returns a generator with stream_id and rows
+    """
 
-# If required, add stream metadata to add context to the time series data.
-stream_producer.properties.metadata["version"] = "Version 1"
+    # Read the CSV file into a pandas.DataFrame
+    print("CSV file loading.")
+    df = pd.read_csv(file_path)
 
-#####################################################################################
-# Define Parameter and Event definitions to describe the data to downstream processes
-#####################################################################################
-# Motion / world position
-stream_producer.timeseries.add_location("Player/Motion/World") \
-    .add_definition("Motion_WorldPositionX", "WorldPositionX").set_range(-1000, 1000) \
-    .add_definition("Motion_WorldPositionY", "WorldPositionY").set_range(-1000, 1000) \
-    .add_definition("Motion_WorldPositionZ", "WorldPositionZ").set_range(-1000, 1000)
-
-# Player input
-stream_producer.timeseries.add_location("Player/Input") \
-    .add_definition("Steer").set_range(-1, 1) \
-    .add_definition("Throttle").set_range(0, 1) \
-    .add_definition("Brake", description = "Amount or brake applied").set_range(0, 1)
-
-# Vehicle parameters
-stream_producer.timeseries.add_location("Telemetry/Engine") \
-    .add_definition("Speed").set_range(0, 400) \
-    .add_definition("Gear").set_range(-1, 8) \
-    .add_definition("DRS").set_range(0, 1) \
-    .add_definition("EngineTemp").set_range(0, 200) \
-    .add_definition("Clutch").set_range(0, 200) \
-    .add_definition("EngineRPM").set_range(0, 20000)
-
-
-def publish_row(row):
-    # create a DataFrame using the row
-    df_row = pd.DataFrame([row])
-
-    # add a new timestamp column with the current data and time
-    df_row['Timestamp'] = datetime.now()
-
-    # publish the data to the Quix stream created earlier
-    stream_producer.timeseries.buffer.publish(df_row)
-
-
-def process_csv_file(csv_file):
-    global shutting_down
-
-    # Read the CSV file into a pandas DataFrame
-    df = pd.read_csv(csv_file)
     print("File loaded.")
 
-    # Tag columns must have names prefixed with `Tag__`.
-    # These represent data that will not change often, e.g. the lap number and pit status
-    # For this data we have several tag values:
-    # DriverStatus, LapNumber, LapValidity, PitStatus, Sector, streamId and eventId
-    df = df.rename(columns={"DriverStatus": "TAG__DriverStatus"})
-    df = df.rename(columns={"LapNumber": "TAG__LapNumber"})
-    df = df.rename(columns={"LapValidity": "TAG__LapValidity"})
-    df = df.rename(columns={"PitStatus": "TAG__PitStatus"})
-    df = df.rename(columns={"Sector": "TAG__Sector"})
-    df = df.rename(columns={"streamId": "TAG__streamId"})
-    df = df.rename(columns={"eventId": "TAG__eventId"})
-    print("TAG columns renamed.")
+    # Get the number of rows in the dataFrame for printing out later
+    row_count = len(df)
 
-    # keep the original timestamp to ensure the original timing is maintained
-    df = df.rename(columns={"Timestamp": "original_timestamp"})
-    print("Timestamp column renamed.")
+    # Generate a unique ID for this data stream.
+    # It will be used as a message key in Kafka
+    stream_id = f"CSV_DATA_{str(random.randint(1, 100)).zfill(3)}"
 
     # Get the column headers as a list
     headers = df.columns.tolist()
 
-    # Numer of times to repeat the data
-    iterations = 10
+    # Continuously loop over the data
+    while True:
+        # Print a message to the console for each iteration
+        print(f"Publishing {row_count} rows.")
 
-    # Variables for calculating the % done
-    update_pct = 1
-    total_rows = len(df) * iterations
-    published_rows = 0
-    n_percent = float(total_rows / 100) * update_pct
-
-    print(f"Publishing {total_rows} rows. (Expect an update every {update_pct}% ({int(n_percent)} rows).")
-    if keep_timing:
-        print("note: Delays greater than 1 second will be reduced to 1 second for this demo.")
-    else:
-        print("note: Timing of the original data is being ignored.")
-
-    # repeat the data to ensure the replay lasts long enough to
-    # inspect and play with the data
-    for iteration in range(0, iterations):
-
-        # If shutdown has been requested, exit the loop.
-        if shutting_down:
-            break
-
-        row_count = len(df)
-
-        # Publish events when an event happens e.g. lap count, new top speed etc.
-        # in this case we just publish a row_count with the number of rows being published
-        # and a 'state' of 'started' to signify the start of publishing data.
-        # The `event_id` and value can be anything you want.
-        stream_producer.events \
-            .add_timestamp(datetime.now()) \
-            .add_value("row_count", str(row_count)) \
-            .add_value("state", "started") \
-            .publish()
-
-        # Iterate over the rows and send them to the API
-        for index, row in df.iterrows():
-
-            # If shutdown has been requested, exit the loop.
-            if shutting_down:
-                break
-
+        # Iterate over the rows and convert them to
+        for _, row in df.iterrows():
             # Create a dictionary that includes both column headers and row values
-            row_data = {header: row[header] for header in headers}
+            # Replace NaN values with None (which will become 'null' in JSON)
+            row_data = {header: (None if pd.isna(row[header]) else row[header]) for header in headers}
 
-            # Publish the data
-            publish_row(row_data)
+            # add a new timestamp column with the current data and time
+            row_data["Timestamp"] = time.time_ns()
 
-            # Increment the number of published rows
-            published_rows += 1
-            if int(published_rows % n_percent) == 0:
-                print(f"{int(100 * float(published_rows) / float(total_rows))}% published")
+            # Yield the stream ID and the row data
+            yield stream_id, row_data
 
-            # Delay sending the next row if it exists
-            # The delay is calculated using the original timestamps and ensure the data 
-            # is published at a rate similar to the original data rates
-            if keep_timing and index + 1 < len(df):
-                current_timestamp = pd.to_datetime(row['original_timestamp'])
-                next_timestamp = pd.to_datetime(df.at[index + 1, 'original_timestamp'])
-                time_difference = next_timestamp - current_timestamp
-                delay_seconds = time_difference.total_seconds()
+        print("All rows published")
 
-                # Cater for negative sleep values
-                if delay_seconds < 0:
-                    delay_seconds = 0
-                    
-                # For this demo, if the delay is greater than 1 second, just delay for 1 second
-                if delay_seconds > 1:
-                    # Uncomment this line if you want to know when a delay is shortened
-                    # print(f"Skipping long delay of {delay_seconds} between timestamps.")
-                    delay_seconds = 1
-
-                time.sleep(delay_seconds)
-
-        # Publish events when an event happens e.g. lap count, new top speed etc.
-        # in this case we just publish a 'state' of 'finished' to signify the end
-        # of publishing data. The `event_id` and value can be anything you want.
-        stream_producer.events \
-            .add_timestamp(datetime.now()) \
-            .add_value("state", "finished") \
-            .publish()
-
-    print("All rows published.")
-
-    # Close the stream when publishing has ended
-    # The stream can be reopened an ay time.
-    print("Closing the stream.")
-    stream_producer.close()
+        # Wait a moment before outputting more data.
+        time.sleep(1)
 
 
-# Run the CSV processing in a thread
-processing_thread = threading.Thread(target=process_csv_file, args=('demo-data.csv',))
-processing_thread.start()
+def main():
+    """
+    Read data from the CSV file and publish it to Kafka
+    """
+
+    # Create a pre-configured Producer object.
+    # Producer is already setup to use Quix brokers.
+    # It will also ensure that the topics exist before producing to them if
+    # Application.Quix is initiliazed with "auto_create_topics=True".
+    producer = app.get_producer()
+
+    with producer:
+        print("Publishing data..")
+        # Iterate over the data from CSV file
+        for message_key, row_data in read_csv_file(file_path=csv_file_path):
+            # Serialize row_data to a JSON string
+            json_data = json.dumps(row_data)
+            # Encode the JSON string to a byte array
+            serialized_value = json_data.encode('utf-8')
+            # publish the data to the topic
+            producer.produce(
+                topic=topic.name,
+                key=message_key,
+                value=serialized_value
+            )
 
 
-# Run this method before shutting down.
-# In this case we set a flag to tell the loops to exit gracefully.
-def before_shutdown():
-    global shutting_down
-    print("Shutting down")
-
-    # set the flag to True to stop the loops as soon as possible.
-    shutting_down = True
-
-# keep the app running and handle termination signals.
-qx.App.run(before_shutdown = before_shutdown)
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting.")

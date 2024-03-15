@@ -2,6 +2,12 @@
 
 [This project](https://github.com/quixio/quix-samples/tree/main/python/destinations/streamlit) is an example of how to run a real time Streamlit dashboard within Quix
 
+Send any JSON data to this dashboard via a Kafka topic.
+
+You only need to edit the dashboard code if you want to update the layout, otherwise it works out of the box as a quick way to visualize your data.
+
+Note that the code expects a timestamp in one of these columns: "timestamp", "Timestamp", "time", "ts"
+
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.

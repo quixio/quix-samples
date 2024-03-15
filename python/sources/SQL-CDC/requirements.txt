@@ -1,4 +1,5 @@
-quixstreams==0.5.7
+quixstreams==2.3.2
 pyodbc
 requests
-pandas==1.5.3
+SQLAlchemy
+python-dotenv

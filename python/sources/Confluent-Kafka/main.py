@@ -1,47 +1,70 @@
-import quixstreams as qx
-from quix_functions import QuixFunctions
-import traceback
+from quixstreams.app import Application
+from quixstreams.kafka.producer import Producer
 from datetime import datetime
+import json
 import os
 
-try:
-    kafka_properties = {
-        "security.protocol": "SASL_SSL",
-        "sasl.mechanisms": "PLAIN",
-        "sasl.username": os.environ["kafka_key"],
-        "sasl.password": os.environ["kafka_secret"]
-    }
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
 
-    kafka_client = qx.KafkaStreamingClient(os.environ["kafka_broker_address"],
-                                   None,
-                                   kafka_properties)
+# SASL configuration
+sasl_config = {
+    'sasl.mechanism': os.getenv("kafka_sasl_mechanism", "SCRAM-SHA-256"),
+    'security.protocol': 'SASL_SSL',
+    'sasl.username': os.getenv("kafka_key", ""),
+    'sasl.password': os.getenv("kafka_secret", "")
+}
+broker_address = os.getenv("kafka_broker_address", "")
+input_topic_name = os.getenv("kafka_topic", "")
+output_topic_name = os.getenv("output", "")
 
-    quix_client = qx.QuixStreamingClient()
+if sasl_config["sasl.username"] == "" or sasl_config["sasl.password"] == "":
+    print("Please provide kafka_key and kafka_secret")
+    exit(1)
 
-    print("Opening RAW input topic")
-    consumer_topic = kafka_client.get_raw_topic_consumer(os.environ["kafka_topic"])
+if broker_address == "":
+    print("Please provide kafka_broker_address")
+    exit(1)
 
-    print("Opening output topic")
-    producer_topic = quix_client.get_topic_producer(os.environ["output"])
-    stream_producer = producer_topic.create_stream()
-    stream_producer.properties.location = "Confluent Kafka Data"
-    stream_producer.properties.name = "{} - {}".format("Confluent Kafka", datetime.utcnow().strftime("%d-%m-%Y %X"))
+if input_topic_name == "" or output_topic_name == "":
+    print("Please provide input and output topics")
+    exit(1)
 
-    is_connected = False
+# this 'application' will consume data from Confluent Kafka
+app = Application.Quix(consumer_group="kafka-connector-consumer-group", 
+                    auto_offset_reset="earliest", consumer_extra_config=sasl_config)
+# this topic is the Confluent Kafka topic
+input_topic = app.topic(input_topic_name)
 
-    quix_functions = QuixFunctions(stream_producer)
-    consumer_topic.on_message_received = quix_functions.raw_message_handler
+# This 'application' and producer will publish data to a Quix topic
+producer_app = Application.Quix()
+producer = producer_app.get_producer()
+# this is the Quix topic
+output_topic = app.topic(output_topic_name)
 
-    # let the platform know were connected. It will navigate to the home page.
-    print("CONNECTED!")
+# let the platform know were connected. If deploying a connector from the library, it will nav to the home page.
+print("CONNECTED!")
 
-    # Hook up to termination signal (for docker image) and CTRL-C
-    print("Listening to streams. Press CTRL-C to exit.")
+# Create a StreamingDataFrame instance for consuming data from Confluent Kafka
+sdf = app.dataframe(input_topic)
 
-    # Handle graceful exit of the model.
-    qx.App.run()
+# handle each message by publishing it to the output topic (in Quix)
+# if you want to do any transformation you can do that here too
+def handle_message(message):
+    # Convert the message dictionary to a JSON string
+    message_json = json.dumps(message)
 
-    print("Exiting")
+    # Encode the JSON string to bytes
+    message_bytes = message_json.encode('utf-8')
+    
+    # publish message to Quix Kafka
+    producer.produce(key=f"data-from-confluent-kafka-topic-{input_topic_name}",
+                     value=message_bytes,
+                     topic=output_topic.name)
 
-except Exception:
-    print("ERROR: {}".format(traceback.format_exc()))
+sdf = sdf.update(handle_message)
+
+if __name__ == "__main__":
+    print("Starting application")
+    app.run(sdf)

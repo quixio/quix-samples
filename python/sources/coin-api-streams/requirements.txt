@@ -1,5 +1,0 @@
-quixstreams==0.5.7
-requests
-websocket-client
-rel
-python-dateutil

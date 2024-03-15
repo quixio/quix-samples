@@ -6,7 +6,7 @@
         "Complexity": ["Medium"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
-        "Technology": ["SQL", "CDC", "QuixStreams"]
+        "Technology": ["SQL", "CDC", "QuixStreams", "Database"]
     },
     "shortDescription": "Stream changes to data in a SQL Database",
     "DefaultFile": "main.py",
