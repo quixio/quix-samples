@@ -1,9 +1,9 @@
 {
-	"libraryItemId": "8dd9ecb9-d1aa-498c-84fb-054a042acc13",
+	"libraryItemId": "7ac16a0c-8fe4-4dcd-94fd-4f19a9b21ab2",
 	"name": "Starter source",
 	"language": "Python",
 	"tags": {
-		"Technology": ["QuixStreams", "SDF"],
+		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Source"],
 		"Popular Subjects": ["Quick Start"],
 		"Type": ["Demos"]

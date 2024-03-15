@@ -1,4 +1,5 @@
-quixstreams==0.5.7
+quixstreams==2.3.2
 flask
 requests
 waitress
+python-dotenv

@@ -1,5 +1,0 @@
-quixstreams==0.5.7
-werkzeug==2.0.1
-dash==2.2.0
-dash_bootstrap_components
-requests

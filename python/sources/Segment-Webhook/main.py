@@ -1,4 +1,4 @@
-import quixstreams as qx
+from quixstreams import Application
 from flask import Flask, request
 from datetime import datetime
 from waitress import serve
@@ -7,20 +7,27 @@ import json
 import hmac
 import hashlib
 
-# Quix injects credentials automatically to the client. 
-# Alternatively, you can always pass an SDK token manually as an argument.
-client = qx.QuixStreamingClient()
+# Load environment variables (useful when working locally)
+from dotenv import load_dotenv
+load_dotenv()
 
-# Open the output topic where to write data out
-producer_topic = client.get_topic_producer(os.environ["output"])
+# Create a Quix Application, this manages the connection to the Quix platform
+quix_app = Application.Quix()
 
-stream = producer_topic.create_stream()
-stream.properties.name = "Segment Data"
+# Create the producer, this is used to write data to the output topic
+producer = quix_app.get_producer()
 
-app = Flask("Segment Webhook")
+# Check the output topic is configured
+output_topic_name = os.getenv("output", "")
+if output_topic_name == "":
+    raise ValueError("output_topic environment variable is required")
+output_topic = quix_app.topic(output_topic_name)
+
+# create the flask app
+flask_app = Flask("Segment Webhook")
 
 # this is unauthenticated, anyone could post anything to you!
-@app.route("/webhook", methods=['POST'])
+@flask_app.route("/webhook", methods=['POST'])
 def webhook():
     
     # get the shared secret from environment variables
@@ -39,18 +46,17 @@ def webhook():
         # if they don't match its no bueno
         return "ERROR", 401
     
-    # if they do then fly me to the moon
-    stream.events.add_timestamp(datetime.now())\
-        .add_value(request.json["type"], json.dumps(request.json))\
-        .publish()
+    # if they do then publish to the topic
+    producer.produce(topic=output_topic.name,
+                     key=str(request.json["type"]),
+                     value=json.dumps(request.json))
 
     return "OK", 200
 
 
 print("CONNECTED!")
 
-# you can use app.run for dev, but its not secure, stable or particularly efficient
-# qx.App.run(debug=True, host="0.0.0.0", port=80)
+# you can use flas_app.run for dev, but its not secure, stable or particularly efficient
 
 # use waitress instead for production
-serve(app, host='0.0.0.0', port = 80)
+serve(flask_app, host='0.0.0.0', port = 80)

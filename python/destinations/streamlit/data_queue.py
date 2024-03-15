@@ -20,7 +20,7 @@ class DataQueue:
                     with lock:
                         for key in inactive_c:
                             connections.pop(key)
-                time.sleep(30)
+                time.sleep(10)
 
         self.connections = {}
         self.maxlen = maxlen

@@ -1,10 +1,11 @@
-import quixstreams as qx
-from quix_functions import QuixFunctions
+from quixstreams import Application
+from snowplow_analytics_sdk import event_transformer as et
 import boto3
+
 from datetime import datetime
 import traceback
 import time
-import threading
+import json
 import os
 
 
@@ -12,38 +13,55 @@ import os
 run = True
 is_connected = False
 
-subscriber = None
-subscription = None
-quix_stream = None
-amazon_client = None
+kinesis_client = None
 producer_topic = None
+quix_producer = None
 
 
-def connect_to_amazon():
-    global amazon_client
+def connect_to_aws() -> bool:
+    global kinesis_client
 
-    if quix_stream is None:
+    if quix_producer is None:
         print("Not connected to Quix")
         return False
 
-    amazon_client = boto3.client(
-        'kinesis',
-        aws_access_key_id = os.environ["aws_access_key_id"],
-        aws_secret_access_key = os.environ["aws_secret_access_key"],
-        region_name = os.environ["aws_region_name"]
-    )
+    try:
+        kinesis_client = boto3.client(
+            'kinesis',
+            aws_access_key_id = os.environ["aws_access_key_id"],
+            aws_secret_access_key = os.environ["aws_secret_access_key"],
+            region_name = os.environ["aws_region_name"]
+        )
+    except Exception as e:
+        print(f"Failed to connect to AWS: {e}")
+        return False
 
+def publish_to_quix(data):
+
+    # use the snowplow sdk to transform the incoming data
+    snowplow_data_dict = et.transform(data)
+
+    # add a time stamp to the row
+    snowplow_data_dict["time"] = datetime.now()
+
+    # use the event name for the status message and the message key
+    event_name = str(snowplow_data_dict["event_name"].values[0])
+
+    # publish to the stream
+    producer.produce(topic=producer_topic.name,
+                     key=event_name,
+                     value=json.dumps(snowplow_data_dict))
+
+    print(f"Published {event_name}")
 
 def get_kinesis_data():
     global is_connected
 
-    if quix_stream is None:
+    if quix_producer is None:
         print("Not connected to Quix")
         return False
 
-    quix_functions = QuixFunctions(quix_stream)
-
-    si = amazon_client.get_shard_iterator(
+    si = kinesis_client.get_shard_iterator(
         StreamName = os.environ["aws_stream_name"],
         ShardId='shardId-000000000000',
         ShardIteratorType='LATEST'
@@ -56,61 +74,68 @@ def get_kinesis_data():
         is_connected = True
 
     while run:
-        record_data = amazon_client.get_records(ShardIterator = shard_iterator)
+        record_data = kinesis_client.get_records(ShardIterator = shard_iterator)
         shard_iterator = record_data["NextShardIterator"]
 
-        # print(record_data)
         if len(record_data["Records"]) > 0:
 
-            for r in record_data["Records"]:
-                d = r["Data"]
+            for record in record_data["Records"]:
+                data = record["Data"]
 
-                if isinstance(d, bytes):
-                    quix_functions.publish_data(d.decode())
+                if isinstance(data, bytes):
+                    publish_to_quix(data.decode())
                 else:
-                    quix_functions.publish_data(d)
+                    publish_to_quix(data)
 
         behind = record_data["MillisBehindLatest"]
         if behind < 1000:
-            time.sleep(1)
+            time.sleep(1) # if < 1s behind wait 1 second
         else:
-            time.sleep(0.1)
+            time.sleep(0.1) # if behind > 1s, go a bit faster!
 
 
 def connect_to_quix():
-    global quix_stream
     global producer_topic
+    global producer
 
-    quix_client = qx.QuixStreamingClient()
+    # Create a Quix Application, this manages the connection to the Quix platform
+    app = Application.Quix()
 
     print("Opening output topic")
-    producer_topic = quix_client.get_topic_producer(os.environ["output"])
+    
+    # Create the producer, this is used to write data to the output topic
+    producer = app.get_producer()
 
-    quix_stream = producer_topic.create_stream()
-    quix_stream.properties.name = "{} - {}".format("Snowplow", datetime.utcnow().strftime("%d-%m-%Y %X"))
-    quix_stream.properties.location = "/amazon_kinesis_data"
+    # Check the output topic is configured
+    output_topic_name = os.getenv("output", "")
+    producer_topic = app.topic(output_topic_name)
 
 
-def before_shutdown():
+def main():
     global run
-    run = False
 
+    # validate the required env vars have been set supplied
+    required_env_vars = ["aws_access_key_id", "aws_secret_access_key", "aws_region_name", "output"]
+    for var in required_env_vars:
+        if var not in os.environ:
+            raise ValueError(f"Environment variable {var} is required but not set.")
 
-try:
-    connect_to_quix()
-    connect_to_amazon()
+    try:
+        connect_to_quix()
+        aws_connected = connect_to_aws()
 
-    thread = threading.Thread(target = get_kinesis_data)
-    thread.start()
+        if not aws_connected:
+            raise ValueError("Error connecting to AWS")
 
-    print("Waiting for Kinesis data")
+        print("Waiting for Kinesis data")
+        get_kinesis_data() # blocking call, gets data from AWS and published with Quix
 
-    qx.App.run(before_shutdown = before_shutdown)
+    except KeyboardInterrupt:
+        print("Exiting.")
+        run = False
+    except Exception as e:
+        print("ERROR: {}".format(traceback.format_exc()))
+        raise e
 
-    # wait for worker thread to end
-    thread.join()
-
-    print('Exiting')
-
-except:
-    print("ERROR: {}".format(traceback.format_exc()))
+if __name__ == "__main__":
+    main()

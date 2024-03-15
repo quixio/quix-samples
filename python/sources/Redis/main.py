@@ -1,10 +1,15 @@
 import time
 from collections import defaultdict
+from quixstreams import Application
 
 import os
-import quixstreams as qx
+import json
 import redis
-import pandas as pd
+
+from dotenv import load_dotenv
+load_dotenv()
+
+run = True # a flag to stop the main loop
 
 r = redis.Redis(
     host=os.environ['redis_host'],
@@ -13,14 +18,16 @@ r = redis.Redis(
     username=os.environ['redis_username'] if 'redis_username' in os.environ else None,
     decode_responses=True)
 
-# Quix injects credentials automatically to the client.
-# Alternatively, you can always pass an SDK token manually as an argument.
-client = qx.QuixStreamingClient()
+# Create a Quix Application, this manages the connection to the Quix platform
+app = Application.Quix()
+# Create the producer, this is used to write data to the output topic
+producer = app.get_producer()
 
-print("Opening input and output topics")
-producer_topic = client.get_topic_producer(os.environ["output"])
-stream_producer = producer_topic.create_stream()
-stream_producer.timeseries.buffer.time_span_in_milliseconds = 1000
+# Check the output topic is configured
+output_topic_name = os.getenv("output", "")
+if output_topic_name == "":
+    raise ValueError("output_topic environment variable is required")
+output_topic = app.topic(output_topic_name)
 
 
 # This function is used only to print the information about the keys
@@ -36,38 +43,36 @@ def print_info(key_name, key_info):
 
 # This is the main function that reads from Redis and publishes to Quix
 def get_data():
-    # Start from the first timestamp
-    first_timestamp = "-"
+    first_timestamp = 0
 
-    while True:
-        # Get data from Redis
+    while run:
         data = r.ts().mrange(first_timestamp, "+", filters=["ts=true"], count=1000, with_labels=True)
-
-        # Convert data to DataFrame
         data_by_timestamp = defaultdict(dict)
-
-        for sensor in data:
-            sensor_name = next(iter(sensor))
-            labels = sensor[sensor_name][0]
-            samples = sensor[sensor_name][1]
+        
+        for data_stream in data:
+            stream_name = next(iter(data_stream))
+            samples = data_stream[stream_name][1]
 
             for ts, value in samples:
-                data_by_timestamp[ts][sensor_name] = value
-
+                data_by_timestamp[ts][stream_name] = value
                 if first_timestamp == "-" or ts > first_timestamp:
                     first_timestamp = ts + 1
 
-        # If no data, wait and try again
         number_of_samples = len(data_by_timestamp)
         if number_of_samples == 0:
-            print("No data, waiting")
+            print("No data, waiting..")
             time.sleep(0.5)
         else:
             print(f"Publishing {number_of_samples} samples")
-            for data in data_by_timestamp.items():
-                df = pd.DataFrame([data[1]])
-                df["Timestamp"] = pd.to_datetime(data[0], unit="ms")
-                stream_producer.timeseries.publish(df)
+            for timestamp, stream_data in data_by_timestamp.items():
+                for stream_name, value in stream_data.items():
+                    message = {
+                        stream_name: value,
+                        "Timestamp": timestamp
+                    }
+                    producer.produce(topic=output_topic.name,
+                                     key=stream_name,
+                                     value=json.dumps(message))
 
 
 def main():
@@ -89,6 +94,8 @@ def main():
 
 
 if __name__ == "__main__":
-    print("Starting application")
-    print("Press CTRL-C to exit.")
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("Exiting.")
+        run = False
