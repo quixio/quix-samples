@@ -3,7 +3,6 @@ import json
 from datetime import datetime
 from quixstreams import Application
 from data_queue import DataQueue
-import uuid
 from dotenv import load_dotenv
 
 # Consume data from Quix streams and prepare dataframes for streamlit components.
