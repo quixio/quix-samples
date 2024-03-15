@@ -3,7 +3,7 @@
 	"name": "Starter source",
 	"language": "Python",
 	"tags": {
-		"Technology": ["QuixStreams", "SDF"],
+		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Source"],
 		"Popular Subjects": ["Quick Start"],
 		"Type": ["Demos"]
