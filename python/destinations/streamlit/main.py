@@ -1,6 +1,7 @@
 import threading
 import streamlit as st
-import pandas as pd
+import time
+import threading
 from data_queue import DataQueue
 from data_consumer import DataConsumer
 
@@ -19,52 +20,50 @@ st.header("Streamlit Dashboard")
 
 # PARAMETERS SECTION
 # Define a list of parameters to show in select widgets.
-AVAILABLE_PARAMS = [
-    "Steer",
-    "Speed",
-    "LapDistance",
-    "Gear",
-    "EngineTemp",
-    "EngineRPM",
-    "Brake",
-]
+AVAILABLE_PARAMS = []
 
-# DASHBOARD LAYOUT SECTION
-# The dashboard layout will consist of 2 columns and one row.
-# Each column will have a select widget with available parameters to plot,
-# and a chart with the real-time data from Quix, that will be updated in real-time.
-# The last row will have a table with raw data.
-col1, col2 = st.columns(2)
-with col1:
-    # Header of the first column
-    st.markdown("### Chart 1 Title")
-    # Select for the first chart
-    parameter1 = st.selectbox(
-        label="PARAMETER",
-        options=AVAILABLE_PARAMS,
-        index=0,
-        key="parameter1",
-        label_visibility="visible",
-    )
-    # A placeholder for the first chart to update it later with data
-    placeholder_col1 = st.empty()
+# Create a placeholder for the loading spinner
+loading_placeholder = st.empty()
 
-with col2:
-    # Header of the second column
-    st.markdown("### Chart 2 Title")
-    # Select for the second chart
-    parameter2 = st.selectbox(
-        label="PARAMETER",
-        options=AVAILABLE_PARAMS,
-        index=1,
-        key="parameter2",
-        label_visibility="visible",
-    )
-    # A placeholder for the second chart to update it later with data
-    placeholder_col2 = st.empty()
+placeholder_col1, placeholder_col2 = st.columns(2)
+placeholder_raw = None
+parameter1 = None
+parameter2 = None
 
-# A placeholder for the raw data table
-placeholder_raw = st.empty()
+def build_dashboard_layout():
+    global placeholder_col1, placeholder_col2, placeholder_raw, parameter1, parameter2
+
+    # Create two columns for the select boxes and their headers
+    header_col1, header_col2 = st.columns(2)
+
+    with header_col1:
+        st.markdown("### Chart 1 Title")
+        parameter1 = st.selectbox(
+            "Select Parameter 1",
+            options=AVAILABLE_PARAMS,
+            index=0,
+            key="parameter1_select"
+        )
+
+    with header_col2:
+        st.markdown("### Chart 2 Title")
+        parameter2 = st.selectbox(
+            "Select Parameter 2",
+            options=AVAILABLE_PARAMS,
+            index=1,
+            key="parameter2_select"
+        )
+
+    # Create two columns for the charts
+    placeholder_col1, placeholder_col2 = st.columns(2)
+
+    # Initialize placeholders for the charts
+    placeholder_col1 = placeholder_col1.empty()  # Placeholder for the first chart
+    placeholder_col2 = placeholder_col2.empty()  # Placeholder for the second chart
+
+    # Placeholder for the raw data table below the charts
+    placeholder_raw = st.empty()
+
 
 @st.cache_resource
 def queue_init():
@@ -75,14 +74,15 @@ def queue_init():
 @st.cache_resource
 def data_consumer_init(_queue: DataQueue):
     dc = DataConsumer(_queue)
-    dc.start()
+    thread = threading.Thread(target=dc.start)
+    thread.start()
     return dc
 
 # Unique client connection id generated per browser tab.
 conid = threading.current_thread().ident
 
 # Blocking queue that exposes Quix data to Streamlit components.
-queue =  queue_init()
+queue = queue_init()
 
 # Data consumer that generates the view model from Quix data for the Streamlit components.
 data_consumer = data_consumer_init(queue)
@@ -90,9 +90,28 @@ data_consumer = data_consumer_init(queue)
 # Event loop to update streamlit components. Try not to copy/modify the dataframes within
 # this loop.
 while True:
-    df = queue.get(conid)
-    placeholder_col1.line_chart(df, x="datetime", y=[parameter1])
-    placeholder_col2.line_chart(df, x="datetime", y=[parameter2])
-    with placeholder_raw.container():
-        st.markdown("### Raw Data View")
-        st.dataframe(df)
+
+    # Event loop to update streamlit components. Try not to copy/modify the dataframes within
+    # this loop.
+    if not AVAILABLE_PARAMS:
+        # Show loading spinner while waiting for AVAILABLE_PARAMS to be populated
+        with loading_placeholder:
+            with st.spinner('Waiting for parameters...'):
+                while not AVAILABLE_PARAMS:
+                    AVAILABLE_PARAMS = data_consumer.get_available_params()
+                    time.sleep(0.1)  # Sleep briefly to avoid busy waiting
+
+    # Once AVAILABLE_PARAMS is populated, clear the spinner and build the dashboard layout
+    if AVAILABLE_PARAMS and not parameter1 and not parameter2:
+        build_dashboard_layout()
+
+    # If parameters are selected, display the charts
+    if parameter1 and parameter2:
+        df = queue.get(conid)  # Make sure this is non-blocking or handled in a separate thread
+        with placeholder_col1:
+            st.line_chart(df, x="datetime", y=[parameter1], height=300)
+        with placeholder_col2:
+            st.line_chart(df, x="datetime", y=[parameter2], height=300)
+        with placeholder_raw:
+            st.markdown("### Raw Data View")
+            st.dataframe(df)

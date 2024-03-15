@@ -1,6 +1,4 @@
-from quixstreams import Application, State
-from quixstreams.state import StateStoreManager
-
+from quixstreams import Application
 import time
 from datetime import datetime
 import os
