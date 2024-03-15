@@ -15,7 +15,7 @@
 	"RunEntryPoint": "main.py",
 	"Variables": [
 		{
-			"Name" : "output-topic",
+			"Name" : "output",
 			"Type" : "EnvironmentVariable",
 			"InputType" : "OutputTopic",
 			"Description" : "Name of the output topic to write into",

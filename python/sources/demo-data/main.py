@@ -17,9 +17,9 @@ load_dotenv(override=False)
 app = Application.Quix()
 
 # Define the topic using the "output" environment variable
-topic_name = os.getenv("output_topic", "")
+topic_name = os.getenv("output", "")
 if topic_name == "":
-    raise ValueError("output_topic environment variable is required")
+    raise ValueError("The 'output' environment variable is required. This is the output topic that data will be published to.")
 
 topic = app.topic(topic_name)
 
