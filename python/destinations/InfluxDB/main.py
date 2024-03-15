@@ -6,7 +6,6 @@ import logging
 
 # import vendor-specific modules
 from quixstreams import Application
-from quixstreams.models.serializers.quix import JSONDeserializer
 from influxdb_client_3 import InfluxDBClient3
 
 logging.basicConfig(level=logging.INFO)
@@ -14,9 +13,9 @@ logger = logging.getLogger(__name__)
 consumer_group_name = os.environ.get('CONSUMER_GROUP_NAME', "influxdb-data-writer")
 
 # Create a Quix platform-specific application instead
-app = Application.Quix(consumer_group=consumer_group_name, auto_create_topics=True, auto_offset_reset='earliest')
+app = Application.Quix(consumer_group=consumer_group_name, auto_offset_reset='earliest')
 
-input_topic = app.topic(os.environ["input"], value_deserializer=JSONDeserializer())
+input_topic = app.topic(os.environ["input"])
 
 # Read the environment variable and convert it to a dictionary
 tag_keys = ast.literal_eval(os.environ.get('INFLUXDB_TAG_KEYS', "[]"))
