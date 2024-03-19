@@ -19,7 +19,7 @@
 			"Type" : "EnvironmentVariable",
 			"InputType" : "OutputTopic",
 			"Description" : "Name of the output topic to write into",
-			"DefaultValue" : "demo-data",
+			"DefaultValue" : "f1-data",
 			"Required": true
 		}
 	],
