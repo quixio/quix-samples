@@ -10,6 +10,9 @@ import random
 import time
 import os
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
 
 # Create an Application
 app = Application.Quix(consumer_group="csv_sample", auto_create_topics=True)

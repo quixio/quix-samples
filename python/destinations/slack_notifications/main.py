@@ -2,6 +2,9 @@ from quixstreams import Application
 import os
 import requests
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.

@@ -1,7 +1,8 @@
 import os
 from quixstreams import Application
-from dotenv import load_dotenv
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
 load_dotenv()
 
 app = Application.Quix("transformation-v1", auto_offset_reset="latest")

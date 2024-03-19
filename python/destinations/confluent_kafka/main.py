@@ -6,7 +6,7 @@ import json
 
 # for local dev, load env vars from a .env file
 from dotenv import load_dotenv
-load_dotenv(".env")
+load_dotenv()
 
 # SASL configuration
 sasl_config = {

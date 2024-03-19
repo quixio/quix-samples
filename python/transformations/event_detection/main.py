@@ -3,6 +3,10 @@ from quixstreams import Application, State
 from datetime import datetime
 import json
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 app = Application.Quix("hard-braking-v1", auto_offset_reset="earliest")
 
 input_topic = app.topic(os.environ["input"], value_deserializer='json')

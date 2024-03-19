@@ -4,6 +4,10 @@ from quixstreams.models.serializers.quix import QuixDeserializer
 import os
 import redis
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 r = redis.Redis(
     host=os.environ['redis_host'],
     port=int(int(os.environ['redis_port'])),

@@ -10,6 +10,10 @@ from setup_logging import get_logger
 from quixstreams.platforms.quix import QuixKafkaConfigsBuilder
 from quixstreams.kafka import Producer
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 cfg_builder = QuixKafkaConfigsBuilder()
 cfgs, topics, _ = cfg_builder.get_confluent_client_configs([os.environ["output"]])
 producer = Producer(cfgs.pop("bootstrap.servers"), extra_config=cfgs)
