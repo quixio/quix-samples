@@ -6,17 +6,10 @@ import random
 import os
 from dotenv import load_dotenv
 import json
-import logging
 
-
-with open("./.env", 'a+') as file: pass  # make sure the .env file exists
-load_dotenv("./.env")
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+load_dotenv()
 
 app = Application.Quix(consumer_group="data_source", auto_create_topics=True)  # create an Application
-
 
 # define the topic using the "output" environment variable
 topic_name = os.environ["output"]
@@ -80,11 +73,11 @@ def main():
                 value=json_data,
             )
 
-        logger.info("All rows published")
+        print("All rows published")
 
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        logger.info("Exiting.")
+        print("Exiting.")

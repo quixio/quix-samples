@@ -1,14 +1,8 @@
 from quixstreams import Application
-
 import os
 from dotenv import load_dotenv
-import logging
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-with open("./.env", 'a+') as file: pass  # make sure the .env file exists
-load_dotenv("./.env")
+load_dotenv()
 
 
 def sink(message):
@@ -23,7 +17,7 @@ sdf = app.dataframe(input_topic)
 
 sdf = sdf.update(sink)
 
-sdf = sdf.update(lambda row: logger.info(row))
+sdf = sdf.update(lambda row: print(row))
 
 if __name__ == "__main__":
     app.run(sdf)
