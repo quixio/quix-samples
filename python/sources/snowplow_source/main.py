@@ -8,6 +8,9 @@ import time
 import json
 import os
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
 
 # should the main loop keep running?
 run = True

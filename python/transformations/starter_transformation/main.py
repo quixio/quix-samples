@@ -1,7 +1,8 @@
 import os
 from quixstreams import Application
-from dotenv import load_dotenv
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
 load_dotenv()
 
 app = Application.Quix("transformation-v1", auto_offset_reset="latest")
@@ -15,7 +16,7 @@ sdf = app.dataframe(input_topic)
 # see docs for what you can do
 # https://quix.io/docs/get-started/quixtour/process-threshold.html
 
-sdf = sdf.update(lambda row: logger.debug(row))
+sdf = sdf.update(lambda row: print(row))
 
 sdf = sdf.to_topic(output_topic)
 

@@ -1,8 +1,13 @@
 from quixstreams import Application
-from quixstreams.models.serializers.quix import QuixDeserializer
 
 import os
+import json
 import redis
+
+
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
 
 r = redis.Redis(
     host=os.environ['redis_host'],
@@ -11,28 +16,28 @@ r = redis.Redis(
     username=os.environ['redis_username'] if 'redis_username' in os.environ else None,
     decode_responses=True)
 
+redis_key_prefix = os.environ['redis_key_prefix']
+
 app = Application.Quix(consumer_group="redis-destination")
 
-input_topic = app.topic(os.environ["input"], value_deserializer=QuixDeserializer())
+input_topic = app.topic(os.environ["input"])
 
 
 def send_data_to_redis(value: dict) -> None:
     print(value)
 
-    tags = value["Tags"]
-    timestamp = int(value["Timestamp"] / 1e6)  # nanoseconds to milliseconds
+    # Convert the entire dictionary to a JSON string
+    json_data = json.dumps(value)
 
-    valid_keys = [x for x in value.keys() if x not in ["Timestamp", "Tags"] and value[x] is not None and (
-            isinstance(value[x], float) or isinstance(value[x], int))]
+    # Use a Redis key for storing the JSON data. This key can be a combination of
+    # some unique identifier in your value dict, like a timestamp or a specific tag.
+    # For this example, let's assume you have a unique 'id' in your value dict.
+    key = f"{redis_key_prefix}:{value['key']}"
 
-    if len(valid_keys) == 0:
-        return
+    # Store the JSON string in Redis
+    r.set(key, json_data)
 
-    print(f"Timestamp: {timestamp}, Number of keys: {len(valid_keys)}")
-    pipe = r.pipeline()
-    for key in valid_keys:
-        pipe.ts().add(key=key, timestamp=timestamp, value=value[key], labels=tags)
-    pipe.execute()
+    print(f"Data stored in Redis under key: {key}")
 
 
 sdf = app.dataframe(input_topic)

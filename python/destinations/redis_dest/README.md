@@ -1,9 +1,12 @@
 
 
-# Redis Timeseries Destination
+# Redis Destination
 
-Write data to Redis Timeseries from Quix. This code sample is a Quix destination that writes data to Redis Timeseries.
-It can be used to write data from any Quix source to Redis Timeseries.
+Write data to Redis from Quix. This code sample is a Quix destination that writes data to Redis.
+It can be used to write data from any Quix source to Redis.
+
+This sample will write JSON data to Redis.
+We assume that the incoming data will have a `key` field, this will be combined with the `redis_key_prefix` environment variable to create the Redis key where data will be stored.
 
 Note that you need [Redis Stack](https://redis.io/docs/about/about-stack/) to use this code sample.
 
@@ -25,6 +28,7 @@ The code sample uses the following environment variables:
 - **redis_port**: Port for the Redis instance (Default: `6379`, Required: `True`)
 - **redis_password**: Password for the Redis instance (Default: `None`, Required: `False`)
 - **redis_username**: Username for the Redis instance (Default: `None`, Required: `False`)
+- **redis_key_prefix**: The prefix for the key to store data under.
 
 ## Requirements / Prerequisites
 

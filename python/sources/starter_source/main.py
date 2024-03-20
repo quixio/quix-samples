@@ -4,9 +4,10 @@ from quixstreams import Application  # import the Quix Streams modules for inter
 # import additional modules as needed
 import random
 import os
-from dotenv import load_dotenv
 import json
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
 load_dotenv()
 
 app = Application.Quix(consumer_group="data_source", auto_create_topics=True)  # create an Application
@@ -41,12 +42,8 @@ def get_data():
         {"m": "mem", "host": "host2", "used_percent": "73.21", "time": "1577836820000000000"}
     ]
 
-    # generate a unique ID for this data stream.
-    # it will be used as a message key in Kafka
-    message_key  = f"MESSAGE_KEY_{str(random.randint(1, 100)).zfill(3)}"
-
-    # create a list of tuples with a message_key and row_data
-    data_with_id = [(message_key , row_data) for row_data in data]
+    # create a list of tuples with row_data
+    data_with_id = [(row_data) for row_data in data]
 
     return data_with_id
 
@@ -57,21 +54,22 @@ def main():
     """
 
     # create a pre-configured Producer object.
-    producer = app.get_producer()
-
-    with producer:
+    with app.get_producer() as producer:
         # iterate over the data from the hardcoded dataset
         data_with_id = get_data()
-        for message_key, row_data in data_with_id:
+        for row_data in data_with_id:
 
             json_data = json.dumps(row_data)  # convert the row to JSON
 
             # publish the data to the topic
             producer.produce(
                 topic=topic.name,
-                key=message_key,
+                key=row_data['host'],
                 value=json_data,
             )
+
+            # for more help using QuixStreams see docs:
+            # https://quix.io/docs/quix-streams/introduction.html
 
         print("All rows published")
 

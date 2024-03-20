@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "web_api_gateway",
+    "libraryItemId": "web-api-gateway",
     "name": "Flask Web Gateway",
     "language": "Python",
     "tags": {

@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "mqtt_source",
+  "libraryItemId": "mqtt-source",
   "name": "MQTT",
   "language": "Python",
   "tags": {

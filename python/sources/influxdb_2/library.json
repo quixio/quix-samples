@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "influxdb_2_source",
+  "libraryItemId": "influxdb-2-source",
   "name": "InfluxDB 2.0",
   "language": "Python",
   "tags": {

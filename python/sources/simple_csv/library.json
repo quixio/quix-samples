@@ -1,5 +1,5 @@
 {
-	"libraryItemId": "simple_csv_source",
+	"libraryItemId": "simple-csv-source",
 	"name": "CSV data",
 	"language": "Python",
 	"tags": {
