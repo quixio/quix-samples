@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "hugging_face_model",
+    "libraryItemId": "hugging-face-model",
     "name": "Hugging Face model",
     "language": "Python",
     "tags": {

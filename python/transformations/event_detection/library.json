@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "event_detection_transformation",
+    "libraryItemId": "event-detection-transformation",
     "name": "Event Detection",
     "language": "Python",
     "tags": {

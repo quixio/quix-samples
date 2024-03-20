@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "sql_cdc_source",
+    "libraryItemId": "sql-cdc-source",
     "name": "SQL Change Data Capture",
     "language": "Python",
     "tags": {

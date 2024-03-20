@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "redis_source",
+  "libraryItemId": "redis-source",
   "name": "Redis Time Series",
   "language": "Python",
   "tags": {

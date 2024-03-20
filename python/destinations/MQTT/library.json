@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "mqtt_destination",
+  "libraryItemId": "mqtt-destination",
   "name": "MQTT",
   "language": "Python",
   "tags": {

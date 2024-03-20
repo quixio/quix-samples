@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "redis_destination",
+  "libraryItemId": "redis-destination",
   "name": "Redis Time Series",
   "language": "Python",
   "tags": {

@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "segment_webhook_source",
+    "libraryItemId": "segment-webhook-source",
     "name": "Segment",
     "language": "Python",
     "tags": {
