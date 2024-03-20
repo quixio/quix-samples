@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "redis_destination",
+  "libraryItemId": "redis-destination",
   "name": "Redis Time Series",
   "language": "Python",
   "tags": {
@@ -63,6 +63,14 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Username for the Redis instance",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "redis_key_prefix",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The prefix for the key to store data under",
       "DefaultValue": "",
       "Required": false
     }

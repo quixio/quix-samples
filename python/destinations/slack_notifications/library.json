@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "slack_destination",
+  "libraryItemId": "slack-destination",
   "name": "Slack",
   "language": "Python",
   "tags": {

@@ -10,6 +10,10 @@ from quixstreams import Application
 from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 import influxdb_client
 
+# for local dev, load env vars from a .env file
+from dotenv import load_dotenv
+load_dotenv()
+
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

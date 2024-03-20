@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "snowplow_source",
+    "libraryItemId": "snowplow-source",
     "name": "Snowplow",
     "language": "Python",
     "tags": {

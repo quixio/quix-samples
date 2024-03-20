@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "confluent_kafka_source",
+    "libraryItemId": "confluent-kafka-source",
     "name": "Confluent Kafka",
     "language": "Python",
     "tags": {

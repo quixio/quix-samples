@@ -1,6 +1,7 @@
 import os
-from quixstreams import Application, State
+from quixstreams import Application
 from transformers import pipeline
+import json
 
 # Load environment variables (useful when working locally)
 from dotenv import load_dotenv
@@ -20,10 +21,7 @@ model_pipeline = pipeline(model=model_name)
 sdf = app.dataframe(input_topic)
 
 # Assuming the input data has a 'text' column that you want to process with the model
-sdf = sdf.apply(lambda row: {
-    "text": row["text"],
-    "sentiment": model_pipeline(row["text"])[0]  # Replace with the actual model output
-})
+sdf['model_result'] = sdf['text'].apply(lambda t: json.dumps(model_pipeline(t)))
 
 # Send the processed data to the output topic
 sdf = sdf.to_topic(output_topic)
