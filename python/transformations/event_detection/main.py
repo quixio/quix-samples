@@ -1,5 +1,5 @@
 import os
-from quixstreams import Application, State
+from quixstreams import Application
 from datetime import datetime
 import json
 
@@ -9,8 +9,8 @@ load_dotenv()
 
 app = Application.Quix("hard-braking-v1", auto_offset_reset="earliest")
 
-input_topic = app.topic(os.environ["input"], value_deserializer='json')
-output_topic = app.topic(os.environ["output"], value_serializer='json')
+input_topic = app.topic(os.environ["input"])
+output_topic = app.topic(os.environ["output"])
 
 sdf = app.dataframe(input_topic)
 
