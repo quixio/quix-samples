@@ -28,7 +28,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Host address for the InfluxDB instance.",
-      "DefaultValue": "eu-central-1-1.aws.cloud2.influxdata.com",
+      "DefaultValue": "https://eu-central-1-1.aws.cloud2.influxdata.com",
       "Required": true
     },
     {
@@ -52,7 +52,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used",
-      "DefaultValue": "",
+      "DefaultValue": "measurement1",
       "Required": false
     },
     {
@@ -85,6 +85,14 @@
       "InputType": "FreeText",
       "Description": "The name of the consumer group to use when consuming from Kafka",
       "DefaultValue": "influxdb-sink",
+      "Required": true
+    },
+    {
+      "Name": "TIMESTAMP_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The name of the consumer group to use when consuming from Kafka",
+      "DefaultValue": "Timestamp",
       "Required": true
     }
   ]
