@@ -6,6 +6,7 @@ import logging
 
 # import vendor-specific modules
 from quixstreams import Application
+from quixstreams import message_context
 from influxdb_client_3 import InfluxDBClient3
 
 # for local dev, load env vars from a .env file
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 consumer_group_name = os.environ.get("CONSUMER_GROUP_NAME", "influxdb-data-writer")
 
 # read the timestamp column from config
-timestamp_column = os.environ.get("TIMESTAMP_COLUMN", "Timestamp")
+timestamp_column = os.environ.get("TIMESTAMP_COLUMN", "")
 
 # Create a Quix platform-specific application instead
 app = Application.Quix(consumer_group=consumer_group_name, auto_offset_reset="earliest")
@@ -44,6 +45,13 @@ measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
 
 def send_data_to_influx(message):
     logger.info(f"Processing message: {message}")
+
+    # use the column specified for timestamps or the message context
+    if timestamp_column == '':
+        time = (message_context().timestamp).milliseconds * 1000 * 1000
+    else:
+        time = message[timestamp_column]
+
     try:
         # Initialize the tags and fields dictionaries
         tags = {}
@@ -52,9 +60,8 @@ def send_data_to_influx(message):
         # Iterate over the tag_dict and field_dict to populate tags and fields
         for tag_key in tag_keys:
             if tag_key in message:
-                if tag_key in message:
-                    if message[tag_key] is not None:  # skip None values
-                        tags[tag_key] = message[tag_key]
+                if message[tag_key] is not None:  # skip None values
+                    tags[tag_key] = message[tag_key]
 
         for field_key in field_keys:
             if field_key in message:
@@ -74,7 +81,7 @@ def send_data_to_influx(message):
             "measurement": measurement_name,
             "tags": tags,
             "fields": fields,
-            "time": message[timestamp_column]
+            "time": time
         }
         
         influx3_client.write(record=points, write_precision="ns")
