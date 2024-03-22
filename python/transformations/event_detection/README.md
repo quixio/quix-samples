@@ -1,6 +1,6 @@
 # Event Detection
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/transformations/Event-Detection) is an example of how to create a simple pub/sub model using Quix.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/transformations/Event-Detection) is an example of how to create a simple transformation using Quix.
 
 It shows how to make real-time decisions on your data by looking at the `Brake` value and if a condition is met will output JSON message to the output topic. 
 

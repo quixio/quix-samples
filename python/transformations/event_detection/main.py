@@ -7,7 +7,7 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 
-app = Application.Quix("hard-braking-v1", auto_offset_reset="earliest")
+app = Application.Quix("hard-braking-v1", auto_offset_reset="earliest", use_changelog_topics=False)
 
 input_topic = app.topic(os.environ["input"])
 output_topic = app.topic(os.environ["output"])
@@ -20,6 +20,8 @@ sdf = sdf[sdf["Brake"].notnull()]
 # Calculate hopping window of 1s with 200ms steps.
 sdf = sdf.apply(lambda row: row["Brake"]) \
         .hopping_window(1000, 200).mean().final() 
+        
+sdf = sdf.update(print)
 
 # Filter only windows where average brake force exceeded 50%.
 sdf = sdf[sdf["value"] > 0.5]
