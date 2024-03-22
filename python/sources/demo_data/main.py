@@ -42,7 +42,7 @@ def main():
     producer = app.get_producer()
 
     with producer:
-        stream_id = f"CSV_DATA_{str(random.randint(1, 100)).zfill(3)}"
+        message_key = f"CSV_DATA_{str(random.randint(1, 100)).zfill(3)}"
         
         df = pd.read_csv(csv_file_path)
         print("File loaded.")
@@ -65,7 +65,7 @@ def main():
             # publish the data to the topic
             producer.produce(
                 topic=topic.name,
-                key=stream_id,
+                key=message_key,
                 value=json_data
             )
 
