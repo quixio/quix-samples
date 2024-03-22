@@ -69,9 +69,9 @@ def main():
                 value=json_data
             )
 
-            print(row_data)
-            
-            time.sleep(0.2)
+            # add arbitrary sleep, if you want you can calculate the delta between
+            # this row and the next and sleep for that time.
+            time.sleep(500)
 
 
 if __name__ == "__main__":
