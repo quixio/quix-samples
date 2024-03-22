@@ -14,31 +14,37 @@ load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-consumer_group_name = os.environ.get('CONSUMER_GROUP_NAME', "influxdb-data-writer")
+
+# read the consumer group from config
+consumer_group_name = os.environ.get("CONSUMER_GROUP_NAME", "influxdb-data-writer")
+
+# read the timestamp column from config
+timestamp_column = os.environ.get("TIMESTAMP_COLUMN", "Timestamp")
 
 # Create a Quix platform-specific application instead
-app = Application.Quix(consumer_group=consumer_group_name, auto_offset_reset='earliest')
+app = Application.Quix(consumer_group=consumer_group_name, auto_offset_reset="earliest")
 
 input_topic = app.topic(os.environ["input"])
 
 # Read the environment variable and convert it to a dictionary
-tag_keys = ast.literal_eval(os.environ.get('INFLUXDB_TAG_KEYS', "[]"))
-field_keys = ast.literal_eval(os.environ.get('INFLUXDB_FIELD_KEYS', "[]"))
+tag_keys = ast.literal_eval(os.environ.get("INFLUXDB_TAG_KEYS", "[]"))
+field_keys = ast.literal_eval(os.environ.get("INFLUXDB_FIELD_KEYS", "[]"))
 
 # Read the environment variable for the field(s) to get.
-# For multiple fields, use a list "['field1','field2']"
+# For multiple fields, use a list "["field1","field2"]"
                                            
 influx3_client = InfluxDBClient3(token=os.environ["INFLUXDB_TOKEN"],
                          host=os.environ["INFLUXDB_HOST"],
                          org=os.environ["INFLUXDB_ORG"],
                          database=os.environ["INFLUXDB_DATABASE"])
 
+# Get the measurement name to write data to
+measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
+
+
 def send_data_to_influx(message):
     logger.info(f"Processing message: {message}")
     try:
-        # Get the measurement name to write data to
-        measurement_name = os.environ.get('INFLUXDB_MEASUREMENT_NAME', "measurement1")
-
         # Initialize the tags and fields dictionaries
         tags = {}
         fields = {}
@@ -46,24 +52,32 @@ def send_data_to_influx(message):
         # Iterate over the tag_dict and field_dict to populate tags and fields
         for tag_key in tag_keys:
             if tag_key in message:
-                tags[tag_key] = message[tag_key]
+                if tag_key in message:
+                    if message[tag_key] is not None:  # skip None values
+                        tags[tag_key] = message[tag_key]
 
         for field_key in field_keys:
             if field_key in message:
-                fields[field_key] = message[field_key]
+                if message[field_key] is not None:  # skip None values
+                    fields[field_key] = message[field_key]
 
         logger.info(f"Using tag keys: {', '.join(tags.keys())}")
         logger.info(f"Using field keys: {', '.join(fields.keys())}")
 
+        # Check if fields dictionary is not empty
+        if not fields and not tags:
+            logger.info("Fields and Tags are empty: No data to write to InfluxDB.")
+            return  # Skip writing to InfluxDB
+        
         # Construct the points dictionary
         points = {
             "measurement": measurement_name,
             "tags": tags,
             "fields": fields,
-            "time": message['time']
+            "time": message[timestamp_column]
         }
-
-        influx3_client.write(record=points, write_precision="ms")
+        
+        influx3_client.write(record=points, write_precision="ns")
         
         logger.info(f"{str(datetime.datetime.utcnow())}: Persisted ponts to influx: {points}")
     except Exception as e:
