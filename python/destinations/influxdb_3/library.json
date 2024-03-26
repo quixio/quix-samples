@@ -91,9 +91,9 @@
       "Name": "TIMESTAMP_COLUMN",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The name of the consumer group to use when consuming from Kafka",
-      "DefaultValue": "Timestamp",
-      "Required": true
+      "Description": "The column containing the timestamp column. NOTE: Must be nanoseconds",
+      "DefaultValue": "",
+      "Required": false
     }
   ]
 }
