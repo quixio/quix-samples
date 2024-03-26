@@ -1,29 +1,24 @@
 import os
 from quixstreams import Application
+
+# for local dev, load env vars from a .env file
 from dotenv import load_dotenv
-import logging
+load_dotenv()
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+app = Application.Quix("transformation-v1", auto_offset_reset="earliest")
 
-with open("./.env", 'a+') as file: pass  # make sure the .env file exists
-load_dotenv("./.env")
-
-app = Application.Quix("transformation-v1", auto_offset_reset="latest")
-
-input_topic = app.topic(os.environ["input"], value_deserializer="json")
-output_topic = app.topic(os.environ["output"], value_serializer="json")
+input_topic = app.topic(os.environ["input"])
+output_topic = app.topic(os.environ["output"])
 
 sdf = app.dataframe(input_topic)
 
-# Put transformation logic.here
+# put transformation logic here
+# see docs for what you can do
+# https://quix.io/docs/get-started/quixtour/process-threshold.html
 
-sdf = sdf.update(lambda row: logger.debug(row))
+sdf = sdf.update(lambda row: print(row))
 
 sdf = sdf.to_topic(output_topic)
 
 if __name__ == "__main__":
-    try:
-        app.run(sdf)
-    except Exception as e:
-        logger.exception("An error occurred while running the application.")
+    app.run(sdf)
