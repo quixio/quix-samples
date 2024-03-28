@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create a Quix Application
-app = Application.Quix()
+app = Application.Quix(use_changelog_topics=False)
 
 # Define a serializer for messages, using JSON Serializer for ease
 serializer = JSONSerializer()
@@ -87,7 +87,7 @@ def get_data():
                 # Convert to JSON for JSON-to-bytes serializer
                 json_result = table.to_json(orient='records', date_format='iso')
                 yield json_result
-                print("query success")
+                print(f"Query retrieved {table.size} records")
             else:
                 print("No new data to publish.")
 

@@ -17,7 +17,7 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 The code sample uses the following environment variables:
 
 - **input**: This is the input topic (Default: `detection-result`, Required: `True`)
-- **TIMESTAMP_COLUMN**: This is the column in your data that represents the timestamp in nanoseconds. Defaults to 'Timestamp' if not supplied. Case sensitive.
+- **TIMESTAMP_COLUMN**: This is the column in your data that represents the timestamp in nanoseconds. Defaults to use the message timestamp received from the broker if not supplied. Case sensitive. (Default: ``, Required: `False`)
 - **INFLUXDB_HOST**: Host address for the InfluxDB instance. (Default: `https://eu-central-1-1.aws.cloud2.influxdata.com`, Required: `True`)
 - **INFLUXDB_TOKEN**: Authentication token to access InfluxDB. (Default: `<TOKEN>`, Required: `True`)
 - **INFLUXDB_ORG**: Organization name in InfluxDB. (Default: `<ORG>`, Required: `False`)
