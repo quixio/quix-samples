@@ -2,6 +2,8 @@
     "libraryItemId": "web-api-gateway",
     "name": "Flask Web Gateway",
     "language": "Python",
+	"IsHighlighted": true,
+	"DisplayOrder": 3,
     "tags": {
         "Complexity": ["Easy"],
         "Technology": ["QuixStreams"],

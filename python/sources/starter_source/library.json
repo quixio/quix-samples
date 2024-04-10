@@ -2,6 +2,8 @@
 	"libraryItemId": "starter-source",
 	"name": "Starter source",
 	"language": "Python",
+	"IsHighlighted": true,
+	"DisplayOrder": 2,
 	"tags": {
 		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Source"],
