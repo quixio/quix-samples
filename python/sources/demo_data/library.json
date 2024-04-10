@@ -3,7 +3,7 @@
 	"name": "Demo Data",
 	"language": "Python",
 	"IsHighlighted": true,
-	"DisplayOrder": 1,
+	"DisplayOrder": 4,
 	"tags": {
 		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Source"],

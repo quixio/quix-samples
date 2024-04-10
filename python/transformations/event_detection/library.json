@@ -2,6 +2,8 @@
     "libraryItemId": "event-detection-transformation",
     "name": "Event Detection",
     "language": "Python",
+	"IsHighlighted": true,
+    "DisplayOrder": 5,
     "tags": {
         "Complexity": ["Easy"],
         "Technology": ["QuixStreams"],

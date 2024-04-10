@@ -3,7 +3,7 @@
     "name": "Flask Web Gateway",
     "language": "Python",
 	"IsHighlighted": true,
-	"DisplayOrder": 3,
+	"DisplayOrder": 6,
     "tags": {
         "Complexity": ["Easy"],
         "Technology": ["QuixStreams"],
