@@ -2,7 +2,7 @@
     "libraryItemId": "starter-transformation",
     "name": "Starter transformation",
     "language": "Python",
-	"IsHighlighted": true,
+    "IsHighlighted": true,
     "DisplayOrder": 2,
     "tags": {
         "Complexity": ["Easy"],
