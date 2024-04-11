@@ -2,6 +2,8 @@
     "libraryItemId": "starter-transformation",
     "name": "Starter transformation",
     "language": "Python",
+    "IsHighlighted": true,
+    "DisplayOrder": 2,
     "tags": {
         "Complexity": ["Easy"],
         "Technology": ["QuixStreams"],

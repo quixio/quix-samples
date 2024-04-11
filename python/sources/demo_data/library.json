@@ -2,6 +2,8 @@
 	"libraryItemId": "demo-data-source",
 	"name": "Demo Data",
 	"language": "Python",
+	"IsHighlighted": true,
+	"DisplayOrder": 4,
 	"tags": {
 		"Technology": ["QuixStreams"],
 		"Pipeline Stage": ["Source"],
