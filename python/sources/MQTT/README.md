@@ -1,6 +1,6 @@
 # MQTT
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/MQTT) allows you to publish data to Quix from an MQTT topic
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/MQTT) allows you to publish data to Quix from an MQTT topic
 
 ## How to run
 

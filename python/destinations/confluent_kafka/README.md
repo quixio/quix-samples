@@ -1,6 +1,6 @@
 # Confluent Kafka
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/destinations/confluent_kafka) shows you how to publish data to a Confluent Kafka topic.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/confluent_kafka) shows you how to publish data to a Confluent Kafka topic.
 
 ## How to run
 

@@ -1,6 +1,6 @@
 # Flask Web Gateway
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/web_api_gateway) is Flask Web API gateway example to ingest data into the topic from any source.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/web_api_gateway) is Flask Web API gateway example to ingest data into the topic from any source.
 
 ## How to run
 

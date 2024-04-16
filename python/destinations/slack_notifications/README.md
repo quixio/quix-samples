@@ -1,6 +1,6 @@
 # Slack Notifications
 
-Enable Slack notifications from you pipeline using [this project](https://github.com/quixio/quix-samples/tree/main/python/destinations/slack_notifications).
+Enable Slack notifications from you pipeline using [this sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/slack_notifications).
 
 ## How to run
 

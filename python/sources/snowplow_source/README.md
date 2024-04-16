@@ -1,6 +1,6 @@
 # Snowplow
 
-Using [this project](https://github.com/quixio/quix-samples/tree/main/python/sources/snowplow_source) you can connect your Snowplow data to a Quix topic.
+Using [this sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/snowplow_source) you can connect your Snowplow data to a Quix topic.
 
 Note that this connector works with Snowplow instances on AWS Kinesis, so you will need connection details Kinesis.
 

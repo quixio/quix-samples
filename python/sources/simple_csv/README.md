@@ -1,6 +1,6 @@
 # Demo CSV Data
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/simple_csv) streams data from a three column CSV file into a topic.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/simple_csv) streams data from a three column CSV file into a topic.
 
 The sample is a demonstration of how you can publish your own CSV data into Quix.
 See `Timeseries data`, below, for more info.

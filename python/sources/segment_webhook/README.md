@@ -1,6 +1,6 @@
 # Segment
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/segment_webhook) enables integration with Segment via their webhook API.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/segment_webhook) enables integration with Segment via their webhook API.
 
 It's secure, using a secret shared with both Quix and Segment.
 

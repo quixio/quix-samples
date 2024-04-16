@@ -1,6 +1,6 @@
 # MQTT
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/destinations/MQTT) publishes data to MQTT.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/MQTT) publishes data to MQTT.
 
 ## How to run
 

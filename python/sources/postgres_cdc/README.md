@@ -1,6 +1,6 @@
 # Postgres CDC
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/postgres_cdc) gives an example of how to stream data from a Postgres Database using Change Data Capture (CDC) to Quix, it handles both parameter and event data.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/postgres_cdc) gives an example of how to stream data from a Postgres Database using Change Data Capture (CDC) to Quix, it handles both parameter and event data.
 
 ## How to run
 

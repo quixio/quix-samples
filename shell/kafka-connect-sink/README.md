@@ -1,6 +1,6 @@
 # Kafka Connect Sink
 
-[This project](https://github.com/quixio/quix-samples/tree/main/shell/kafka-connect-sink) shows you how to install any Kafka Connect sink connector using its Confluent Hub name.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/shell/kafka-connect-sink) shows you how to install any Kafka Connect sink connector using its Confluent Hub name.
 
 ## How to run
 
