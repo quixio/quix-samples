@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Create a Quix Application, this manages the connection to the Quix platform
-quix_app = Application.Quix()
+quix_app = Application()
 
 # Create the producer, this is used to write data to the output topic
 producer = quix_app.get_producer()

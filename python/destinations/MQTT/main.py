@@ -23,7 +23,7 @@ if not mqtt_port.isnumeric():
 
 
 # Create a Quix platform-specific application instead
-app = Application.Quix(consumer_group="mqtt_consumer_group", auto_offset_reset='earliest')
+app = Application(consumer_group="mqtt_consumer_group", auto_offset_reset='earliest')
 
 # initialize the topic, this will combine the topic name with the environment details to produce a valid topic identifier
 input_topic = app.topic(os.environ["input"])

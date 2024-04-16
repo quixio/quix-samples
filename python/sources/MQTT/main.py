@@ -45,7 +45,7 @@ mqtt_client.tls_set(tls_version = mqtt.client.ssl.PROTOCOL_TLS)  # we'll be usin
 mqtt_client.username_pw_set(os.environ["mqtt_username"], os.environ["mqtt_password"])
 
 # Create a Quix Application, this manages the connection to the Quix platform
-app = Application.Quix()
+app = Application()
 # Create the producer, this is used to write data to the output topic
 producer = app.get_producer()
 # create a topic object for use later on

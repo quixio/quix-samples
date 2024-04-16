@@ -12,7 +12,7 @@ def sink(message):
     # for more help using QuixStreams see the docs:
     # https://quix.io/docs/quix-streams/introduction.html
 
-app = Application.Quix("destination-v1", auto_offset_reset = "latest")
+app = Application(consumer_group="destination-v1", auto_offset_reset = "latest")
 
 input_topic = app.topic(os.environ["input"])
 

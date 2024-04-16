@@ -8,7 +8,7 @@ load_dotenv()
 
 # Quix injects credentials automatically to the client.
 # Alternatively, you can always pass an SDK token manually as an argument.
-app = Application.Quix(consumer_group="slack-notifications")
+app = Application(consumer_group="slack-notifications")
 
 print("Opening input and output topics")
 input_topic = app.topic(os.getenv("input", ""))

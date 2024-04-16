@@ -26,7 +26,7 @@ consumer_group_name = os.environ.get("CONSUMER_GROUP_NAME", "influxdb-data-write
 timestamp_column = os.environ.get("TIMESTAMP_COLUMN", "")
 
 # Create a Quix platform-specific application instead
-app = Application.Quix(consumer_group=consumer_group_name, auto_offset_reset="earliest", use_changelog_topics=False)
+app = Application(consumer_group=consumer_group_name, auto_offset_reset="earliest", use_changelog_topics=False)
 
 input_topic = app.topic(os.environ["input"])
 

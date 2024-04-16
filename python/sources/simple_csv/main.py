@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Create an Application
-app = Application.Quix(consumer_group="csv_sample", auto_create_topics=True)
+app = Application(consumer_group="csv_sample", auto_create_topics=True)
 # Define a serializer for messages, using JSON Serializer for ease
 serializer = JSONSerializer()
 

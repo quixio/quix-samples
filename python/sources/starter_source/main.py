@@ -10,7 +10,7 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 
-app = Application.Quix(consumer_group="data_source", auto_create_topics=True)  # create an Application
+app = Application(consumer_group="data_source", auto_create_topics=True)  # create an Application
 
 # define the topic using the "output" environment variable
 topic_name = os.environ["output"]

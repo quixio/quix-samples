@@ -7,7 +7,7 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 
-app = Application.Quix("hugging-face-model-v1", auto_offset_reset="earliest")
+app = Application(consumer_group="hugging-face-model-v1", auto_offset_reset="earliest")
 
 input_topic = app.topic(os.environ["input"])
 output_topic = app.topic(os.environ["output"])

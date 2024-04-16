@@ -32,13 +32,13 @@ if input_topic_name == "" or output_topic_name == "":
     exit(1)
 
 # this 'application' will consume data from Confluent Kafka
-app = Application.Quix(consumer_group="kafka-connector-consumer-group", 
+app = Application(consumer_group="kafka-connector-consumer-group", 
                     auto_offset_reset="earliest", consumer_extra_config=sasl_config)
 # this topic is the Confluent Kafka topic
 input_topic = app.topic(input_topic_name)
 
 # This 'application' and producer will publish data to a Quix topic
-producer_app = Application.Quix()
+producer_app = Application()
 producer = producer_app.get_producer()
 # this is the Quix topic
 output_topic = app.topic(output_topic_name)

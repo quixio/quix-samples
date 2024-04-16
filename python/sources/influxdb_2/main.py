@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create a Quix Application
-app = Application.Quix()
+app = Application()
 
 # Define a serializer for messages, using JSON Serializer for ease
 serializer = JSONSerializer()
