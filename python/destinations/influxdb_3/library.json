@@ -1,6 +1,6 @@
 {
   "libraryItemId": "influxdb-3-destination",
-  "name": "InfluxDB 3.0",
+  "name": "InfluxDB 3.0 Sink",
   "language": "Python",
   "tags": {
     "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
-  "shortDescription": "Publish Quix streams to InfluxDB 3.0",
+  "shortDescription": "Consume a stream from a Kafka topic and persist the data to InfluxDB 3.0 using the InfluxDB write API.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

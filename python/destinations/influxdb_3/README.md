@@ -1,8 +1,6 @@
-
-
 # InfluxDB 3.0
 
-Write data to InfluxDB 3.0 with [this project](https://github.com/quixio/quix-samples/tree/main/python/destinations/influxdb_3).
+Consume a stream from a Kafka topic and persist the data to InfluxDB 3.0 using [this sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/influxdb_3).
 
 ## How to run
 
@@ -37,4 +35,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 ## Open Source
 
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo. Please star us and mention us on social to show your appreciation.
-

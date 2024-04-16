@@ -1,6 +1,6 @@
 # InfluxDB 2.0
 
-Read data from InfluxDB 2.0 with [this project](https://github.com/quixio/quix-samples/tree/main/python/sources/influxdb_2).
+Periodically query InfluxDB 2.0 and publish the results to a Kafka topic using [this sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/influxdb_2).
 
 ## How to run
 
@@ -33,4 +33,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 ## Open Source
 
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo. Please star us and mention us on social to show your appreciation.
-

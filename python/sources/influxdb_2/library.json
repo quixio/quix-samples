@@ -1,6 +1,6 @@
 {
   "libraryItemId": "influxdb-2-source",
-  "name": "InfluxDB 2.0",
+  "name": "InfluxDB 2.0 Source",
   "language": "Python",
   "tags": {
     "Complexity": ["Easy"],
@@ -9,20 +9,20 @@
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
-  "shortDescription": "Read from InfluxDB 2.0 and publish to Quix streams",
+  "shortDescription": "Use the InfluxDB 2.0 query API to periodically query InfluxDB and publish the results to a Kafka topic.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "IconFile": "icon.png",
   "Variables": [
     {
-      "Name" : "output",
-      "Type" : "EnvironmentVariable",
-      "InputType" : "OutputTopic",
-      "Description" : "This is the Quix topic that will receive the stream",
-      "DefaultValue" : "influxdbv2-data",
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the Kafka topic that will receive the query results",
+      "DefaultValue": "influxdbv2-data",
       "Required": true
-  },
+    },
     {
       "Name": "task_interval",
       "Type": "EnvironmentVariable",
