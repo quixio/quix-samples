@@ -1,6 +1,6 @@
 {
     "libraryItemId": "web-api-gateway",
-    "name": "Flask Web Gateway",
+    "name": "Flask Web Gateway Source",
     "language": "Python",
     "IsHighlighted": true,
     "DisplayOrder": 6,
@@ -11,7 +11,7 @@
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "Flask Web API gateway example to ingest data into the topic from any source.",
+    "shortDescription": "Source data from a Flask web API gateway and publish it to a Kafka topic.",
     "DefaultFile": "main.py",
     "EntryPoint": "build/dockerfile",
     "RunEntryPoint": "main.py",

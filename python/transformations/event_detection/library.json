@@ -1,6 +1,6 @@
 {
     "libraryItemId": "event-detection-transformation",
-    "name": "Event Detection",
+    "name": "Event Detection Transformation",
     "language": "Python",
     "IsHighlighted": true,
     "DisplayOrder": 5,
@@ -11,7 +11,7 @@
         "Type": ["Code samples"],
         "Popular Subjects": ["Onboarding"]
     },
-    "shortDescription": "Filter data with this 'Hard Braking' model",
+    "shortDescription": "Transform data flowing through a Kafka topic by filtering it with this model",
     "DefaultFile": "quix_function.py",
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",

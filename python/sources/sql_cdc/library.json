@@ -1,6 +1,6 @@
 {
     "libraryItemId": "sql-cdc-source",
-    "name": "SQL Change Data Capture",
+    "name": "SQL Change Data Capture Source",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -8,7 +8,7 @@
         "Type": ["Connectors"],
         "Technology": ["SQL", "CDC", "QuixStreams", "Database"]
     },
-    "shortDescription": "Stream changes to data in a SQL Database",
+    "shortDescription": "Capture and stream changes happening in a SQL database table to a Kafka topic",
     "DefaultFile": "main.py",
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",

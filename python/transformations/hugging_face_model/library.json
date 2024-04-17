@@ -1,6 +1,6 @@
 {
     "libraryItemId": "hugging-face-model",
-    "name": "Hugging Face model",
+    "name": "Hugging face model Transformation",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -8,7 +8,7 @@
         "Pipeline Stage": ["Transformation"],
         "Popular Subjects": ["Sentiment Analysis", "Machine Learning"]
     },
-    "shortDescription": "Deploy a Hugging Face model that generates predictions based on the input data",
+    "shortDescription": "Transform data flowing through a Kafka topic with a Hugging Face model that generates predictions based on the input data",
     "DefaultFile": "hugging_face_model.py",
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",

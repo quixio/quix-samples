@@ -1,6 +1,6 @@
 # Postgres CDC
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/postgres_cdc) gives an example of how to stream data from a Postgres Database using Change Data Capture (CDC) to Quix, it handles both parameter and event data.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/postgres_cdc) gives an example of how to capture changes in a Postgres Database and publish the changes to a Kafka topic.
 
 ## How to run
 

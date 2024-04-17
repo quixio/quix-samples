@@ -1,6 +1,6 @@
 {
     "libraryItemId": "confluent-kafka-source",
-    "name": "Confluent Kafka",
+    "name": "Confluent Kafka Source",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -9,8 +9,8 @@
         "Vendor": ["Confluent"],
         "Technology": ["Kafka", "QuixStreams"]
     },
-    "shortDescription": "Subscribe to your Confluent Kafka topic with this bridge",
-    "longDescription": "Connect your Confluent Kafka topic to a Quix topic with this bridge<br/>If you already have a Confluent Kafka topic, you can connect it to Quix with this simple bridge.",
+    "shortDescription": "Subscribe to an existing Confluent Kafka topic and publish the data to another topic via QuixStreams",
+    "longDescription": "Connect your Confluent Kafka topic to a Quix managed topic with this transformation<br/>If you already have a Confluent Kafka topic, you can connect it to Quix with this transformation.",
     "DefaultFile": "main.py",
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",

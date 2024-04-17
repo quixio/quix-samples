@@ -1,6 +1,6 @@
 {
   "libraryItemId": "mqtt-destination",
-  "name": "MQTT",
+  "name": "MQTT Sink",
   "language": "Python",
   "tags": {
     "Complexity": ["Easy"],
@@ -8,7 +8,7 @@
     "Type": ["Connectors"],
     "Technology": ["MQTT", "QuixStreams"]
   },
-  "shortDescription": "Easily publish data to a MQTT instance",
+  "shortDescription": "Easily publish data from a Kafka topic to an MQTT broker",
   "DefaultFile": "mqtt_function.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

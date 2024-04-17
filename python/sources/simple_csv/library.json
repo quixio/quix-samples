@@ -1,6 +1,6 @@
 {
 	"libraryItemId": "simple-csv-source",
-	"name": "CSV data",
+	"name": "CSV Source",
 	"language": "Python",
 	"tags": {
 		"Technology": ["QuixStreams"],
@@ -8,8 +8,8 @@
 		"Popular Subjects": ["Quick Start"],
 		"Type": ["Demos"]
 	},
-	"shortDescription": "Stream data from a CSV file",
-	"longDescription": "Stream our simple CSV data file or your own CSV data into a topic",
+	"shortDescription": "Publish data from a CSV file into a Kafka topic.",
+	"longDescription": "Publish data from a CSV file into a Kafka topic. Stream our simple CSV data file or your own CSV data into a topic",
 	"DefaultFile": "main.py",
 	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "main.py",

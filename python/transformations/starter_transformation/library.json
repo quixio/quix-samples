@@ -1,6 +1,6 @@
 {
     "libraryItemId": "starter-transformation",
-    "name": "Starter transformation",
+    "name": "Starter Transformation",
     "language": "Python",
     "IsHighlighted": true,
     "DisplayOrder": 2,
@@ -11,7 +11,7 @@
         "Popular Subjects": ["Quick Start"],
         "Type": ["Basic templates"]
     },
-    "shortDescription": "Template using Streaming Data Frames to transform data between source and destination.",
+    "shortDescription": "Transform data flowing through a Kafka topic using Streaming Data Frames and publish to a destination Kafka topic.",
     "DefaultFile": "main.py",
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",

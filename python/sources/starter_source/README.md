@@ -1,6 +1,6 @@
 # Starter data source
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/starter_source) streams data from hardcoded data into a topic.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/starter_source) streams data from hardcoded data into a Kafka topic.
 
 The sample is a demonstration of how you can publish data into Quix.
 

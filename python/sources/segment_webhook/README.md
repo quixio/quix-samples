@@ -1,6 +1,6 @@
 # Segment
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/segment_webhook) enables integration with Segment via their webhook API.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/segment_webhook) shows how to connect to Segment and stream event data into a Kafka topic".
 
 It's secure, using a secret shared with both Quix and Segment.
 

@@ -1,6 +1,6 @@
 {
 	"libraryItemId": "starter-source",
-	"name": "Starter source",
+	"name": "Starter Source",
 	"language": "Python",
 	"IsHighlighted": true,
 	"DisplayOrder": 1,
@@ -10,7 +10,7 @@
 		"Popular Subjects": ["Quick Start"],
 		"Type": ["Demos"]
 	},
-	"shortDescription": "Stream data from hardcoded comma seperated data",
+	"shortDescription": "Stream data from hardcoded comma seperated data into a Kafka topic",
 	"DefaultFile": "main.py",
 	"EntryPoint": "dockerfile",
 	"RunEntryPoint": "main.py",

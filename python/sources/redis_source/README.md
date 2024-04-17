@@ -1,8 +1,8 @@
 # Redis Timeseries Source
 
-Read data from Redis timeseries and write it to Quix.
+Use the Redis time series library to query Redis and publish to a Kafka topic
 
-Note that you need [Redis Stack](https://redis.io/docs/about/about-stack/) to use this code sample.
+Note that you need [Redis Stack](https://redis.io/docs/about/about-stack/) to use [this code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/redis_source).
 
 ## How to run
 

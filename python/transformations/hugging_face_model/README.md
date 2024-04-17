@@ -1,9 +1,9 @@
 # Hugging Face model
 
 [This sample code](https://github.com/quixio/quix-samples/tree/main/python/transformations/hugging_face_model) generates a prediction with a [Hugging Face](https://huggingface.co/) model: 
-- It listens to the input topic for input data to predict on.
+- It listens to the input Kafka topic for data to predict on.
 - It generates a prediction using the selected Hugging Face model.
-- It outputs the class and score of the prediction to the selected output topic.
+- It outputs the class and score of the prediction to another Kafka topic.
 
 ## How to run
 

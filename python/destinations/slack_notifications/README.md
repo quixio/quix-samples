@@ -1,6 +1,6 @@
 # Slack Notifications
 
-Enable Slack notifications from you pipeline using [this sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/slack_notifications).
+Enable Slack notifications from you pipeline using [this sample code](https://github.com/quixio/quix-samples/tree/develop/python/destinations/slack_notifications). It shows you how to send messages to a Slack webhook based on real time data being produced to a Kafka topic.
 
 ## How to run
 

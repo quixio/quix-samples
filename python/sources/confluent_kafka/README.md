@@ -1,6 +1,6 @@
 # Confluent Kafka
 
-Using [this sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/confluent_kafka), connect to your existing Confluent Kafka topics and stream data to Quix.
+Use [this sample code](https://github.com/quixio/quix-samples/tree/develop/python/sources/confluent_kafka) to connect to your existing Confluent Kafka topics and stream data to a Quix managed topic using QuixStreams.
 
 ## How to run
 

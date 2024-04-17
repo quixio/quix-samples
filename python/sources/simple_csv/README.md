@@ -1,9 +1,8 @@
 # Demo CSV Data
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/simple_csv) streams data from a three column CSV file into a topic.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/simple_csv) streams data from a simple three column CSV file into a Kafka topic.
 
-The sample is a demonstration of how you can publish your own CSV data into Quix.
-See `Timeseries data`, below, for more info.
+The sample is a demonstration of how you can publish your own CSV data into a Kafka topic.
 
 ## How to run
 
@@ -24,15 +23,6 @@ The code sample uses the following environment variables:
 To publish your own data, replace the CSV data with your own.
 
 After saving the sample to your workspace, you can copy and paste your data into the CSV file or upload your own CSV file and change the python code to look for your CSV file name instead of `demo-data.csv`.
-
-### Timeseries data
-
-If your data timeseries data and has a `Timestamp` column, this will be used to ensure the timing of the published data is similar to the timing of the published data.
-e.g. if your data has gaps between the timestamps of 1, 2 and 5 seconds then the code will pause for 1, 2 and 5 seconds between those rows.
-
-You can also choose to disable this functionality by changing `keep_timing` to `False`.
-
-It's fine if your data does not have a `Timestamp` column, we generate the timestamps anyway so you can see the data appearing live in views line the live data explorer.
 
 ## Contribute
 

@@ -1,6 +1,6 @@
 # MQTT
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/MQTT) publishes data to MQTT.
+[This sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/MQTT) shows you how to publish data from a Kafka topic to an MQTT broker.
 
 ## How to run
 

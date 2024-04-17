@@ -1,6 +1,6 @@
 {
     "libraryItemId": "snowplow-source",
-    "name": "Snowplow",
+    "name": "Snowplow Source",
     "language": "Python",
     "tags": {
         "Complexity": ["Medium"],
@@ -8,8 +8,8 @@
         "Pipeline Stage": ["Source"],
         "Vendor": ["Snowplow", "AWS"]
     },
-    "shortDescription": "Connect your Snowplow data to a Quix topic with this connector",
-    "longDescription": "Connect your Snowplow data to a Quix topic with this connector<br/>This connector is for an AWS Kinesis backed Snowplow installation",
+    "shortDescription": "Connect to Snowplow and publish your data to a Kafka topic with this connector",
+    "longDescription": "Connect to Snowplow and publish your data to a Kafka topic with this connector.<br/>This connector is for an AWS Kinesis backed Snowplow installation",
     "DefaultFile": "quix_functions.py",
 	"EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",

@@ -1,6 +1,6 @@
 {
     "libraryItemId": "confluent-kafka-destination",
-    "name": "Confluent Kafka",
+    "name": "Confluent Kafka Sink",
     "language": "Python",
     "tags": {
         "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
         "Vendor": ["Confluent"],
         "Technology": ["Kafka", "QuixStreams"]
     },
-    "shortDescription": "Publish data to your Confluent Kafka topic with this bridge",
+    "shortDescription": "Consume a stream from a topic and persist the data to Confluent Kafka topic.",
     "DefaultFile": "quix_function.py",
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",

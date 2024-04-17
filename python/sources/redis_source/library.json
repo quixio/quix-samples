@@ -1,6 +1,6 @@
 {
   "libraryItemId": "redis-source",
-  "name": "Redis Time Series",
+  "name": "Redis Time series Source",
   "language": "Python",
   "tags": {
     "Complexity": [
@@ -20,7 +20,7 @@
       "Redis"
     ]
   },
-  "shortDescription": "Read from Redis timeseries and publish to Quix streams",
+  "shortDescription": "Use the Redis time series library to query Redis and publish to a Kafka topic",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
