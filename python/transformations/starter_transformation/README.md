@@ -1,6 +1,6 @@
 # Starter transformation
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/transformations/starter_transformation) is an example of how to transform data on the fly between source and destination Kafka topics.
+[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/transformations/starter_transformation) is an example of how to transform data on the fly between source and destination Kafka topics.
 
 The default implementation subscribes to data from the source Kafka topic and publishes to the destination Kafka topic as-well-as printing content to console output. 
 

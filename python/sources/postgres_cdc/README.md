@@ -1,6 +1,6 @@
 # Postgres CDC
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/postgres_cdc) gives an example of how to capture changes in a Postgres Database and publish the changes to a Kafka topic.
+[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/sources/postgres_cdc) gives an example of how to capture changes in a Postgres Database and publish the changes to a Kafka topic.
 
 ## How to run
 

@@ -1,6 +1,6 @@
 # InfluxDB 3.0
 
-Periodically query InfluxDB 2.0 and publish the results to a Kafka topic using [this sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/influxdb_3).
+Periodically query InfluxDB 2.0 and publish the results to a Kafka topic using [this sample code](https://github.com/quixio/quix-samples/tree/develop/python/sources/influxdb_3).
 
 ## How to run
 

@@ -1,6 +1,6 @@
 # SQL Change Data Capture (CDC)
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/sources/sql_cdc) demonstrates how to capture and stream changes happening in a SQL database table to a Kafka topic
+[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/sources/sql_cdc) demonstrates how to capture and stream changes happening in a SQL database table to a Kafka topic
 
 It uses sqlite as a temporary storage to track the latest timestamp and QuixStreams Producer to publish data changes to Kafka.
 

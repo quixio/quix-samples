@@ -1,6 +1,6 @@
 # Streamlit
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/streamlit) is an example of how to run a real time Streamlit dashboard within Quix
+[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/destinations/streamlit) is an example of how to run a real time Streamlit dashboard within Quix
 
 Send any JSON data to this dashboard via a Kafka topic.
 
