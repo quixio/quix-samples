@@ -1,6 +1,6 @@
 # Segment
 
-[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/sources/segment_webhook) shows how to connect to Segment and stream event data into a Kafka topic".
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/segment_webhook) demonstrates how to connect to Segment, read event data and publish that data to a Kafka topic.
 
 It's secure, using a secret shared with both Quix and Segment.
 
@@ -30,4 +30,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

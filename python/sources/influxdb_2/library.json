@@ -9,7 +9,7 @@
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
-  "shortDescription": "Use the InfluxDB 2.0 query API to periodically query InfluxDB and publish the results to a Kafka topic.",
+  "shortDescription": "Periodically query InfluxDB 2.0 and publish the results to a Kafka topic.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

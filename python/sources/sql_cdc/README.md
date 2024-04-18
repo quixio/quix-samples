@@ -1,6 +1,6 @@
 # SQL Change Data Capture (CDC)
 
-[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/sources/sql_cdc) demonstrates how to capture and stream changes happening in a SQL database table to a Kafka topic
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/sql_cdc) demonstrates how to capture changes to an SQL database table (using CDC) and publish the change events to a Kafka topic.
 
 It uses sqlite as a temporary storage to track the latest timestamp and QuixStreams Producer to publish data changes to Kafka.
 
@@ -24,9 +24,9 @@ The code sample uses the following environment variables:
 - **database**: The database name.
 - **table_name**: The table to monitor.
 - **last_modified_column**: The column holiding the last modified or update date and time. e.g. `timestamp`
-- **time_delta**: The amount of time in the past to look for data.  It should be in this format. `0,0,0,0,0` These are seconds, minutes, hours, days, weeks. `30,1,0,0,0` therefore this is 1 minute and 30 seconds.
+- **time_delta**: The amount of time in the past to look for data. It should be in this format. `0,0,0,0,0` These are seconds, minutes, hours, days, weeks. `30,1,0,0,0` therefore this is 1 minute and 30 seconds.
 - **offset_is_utc**: True or False depending on whether the last_modified_column is in UTC.
-- **columns_to_drop**: Comma separated list of columns to exclude from data copied from the target table to Quix. 
+- **columns_to_drop**: Comma separated list of columns to exclude from data copied from the target table to Quix.
 - **columns_to_rename**: Columns to rename while streaming to Quix. This must be valid json e.g. `\{"DB COLUMN NAME":"QUIX_COLUMN_NAME"\}` or `\{"source_1":"dest_1", "source_2":"dest_2"\}`
 - **poll_interval_seconds**: How often to check for new data in the source table.
 
@@ -43,4 +43,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

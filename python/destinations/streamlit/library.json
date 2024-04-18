@@ -8,8 +8,8 @@
     "Pipeline Stage": ["Destination"],
     "Vendor": ["Streamlit"]
   },
-  "shortDescription": "Build a Streamlit real time dashboard",
-  "longDescription": "Streamlit real time dashboard. Use this with the 'Demo Data' source from the Quix library.",
+  "shortDescription": "Run a Streamlit real-time dashboard that displays data from a Kafka topic.",
+  "longDescription": "Run a Streamlit real-time dashboard. This sample is designed to work with the 'Demo Data' source from the Quix samples library.",
   "DefaultFile": "streamlit_file.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

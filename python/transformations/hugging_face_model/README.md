@@ -1,6 +1,7 @@
 # Hugging Face model
 
-[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/transformations/hugging_face_model) generates a prediction with a [Hugging Face](https://huggingface.co/) model: 
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/transformations/hugging_face_model) demonstrates how to consume data from a Kafka topic, use an ML model (downloaded from [Hugging Face](https://huggingface.co/)) to run inference on a specific field within the data, then publish the results to an output topic:
+
 - It listens to the input Kafka topic for data to predict on.
 - It generates a prediction using the selected Hugging Face model.
 - It outputs the class and score of the prediction to another Kafka topic.
@@ -23,6 +24,7 @@ The code sample uses the following environment variables:
 - **TextColumnName**: "For the table structured input, name of the column where input text to perform predictions on."
 
 ## Requirements/prerequisites
+
 When deploying this Python project, ensure you allow enough computational resources (1GB RAM) to host and execute the Hugging Face pipeline objects.
 
 ## Contribute
@@ -34,4 +36,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

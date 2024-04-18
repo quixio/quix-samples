@@ -1,26 +1,15 @@
 {
   "libraryItemId": "redis-source",
-  "name": "Redis Time series Source",
+  "name": "Redis Source",
   "language": "Python",
   "tags": {
-    "Complexity": [
-      "Easy"
-    ],
-    "Technology": [
-      "QuixStreams",
-      "Redis"
-    ],
-    "Pipeline Stage": [
-      "Source"
-    ],
-    "Type": [
-      "Connectors"
-    ],
-    "Vendor": [
-      "Redis"
-    ]
+    "Complexity": ["Easy"],
+    "Technology": ["QuixStreams", "Redis"],
+    "Pipeline Stage": ["Source"],
+    "Type": ["Connectors"],
+    "Vendor": ["Redis"]
   },
-  "shortDescription": "Use the Redis time series library to query Redis and publish to a Kafka topic",
+  "shortDescription": "Periodically query a Redis database and publish the results to a Kafka topic.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

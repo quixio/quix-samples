@@ -1,6 +1,6 @@
 # Sample template
 
-[This sample code](https://github.com/quixio/quix-samples/tree/main/nodejs/empty) is a template for an [express](https://expressjs.com/) web application that can be hosted on the Quix platform.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/nodejs/empty) is a template for an [express](https://expressjs.com/) web application that can be hosted on the Quix platform.
 
 ## How to run
 

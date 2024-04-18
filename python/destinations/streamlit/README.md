@@ -1,8 +1,6 @@
 # Streamlit
 
-[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/destinations/streamlit) is an example of how to run a real time Streamlit dashboard within Quix
-
-Send any JSON data to this dashboard via a Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/streamlit) demonsrates how to run a Streamlit real-time dashboard that displays data from a Kafka topic.
 
 You only need to edit the dashboard code if you want to update the layout, otherwise it works out of the box as a quick way to visualize your data.
 
@@ -35,4 +33,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

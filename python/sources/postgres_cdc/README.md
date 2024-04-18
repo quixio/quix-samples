@@ -1,6 +1,6 @@
 # Postgres CDC
 
-[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/sources/postgres_cdc) gives an example of how to capture changes in a Postgres Database and publish the changes to a Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/postgres_cdc) demonstrates how to capture changes to a Postgres database table (using CDC) and publish the change events to a Kafka topic.
 
 ## How to run
 
@@ -24,8 +24,9 @@ The code sample uses the following environment variables:
 - **PG_TABLE**: The name of the table for CDC.
 
 ## Requirements / Prerequisites
- - A Postgres Database.
- - Set `wal_level = logical` in `postgresql.conf`.
+
+- A Postgres Database.
+- Set `wal_level = logical` in `postgresql.conf`.
 
 ## Contribute
 
@@ -36,4 +37,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

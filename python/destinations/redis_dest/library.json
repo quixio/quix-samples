@@ -1,24 +1,13 @@
 {
   "libraryItemId": "redis-destination",
-  "name": "Redis Timeseries Sink",
+  "name": "Redis Sink",
   "language": "Python",
   "tags": {
-    "Complexity": [
-      "Easy"
-    ],
-    "Technology": [
-      "QuixStreams",
-      "Redis"
-    ],
-    "Pipeline Stage": [
-      "Destination"
-    ],
-    "Type": [
-      "Connectors"
-    ],
-    "Vendor": [
-      "Redis"
-    ]
+    "Complexity": ["Easy"],
+    "Technology": ["QuixStreams", "Redis"],
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Vendor": ["Redis"]
   },
   "shortDescription": "Consume data from a Kafka topic and persist it to Redis.",
   "DefaultFile": "main.py",

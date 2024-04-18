@@ -1,8 +1,6 @@
 # Demo CSV Data
 
-[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/sources/simple_csv) streams data from a simple three column CSV file into a Kafka topic.
-
-The sample is a demonstration of how you can publish your own CSV data into a Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/simple_csv) demonstrates how to read data from a simple, three-column CSV file and publish that data to a Kafka topic.
 
 ## How to run
 
@@ -33,4 +31,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

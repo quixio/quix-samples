@@ -1,21 +1,24 @@
 # MATLAB
 
-Use this template to deploy transformations that use MATLAB and Simulink. 
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/transformations/Matlab) demonstrates how to consume data from a Kafka topic, apply MATLAB and Simulink models to the data and publish the results to an output topic.
 
 ## Requirements
 
 To create Python packages from MATLAB functions you need the following MathWorks products
- - MATLAB
- - MATLAB Compiler
- - MATLAB Compiler SDK 
+
+- MATLAB
+- MATLAB Compiler
+- MATLAB Compiler SDK
 
 To create Python packages from Simulink products, in addition to the above list, you also need
- - Simulink
- - Simulink Compiler
+
+- Simulink
+- Simulink Compiler
 
 ## Environment variables
- - `input`: Kafka topic to receive input data from.
- - `output`: Kafka topic to write the results of the transformation.
+
+- `input`: Kafka topic to receive input data from.
+- `output`: Kafka topic to write the results of the transformation.
 
 ## Preparing Python packages from MATLAB and Simulink
 
@@ -29,8 +32,8 @@ You only need the package directory that contains the `__init__.py` and a `*.ctf
 
 ## Resources for MATLAB Compiler SDK and MATLAB Runtime APIs
 
- - [Call MATLAB functions from Python](https://www.mathworks.com/help/matlab/matlab-engine-for-python.html?s_tid=CRUX_lftnav)
- - [MATLAB Arrays in Python](https://www.mathworks.com/help/matlab/matlab_external/matlab-arrays-as-python-variables.html)
- - [Pass data to MATLAB](https://www.mathworks.com/help/matlab/matlab_external/pass-data-to-matlab-from-python.html)
- - [MATLAB Compiler SDK reference](https://www.mathworks.com/help/compiler/mcc.html#d124e20858)
- - [Calling Simulink from Python](https://github.com/mathworks/Call-Simulink-from-Python)
+- [Call MATLAB functions from Python](https://www.mathworks.com/help/matlab/matlab-engine-for-python.html?s_tid=CRUX_lftnav)
+- [MATLAB Arrays in Python](https://www.mathworks.com/help/matlab/matlab_external/matlab-arrays-as-python-variables.html)
+- [Pass data to MATLAB](https://www.mathworks.com/help/matlab/matlab_external/pass-data-to-matlab-from-python.html)
+- [MATLAB Compiler SDK reference](https://www.mathworks.com/help/compiler/mcc.html#d124e20858)
+- [Calling Simulink from Python](https://github.com/mathworks/Call-Simulink-from-Python)

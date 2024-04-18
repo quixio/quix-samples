@@ -8,7 +8,7 @@
     "Type": ["Connectors"],
     "Technology": ["MQTT", "QuixStreams"]
   },
-  "shortDescription": "Easily publish data from a Kafka topic to an MQTT broker",
+  "shortDescription": "Consume data from a Kafka topic and publish it to an MQTT broker",
   "DefaultFile": "mqtt_function.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

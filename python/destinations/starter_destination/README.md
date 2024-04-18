@@ -1,10 +1,10 @@
 # Starter transformation
 
-[This sample code](https://github.com/quixio/quix-samples/tree/develop/python/destinations/starter_destination) is an example of how to transform data on the fly between source and destination.
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/starter_destination) demonstrates how to consume data from a Kafka topic, perform an operation on that data, then persist or publish that data to an external destination.
 
-The default implementation subscribes to data from the source topic and publishes to your destination as-well-as printing content to console output. 
+The simple boilerplate code consumes to data from the source topic, prints the content to console output and publishes to any destination based on code that that you must add yourself.
 
-Modify the Python code to publish to your chosen destination(s) on the fly.
+To use the sample, first modify the Python code to publish to your chosen destination(s).
 
 ## How to run
 
@@ -28,4 +28,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-
