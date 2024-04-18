@@ -1,6 +1,6 @@
 {
   "libraryItemId": "streamlit",
-  "name": "Streamlit",
+  "name": "Streamlit Dashboard",
   "language": "Python",
   "tags": {
     "Complexity": ["Medium"],

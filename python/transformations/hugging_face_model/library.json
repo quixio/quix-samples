@@ -1,6 +1,6 @@
 {
   "libraryItemId": "hugging-face-model",
-  "name": "Hugging face model Transformation",
+  "name": "Hugging Face Model Transformation",
   "language": "Python",
   "tags": {
     "Complexity": ["Medium"],
