@@ -18,7 +18,7 @@ r = redis.Redis(
 
 redis_key_prefix = os.environ['redis_key_prefix']
 
-app = Application.Quix(consumer_group="redis-destination")
+app = Application(consumer_group="redis-destination")
 
 input_topic = app.topic(os.environ["input"])
 

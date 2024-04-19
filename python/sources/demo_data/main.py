@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 load_dotenv(override=False)
 
 # Create an Application.
-app = Application.Quix()
+app = Application()
 
 # Define the topic using the "output" environment variable
 topic_name = os.getenv("output", "")

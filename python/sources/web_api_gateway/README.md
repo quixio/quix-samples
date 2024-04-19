@@ -1,6 +1,6 @@
 # Flask Web Gateway
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/sources/web_api_gateway) is Flask Web API gateway example to ingest data into the topic from any source.
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/web_api_gateway) demonstrates how to run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.
 
 ## How to run
 
@@ -23,4 +23,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

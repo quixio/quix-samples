@@ -102,7 +102,7 @@ def connect_to_quix():
     global producer
 
     # Create a Quix Application, this manages the connection to the Quix platform
-    app = Application.Quix()
+    app = Application()
 
     print("Opening output topic")
     

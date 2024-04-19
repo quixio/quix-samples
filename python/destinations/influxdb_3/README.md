@@ -1,6 +1,6 @@
 # InfluxDB 3.0
 
-Consume a stream from a Kafka topic and persist the data to InfluxDB 3.0 using [this sample code](https://github.com/quixio/quix-samples/tree/main/python/destinations/influxdb_3).
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/influxdb_3) demonstrates how to consume data from a Kafka topic in Quix and persist the data to an InfluxDB 3.0 database using the InfluxDB write API.
 
 ## How to run
 

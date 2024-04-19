@@ -7,7 +7,7 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 
-app = Application.Quix("hard-braking-v1", auto_offset_reset="earliest", use_changelog_topics=False)
+app = Application(consumer_group="hard-braking-v1", auto_offset_reset="earliest", use_changelog_topics=False)
 
 input_topic = app.topic(os.environ["input"])
 output_topic = app.topic(os.environ["output"])

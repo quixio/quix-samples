@@ -9,7 +9,7 @@
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
-  "shortDescription": "Consume a stream from a Kafka topic and persist the data to InfluxDB 3.0 using the InfluxDB write API.",
+  "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an InfluxDB 3.0 database.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

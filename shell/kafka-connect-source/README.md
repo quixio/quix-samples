@@ -1,6 +1,6 @@
 # Kafka Connect Source
 
-[This project](https://github.com/quixio/quix-samples/tree/main/shell/kafka-connect-source) shows you how to install any Kafka Connect source connector using its Confluent Hub name.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/shell/kafka-connect-source) shows you how to install any Kafka Connect source connector using its Confluent Hub name.
 
 ## How to run
 

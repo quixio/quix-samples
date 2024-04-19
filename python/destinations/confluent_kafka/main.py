@@ -35,7 +35,7 @@ if input_topic_name == "" or output_topic_name == "":
 producer = Producer(broker_address=broker_address, extra_config=sasl_config)
 
 # Define your application
-app = Application.Quix(consumer_group="kafka-connector-consumer-group", 
+app = Application(consumer_group="kafka-connector-consumer-group", 
                        auto_offset_reset="earliest")
 
 # Define the input and output topics

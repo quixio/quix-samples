@@ -1,9 +1,6 @@
-
-
 # Redis Destination
 
-Write data to Redis from Quix. This code sample is a Quix destination that writes data to Redis.
-It can be used to write data from any Quix source to Redis.
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/redis_dest) demonstrates how to consume data from a Kafka topic and persist the data to a Redis database using the Redis Python client.
 
 This sample will write JSON data to Redis.
 We assume that the incoming data will have a `key` field, this will be combined with the `redis_key_prefix` environment variable to create the Redis key where data will be stored.
@@ -42,4 +39,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 ## Open Source
 
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo. Please star us and mention us on social to show your appreciation.
-

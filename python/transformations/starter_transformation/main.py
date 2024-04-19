@@ -5,7 +5,7 @@ from quixstreams import Application
 from dotenv import load_dotenv
 load_dotenv()
 
-app = Application.Quix("transformation-v1", auto_offset_reset="earliest")
+app = Application(consumer_group="transformation-v1", auto_offset_reset="earliest")
 
 input_topic = app.topic(os.environ["input"])
 output_topic = app.topic(os.environ["output"])

@@ -1,6 +1,6 @@
 # React template
 
-[This project](https://github.com/quixio/quix-samples/tree/main/nodejs/basic-react-template) is a basic template to help you get started with subscribing to data from a topic and publishing data to the same topic using a React front end.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/nodejs/basic-react-template) is a basic template to help you get started with subscribing to data from a topic and publishing data to the same topic using a React front end.
 
 ## How to run
 

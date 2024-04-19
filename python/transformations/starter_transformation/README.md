@@ -1,8 +1,6 @@
 # Starter transformation
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/transformations/starter_transformation) is an example of how to transform data on the fly between source and destination.
-
-The default implementation subscribes to data from the source and publishes to the destination as-well-as printing content to console output. 
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/transformations/starter_transformation) demonstrates how to consume data from a topic, apply a simple transformation to that data and publish the result to an output topic (while printing content to the console output).
 
 Modify the Python code to transform your data on the fly.
 
@@ -28,4 +26,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

@@ -1,6 +1,6 @@
 # Slack Notifications
 
-Enable Slack notifications from you pipeline using [this project](https://github.com/quixio/quix-samples/tree/main/python/destinations/slack_notifications).
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/slack_notifications) demonstrates how to consume data from a Kafka topic and trigger a Slack webhook based on specific matching critera that you apply to the incoming data.
 
 ## How to run
 
@@ -30,4 +30,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

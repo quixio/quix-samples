@@ -1,6 +1,6 @@
 {
   "libraryItemId": "slack-destination",
-  "name": "Slack",
+  "name": "Slack Sink",
   "language": "Python",
   "tags": {
     "Complexity": ["Easy"],
@@ -10,7 +10,7 @@
     "Type": ["Connectors"],
     "Vendor": ["Slack"]
   },
-  "shortDescription": "Send notifications to Slack via webhooks",
+  "shortDescription": "Consume data from a Kafka topic and send Slack notifications based on your matching criteria.",
   "DefaultFile": "quix_function.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

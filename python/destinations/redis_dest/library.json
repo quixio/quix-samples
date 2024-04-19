@@ -1,26 +1,15 @@
 {
   "libraryItemId": "redis-destination",
-  "name": "Redis Time Series",
+  "name": "Redis Sink",
   "language": "Python",
   "tags": {
-    "Complexity": [
-      "Easy"
-    ],
-    "Technology": [
-      "QuixStreams",
-      "Redis"
-    ],
-    "Pipeline Stage": [
-      "Destination"
-    ],
-    "Type": [
-      "Connectors"
-    ],
-    "Vendor": [
-      "Redis"
-    ]
+    "Complexity": ["Easy"],
+    "Technology": ["QuixStreams", "Redis"],
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Vendor": ["Redis"]
   },
-  "shortDescription": "Publish Quix streams to Redis Stack",
+  "shortDescription": "Consume data from a Kafka topic and persist it to Redis.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

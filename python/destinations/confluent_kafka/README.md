@@ -1,6 +1,6 @@
 # Confluent Kafka
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/destinations/confluent_kafka) shows you how to publish data to a Confluent Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/confluent_kafka) demonstrates how to consume data from a Kafka topic in Quix and publish it to a topic in Confluent Cloud.
 
 ## How to run
 
@@ -29,4 +29,3 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
-

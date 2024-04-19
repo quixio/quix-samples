@@ -31,7 +31,7 @@ except Exception as e:
 run = True
 
 # Create a Quix Application, this manages the connection to the Quix platform
-app = Application.Quix()
+app = Application()
 
 # Create the producer, this is used to write data to the output topic
 producer = app.get_producer()
