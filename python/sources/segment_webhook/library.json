@@ -1,7 +1,7 @@
 {
   "libraryItemId": "segment-webhook-source",
   "name": "Segment Source",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Source"],

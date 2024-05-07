@@ -1,7 +1,7 @@
 {
   "libraryItemId": "redis-destination",
   "name": "Redis Sink",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Complexity": ["Easy"],
     "Technology": ["QuixStreams", "Redis"],

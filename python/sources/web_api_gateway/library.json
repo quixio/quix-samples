@@ -1,7 +1,7 @@
 {
   "libraryItemId": "web-api-gateway",
   "name": "Flask Web Gateway Source",
-  "language": "Python",
+  "language": "python",
   "IsHighlighted": true,
   "DisplayOrder": 6,
   "tags": {

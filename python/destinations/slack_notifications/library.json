@@ -1,7 +1,7 @@
 {
   "libraryItemId": "slack-destination",
   "name": "Slack Sink",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Complexity": ["Easy"],
     "Technology": ["QuixStreams"],

@@ -1,7 +1,7 @@
 {
   "libraryItemId": "postgres-cdc-source",
   "name": "Postgres CDC Source",
-  "language": "Python",
+  "language": "python",
   "IconFile": "icon.png",
   "tags": {
     "Complexity": ["Medium"],

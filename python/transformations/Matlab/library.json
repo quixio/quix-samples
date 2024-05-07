@@ -1,7 +1,7 @@
 {
   "libraryItemId": "f7169a9d-edef-417f-94d6-4cbfb89ba22c",
   "name": "MATLAB Transformation",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Complexity": ["Advanced"],
     "Technology": ["QuixStreams"],

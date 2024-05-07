@@ -1,7 +1,7 @@
 {
   "libraryItemId": "snowplow-source",
   "name": "Snowplow Source",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Complexity": ["Medium"],
     "Technology": ["QuixStreams"],

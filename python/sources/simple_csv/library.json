@@ -1,7 +1,7 @@
 {
   "libraryItemId": "simple-csv-source",
   "name": "CSV Source",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Source"],

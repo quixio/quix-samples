@@ -1,7 +1,7 @@
 {
   "libraryItemId": "starter-destination",
   "name": "Starter Sink",
-  "language": "Python",
+  "language": "python",
   "IsHighlighted": true,
   "DisplayOrder": 3,
   "tags": {

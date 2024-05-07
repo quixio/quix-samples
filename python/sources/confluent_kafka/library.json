@@ -1,7 +1,7 @@
 {
   "libraryItemId": "confluent-kafka-source",
   "name": "Confluent Kafka Source",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Complexity": ["Medium"],
     "Pipeline Stage": ["Source"],

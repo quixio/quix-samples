@@ -33,7 +33,7 @@ def post_data():
 
     logger.info(f"{str(datetime.datetime.utcnow())} posted.")
     
-    producer.produce(topics[0], json.dumps(data), data["sessionId"])
+    producer.produce(topics[0], json.dumps(data), "example-stream")
 
     response = Response(status=200)
     response.headers.add('Access-Control-Allow-Origin', '*')

@@ -1,7 +1,7 @@
 {
   "libraryItemId": "redis-source",
   "name": "Redis Source",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Complexity": ["Easy"],
     "Technology": ["QuixStreams", "Redis"],

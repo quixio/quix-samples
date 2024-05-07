@@ -1,7 +1,7 @@
 {
   "libraryItemId": "mqtt-source",
   "name": "MQTT Source",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Complexity": ["Easy"],
     "Pipeline Stage": ["Source"],

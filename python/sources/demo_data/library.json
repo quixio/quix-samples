@@ -1,7 +1,7 @@
 {
   "libraryItemId": "demo-data-source",
   "name": "Demo Data Source",
-  "language": "Python",
+  "language": "python",
   "IsHighlighted": true,
   "DisplayOrder": 4,
   "tags": {

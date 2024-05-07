@@ -1,7 +1,7 @@
 {
   "libraryItemId": "influxdb-3-source",
   "name": "InfluxDB 3.0 Source",
-  "language": "Python",
+  "language": "python",
   "tags": {
     "Complexity": ["Easy"],
     "Technology": ["QuixStreams"],

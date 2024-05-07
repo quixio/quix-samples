@@ -1,7 +1,7 @@
 {
   "libraryItemId": "event-detection-transformation",
   "name": "Event Detection Transformation",
-  "language": "Python",
+  "language": "python",
   "IsHighlighted": true,
   "DisplayOrder": 5,
   "tags": {
