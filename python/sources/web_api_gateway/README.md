@@ -8,6 +8,12 @@ Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) accou
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
+Once you have deployed the Sample within your project there are three things to bear in mind:
+
+1. Your data JSON must contain a "sessionId" key 
+2. Keys and values must be Strings or Bytes.
+3. The Flask gateway endpoint must end with `/data/`. E.g `https://gateway-example-develo.deployments.quix.io/data/`
+
 ## Environment variables
 
 The code sample uses the following environment variables:
