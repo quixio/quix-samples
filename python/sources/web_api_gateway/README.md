@@ -15,7 +15,7 @@ Once you have deployed the Sample within your project there are three things to 
 3. The Flask gateway endpoint must end with `/data/`. E.g `https://gateway-example-develop.deployments.quix.io/data/`
 
 You can test your endpoint by sending a message via curl:
-`curl -X POST -H "Content-Type: application/json" -d '{"sessionId": "000001", "name": "Tony Hawk", "purchase": "skateboard" }' http://<your-deployment-url>/data/
+`curl -X POST -H "Content-Type: application/json" -d '{"sessionId": "000001", "name": "Tony Hawk", "purchase": "skateboard" }' https://<your-deployment-url>/data/
 `
 
 ## Environment variables
