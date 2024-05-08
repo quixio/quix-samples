@@ -1,6 +1,6 @@
-# InfluxDB 3.0
+# InfluxDB 3
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/influxdb_3) demonstrates how to use the InfluxDB 3.0 query API to periodically query InfluxDB and publish the results to a Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/influxdb_3) demonstrates how to use the InfluxDB 3 query API to periodically query InfluxDB and publish the results to a Kafka topic.
 
 ## How to run
 
@@ -24,7 +24,7 @@ The code sample uses the following environment variables:
 
 ## Requirements / Prerequisites
 
-You will need to have an InfluxDB 3.0 instance available and an API authentication token.
+You will need to have an InfluxDB 3 instance available and an API authentication token.
 
 ## Contribute
 

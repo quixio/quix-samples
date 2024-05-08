@@ -1,6 +1,6 @@
 {
   "libraryItemId": "influxdb-3-source",
-  "name": "InfluxDB 3.0 Source",
+  "name": "InfluxDB 3 Source",
   "language": "Python",
   "tags": {
     "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
-  "shortDescription": "Use the InfluxDB 3.0 query API to periodically query InfluxDB and publish the results to a Kafka topic.",
+  "shortDescription": "Use the InfluxDB 3 query API to periodically query InfluxDB and publish the results to a Kafka topic.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

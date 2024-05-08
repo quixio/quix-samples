@@ -74,7 +74,7 @@ def get_data():
         try:
             query_definition = f'SELECT * FROM "{measurement_name}" WHERE time >= now() - {interval}'
             print(f"Sending query {query_definition}")
-            # Query InfluxDB 3.0 using influxql or sql
+            # Query InfluxDB 3 using influxql or sql
             table = influxdb3_client.query(
                                     query=query_definition,
                                     mode="pandas",

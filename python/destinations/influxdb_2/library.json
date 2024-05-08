@@ -1,6 +1,6 @@
 {
-  "libraryItemId": "influxdb-3-destination",
-  "name": "InfluxDB 3 Sink",
+  "libraryItemId": "influxdb-2-destination",
+  "name": "InfluxDB 2 Sink",
   "language": "Python",
   "tags": {
     "Complexity": ["Easy"],
@@ -9,7 +9,7 @@
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
-  "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an InfluxDB 3 database.",
+  "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an InfluxDB 2 database.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
@@ -56,10 +56,10 @@
       "Required": false
     },
     {
-      "Name": "INFLUXDB_DATABASE",
+      "Name": "INFLUXDB_BUCKET",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Database name in InfluxDB where data should be stored.",
+      "Description": "Bucket name in InfluxDB where data should be stored.",
       "DefaultValue": "",
       "Required": true
     },
