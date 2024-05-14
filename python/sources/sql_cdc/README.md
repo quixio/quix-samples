@@ -23,7 +23,7 @@ The code sample uses the following environment variables:
 - **password**: The password.
 - **database**: The database name.
 - **table_name**: The table to monitor.
-- **last_modified_column**: The column holiding the last modified or update date and time. e.g. `timestamp`
+- **last_modified_column**: The column holding the last modified or update date and time. e.g. `timestamp`
 - **time_delta**: The amount of time in the past to look for data. It should be in this format. `0,0,0,0,0` These are seconds, minutes, hours, days, weeks. `30,1,0,0,0` therefore this is 1 minute and 30 seconds.
 - **offset_is_utc**: True or False depending on whether the last_modified_column is in UTC.
 - **columns_to_drop**: Comma separated list of columns to exclude from data copied from the target table to Quix.
