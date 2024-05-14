@@ -19,14 +19,14 @@ The code sample uses the following environment variables:
 - **INFLUXDB_HOST**: Host address for the InfluxDB instance. (Default: `https://eu-central-1-1.aws.cloud2.influxdata.com`, Required: `True`)
 - **INFLUXDB_TOKEN**: Authentication token to access InfluxDB. (Default: `<TOKEN>`, Required: `True`)
 - **INFLUXDB_ORG**: Organization name in InfluxDB. (Default: `<ORG>`, Required: `False`)
-- **INFLUXDB_DATABASE**: Database name in InfluxDB where data should be stored. (Default: `<DATABASE>`, Required: `True`)
+- **INFLUXDB_BUCKET**: Bucket name in InfluxDB where data should be stored. (Default: `<BUCKET>`, Required: `True`)
 - **INFLUXDB_TAG_KEYS**: Keys to be used as tags when writing data to InfluxDB. These are columns that are available in the input topic. (Default: `['tag1', 'tag2']`, Required: `False`)
 - **INFLUXDB_FIELD_KEYS**: Keys to be used as fields when writing data to InfluxDB. These are columns that are available in the input topic. (Default: `['field1', 'field2']`, Required: `True`)
 - **INFLUXDB_MEASUREMENT_NAME**: The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used. (Default: `measurement1`, Required: `False`)
 
 ## Requirements / Prerequisites
 
-You will need to have an InfluxDB 3.0 instance available and an API authentication token.
+You will need to have an InfluxDB 2 instance available and an API authentication token.
 
 ## Contribute
 

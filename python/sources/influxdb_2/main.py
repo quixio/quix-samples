@@ -3,12 +3,12 @@ import os
 import random
 import json
 import logging
+import uuid
 from time import sleep
 
 # import vendor-specfic modules
-from quixstreams import Application
-from quixstreams.models.serializers.quix import JSONSerializer, SerializationContext
 import influxdb_client
+from quixstreams import Application
 
 # for local dev, load env vars from a .env file
 from dotenv import load_dotenv
@@ -19,10 +19,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Create a Quix Application
-app = Application()
-
-# Define a serializer for messages, using JSON Serializer for ease
-serializer = JSONSerializer()
+app = Application(consumer_group="influxdb-v2-group", auto_offset_reset="earliest")
 
 # Define the topic using the "output" environment variable
 topic_name = os.environ["output"]
@@ -133,16 +130,16 @@ def main():
                 message_key = f"INFLUX2_DATA_{str(random.randint(1, 100)).zfill(3)}_{index}"
                 logger.info(f"Produced message with key:{message_key}, value:{obj}")
 
-                # Serialize row value to bytes
-                serialized_value = serializer(
-                    value=obj, ctx=SerializationContext(topic=topic.name)
-                )
-
+                serialized = topic.serialize(
+                    key=message_key, value=obj, headers={'uuid': str(uuid.uuid4())}
+                    )
+                
                 # publish the data to the topic
                 producer.produce(
                     topic=topic.name,
-                    key=message_key,
-                    value=serialized_value,
+                    headers=serialized.headers,
+                    key=serialized.key,
+                    value=serialized.value,
                 )
 
 if __name__ == "__main__":
