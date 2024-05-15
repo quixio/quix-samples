@@ -71,5 +71,13 @@
       "DefaultValue": "<INSERT MEASUREMENT>",
       "Required": false
     }
-  ]
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
 }
