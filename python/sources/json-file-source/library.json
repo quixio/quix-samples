@@ -1,0 +1,32 @@
+{
+  "libraryItemId": "json-file-source",
+  "name": "JSON file source",
+  "language": "Python",
+  "tags": {
+    "Technology": ["QuixStreams"],
+    "Pipeline Stage": ["Source"]
+  },
+  "shortDescription": "Publish messages stored in JSON format in file.",
+  "longDescription": "Publish messages stored in JSON format in file.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Name of the output topic to write into",
+      "DefaultValue": "raw-data",
+      "Required": true
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Job",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": false
+  }
+}
