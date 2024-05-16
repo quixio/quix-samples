@@ -13,7 +13,7 @@
   },
   "shortDescription": "Run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.",
   "DefaultFile": "main.py",
-  "EntryPoint": "build/dockerfile",
+  "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "Variables": [
     {
