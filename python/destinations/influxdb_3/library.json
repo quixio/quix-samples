@@ -34,7 +34,7 @@
     {
       "Name": "INFLUXDB_TOKEN",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "Authentication token to access InfluxDB.",
       "DefaultValue": "",
       "Required": true
@@ -64,22 +64,6 @@
       "Required": true
     },
     {
-      "Name": "INFLUXDB_TAG_KEYS",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The tags to include when writing the measurement data",
-      "DefaultValue": "['tag1', 'tag2']",
-      "Required": false
-    },
-    {
-      "Name": "INFLUXDB_FIELD_KEYS",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The fields to include when writing the measurement data",
-      "DefaultValue": "['field1','field2']",
-      "Required": true
-    },
-    {
       "Name": "CONSUMER_GROUP_NAME",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
@@ -95,5 +79,13 @@
       "DefaultValue": "",
       "Required": false
     }
-  ]
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
 }
