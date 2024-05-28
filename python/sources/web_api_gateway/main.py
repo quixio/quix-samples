@@ -1,23 +1,20 @@
 import os
 import datetime
 import json
-
 from flask import Flask, request, Response
 from waitress import serve
 
 from setup_logging import get_logger
 
-from quixstreams.platforms.quix import QuixKafkaConfigsBuilder
-from quixstreams.kafka import Producer
+from quixstreams import Application
 
 # for local dev, load env vars from a .env file
 from dotenv import load_dotenv
 load_dotenv()
 
-cfg_builder = QuixKafkaConfigsBuilder()
-cfgs, topics, _ = cfg_builder.get_confluent_client_configs([os.environ["output"]])
-producer = Producer(cfgs.pop("bootstrap.servers"), extra_config=cfgs)
-
+quix_app = Application()
+topic =  quix_app.topic(os.environ["output"])
+producer = quix_app.get_producer()
 
 logger = get_logger()
 
@@ -33,7 +30,7 @@ def post_data():
 
     logger.info(f"{str(datetime.datetime.utcnow())} posted.")
     
-    producer.produce(topics[0], json.dumps(data), data["sessionId"])
+    producer.produce(topic.name, json.dumps(data), "hello-world-stream")
 
     response = Response(status=200)
     response.headers.add('Access-Control-Allow-Origin', '*')
