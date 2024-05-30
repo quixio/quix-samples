@@ -32,7 +32,7 @@ if input_topic_name == "" or output_topic_name == "":
     exit(1)
 
 # this 'application' will consume data from Confluent Kafka
-app = Application(consumer_group="kafka-connector-consumer-group", 
+app = Application(broker_address=broker_address, consumer_group="kafka-connector-consumer-group", 
                     auto_offset_reset="earliest", consumer_extra_config=sasl_config)
 # this topic is the Confluent Kafka topic
 input_topic = app.topic(input_topic_name)
