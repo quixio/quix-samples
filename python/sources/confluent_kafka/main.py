@@ -31,6 +31,8 @@ if input_topic_name == "" or output_topic_name == "":
     print("Please provide input and output topics")
     exit(1)
 
+sdk_token = os.getenv("Quix__Sdk__Token", "")
+os.environ["Quix__Sdk__Token"] = ""
 # this 'application' will consume data from Confluent Kafka
 app = Application(broker_address=broker_address, consumer_group="kafka-connector-consumer-group", 
                     auto_offset_reset="earliest", consumer_extra_config=sasl_config)
@@ -38,10 +40,11 @@ app = Application(broker_address=broker_address, consumer_group="kafka-connector
 input_topic = app.topic(input_topic_name)
 
 # This 'application' and producer will publish data to a Quix topic
+os.environ["Quix__Sdk__Token"] = sdk_token
 producer_app = Application()
 producer = producer_app.get_producer()
 # this is the Quix topic
-output_topic = app.topic(output_topic_name)
+output_topic = producer_app.topic(output_topic_name)
 
 # let the platform know were connected. If deploying a connector from the library, it will nav to the home page.
 print("CONNECTED!")
