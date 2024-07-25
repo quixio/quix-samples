@@ -36,6 +36,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
       "Description": "Authentication token to access InfluxDB.",
+      "DefaultValue": "INFLUXDB_TOKEN_KEY"
       "Required": true
     },
     {
