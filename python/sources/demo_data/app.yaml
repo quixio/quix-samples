@@ -1,0 +1,6 @@
+name: demo_data
+language: python
+variables: []
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py

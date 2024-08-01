@@ -93,6 +93,22 @@
       "Description": "The column containing the timestamp column. NOTE: Must be nanoseconds",
       "DefaultValue": "",
       "Required": false
+    },
+    {
+      "Name": "BUFFER_SIZE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of records that sink holds before flush data to the InfluxDb",
+      "DefaultValue": "1000",
+      "Required": false
+    },
+    {
+      "Name": "BUFFER_TIMEOUT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of seconds that sink holds before flush data to the InfluxDb",
+      "DefaultValue": "1",
+      "Required": false
     }
   ]
 }

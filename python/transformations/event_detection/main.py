@@ -21,7 +21,7 @@ sdf = sdf[sdf["Brake"].notnull()]
 sdf = sdf.apply(lambda row: row["Brake"]) \
         .hopping_window(1000, 200).mean().final() 
         
-sdf = sdf.update(print)
+sdf.print()
 
 # Filter only windows where average brake force exceeded 50%.
 sdf = sdf[sdf["value"] > 0.5]
@@ -36,10 +36,10 @@ sdf = sdf.apply(lambda row: {
 })
 
 # Print JSON messages in console.
-sdf = sdf.update(lambda row: print(json.dumps(row, indent=4)))
+sdf.print()
 
 # Send the message to the output topic
-sdf = sdf.to_topic(output_topic)
+sdf.to_topic(output_topic)
 
 if __name__ == "__main__":
     app.run(sdf)
