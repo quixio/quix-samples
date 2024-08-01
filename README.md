@@ -12,10 +12,7 @@ Transformations: code samples you can use as-is or modify to make your applicati
 
 Destinations: the connectors to analytics dashboards, alerts, data warehouses and any other form of delivery. What’s the good of transforming data if you can’t easily apply it?
 
-Explore, develop and deploy them directly on https://portal.platform.quix.ai.
-
-You can create a Quix account for free [here](https://portal.platform.quix.ai/self-sign-up?xlink=github).
-
+Explore and deploy them using `quix app create` command of the [Quix CLI](https://quix.io/docs/quix-cli/cli-quickstart.html) or use them directly on [Quix Cloud](https://quix.io/docs/quix-cloud/quickstart.html).
 
 ## Contributing
 
