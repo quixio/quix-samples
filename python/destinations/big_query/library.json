@@ -55,7 +55,14 @@
           "DefaultValue": "",
           "Required": true
         },
-        
+        {
+          "Name": "CONSUMER_GROUP",
+          "Type": "EnvironmentVariable",
+          "InputType": "FreeText",
+          "Description": "Kafka consumer group.",
+          "DefaultValue": "big-query-sink-v1",
+          "Required": true
+        },
         {
           "Name": "SERVICE_ACCOUNT_JSON",
           "Type": "EnvironmentVariable",
