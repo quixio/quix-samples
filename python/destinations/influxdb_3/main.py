@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 consumer_group_name = os.environ.get("CONSUMER_GROUP_NAME", "influxdb-data-writer")
 
 # read the timestamp column from config
-timestamp_column = os.environ.get("TIMESTAMP_COLUMN", "")
+timestamp_column = os.environ.get("TIMESTAMP_COLUMN") if os.environ.get("TIMESTAMP_COLUMN") else None
 
 buffer_size = int(os.environ.get("BUFFER_SIZE", "1000"))
 
@@ -33,14 +33,14 @@ app = Application(
 input_topic = app.topic(os.environ["input"])
 
 # Read the environment variable and convert it to a dictionary
-tag_keys = os.environ.get("INFLUXDB_TAG_KEYS", "").split(",")
-field_keys = os.environ.get("INFLUXDB_FIELD_KEYS", "").split(",")
+tag_keys = os.environ.get("INFLUXDB_TAG_KEYS", "").split(",") if os.environ.get("INFLUXDB_TAG_KEYS") else []
+field_keys = os.environ.get("INFLUXDB_FIELD_KEYS", "").split(",")if os.environ.get("INFLUXDB_FIELD_KEYS") else []
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
 
 influxdb_v3_sink = InfluxDBV3Sink(
                             token=os.environ["INFLUXDB_TOKEN"],
                             host=os.environ["INFLUXDB_HOST"],
-                            org=os.environ["INFLUXDB_ORG"],
+                            organization_id=os.environ["INFLUXDB_ORG"],
                             tags_keys=tag_keys,
                             fields_keys=field_keys,
                             time_key=timestamp_column,
@@ -48,7 +48,7 @@ influxdb_v3_sink = InfluxDBV3Sink(
                             measurement=measurement_name)
 
 sdf = app.dataframe(input_topic)
-
+#sdf.print()
 sdf.sink(influxdb_v3_sink)
 
 if __name__ == "__main__":
