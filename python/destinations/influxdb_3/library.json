@@ -66,16 +66,16 @@
       "Name": "INFLUXDB_TAG_KEYS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The tags to include when writing the measurement data",
-      "DefaultValue": "['tag1', 'tag2']",
+      "Description": "The tags to include when writing the measurement data. Example: Tag1,Tag2",
+      "DefaultValue": "",
       "Required": false
     },
     {
       "Name": "INFLUXDB_FIELD_KEYS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The fields to include when writing the measurement data",
-      "DefaultValue": "['field1','field2']",
+      "Description": "The fields to include when writing the measurement data. Example: Field1,Field2",
+      "DefaultValue": "",
       "Required": true
     },
     {

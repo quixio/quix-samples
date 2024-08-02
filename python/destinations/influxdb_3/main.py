@@ -1,17 +1,11 @@
 # import Utility modules
 import os
 import ast
-from datetime import datetime
 import logging
-import pickle
-from time import time
 
 # import vendor-specific modules
-from quixstreams import Application, State
-from quixstreams import message_context
+from quixstreams import Application
 from quixstreams.sinks.influxdb_v3 import InfluxDBV3Sink
-
-from influxdb_client_3 import Point, InfluxDBClient3
 
 # for local dev, load env vars from a .env file
 from dotenv import load_dotenv
@@ -39,8 +33,8 @@ app = Application(
 input_topic = app.topic(os.environ["input"])
 
 # Read the environment variable and convert it to a dictionary
-tag_keys = ast.literal_eval(os.environ.get("INFLUXDB_TAG_KEYS", "[]"))
-field_keys = ast.literal_eval(os.environ.get("INFLUXDB_FIELD_KEYS", "[]"))
+tag_keys = os.environ.get("INFLUXDB_TAG_KEYS", "").split(",")
+field_keys = os.environ.get("INFLUXDB_FIELD_KEYS", "").split(",")
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
 
 influxdb_v3_sink = InfluxDBV3Sink(
