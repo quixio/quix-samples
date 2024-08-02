@@ -1,0 +1,3 @@
+git+https://github.com/quixio/quix-streams.git@feature/sinks
+google-cloud-bigquery
+python-dotenv
