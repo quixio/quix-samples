@@ -1,4 +1,4 @@
-quixstreams==2.4.1
+git+https://github.com/quixio/quix-streams.git@quent/sources
 python-dotenv
 pandas
 
