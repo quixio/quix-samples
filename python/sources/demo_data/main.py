@@ -4,7 +4,6 @@ import os
 
 # import the dotenv module to load environment variables from a file
 from dotenv import load_dotenv
-
 load_dotenv(override=False)
 
 # Create an Application.
