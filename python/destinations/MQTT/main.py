@@ -76,8 +76,7 @@ sdf = app.dataframe(input_topic)
 
 def publish_to_mqtt(data, key, timestamp, headers):
     json_data = json.dumps(data)
-    message_key_bytes = context.message_key()  # This is your byte array
-    message_key_string = message_key_bytes.decode('utf-8')  # Convert to string using utf-8 encoding
+    message_key_string = key.decode('utf-8')  # Convert to string using utf-8 encoding
     # publish to MQTT
     mqtt_client.publish(mqtt_topic_root + "/" + message_key_string, payload = json_data, qos = 1)
 
