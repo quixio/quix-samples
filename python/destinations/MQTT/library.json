@@ -49,14 +49,14 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Your MQTT username",
-      "Required": true
+      "Required": false
     },
     {
       "Name": "mqtt_password",
       "Type": "EnvironmentVariable",
       "InputType": "HiddenText",
       "Description": "Your MQTT password",
-      "Required": true
+      "Required": false
     },
     {
       "Name": "mqtt_version",
