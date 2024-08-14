@@ -1,6 +1,6 @@
 # MQTT
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/MQTT) demonstrates how to consume data from an MQTT broker and publish that data to a Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/MQTT) demonstrates how to consume data from an MQTT broker and publish that data to a Kafka topic.
 
 ## How to run
 
@@ -17,9 +17,9 @@ The code sample uses the following environment variables:
 - **output**: Name of the output topic to publish to.
 - **mqtt_topic**: The MQTT topic to listen to. Can use wildcards e.g. MyTopic/#
 - **mqtt_server**: The address of your MQTT server.
-- **mqtt_port**: The port of your MQTT instance.
-- **mqtt_username**: Your MQTT username.
-- **mqtt_password**: Your MQTT password.
+- **mqtt_port**: The port of your MQTT server.
+- **mqtt_username**: Username of your MQTT user.
+- **mqtt_password**: Password for the MQTT user.
 
 ## Requirements / Prerequisites
 
