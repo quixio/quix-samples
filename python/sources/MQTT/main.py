@@ -126,6 +126,6 @@ try:
     while True:
         time.sleep(1)
 except KeyboardInterrupt:
-    print("Interrupted by the use, terminating connectionr")
+    print("Interrupted by the use, terminating connection")
     mqtt_client.loop_stop() # clean up
     print("Exiting")
