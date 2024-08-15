@@ -14,17 +14,31 @@ load_dotenv()
 
 def mqtt_protocol_version():
     if os.environ["mqtt_version"] == "3.1":
+        print("Using MQTT version 3.1")
         return paho.MQTTv31
     if os.environ["mqtt_version"] == "3.1.1":
+        print("Using MQTT version 3.1.1")
         return paho.MQTTv311
     if os.environ["mqtt_version"] == "5":
+        print("Using MQTT version 5")
         return paho.MQTTv5
-    raise ValueError('mqtt_version is invalid')
+    print("Defaulting to MQTT version 3.1.1")
+    return paho.MQTTv311
+
+def configure_authentication(mqtt_client):
+    mqtt_username = os.getenv("mqtt_username", "") 
+    if mqtt_username != "":
+        mqtt_password = os.getenv("mqtt_password", "")
+        if mqtt_password == "":
+           raise ValueError('mqtt_password must set when mqtt_username is set')
+        print("Using username & password authentication")
+        mqtt_client.username_pw_set(os.environ["mqtt_username"], os.environ["mqtt_password"])
+        return
+    print("Using anonymous authentication")
+
 
 mqtt_topic = os.getenv("mqtt_topic", "")
 mqtt_port = os.getenv("mqtt_port", "")
-mqtt_username = os.getenv("mqtt_username", "")
-mqtt_password = os.getenv("mqtt_password", "")
 output_topic_name = os.getenv("output", "")
 
 # Validate the config
@@ -34,15 +48,13 @@ if mqtt_topic == "":
     raise ValueError('mqtt_topic must be supplied')
 if not mqtt_port.isnumeric():
     raise ValueError('mqtt_port must be a numeric value')
-if mqtt_username == "":
-    raise ValueError('mqtt_username must be supplied')
-if mqtt_password == "":
-    raise ValueError('mqtt_password must be supplied')
 
 client_id = os.getenv("Quix__Deployment__Name", "default")
-mqtt_client = paho.Client(client_id = client_id, userdata = None, protocol = mqtt_protocol_version())
+mqtt_client = paho.Client(callback_api_version=paho.CallbackAPIVersion.VERSION2,
+                          client_id = client_id, userdata = None, protocol = mqtt_protocol_version())
 mqtt_client.tls_set(tls_version = mqtt.client.ssl.PROTOCOL_TLS)  # we'll be using tls
-mqtt_client.username_pw_set(os.environ["mqtt_username"], os.environ["mqtt_password"])
+mqtt_client.reconnect_delay_set(5, 60)
+configure_authentication(mqtt_client)
 
 # Create a Quix Application, this manages the connection to the Quix platform
 app = Application()
@@ -51,18 +63,17 @@ producer = app.get_producer()
 # create a topic object for use later on
 output_topic = app.topic(output_topic_name)
 
-
 # setting callbacks for different events to see if it works, print the message etc.
-def on_connect(client, userdata, flags, rc, properties = None):
-    if rc == 0:
+def on_connect_cb(client: paho.Client, userdata: any, connect_flags: paho.ConnectFlags,
+                  reason_code: paho.ReasonCode, properties: paho.Properties):
+    if reason_code == 0:
         mqtt_client.subscribe(mqtt_topic, qos = 1)
         print("CONNECTED!") # required for Quix to know this has connected
     else:
-        print("ERROR: Connection refused ({})".format(rc))
-
+        print(f"ERROR ({reason_code.value}). {reason_code.getName()}")
 
 # print message, useful for checking if it was successful
-def on_message(client, userdata, msg):
+def on_message_cb(client: paho.Client, userdata: any, msg: paho.MQTTMessage):
     message_key = str(msg.topic).replace("/", "-")
 
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
@@ -71,7 +82,7 @@ def on_message(client, userdata, msg):
     payload = {
         "data": msg.payload.decode('utf-8'),
         "qos": str(msg.qos),
-        "timestamp": str(datetime.utcnow())
+        "timestamp": str(datetime.now(datetime.UTC))
     }
     payload_string = json.dumps(payload)
     # publish to the putput topic
@@ -79,15 +90,21 @@ def on_message(client, userdata, msg):
                     key=message_key,
                     value=payload_string)
 
-
 # print which topic was subscribed to
-def on_subscribe(client, userdata, mid, granted_qos, properties = None):
-    print("Subscribed: " + str(mid) + " " + str(granted_qos))
-
-
-mqtt_client.on_connect = on_connect
-mqtt_client.on_message = on_message
-mqtt_client.on_subscribe = on_subscribe
+def on_subscribe_cb(client: paho.Client, userdata: any, mid: int,
+                    reason_code_list: list[paho.ReasonCode], properties: paho.Properties):
+    print("Subscribed: " + str(mid))
+    for reason_code in reason_code_list:
+        print(f"\tReason code ({reason_code.value}): {reason_code.getName()}")
+    
+def on_disconnect_cb(client: paho.Client, userdata: any, disconnect_flags: paho.DisconnectFlags,
+                     reason_code: paho.ReasonCode, properties: paho.Properties):
+    print(f"DISCONNECTED! Reason code ({reason_code.value}) {reason_code.getName()}!")
+    
+mqtt_client.on_connect = on_connect_cb
+mqtt_client.on_message = on_message_cb
+mqtt_client.on_subscribe = on_subscribe_cb
+mqtt_client.on_disconnect = on_disconnect_cb
 
 # connect to MQTT Cloud on port 8883 (default for MQTT)
 mqtt_client.connect(os.environ["mqtt_server"], int(mqtt_port))
@@ -95,10 +112,11 @@ mqtt_client.connect(os.environ["mqtt_server"], int(mqtt_port))
 # start the background process to handle MQTT messages
 mqtt_client.loop_start()
 
-
 # Define a handler function that will be called when SIGTERM is received
 def handle_sigterm(signum, frame):
-    print("SIGTERM received, exiting gracefully")
+    print("SIGTERM received, terminating connection")
+    mqtt_client.loop_stop()
+    print("Exiting")
     sys.exit(0)
 
 # Register the handler for the SIGTERM signal
@@ -108,5 +126,6 @@ try:
     while True:
         time.sleep(1)
 except KeyboardInterrupt:
+    print("Interrupted by the use, terminating connection")
     mqtt_client.loop_stop() # clean up
-    print("Interrupted by the user")
+    print("Exiting")

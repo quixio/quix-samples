@@ -40,7 +40,7 @@
       "Name": "mqtt_port",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The port of your MQTT instance",
+      "Description": "The port of your MQTT server",
       "DefaultValue": "8883",
       "Required": true
     },
@@ -48,15 +48,15 @@
       "Name": "mqtt_username",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Your MQTT username",
-      "Required": true
+      "Description": "Username of your MQTT user",
+      "Required": false
     },
     {
       "Name": "mqtt_password",
       "Type": "EnvironmentVariable",
       "InputType": "HiddenText",
-      "Description": "Your MQTT password",
-      "Required": true
+      "Description": "Password for the MQTT user",
+      "Required": false
     },
     {
       "Name": "mqtt_version",
