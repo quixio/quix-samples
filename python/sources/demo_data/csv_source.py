@@ -1,5 +1,5 @@
 # Import the Quix Streams modules for interacting with Kafka:
-from quixstreams.sources import BaseSource
+from quixstreams.sources import PollingSource
 from quixstreams.models.messages import KafkaMessage
 
 import pandas as pd
@@ -7,7 +7,7 @@ import json
 import random
 import time
 
-class CsvSource(BaseSource):
+class CsvSource(PollingSource):
     
     def __init__(self, filename: str, sleep_between_rows: float = 0) -> None:
         self.filename = filename
@@ -24,7 +24,8 @@ class CsvSource(BaseSource):
         self._iterator = df.iterrows()
             
         
-        super().__init__()
+        super().__init__(filename, sleep_between_rows)
+
         
     
     def poll(self):
