@@ -1,9 +1,0 @@
-FROM quixanalytics/matlab-runtime:r2023a-python310
-WORKDIR /app
-COPY ./requirements.txt requirements.txt
-RUN python3 -m pip install -r requirements.txt \
-    --extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/
-COPY ./MATLAB/ .
-RUN python3 setup.py install
-COPY . .
-ENTRYPOINT [ "python3", "main.py" ]
