@@ -1,6 +1,6 @@
 # Streamlit
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/streamlit) demonsrates how to run a Streamlit real-time dashboard that displays data from a Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/streamlit) demonsrates how to run a Streamlit real-time dashboard that displays data from a Kafka topic.
 
 You only need to edit the dashboard code if you want to update the layout, otherwise it works out of the box as a quick way to visualize your data.
 
@@ -8,7 +8,7 @@ Note that the code expects a timestamp in one of these columns: "timestamp", "Ti
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 

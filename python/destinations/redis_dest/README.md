@@ -1,6 +1,6 @@
 # Redis Destination
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/redis_dest) demonstrates how to consume data from a Kafka topic and persist the data to a Redis database using the Redis Python client.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/redis_dest) demonstrates how to consume data from a Kafka topic and persist the data to a Redis database using the Redis Python client.
 
 This sample will write JSON data to Redis.
 We assume that the incoming data will have a `key` field, this will be combined with the `redis_key_prefix` environment variable to create the Redis key where data will be stored.
@@ -9,7 +9,7 @@ Note that you need [Redis Stack](https://redis.io/docs/about/about-stack/) to us
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log in and visit the Code Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the Code Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 

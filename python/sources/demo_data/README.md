@@ -1,6 +1,6 @@
 # Demo CSV Data
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/demo_data) demonstrates how to publish F1&reg; telemetry data into a topic from a recorded Codemasters&reg; F1&reg; 2019 game session.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/demo_data) demonstrates how to publish F1&reg; telemetry data into a topic from a recorded Codemasters&reg; F1&reg; 2019 game session.
 
 You'll have access to the speed, acceleration, braking and other detailed data from a real F1&reg; car, rebroadcast in real time.
 
@@ -8,7 +8,7 @@ The CSV data is repeated 10 times to give you time to explore the platform with 
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 

@@ -1,12 +1,12 @@
 # SQL Change Data Capture (CDC)
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/sql_cdc) demonstrates how to capture changes to an SQL database table (using CDC) and publish the change events to a Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/sql_cdc) demonstrates how to capture changes to an SQL database table (using CDC) and publish the change events to a Kafka topic.
 
 It uses sqlite as a temporary storage to track the latest timestamp and QuixStreams Producer to publish data changes to Kafka.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 

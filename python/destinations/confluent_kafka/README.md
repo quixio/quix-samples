@@ -1,10 +1,10 @@
 # Confluent Kafka
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/confluent_kafka) demonstrates how to consume data from a Kafka topic in Quix and publish it to a topic in Confluent Cloud.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/confluent_kafka) demonstrates how to consume data from a Kafka topic in Quix and publish it to a topic in Confluent Cloud.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
