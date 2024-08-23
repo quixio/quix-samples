@@ -1,6 +1,6 @@
 # Hugging Face model
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/transformations/hugging_face_model) demonstrates how to consume data from a Kafka topic, use an ML model (downloaded from [Hugging Face](https://huggingface.co/)) to run inference on a specific field within the data, then publish the results to an output topic:
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/transformations/hugging_face_model) demonstrates how to consume data from a Kafka topic, use an ML model (downloaded from [Hugging Face](https://huggingface.co/)) to run inference on a specific field within the data, then publish the results to an output topic:
 
 - It listens to the input Kafka topic for data to predict on.
 - It generates a prediction using the selected Hugging Face model.
@@ -8,7 +8,7 @@
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 

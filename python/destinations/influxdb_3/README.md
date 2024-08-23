@@ -1,10 +1,10 @@
 # InfluxDB 3.0
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/influxdb_3) demonstrates how to consume data from a Kafka topic in Quix and persist the data to an InfluxDB 3.0 database using the InfluxDB write API.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/influxdb_3) demonstrates how to consume data from a Kafka topic in Quix and persist the data to an InfluxDB 3.0 database using the InfluxDB write API.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log in and visit the Code Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the Code Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 

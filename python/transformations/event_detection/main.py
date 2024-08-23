@@ -15,7 +15,7 @@ output_topic = app.topic(os.environ["output"])
 sdf = app.dataframe(input_topic)
 
 # Filter items out without brake value.
-sdf = sdf[sdf["Brake"].notnull()] 
+sdf = sdf[sdf.contains("Brake")]
 
 # Calculate hopping window of 1s with 200ms steps.
 sdf = sdf.apply(lambda row: row["Brake"]) \

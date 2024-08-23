@@ -1,6 +1,6 @@
 # Event Detection
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/transformations/Event-Detection) demonstrates how to consume data from a Kafka topic, filter the data based on some criteria and publish the result to an output topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/transformations/Event-Detection) demonstrates how to consume data from a Kafka topic, filter the data based on some criteria and publish the result to an output topic.
 
 It shows how to make real-time decisions on your data by looking at the `Brake` value and if a condition is met will output JSON message to the output topic.
 
@@ -8,7 +8,7 @@ You can adapt this code to suit your needs.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 

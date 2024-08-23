@@ -1,12 +1,12 @@
 # Redis Source
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/redis_source) demonstrates how to use the Redis Python client to query Redis and publish the results to a Kafka topic.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/redis_source) demonstrates how to use the Redis Python client to query Redis and publish the results to a Kafka topic.
 
 Note that you need [Redis Stack](https://redis.io/docs/about/about-stack/) to use it.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log in and visit the Code Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the Code Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 

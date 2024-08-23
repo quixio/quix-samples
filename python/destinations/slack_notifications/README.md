@@ -1,10 +1,10 @@
 # Slack Notifications
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/destinations/slack_notifications) demonstrates how to consume data from a Kafka topic and trigger a Slack webhook based on specific matching critera that you apply to the incoming data.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/slack_notifications) demonstrates how to consume data from a Kafka topic and trigger a Slack webhook based on specific matching critera that you apply to the incoming data.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
