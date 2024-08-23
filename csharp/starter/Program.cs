@@ -14,8 +14,8 @@ namespace Service
            
             using var topicConsumer = client.GetTopicConsumer(Environment.GetEnvironmentVariable("input"));
             
-            // for more samples, please see samples or docs
-            throw new NotImplementedException(""); //
+            // see https://github.com/quixio/quix-streams-dotnet for more docs
+            throw new NotImplementedException("");
         }
     }
 }
