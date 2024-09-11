@@ -11,7 +11,7 @@ def main():
     app = Application()
     
     # Setup output topic
-    output_topic = app.topic(os.environ["output"])
+    topic = app.topic(os.environ["topic"])
 
     # Get necessary environment variables for Quix input topic
     source_workspace_id = os.environ["source_workspace_id"]
@@ -21,9 +21,9 @@ def main():
 
     # Setup input topic
     input_topic = QuixEnvironmentSource(
-        output_topic.name,
+        topic.name,
         app.config,
-        output_topic.name,
+        topic.name,
         quix_workspace_id=source_workspace_id, 
         quix_sdk_token=source_sdk_token,
         consumer_group=consumer_group,
