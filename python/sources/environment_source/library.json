@@ -53,5 +53,13 @@
       "DefaultValue": "earliest",
       "Required": false
     }
-  ]
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
 }

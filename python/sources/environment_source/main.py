@@ -27,6 +27,8 @@ input_topic = QuixEnvironmentSource(
 
 sdf = app.dataframe(source=input_topic)
 
+
+print("CONNECTED")
 #sdf.print()
 #sdf.to_topic(output_topic)
 
