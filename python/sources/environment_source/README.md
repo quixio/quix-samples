@@ -13,7 +13,7 @@ This project provides a ready-to-use solution for mirroring data from one Quix e
 
 The following environment variables are required for this project:
 
-- **output**: The Quix topic that will be mirrored from the source environment.
+- **topic**: The Quix topic that will be mirrored from the source environment.
 - **source_workspace_id**: The workspace ID of the Quix environment you are mirroring from.
 - **source_sdk_token**: The SDK token to authenticate access to the source environment.
 - **consumer_group**: *(Optional)* The Kafka consumer group used by the source environment. Defaults to `quix_environment_source`.
