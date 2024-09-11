@@ -21,9 +21,9 @@ def main():
 
     # Setup input topic
     input_topic = QuixEnvironmentSource(
-        topic.name,
+        os.environ["topic"],
         app.config,
-        topic.name,
+        os.environ["topic"],
         quix_workspace_id=source_workspace_id, 
         quix_sdk_token=source_sdk_token,
         consumer_group=consumer_group,
@@ -34,7 +34,7 @@ def main():
     # Create a streaming dataframe
     sdf = app.dataframe(source=input_topic)
 
-    print("CONNECTED")
+    print("CONNECTED!")
     # Uncomment if needed for debugging
     # sdf.print()
     # sdf.to_topic(output_topic)
