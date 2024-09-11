@@ -1,4 +1,5 @@
 import os
+import traceback
 from quixstreams import Application
 from quixstreams.sources.kafka import QuixEnvironmentSource
 
@@ -33,4 +34,9 @@ print("CONNECTED")
 #sdf.to_topic(output_topic)
 
 if __name__ == "__main__":
-    app.run(sdf)
+    try:
+        app.run(sdf)
+    except Exception as e:
+        print("ERROR: Application failed to run.")
+        traceback.print_exc()
+        app.stop()
