@@ -1,10 +1,10 @@
 # Starter data source
 
-[This code sample](https://github.com/quixio/quix-samples/tree/develop/python/sources/starter_source) demonstrates how to publish hard-coded lines of JSON data to a Kafka topic in Quix.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/starter_source) demonstrates how to publish hard-coded lines of JSON data to a Kafka topic in Quix.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.ai/self-sign-up?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
