@@ -5,19 +5,21 @@ from quixstreams.sources.kafka import QuixEnvironmentSource
 from dotenv import load_dotenv
 
 def main():
-    # Load environment variables from .env file for local development
-    load_dotenv()
-
     app = Application()
     
+    # Load environment variables from .env file for local development
+    load_dotenv()
+    
     # Setup output topic
-    topic = app.topic(os.environ["topic"])
+    output_topic = app.topic(os.environ["topic"])
 
     # Get necessary environment variables for Quix input topic
     source_workspace_id = os.environ["source_workspace_id"]
     source_sdk_token = os.environ["source_sdk_token"]
-    consumer_group = os.environ["consumer_group"]
-    auto_offset_reset = os.environ["auto_offset_reset"]
+    
+    # Optional environment variables
+    consumer_group = os.environ.get("consumer_group", "quix_environment_source")
+    auto_offset_reset = os.environ.get("auto_offset_reset",    "earliest")
 
     # Setup input topic
     input_topic = QuixEnvironmentSource(
@@ -31,16 +33,11 @@ def main():
         shutdown_timeout=30
     )
 
-    # Create a streaming dataframe
-    sdf = app.dataframe(source=input_topic)
-
+    app.add_source(input_topic, output_topic)
     print("CONNECTED!")
-    # Uncomment if needed for debugging
-    # sdf.print()
-    # sdf.to_topic(output_topic)
 
     # Start the application
-    app.run(sdf)
+    app._run()
 
 
 if __name__ == "__main__":
