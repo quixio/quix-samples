@@ -27,6 +27,8 @@ Your updated configuration will be aplied to the redis service and it will be re
 
 [A short video showing the process is available here.](https://youtu.be/bZIwPWhR0iU)
 
+[See the full process of selecting, deploying and configuring your Redis cache service here](https://youtu.be/iP1xDQyNqd4)
+
 ```
     network:
       serviceName: redis
