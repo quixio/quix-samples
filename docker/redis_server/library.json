@@ -1,7 +1,7 @@
 {
   "libraryItemId": "redis cache",
   "name": "Redis Cache",
-  "language": "Docker",
+  "language": "csharp",
   "tags": {
     "Complexity": ["Easy"],
     "Technology": ["Redis"],
