@@ -19,10 +19,13 @@
     "Replicas": 1,
     "Network": {
       "ServiceName": "redis",
-      "Ports":{
-        "Port": 6379,
-        "TargetPort": 6379
-      }
+      "Ports":
+      [
+        {
+          "Port": 6379,
+          "TargetPort": 6379
+        }
+      ]
     }
   }
 }
