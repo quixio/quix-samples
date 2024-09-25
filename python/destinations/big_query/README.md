@@ -1,6 +1,6 @@
 # BigQuery
 
-[This project](https://github.com/quixio/quix-samples/tree/main/python/destinations/BigQuery) gives an example of how to stream data from Quix to a BigQuery database, it handles both parameter and event data.
+[This project](https://github.com/quixio/quix-samples/tree/main/python/destinations/big_query) gives an example of how to stream data from Quix to a BigQuery database, it handles both parameter and event data.
 
 ## How to run
 
