@@ -1,0 +1,11 @@
+# Use the official Redis image from the Docker Hub
+FROM redis:latest
+
+# Install net-tools to get ifconfig
+RUN apt-get update && apt-get install -y net-tools
+
+# Expose the default Redis port
+EXPOSE 6379
+
+# Set the entrypoint to the start script
+ENTRYPOINT ["redis-server"]

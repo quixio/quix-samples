@@ -1,0 +1,31 @@
+{
+  "libraryItemId": "redis-cache",
+  "name": "Redis Cache",
+  "language": "csharp",
+  "tags": {
+    "Complexity": ["Easy"],
+    "Technology": ["Redis"],
+    "Pipeline Stage": ["Server"],
+    "Type": ["Cache"],
+    "Vendor": ["Redis"]
+  },
+  "shortDescription": "Run a redis cache in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 500,
+    "MemoryInMb": 1000,
+    "Replicas": 1,
+    "Network": {
+      "ServiceName": "redis",
+      "Ports":
+      [
+        {
+          "Port": 6379,
+          "TargetPort": 6379
+        }
+      ]
+    }
+  }
+}
