@@ -62,6 +62,8 @@ Use this `Python` code to communicate with and test your Redis server.
 
 `NOTE: Run this from within Quix Cloud in the same project where your Redis server is deployed.`
 
+Add `redis` to the requirements.txt file then use the following code to access Redis.
+
 ```
 import redis
 
