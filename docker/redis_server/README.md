@@ -56,6 +56,30 @@ deployments:
           targetPort: 6379
 ```
 
+## How to use
+
+Use this `Python` code to communicate with and test your Redis server.
+
+`NOTE: Run this from within Quix Cloud in the same project where your Redis server is deployed.`
+
+```
+import redis
+
+# Connect to Redis
+client = redis.Redis(host='redis', port=6379, db=0)
+
+# Save a key-value pair
+client.set('my_key', 'Hello, Redis!')
+
+# Read the value back
+value = client.get('my_key')
+
+# Since Redis returns bytes, decode to string if necessary
+if value:
+    value = value.decode('utf-8')
+
+print(f"The value of 'my_key' is: {value}")
+```
 
 ## Contribute
 
