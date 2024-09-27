@@ -23,6 +23,21 @@ The code sample uses the following environment variables:
 If deploying to Quix Cloud you will need to create secrets for the username and password.
 See the [docs](https://quix.io/docs/deploy/secrets-management.html) for more information on how to do this.
 
+## Connecting
+
+To connect to the websocket server from your client use the url, ip address or server name for the websocket server (including the port) and the message key from the incomming topic.
+
+For example, if your ip address is `127.0.0.1`, your port is `80` and your message key is `DATA001` your connection url would be:
+
+`ws://127.0.0.1:80/DATA001` Connecting to this websocket URL will allow you to receive data for the `DATA001` message key only.
+
+Alternatively to subscribe to data from all message keys use `*`:
+
+`ws://127.0.0.1:80/*` Connecting to this websocket URL will allow you to receive data for all message keys.
+
+NOTE: if deploying on a secure port use `wss://` in place os `ws://` (Quix Cloud uses secure connections)
+
+
 ## Requirements / Prerequisites
 
 You will need to have a Quix account and a Kafka topic to consume data from. 
