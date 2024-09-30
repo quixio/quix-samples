@@ -3,7 +3,6 @@
   "name": "SQL Change Data Capture Source",
   "language": "Python",
   "tags": {
-    "Complexity": ["Medium"],
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
     "Technology": ["SQL", "CDC", "QuixStreams", "Database"]

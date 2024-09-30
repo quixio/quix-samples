@@ -3,7 +3,6 @@
   "name": "InfluxDB 3.0 Sink",
   "language": "Python",
   "tags": {
-    "Complexity": ["Easy"],
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],

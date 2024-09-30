@@ -3,7 +3,6 @@
     "name": "Kafka Connect Source",
     "language": "Python",
     "tags": {
-        "Complexity": ["Advanced"],
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
         "Technology": ["Kafka"]

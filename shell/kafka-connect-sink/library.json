@@ -3,7 +3,6 @@
     "name": "Kafka Connect Sink",
     "language": "Python",
     "tags": {
-        "Complexity": ["Advanced"],
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
         "Technology": ["Kafka"]

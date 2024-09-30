@@ -3,7 +3,6 @@
   "name": "Environment Source",
   "language": "Python",
   "tags": {
-    "Complexity": ["Easy"],
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
     "Technology": ["Kafka", "QuixStreams"]

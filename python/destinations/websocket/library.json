@@ -3,7 +3,6 @@
     "name": "Websocket Destination",
     "language": "Python",
     "tags": {
-        "Complexity": ["Medium"],
         "Technology": ["QuixStreams", "Websockets"],
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],

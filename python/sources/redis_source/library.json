@@ -3,7 +3,6 @@
   "name": "Redis Source",
   "language": "Python",
   "tags": {
-    "Complexity": ["Easy"],
     "Technology": ["QuixStreams", "Redis"],
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],

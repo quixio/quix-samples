@@ -1,16 +1,15 @@
 {
     "libraryItemId": "big-query-sink",
-    "name": "BigQuery",
+    "name": "BigQuery Sink",
     "language": "Python",
     "IconFile": "icon.png",
     "tags": {
-      "Complexity": ["Medium"],
       "Technology": ["QuixStreams"],
       "Type": ["Connectors"],
       "Pipeline Stage": ["Destination"],
       "Vendor": ["Google", "GCP"]
     },
-    "shortDescription": "Stream data from Quix to BigQuery",
+    "shortDescription": "Persist data from Quix to BigQuery",
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "DefaultFile": "main.py",

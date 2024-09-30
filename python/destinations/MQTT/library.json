@@ -3,7 +3,6 @@
   "name": "MQTT Sink",
   "language": "Python",
   "tags": {
-    "Complexity": ["Easy"],
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],
     "Technology": ["MQTT", "QuixStreams"]

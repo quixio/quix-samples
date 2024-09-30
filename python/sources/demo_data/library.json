@@ -7,7 +7,7 @@
   "tags": {
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Source"],
-    "Popular Subjects": ["Quick Start", "Onboarding"],
+    "Popular Subjects": ["Quick Start"],
     "Type": ["Demos"]
   },
   "shortDescription": "Publish F1 telemetry data from a CSV file to a Kafka topic.",
