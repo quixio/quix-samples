@@ -4,7 +4,6 @@
   "language": "Python",
   "IconFile": "icon.png",
   "tags": {
-    "Complexity": ["Medium"],
     "Type": ["Connectors"],
     "Pipeline Stage": ["Source"],
     "Technology": ["Database", "QuixStreams", "CDC"]

@@ -3,7 +3,6 @@
   "name": "Redis Sink",
   "language": "Python",
   "tags": {
-    "Complexity": ["Easy"],
     "Technology": ["QuixStreams", "Redis"],
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],

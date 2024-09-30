@@ -3,10 +3,8 @@
   "name": "Slack Sink",
   "language": "Python",
   "tags": {
-    "Complexity": ["Easy"],
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Destination"],
-    "Popular Subjects": ["Onboarding"],
     "Type": ["Connectors"],
     "Vendor": ["Slack"]
   },

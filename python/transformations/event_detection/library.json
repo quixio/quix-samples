@@ -9,7 +9,7 @@
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Transformation"],
     "Type": ["Code samples"],
-    "Popular Subjects": ["Onboarding"]
+    "Popular Subjects": ["Quick start"]
   },
   "shortDescription": "Consume data from a topic, filter it and publish the result to an output topic.",
   "DefaultFile": "quix_function.py",

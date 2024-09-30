@@ -3,8 +3,8 @@
   "name": "Snowplow Source",
   "language": "Python",
   "tags": {
-    "Complexity": ["Medium"],
     "Technology": ["QuixStreams"],
+    "Type": ["Connectors"],
     "Pipeline Stage": ["Source"],
     "Vendor": ["Snowplow", "AWS"]
   },

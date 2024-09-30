@@ -3,7 +3,6 @@
   "name": "Confluent Kafka Source",
   "language": "Python",
   "tags": {
-    "Complexity": ["Medium"],
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
     "Vendor": ["Confluent"],
