@@ -3,7 +3,7 @@ FROM python:3.12.5-slim-bookworm
 # Set environment variables to non-interactive and unbuffered output
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
-    PYTHONIOENCODING=UTF-8
+    PYTHONIOENCODING=UTF-8 
 
 # Set the working directory inside the container
 WORKDIR /app

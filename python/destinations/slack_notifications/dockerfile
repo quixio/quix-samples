@@ -1,4 +1,4 @@
-FROM python:3.12.5-slim-bookworm
+FROM python:3.12.5-slim-bookworm 
 
 # Set environment variables to non-interactive and unbuffered output
 ENV DEBIAN_FRONTEND=noninteractive \
