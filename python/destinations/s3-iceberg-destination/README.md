@@ -1,6 +1,6 @@
 # Redis Destination
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/s3-iceberg-destination) demonstrates how to consume data from a Kafka topic and persist the data to an AWS S3 bucket in Parquet format with Apache Iceberg using pure Python.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/s3-iceberg-destination) demonstrates how to consume data from a Kafka topic and write it to an Apache Iceberg table stored in AWS S3 using the AWS Glue Data Catalog.
 
 ## How to run
 
