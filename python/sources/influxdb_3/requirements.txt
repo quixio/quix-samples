@@ -1,3 +1,0 @@
-quixstreams==2.9.0
-influxdb3-python==0.3.6
-python-dotenv

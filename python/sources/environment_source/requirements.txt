@@ -1,2 +1,0 @@
-git+https://github.com/quixio/quix-streams.git@alpha/kafka-source
-python-dotenv

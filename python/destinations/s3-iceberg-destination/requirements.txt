@@ -1,2 +1,0 @@
-quixstreams[iceberg_aws]==3.1.0
-python-dotenv
