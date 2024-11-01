@@ -1,7 +1,6 @@
 import os
 from quixstreams import Application
 from datetime import datetime
-import json
 
 # for local dev, load env vars from a .env file
 from dotenv import load_dotenv
@@ -42,4 +41,4 @@ sdf.print()
 sdf.to_topic(output_topic)
 
 if __name__ == "__main__":
-    app.run(sdf)
+    app.run()
