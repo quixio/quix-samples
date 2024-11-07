@@ -1,0 +1,33 @@
+{
+  "libraryItemId": "kstreams",
+  "name": "Kafka Streams template",
+  "language": "Java",
+  "IsHighlighted": true,
+  "DisplayOrder": 2,
+  "tags": {
+    "Complexity": ["Medium"],
+    "Technology": ["KafkaStreams"],
+    "Pipeline Stage": ["Transformation"],
+    "Type": ["Basic templates"]
+  },
+  "shortDescription": "Consume data from a topic, apply a simple transformation and publish the result to an output topic.",
+  "DefaultFile": "src/main/java/com/example/MessageCountPerSecond.java",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "src/main/java/com/example/MessageCountPerSecond.java",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "Name of the input topic to listen to.",
+      "DefaultValue": "csv-data"
+    },
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Name of the output topic to write to.",
+      "DefaultValue": "transform"
+    }
+  ]
+}
