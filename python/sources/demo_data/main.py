@@ -35,7 +35,7 @@ def timestamp_extractor(row: dict) -> int:
     """
     Extract a timestamp from each row and use it as a Kafka message timestamp
     """
-    return int(row["Timestamp"] / 1_000_000)
+    return int(int(row["Timestamp"]) / 1_000_000)
 
 
 csv_source = CSVSource(
