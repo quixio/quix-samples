@@ -57,7 +57,7 @@ public class MessageCountPerSecond {
                     });
 
             // Output the JSON results to another topic
-            jsonOutputStream.to(System.getenv(workspace_id + "-" + "output"), Produced.with(Serdes.String(), Serdes.String()));
+            jsonOutputStream.to(workspace_id + "-" + System.getenv("output"), Produced.with(Serdes.String(), Serdes.String()));
 
             KafkaStreams streams = new KafkaStreams(builder.build(), props);
             streams.start();
