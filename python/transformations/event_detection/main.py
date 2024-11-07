@@ -17,7 +17,7 @@ sdf = app.dataframe(input_topic)
 sdf = sdf[sdf.contains("Brake")]
 
 # Calculate hopping window of 1s with 200ms steps.
-sdf = sdf.apply(lambda row: int(row["Brake"])) \
+sdf = sdf.apply(lambda row: float(row["Brake"])) \
         .hopping_window(1000, 200).mean().final() 
         
 sdf.print()
