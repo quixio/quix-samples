@@ -1,5 +1,7 @@
 # Kafka Streams Template
 
+> **⚠️ Warning:** This template for now will work with Confluent broker only.
+
 This code sample demonstrates how to consume data from an input Kafka topic, apply a simple transformation to that data, and publish the result to an output Kafka topic. It leverages the Kafka Streams library for stream processing within a Java application and prints relevant content to the console for monitoring and debugging.
 
 This template is a foundation to build real-time data processing applications in Java using Kafka Streams.
