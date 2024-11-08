@@ -1,7 +1,6 @@
 import os
 from quixstreams import Application
 from datetime import datetime
-import json
 
 # for local dev, load env vars from a .env file
 from dotenv import load_dotenv
@@ -18,7 +17,7 @@ sdf = app.dataframe(input_topic)
 sdf = sdf[sdf.contains("Brake")]
 
 # Calculate hopping window of 1s with 200ms steps.
-sdf = sdf.apply(lambda row: row["Brake"]) \
+sdf = sdf.apply(lambda row: float(row["Brake"])) \
         .hopping_window(1000, 200).mean().final() 
         
 sdf.print()
@@ -42,4 +41,4 @@ sdf.print()
 sdf.to_topic(output_topic)
 
 if __name__ == "__main__":
-    app.run(sdf)
+    app.run()
