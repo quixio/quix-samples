@@ -13,10 +13,15 @@ import java.util.Properties;
 public class QuixConfigBuilder {
 
 
-
+    // API URL to get Kafka configuration from QuixCloud.
     private static final String KAFKA_CONFIG_API_URL = "%s/workspaces/%s/broker/librdkafka";
 
+    /// <summary>
+    /// Builds Kafka configuration properties using the QuixCloud API.
+    /// </summary>
     public static Properties buildKafkaProperties() throws IOException, InterruptedException {
+
+        // Environment variables provided by QuixCloud runtime
         String workspaceId = System.getenv("Quix__Workspace__Id");
         String token = System.getenv("Quix__Sdk__Token");
         String portalApi = System.getenv("Quix__Portal__Api");

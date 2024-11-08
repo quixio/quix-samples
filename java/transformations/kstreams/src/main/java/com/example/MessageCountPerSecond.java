@@ -18,23 +18,28 @@ public class MessageCountPerSecond {
 
     public static void main(String[] args) {
         try {
-
+            
+            // Get the environment ID from the environment variables
             String workspace_id = System.getenv("Quix__Workspace__Id");
 
             // Get Kafka configuration properties
             Properties props = QuixConfigBuilder.buildKafkaProperties();
 
             props.put("application.id", "message-count-app");
+
+            // Set default key and value serde
             props.put("default.key.serde", "org.apache.kafka.common.serialization.Serdes$StringSerde");
             props.put("default.value.serde", "org.apache.kafka.common.serialization.Serdes$StringSerde");
 
             StreamsBuilder builder = new StreamsBuilder();
-            KStream<String, String> messageStream = builder.stream( workspace_id + "-" + System.getenv("input"));
+
+            // Topic name consists of workspace ID and input topic name in QuixCloud.
+            KStream<String, String> messageStream = builder.stream(workspace_id + "-" + System.getenv("input"));
 
             // Count messages per second
             KTable<Windowed<String>, Long> messageCountPerSecond = messageStream
                     .groupByKey()
-                    .windowedBy(TimeWindows.of(Duration.ofSeconds(1)))
+                    .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofSeconds(1)))
                     .count();
 
             // Convert the count data to JSON format before sending it to the output topic

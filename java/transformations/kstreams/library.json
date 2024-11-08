@@ -11,6 +11,7 @@
     "Type": ["Basic templates"]
   },
   "shortDescription": "Consume data from a topic, apply a simple transformation and publish the result to an output topic.",
+  "IconFile": "icon.png",
   "DefaultFile": "src/main/java/com/example/MessageCountPerSecond.java",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "src/main/java/com/example/MessageCountPerSecond.java",
