@@ -1,7 +1,7 @@
 {
   "libraryItemId": "kstreams",
   "name": "Kafka Streams template",
-  "language": "Csharp",
+  "language": "Java",
   "IsHighlighted": true,
   "DisplayOrder": 2,
   "tags": {
