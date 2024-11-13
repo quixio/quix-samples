@@ -1,0 +1,26 @@
+{
+  "libraryItemId": "streamlit",
+  "name": "Streamlit Dashboard",
+  "language": "Python",
+  "tags": {
+    "Complexity": ["Medium"],
+    "Technology": ["QuixStreams"],
+    "Vendor": ["Streamlit"]
+  },
+  "shortDescription": "Run a Streamlit real-time dashboard that displays data from database.",
+  "longDescription": "Run a Streamlit real-time dashboard that displays data from database. In the example there is InfluxDb2 example.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "UrlPrefix": "streamlit",
+    "ValidateConnection": false
+  }
+}
