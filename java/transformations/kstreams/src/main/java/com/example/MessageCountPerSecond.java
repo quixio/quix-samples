@@ -25,7 +25,7 @@ public class MessageCountPerSecond {
             // Get Kafka configuration properties
             Properties props = QuixConfigBuilder.buildKafkaProperties();
 
-            props.put("application.id", "message-count-app");
+            props.put("application.id", workspace_id + "-" + "message-count-app");
 
             // Set default key and value serde
             props.put("default.key.serde", "org.apache.kafka.common.serialization.Serdes$StringSerde");
