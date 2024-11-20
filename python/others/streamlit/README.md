@@ -1,10 +1,6 @@
 # Streamlit
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/streamlit) demonsrates how to run a Streamlit real-time dashboard that displays data from a Kafka topic.
-
-You only need to edit the dashboard code if you want to update the layout, otherwise it works out of the box as a quick way to visualize your data.
-
-Note that the code expects a timestamp in one of these columns: "timestamp", "Timestamp", "time", "ts"
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/others/streamlit) demonsrates how to run a Streamlit dashboard that displays data from a database (InfluxDb in this example.)
 
 ## How to run
 
@@ -13,16 +9,6 @@ Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
-
-## Environment variables
-
-This code sample uses the following environment variables:
-
-- **input**: The topic to stream data from (`f1-data`)
-
-## Requirements
-
-Deploy the `Demo Data` source from the Quix Code Samples. This will stream Codemasters&reg; F1&reg; 2019 telemetry data into a topic called `f1-data`
 
 ## Contribute
 
