@@ -14,14 +14,5 @@
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "Variables": [
-  ],
-  "DeploySettings": {
-    "DeploymentType": "Service",
-    "CpuMillicores": 200,
-    "MemoryInMb": 200,
-    "Replicas": 1,
-    "PublicAccess": true,
-    "UrlPrefix": "streamlit",
-    "ValidateConnection": false
-  }
+  ]
 }
