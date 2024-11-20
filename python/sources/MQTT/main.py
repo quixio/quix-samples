@@ -61,7 +61,7 @@ app = Application()
 # Create the producer, this is used to write data to the output topic
 producer = app.get_producer()
 # create a topic object for use later on
-output_topic = app.topic(output_topic_name)
+output_topic = app.topic(output_topic_name, value_serializer="bytes")
 
 # setting callbacks for different events to see if it works, print the message etc.
 def on_connect_cb(client: paho.Client, userdata: any, connect_flags: paho.ConnectFlags,
@@ -78,17 +78,10 @@ def on_message_cb(client: paho.Client, userdata: any, msg: paho.MQTTMessage):
 
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
-    # build a payload, here we have the data, qos and a timestamp
-    payload = {
-        "data": msg.payload.decode('utf-8'),
-        "qos": str(msg.qos),
-        "timestamp": str(datetime.now(datetime.UTC))
-    }
-    payload_string = json.dumps(payload)
     # publish to the putput topic
     producer.produce(topic=output_topic.name,
                     key=message_key,
-                    value=payload_string)
+                    value=msg.payload)
 
 # print which topic was subscribed to
 def on_subscribe_cb(client: paho.Client, userdata: any, mid: int,
