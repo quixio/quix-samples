@@ -12,6 +12,7 @@
   "shortDescription": "Collect data with Telegraf.",
   "DefaultFile": "dockerfile",
   "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
   "DeploySettings": {
     "DeploymentType": "Service",
     "CpuMillicores": 200,
