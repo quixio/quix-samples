@@ -5,8 +5,8 @@
   "tags": {
     "Complexity": ["Easy"],
     "Technology": ["Telegraf"],
-    "Pipeline Stage": ["Server"],
-    "Type": ["Source"],
+    "Pipeline Stage": ["Source"],
+    "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
   "shortDescription": "Collect data with Telegraf.",
