@@ -1,0 +1,17 @@
+# Use the official Redis image from the Docker Hub
+FROM redis:latest
+
+# Install net-tools to get ifconfig
+RUN apt-get update && apt-get install -y net-tools
+
+# Create the /state directory where your PVC is mounted
+RUN mkdir -p /app/state/
+
+# Copy the custom redis.conf file
+COPY redis.conf /usr/local/etc/redis/redis.conf
+
+# Expose the default Redis port
+EXPOSE 6379
+
+# Set the entrypoint to use the custom configuration file
+ENTRYPOINT ["redis-server", "/usr/local/etc/redis/redis.conf"]
