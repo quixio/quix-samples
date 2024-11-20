@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "redis-cache",
+  "libraryItemId": "telegraf-source",
   "name": "Telegraf source",
   "language": "docker",
   "tags": {
