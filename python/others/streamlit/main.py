@@ -7,10 +7,10 @@ import os
 
 
 # InfluxDB settings
-INFLUXDB_URL = os.environ["INFLUXDB_HOST"]
-INFLUXDB_TOKEN = os.environ["INFLUXDB_TOKEN"]
-INFLUXDB_ORG =  os.environ["INFLUXDB_ORG"]
-INFLUXDB_BUCKET = os.environ["INFLUXDB_BUCKET_NAME"]
+INFLUXDB_URL = "http://localhost:8086"
+INFLUXDB_TOKEN = "my-token"
+INFLUXDB_ORG =  "my-org"
+INFLUXDB_BUCKET = "my-bucket"
 
 # Streamlit title
 st.title("InfluxDB Data Visualization")
