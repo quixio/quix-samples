@@ -2,6 +2,7 @@
   "libraryItemId": "streamlit",
   "name": "Streamlit Dashboard",
   "language": "Python",
+  "IconFile": "icon.png",
   "tags": {
     "Complexity": ["Medium"],
     "Technology": ["QuixStreams"],
