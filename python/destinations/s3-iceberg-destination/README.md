@@ -18,6 +18,7 @@ The code sample uses the following environment variables:
 - **AWS_S3_URI**: The URI or URL to your S3 bucket (Required: `True`)
 - **AWS_SECRET_ACCESS_KEY**: Your AWS secret (Required: `True`)
 - **AWS_ACCESS_KEY_ID**: Your AWS Access Key (Required: `True`)
+- **AWS_REGION**: Your AWS S3 bucket region (Required: `True`)
 - **table_name**: The table to publish data to (Required: `True`)
 
 ## Requirements / Prerequisites
