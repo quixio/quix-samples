@@ -13,6 +13,16 @@
   "DefaultFile": "dockerfile",
   "EntryPoint": "dockerfile",
   "IconFile": "icon.png",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the Quix Topic that will receive the stream",
+      "DefaultValue": "coin-data",
+      "Required": true
+    }
+  ],
   "DeploySettings": {
     "DeploymentType": "Service",
     "CpuMillicores": 200,
