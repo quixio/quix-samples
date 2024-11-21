@@ -17,7 +17,8 @@ iceberg_sink = IcebergSink(
     config=AWSIcebergConfig(
         aws_s3_uri=os.environ["AWS_S3_URI"],
         aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
-        aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"]))
+        aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
+        aws_region=os.environ["AWS_REGION"]))
 
 sdf = app.dataframe(input_topic)
 sdf.sink(iceberg_sink)
