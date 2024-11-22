@@ -1,61 +1,39 @@
 import streamlit as st
 import pandas as pd
-from influxdb_client import InfluxDBClient
 import plotly.express as px
 import time
-import os
-
-
-# InfluxDB settings
-INFLUXDB_URL = "http://localhost:8086"
-INFLUXDB_TOKEN = "my-token"
-INFLUXDB_ORG =  "my-org"
-INFLUXDB_BUCKET = "my-bucket"
 
 # Streamlit title
-st.title("InfluxDB Data Visualization")
+st.title("Data Visualization")
 
 # Refresh interval (in seconds)
 REFRESH_INTERVAL = 10
 
+# Sample static data
+static_data = [
+    {"time": "2024-11-01T00:00:00Z", "value": 10},
+    {"time": "2024-11-01T01:00:00Z", "value": 15},
+    {"time": "2024-11-01T02:00:00Z", "value": 12},
+    {"time": "2024-11-01T03:00:00Z", "value": 25},
+    {"time": "2024-11-01T04:00:00Z", "value": 20},
+]
+
 # Main app loop
 while True:
+    # Create a DataFrame from static data
+    df = pd.DataFrame(static_data)
 
-  # Connect to InfluxDB
-  client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
+    # Display waveform plot
+    if not df.empty:
+        fig = px.line(df, x="time", y="value", title="Waveform")
+        st.plotly_chart(fig)
 
-  # Define the query (modify it to match your data structure)
-  query = os.environ["INFLUXDB_QUERY"]
+        # Display table
+        st.subheader("Data Table")
+        st.write(df)
+    else:
+        st.write("No data available.")
 
-  # Execute the query
-  tables = client.query_api().query(query)
-
-  # Process query results into a DataFrame
-  data = []
-  for table in tables:
-      for record in table.records:
-          data.append({
-              "time": record.get_time(),
-              "value": record.get_value()
-          })
-
-  # Close InfluxDB client
-  client.close()
-
-  # Create a DataFrame
-  df = pd.DataFrame(data)
-
-  # Display waveform plot
-  if not df.empty:
-      fig = px.line(df, x="time", y="value", title="Waveform")
-      st.plotly_chart(fig)
-
-      # Display table
-      st.subheader("Data Table")
-      st.write(df)
-  else:
-      st.write("No data available for the selected time range.")
-
-  # Refresh every REFRESH_INTERVAL seconds
-  time.sleep(REFRESH_INTERVAL)
-  st.rerun()
+    # Refresh every REFRESH_INTERVAL seconds
+    time.sleep(REFRESH_INTERVAL)
+    st.rerun()

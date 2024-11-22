@@ -1,5 +1,4 @@
 streamlit
-influxdb-client
 pandas
 plotly
 python-dotenv
