@@ -1,6 +1,6 @@
 # Streamlit
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/others/streamlit) demonsrates how to run a Streamlit dashboard that displays data.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/others/streamlit) demonstrates how to run a Streamlit dashboard that displays data.
 
 ## How to run
 
