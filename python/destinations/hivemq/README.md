@@ -8,7 +8,7 @@ The MQTT topic the example produces to will be `mqtt_topic_root`/`message_key`.
 
 Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the Connectors to use this project.
 
-Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Deploy` on the connector, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
