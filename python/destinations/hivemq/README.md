@@ -1,6 +1,6 @@
 # HiveMQ
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/hivemq) demonstrates how to produce data from a Kafka topic and publish it to a Hive MQ broker.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/hivemq) demonstrates how to consume data from a Kafka topic and publish it to a HiveMQ broker's MQTT topic.
 
 The MQTT topic the example produces to will be `mqtt_topic_root`/`message_key`.
 
