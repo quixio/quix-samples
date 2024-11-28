@@ -23,7 +23,7 @@ The code sample uses the following environment variables:
 
 ## Requirements / Prerequisites
 
-You'll need to have a MQTT broker either locally or in the cloud
+You'll need to have a HiveMQ broker running either locally or in the cloud
 
 ## Contribute
 
