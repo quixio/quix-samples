@@ -1,4 +1,4 @@
-# Hive MQ
+# HiveMQ
 
 [This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/hivemq) demonstrates how to produce data from a Kafka topic and publish it to a Hive MQ broker.
 
