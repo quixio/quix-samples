@@ -14,7 +14,7 @@ Clicking `Customise connector` forks the project to your own Git repo so you can
 
 ## Requirements / Prerequisites
 
-You'll need to have a MQTT either locally or in the cloud
+You'll need to have a HiveMQ broker running either locally or in the cloud
 
 ## Environment Variables
 
