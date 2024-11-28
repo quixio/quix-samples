@@ -1,4 +1,4 @@
-# Hive MQ
+# HiveMQ
 
 [This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/hivemq) demonstrates how to consume data from a HiveMQ broker's MQTT topic and publish that data to a Kafka topic.
 
