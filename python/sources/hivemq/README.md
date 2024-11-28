@@ -8,7 +8,7 @@ Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or 
 
 Clicking `Deploy` on the connector, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+Clicking `Customise connector` forks the project to your own Git repo so you can customise it before deploying.
 
 ## Environment Variables
 
