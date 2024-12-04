@@ -30,6 +30,7 @@ app = Flask(__name__)
 
 @app.route("/data/", methods=['POST'])
 def post_data_without_key():
+    global validated
     
     data = request.json
 
@@ -50,6 +51,7 @@ def post_data_without_key():
 
 @app.route("/data/{key}", methods=['POST'])
 def post_data_with_key(key: str):
+    global validated
     
     data = request.json
 
