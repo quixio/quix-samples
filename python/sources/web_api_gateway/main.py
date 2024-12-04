@@ -16,6 +16,10 @@ quix_app = Application()
 topic =  quix_app.topic(os.environ["output"])
 producer = quix_app.get_producer()
 
+portal_api = os.environ["portal_api"]
+workspace_id = os.environ["Quix__Workspace__Id"]
+service_url = portal_api.replace("portal-api.platform", f"gateway-{workspace_id}.deployments-dev")
+
 logger = get_logger()
 
 app = Flask(__name__)
@@ -28,8 +32,9 @@ def post_data():
 
     print(data)
 
-    logger.info(f"{str(datetime.datetime.utcnow())} posted.")
+    logger.info("CONNECTED: data received.")
     
+    logger.info(f"{str(datetime.datetime.utcnow())} posted.")
     producer.produce(topic.name, json.dumps(data), "hello-world-stream")
 
     response = Response(status=200)
@@ -39,4 +44,7 @@ def post_data():
 
 
 if __name__ == '__main__':
+    
+    print("-------------------------CURL EXAMPLE-------------------------")
+    print(f"curl -X POST -H 'Content-Type: application/json' -d '{{\"key\": \"value\"}}' {service_url}/data")
     serve(app, host="0.0.0.0", port=80)

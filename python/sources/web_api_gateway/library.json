@@ -9,7 +9,7 @@
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Source"],
     "Popular Subjects": ["Quick Start"],
-    "Type": ["Basic templates"]
+    "Type": ["Connectors"]
   },
   "shortDescription": "Run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.",
   "DefaultFile": "main.py",
@@ -32,6 +32,6 @@
     "Replicas": 1,
     "PublicAccess": true,
     "UrlPrefix": "gateway",
-    "ValidateConnection": false
+    "ValidateConnection": true
   }
 }
