@@ -3,6 +3,7 @@ import datetime
 import json
 from flask import Flask, request, Response
 from waitress import serve
+import time
 
 from setup_logging import get_logger
 
@@ -20,6 +21,8 @@ portal_api = os.environ["Quix__Portal__Api"]
 workspace_id = os.environ["Quix__Workspace__Id"]
 service_url = portal_api.replace("portal-api.dev", f"gateway-{workspace_id}.deployments-dev")
 
+validated = False
+
 logger = get_logger()
 
 app = Flask(__name__)
@@ -32,7 +35,10 @@ def post_data_without_key():
 
     logger.debug(f"{data}")
 
-    print("CONNECTED!")
+    if not validated:
+        logger.info("Message received.")
+        time.sleep(1)        
+        logger.info("CONNECTED!")
     
     producer.produce(topic.name, json.dumps(data))
 
@@ -48,7 +54,10 @@ def post_data_with_key(key: str):
 
     logger.debug(f"{data}")
 
-    print("CONNECTED!")
+    if not validated:
+        logger.info("Message received.")
+        time.sleep(1)        
+        logger.info("CONNECTED!")
     
     producer.produce(topic.name, json.dumps(data), key.encode())
 
@@ -65,10 +74,10 @@ if __name__ == '__main__':
     print("=" * 60)
     print(
         f"""
-    curl -X POST \\
-        -H 'Content-Type: application/json' \\
-        -d '{{"key": "value"}}' \\
-        {service_url}/data
+curl -X POST \\
+    -H 'Content-Type: application/json' \\
+    -d '{{"key": "value"}}' \\
+    {service_url}/data
     """
     )
     print("=" * 60)  
