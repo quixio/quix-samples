@@ -1,6 +1,6 @@
 {
   "libraryItemId": "web-api-gateway",
-  "name": "Flask Web Gateway Source",
+  "name": "HTTP API",
   "language": "Python",
   "IsHighlighted": true,
   "DisplayOrder": 6,
@@ -21,7 +21,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
       "Description": "This is the output topic for hello world data",
-      "DefaultValue": "hello-world-source",
+      "DefaultValue": "http-source",
       "Required": true
     }
   ],
