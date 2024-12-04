@@ -16,7 +16,7 @@ quix_app = Application()
 topic =  quix_app.topic(os.environ["output"])
 producer = quix_app.get_producer()
 
-portal_api = os.environ["portal_api"]
+portal_api = os.environ["Quix__Portal__Api"]
 workspace_id = os.environ["Quix__Workspace__Id"]
 service_url = portal_api.replace("portal-api.platform", f"gateway-{workspace_id}.deployments-dev")
 
