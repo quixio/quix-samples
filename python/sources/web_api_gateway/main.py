@@ -31,10 +31,10 @@ def post_data():
     data = request.json
 
     print(data)
-
-    logger.info("CONNECTED: data received.")
-    
     logger.info(f"{str(datetime.datetime.utcnow())} posted.")
+
+    print("CONNECTED!")
+    
     producer.produce(topic.name, json.dumps(data), "hello-world-stream")
 
     response = Response(status=200)
