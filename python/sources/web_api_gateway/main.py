@@ -37,8 +37,9 @@ def post_data_without_key():
 
     if not validated:
         logger.info("Message received.")
-        time.sleep(1)        
+        time.sleep(5)        
         logger.info("CONNECTED!")
+        validated = True
     
     producer.produce(topic.name, json.dumps(data))
 
@@ -56,9 +57,10 @@ def post_data_with_key(key: str):
 
     if not validated:
         logger.info("Message received.")
-        time.sleep(1)        
+        time.sleep(5)        
         logger.info("CONNECTED!")
-    
+        validated = True
+
     producer.produce(topic.name, json.dumps(data), key.encode())
 
     response = Response(status=200)
@@ -74,7 +76,7 @@ if __name__ == '__main__':
     print("=" * 60)
     print(
         f"""
-curl -X POST \\
+curl -L -X POST \\
     -H 'Content-Type: application/json' \\
     -d '{{"key": "value"}}' \\
     {service_url}/data
