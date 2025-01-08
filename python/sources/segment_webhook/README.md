@@ -4,7 +4,7 @@
 
 It's secure, using a secret shared with both Quix and Segment.
 
-And we've used Waitress “… a production-quality pure-Python WSGI server with very acceptable performance. It has no dependencies except ones that live in the Python standard library. It runs on CPython on Unix and Windows.”
+And we've used [Waitress](https://github.com/Pylons/waitress), "a production-quality pure-Python WSGI server with very acceptable performance. It has no dependencies except ones that live in the Python standard library. It runs on CPython on Unix and Windows.”
 
 ## How to run
 
