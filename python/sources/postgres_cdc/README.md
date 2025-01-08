@@ -1,18 +1,21 @@
 # Postgres CDC
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/postgres_cdc) demonstrates how to capture changes to a Postgres database table (using CDC) and publish the change events to a Kafka topic.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/postgres_cdc) demonstrates how to capture changes to a Postgres database table (using CDC) and publish the change events to a Kafka topic.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Environment variables
 
-The code sample uses the following environment variables:
+The connector uses the following environment variables:
 
 - **output**: Name of the output topic to write into.
 - **PG_HOST**: The IP address or fully qualified domain name of your server.

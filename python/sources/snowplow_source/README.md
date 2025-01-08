@@ -1,20 +1,23 @@
 # Snowplow
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/snowplow_source) demonstrates how to read data from Snowplow and publish it to a Kafka topic.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/snowplow_source) demonstrates how to read data from Snowplow and publish it to a Kafka topic.
 
 Note that this connector works with Snowplow instances on AWS Kinesis, so you will need connection details for Kinesis.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Environment variables
 
-The code sample uses the following environment variables:
+The connector uses the following environment variables:
 
 - **output**: This is the Quix Topic that will receive the stream.
 - **aws_access_key_id**: AWS Access Key Id.

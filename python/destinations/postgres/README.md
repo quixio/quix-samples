@@ -1,18 +1,21 @@
 # PostgreSQL Sink
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/postgresql_sink) demonstrates how to consume data from a Kafka topic in Quix and persist the data to a PostgreSQL database using the `PostgresSink`.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/postgresql_sink) demonstrates how to consume data from a Kafka topic in Quix and persist the data to a PostgreSQL database using the `PostgresSink`.
 
-## How to Run
+## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the Code Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the Sample deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Edit code` on the Sample forks the project to your own Git repo so you can customize it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Environment Variables
 
-The code sample uses the following environment variables:
+The connector uses the following environment variables:
 
 - **input**: This is the input topic (Default: `detection-result`, Required: `True`)
 - **POSTGRES_HOST**: Host address for the PostgreSQL instance. (Default: `localhost`, Required: `True`)

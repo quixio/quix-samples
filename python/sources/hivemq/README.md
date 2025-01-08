@@ -1,18 +1,21 @@
 # HiveMQ
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/hivemq) demonstrates how to consume data from a HiveMQ broker's MQTT topic and publish that data to a Kafka topic.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/hivemq) demonstrates how to consume data from a HiveMQ broker's MQTT topic and publish that data to a Kafka topic.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the Connectors to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the connector, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Customise connector` forks the project to your own Git repo so you can customise it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Environment Variables
 
-The code sample uses the following environment variables:
+The connector uses the following environment variables:
 
 - **output**: Name of the output topic to publish to.
 - **mqtt_topic**: The MQTT topic to listen to. Can use wildcards e.g. MyTopic/#

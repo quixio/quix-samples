@@ -1,18 +1,21 @@
 # Confluent Kafka
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/confluent_kafka) demonstrates how to consume data from a Kafka topic in Confluent Cloud and publish the data to a topic in Quix.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/confluent_kafka) demonstrates how to consume data from a Kafka topic in Confluent Cloud and publish the data to a topic in Quix.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Environment variables
 
-The code sample uses the following environment variables:
+The connector uses the following environment variables:
 
 - **output**: This is the Quix Topic that will receive the stream.
 - **kafka_key**: Obtained from the Confluent Kafka portal.

@@ -1,18 +1,21 @@
 # AWS S3 Iceberg Destination
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/s3-iceberg-destination) demonstrates how to consume data from a Kafka topic and write it to an Apache Iceberg table stored in AWS S3 using the AWS Glue Data Catalog.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/s3-iceberg-destination) demonstrates how to consume data from a Kafka topic and write it to an Apache Iceberg table stored in AWS S3 using the AWS Glue Data Catalog.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the Connectors tab to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Environment Variables
 
-The code sample uses the following environment variables:
+The connector uses the following environment variables:
 
 - **input**: This is the input topic (Default: `input`, Required: `True`)
 - **AWS_S3_URI**: The URI or URL to your S3 bucket (Required: `True`)
