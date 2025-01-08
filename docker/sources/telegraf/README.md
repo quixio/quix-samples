@@ -4,7 +4,7 @@ This connector uses Telegraf collector with Quix output plugin sending data into
 
 ## How to run locally
 
-First build a docker container from the dockerfile.
+First build a Docker container from the Dockerfile.
 ```
 docker build -t quix-telegraf .
 ```
