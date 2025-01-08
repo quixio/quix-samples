@@ -1,4 +1,4 @@
-# InfluxDB 3.0
+# InfluxDB v3
 
 [This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/influxdb_3) demonstrates how to use the InfluxDB 3.0 query API to periodically query InfluxDB and publish the results to a Kafka topic.
 
