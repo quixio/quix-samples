@@ -1,6 +1,6 @@
 # BigQuery
 
-[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/big_query) is used to stream data from Quix to a BigQuery database, it handles both parameter and event data.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/big_query) is used to stream data from Quix to a BigQuery data warehouse. It handles both parameter and event data.
 
 ## How to run
 
