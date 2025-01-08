@@ -1,4 +1,4 @@
-# Postgres CDC
+# PostgreSQL CDC
 
 [This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/postgres_cdc) demonstrates how to capture changes to a Postgres database table (using CDC) and publish the change events to a Kafka topic.
 
