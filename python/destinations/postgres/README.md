@@ -1,6 +1,6 @@
 # PostgreSQL Sink
 
-[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/postgresql_sink) demonstrates how to consume data from a Kafka topic in Quix and persist the data to a PostgreSQL database using the `PostgresSink`.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/postgres) demonstrates how to consume data from a Kafka topic in Quix and persist the data to a PostgreSQL database using the `PostgresSink`.
 
 ## How to run
 
