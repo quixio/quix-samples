@@ -1,6 +1,6 @@
 # InfluxDB v2
 
-[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/influxdb_2) demonstrates how to use the InfluxDB 2.0 query API to periodically query InfluxDB and publish the results to a Kafka topic.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/influxdb_2) demonstrates how to use the InfluxDB v2 query API to periodically query InfluxDB and publish the results to a Kafka topic.
 
 ## How to run
 
