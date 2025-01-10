@@ -1,6 +1,6 @@
 # Websocket Destination
 
-This connector demonstrates how to consume data from a Kafka topic using QuixStreams and send it to connected WebSocket clients.
+This connector demonstrates how to consume data from a Kafka topic using Quix Streams and send it to connected WebSocket clients.
 
 ## How to run
 
