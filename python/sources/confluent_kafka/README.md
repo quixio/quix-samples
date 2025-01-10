@@ -1,6 +1,6 @@
 # Confluent Kafka
 
-[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/confluent_kafka) demonstrates how to consume data from a Kafka topic in Confluent Cloud and publish the data to a topic in Quix.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/confluent_kafka) demonstrates how to consume data from a Kafka topic in Confluent Cloud and publish the data to a Kafka topic configured in Quix.
 
 ## How to run
 
