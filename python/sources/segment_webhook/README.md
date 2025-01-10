@@ -1,22 +1,25 @@
 # Segment
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/segment_webhook) demonstrates how to connect to Segment, read event data and publish that data to a Kafka topic.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/segment_webhook) demonstrates how to connect to Segment, read event data and publish that data to a Kafka topic.
 
 It's secure, using a secret shared with both Quix and Segment.
 
-And we've used Waitress “… a production-quality pure-Python WSGI server with very acceptable performance. It has no dependencies except ones that live in the Python standard library. It runs on CPython on Unix and Windows.”
+And we've used [Waitress](https://github.com/Pylons/waitress), "a production-quality pure-Python WSGI server with very acceptable performance. It has no dependencies except ones that live in the Python standard library. It runs on CPython on Unix and Windows.”
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Environment variables
 
-This code sample uses the following environment variables:
+This connector uses the following environment variables:
 
 - **output**: The output topic to stream Segment data into
 - **shared_secret**: The secret you configured in Segment

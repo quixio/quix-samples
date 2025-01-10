@@ -4,14 +4,18 @@ This project provides a ready-to-use solution for mirroring data from one Quix e
 
 ## How to run
 
-1. Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in if you already have one.
-2. Navigate to the project samples and deploy this project directly to your environment by clicking `Deploy`.
-3. After deployment, configure the necessary environment variables as outlined below.
-4. You can also fork this project to your own GitHub repository for customization by clicking `Edit code` before deployment.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
+
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
+
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Environment Variables
 
-The following environment variables are required for this project:
+The following environment variables are required for this connector:
 
 - **topic**: The Quix topic that will be mirrored from the source environment.
 - **source_workspace_id**: The workspace ID of the Quix environment you are mirroring from.

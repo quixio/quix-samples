@@ -1,20 +1,23 @@
 # Kafka Connect Sink
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/shell/kafka-connect-sink) shows you how to install any Kafka Connect sink connector using its Confluent Hub name.
+[This connector](https://github.com/quixio/quix-samples/tree/main/shell/kafka-connect-sink) shows you how to install any Kafka Connect sink connector using its Confluent Hub name.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 After forking the project, a file at the root directory named `connector.properties` should be filled with your connector configuration before being deployed.
 
 ## Environment variables
 
-The code sample uses the following environment variables:
+The connector uses the following environment variables:
 
 - **input**: The name of the input topic to sink data from.
 - **CONNECT_OFFSET_STORAGE_TOPIC**: Topic name to use for storing offsets for Kafka Connect.

@@ -1,16 +1,19 @@
 # MQTT
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/MQTT) demonstrates how to produce data from a Kafka topic and publish it to an MQTT broker.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/MQTT) demonstrates how to produce data from a Kafka topic and publish it to an MQTT broker.
 
 The MQTT topic the example produces to will be `mqtt_topic_root`/`message_key`.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
 
-Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
-Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
 
 ## Requirements / Prerequisites
 
@@ -18,7 +21,7 @@ You'll need to have a MQTT either locally or in the cloud
 
 ## Environment Variables
 
-The code sample uses the following environment variables:
+The connector uses the following environment variables:
 
 - **input**: Name of the input topic to listen to.
 - **mqtt_topic_root**: The root for messages in MQTT, this can be anything.
