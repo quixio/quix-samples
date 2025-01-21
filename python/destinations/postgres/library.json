@@ -72,7 +72,7 @@
     {
       "Name": "SCHEMA_AUTO_UPDATE",
       "Type": "EnvironmentVariable",
-      "InputType": "Boolean",
+      "InputType": "FreeText",
       "Description": "Automatically update the schema by adding new columns when new fields are detected.",
       "DefaultValue": "true",
       "Required": false
