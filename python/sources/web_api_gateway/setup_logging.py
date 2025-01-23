@@ -4,14 +4,14 @@ import logging
 def get_logger():
     
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG,
         format='[%(asctime)s] [%(levelname)s]: %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
     
     # Set up logging
     logger = logging.getLogger('waitress')
-    logger.setLevel(logging.INFO)  # Set to DEBUG for more detailed output
+    logger.setLevel(logging.DEBUG)  # Set to DEBUG for more detailed output
     logger.propagate = False  # Prevent the log messages from propagating to the root logger
 
     # Create handlers (console and file handler for example)

@@ -8,12 +8,6 @@ Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or 
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
-Once you have deployed the Sample within your project there are three things to bear in mind:
-
-1. Your data JSON must contain a "sessionId" key 
-2. Keys and values must be Strings or Bytes.
-3. The Flask gateway endpoint must end with `/data/`. E.g `https://gateway-example-develop.deployments.quix.io/data/`
-
 You can test your endpoint by sending a message via curl:
 `curl -X POST -H "Content-Type: application/json" -d '{"sessionId": "000001", "name": "Tony Hawk", "purchase": "skateboard" }' https://<your-deployment-url>/data/
 `

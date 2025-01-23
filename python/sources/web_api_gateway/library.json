@@ -1,6 +1,6 @@
 {
   "libraryItemId": "web-api-gateway",
-  "name": "Flask Web Gateway Source",
+  "name": "HTTP API",
   "language": "Python",
   "IsHighlighted": true,
   "DisplayOrder": 6,
@@ -9,7 +9,7 @@
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Source"],
     "Popular Subjects": ["Quick Start"],
-    "Type": ["Basic templates"]
+    "Type": ["Connectors"]
   },
   "shortDescription": "Run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.",
   "DefaultFile": "main.py",
@@ -21,7 +21,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
       "Description": "This is the output topic for hello world data",
-      "DefaultValue": "hello-world-source",
+      "DefaultValue": "http-source",
       "Required": true
     }
   ],
@@ -32,6 +32,6 @@
     "Replicas": 1,
     "PublicAccess": true,
     "UrlPrefix": "gateway",
-    "ValidateConnection": false
+    "ValidateConnection": true
   }
 }
