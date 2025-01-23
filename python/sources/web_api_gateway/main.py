@@ -19,7 +19,7 @@ producer = quix_app.get_producer()
 
 portal_api = os.environ["Quix__Portal__Api"]
 workspace_id = os.environ["Quix__Workspace__Id"]
-service_url = portal_api.replace("portal-api.dev", f"gateway-{workspace_id}.deployments-dev")
+service_url = os.environ["Quix__Deployment__Network__PublicUrl"]
 
 validated = False
 
