@@ -8,7 +8,7 @@ import base64
 load_dotenv()
 
 
-class WebSocketSource:
+class WebsocketSource:
 
     def __init__(self) -> None:
         app = Application(
@@ -116,7 +116,7 @@ class WebSocketSource:
 
 
 async def main():
-    client = WebSocketSource()
+    client = WebsocketSource()
     # Start consuming messages as a separate task
     asyncio.create_task(client.consume_messages())
     await client.start_websocket_server()
