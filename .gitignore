@@ -1,21 +1,58 @@
+# Mac OS
+.DS_Store
+
+# Quixstreams
+certificates/
+state/
+
+# PyCharm
+.idea/
+**/.idea/
+
+# VS Code
+.vscode/
+repo.json
+.vs/
+launchsettings.json
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# environment
+env/
+venv/
+.venv/
+myenv/
+.env
+**venv/
+
+# build results
+/build/
+dist/
+*egg-info
+**/__pycache__/**
+__pycache__/
+*.py[cod]
+*$py.class
+
+# direnv (venv management)
+.direnv/
+.envrc
+
+# certs
+ca.cert
+
+# Other
 **/ref/
 **/obj/
 **/bin/
 **/Lib/
-**/.idea/
-myenv/
 DotSettings.user
 **DotSettings.user
-ca.cert
-.idea/
-__pycache__/
-certificates/
-state/
 **/node_modules/**
-.vscode/
-.DS_Store
-repo.json
-.vs/
-launchsettings.json
-.env
-**venv/
