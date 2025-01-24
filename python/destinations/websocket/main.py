@@ -108,7 +108,7 @@ class WebSocketSource:
 
     async def start_websocket_server(self):
         host = "0.0.0.0"
-        port = 8080
+        port = 80
         print(f"Starting WebSocket server on {host}:{port}")
         print("Listening for websocket connections..")
         server = await websockets.serve(self.handle_websocket, host, port)
