@@ -9,7 +9,7 @@
     "Type": ["Connectors"],
     "Vendor": ["InfluxData"]
   },
-  "shortDescription": "Collect data with Telegraf.",
+  "shortDescription": "Collect data with Telegraf and publish it to a topic in Quix",
   "DefaultFile": "dockerfile",
   "EntryPoint": "dockerfile",
   "IconFile": "icon.png",
