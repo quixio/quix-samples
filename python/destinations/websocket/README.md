@@ -18,8 +18,9 @@ Then either:
 The connector uses the following environment variables:
 
 - **input**: This is the input topic (Default: `input`, Required: `True`)
-- **USERNAME**: Username for WebSocket authentication (Required: `True`)
-- **PASSWORD**: Password for WebSocket authentication (Required: `True`)
+- **WS_USERNAME**: Username for WebSocket authentication (Required: `True`)
+- **WS_PASSWORD**: Password for WebSocket authentication (Required: `True`)
+
 
 ## Configuration
 

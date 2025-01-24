@@ -19,14 +19,14 @@
         "Description": "Name of the input topic to listen to.",
         "Required": true
     }, {
-        "Name": "USERNAME",
+        "Name": "WS_USERNAME",
         "Type": "EnvironmentVariable",
         "InputType": "Secret",
         "Description": "Websocket username",
         "DefaultValue": "websocket_username",
         "Required": true
     }, {
-        "Name": "PASSWORD",
+        "Name": "WS_PASSWORD",
         "Type": "EnvironmentVariable",
         "InputType": "Secret",
         "Description": "Websocket password",
