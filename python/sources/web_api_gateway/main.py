@@ -1,7 +1,8 @@
 import os
 import datetime
 import json
-from flask import Flask, request, Response
+from flask import Flask, request, Response, redirect
+from flasgger import Swagger
 from waitress import serve
 import time
 
@@ -17,31 +18,36 @@ quix_app = Application()
 topic =  quix_app.topic(os.environ["output"])
 producer = quix_app.get_producer()
 
-portal_api = os.environ["Quix__Portal__Api"]
-workspace_id = os.environ["Quix__Workspace__Id"]
-service_url = os.environ["Quix__Deployment__Network__PublicUrl"]
-
-validated = False
-
 logger = get_logger()
 
 app = Flask(__name__)
+swagger = Swagger(app)
 
+@app.route("/", methods=['GET'])
+def redirect_to_swagger():
+    return redirect("/apidocs/")
 
 @app.route("/data/", methods=['POST'])
 def post_data_without_key():
-    global validated
-    
+    """
+    Post data without key
+    ---
+    parameters:
+      - in: body
+        name: body
+        schema:
+          type: object
+          properties:
+            key:
+              type: string
+    responses:
+      200:
+        description: Data received successfully
+    """
     data = request.json
 
     logger.debug(f"{data}")
 
-    if not validated:
-        logger.info("Message received.")
-        time.sleep(5)        
-        logger.info("CONNECTED!")
-        validated = True
-    
     producer.produce(topic.name, json.dumps(data))
 
     response = Response(status=200)
@@ -51,17 +57,28 @@ def post_data_without_key():
 
 @app.route("/data/{key}", methods=['POST'])
 def post_data_with_key(key: str):
-    global validated
-    
+    """
+    Post data with key
+    ---
+    parameters:
+      - in: path
+        name: key
+        type: string
+        required: true
+      - in: body
+        name: body
+        schema:
+          type: object
+          properties:
+            key:
+              type: string
+    responses:
+      200:
+        description: Data received successfully
+    """
     data = request.json
 
     logger.debug(f"{data}")
-
-    if not validated:
-        logger.info("Message received.")
-        time.sleep(5)        
-        logger.info("CONNECTED!")
-        validated = True
 
     producer.produce(topic.name, json.dumps(data), key.encode())
 
@@ -71,20 +88,5 @@ def post_data_with_key(key: str):
     return response
 
 
-if __name__ == '__main__':
-    
-    print("=" * 60)
-    print(" " * 20 + "CURL EXAMPLE")
-    print("=" * 60)
-    print(
-        f"""
-curl -L -X POST \\
-    -H 'Content-Type: application/json' \\
-    -d '{{"key": "value"}}' \\
-    {service_url}/data
-    """
-    )
-    print("=" * 60)  
-    
-    
+if __name__ == '__main__':    
     serve(app, host="0.0.0.0", port=80)
