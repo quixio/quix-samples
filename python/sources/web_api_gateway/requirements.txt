@@ -1,5 +1,6 @@
 quixstreams==3.2.1
 flask
 flask_cors
+flasgger
 waitress
 python-dotenv

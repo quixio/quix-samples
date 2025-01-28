@@ -31,7 +31,6 @@
     "MemoryInMb": 500,
     "Replicas": 1,
     "PublicAccess": true,
-    "UrlPrefix": "gateway",
-    "ValidateConnection": true
+    "UrlPrefix": "gateway"
   }
 }
