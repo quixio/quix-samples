@@ -47,7 +47,7 @@ def post_data_without_key():
         schema:
           type: object
           properties:
-            key:
+            some_value:
               type: string
     responses:
       200:
