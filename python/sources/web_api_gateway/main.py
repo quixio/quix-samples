@@ -14,6 +14,8 @@ from quixstreams import Application
 from dotenv import load_dotenv
 load_dotenv()
 
+service_url = os.environ["Quix__Deployment__Network__PublicUrl"]
+
 quix_app = Application()
 topic =  quix_app.topic(os.environ["output"])
 producer = quix_app.get_producer()
@@ -21,6 +23,13 @@ producer = quix_app.get_producer()
 logger = get_logger()
 
 app = Flask(__name__)
+
+app.config['SWAGGER'] = {
+    'title': 'HTTP API Source',
+    'description': 'Test your HTTP API with this Swagger interface. Send data and see it arrive in Quix.',
+    'uiversion': 3
+}
+
 swagger = Swagger(app)
 
 @app.route("/", methods=['GET'])
@@ -88,5 +97,19 @@ def post_data_with_key(key: str):
     return response
 
 
-if __name__ == '__main__':    
+if __name__ == '__main__':
+
+    print("=" * 60)
+    print(" " * 20 + "CURL EXAMPLE")
+    print("=" * 60)
+    print(
+        f"""
+curl -L -X POST \\
+    -H 'Content-Type: application/json' \\
+    -d '{{"key": "value"}}' \\
+    {service_url}/data
+    """
+    )
+    print("=" * 60) 
+
     serve(app, host="0.0.0.0", port=80)
