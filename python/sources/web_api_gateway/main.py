@@ -64,10 +64,10 @@ def post_data_without_key():
 
     return response
 
-@app.route("/data/{key}", methods=['POST'])
+@app.route("/data/<key>", methods=['POST'])
 def post_data_with_key(key: str):
     """
-    Post data with key
+    Post data with a key
     ---
     parameters:
       - in: path
@@ -79,7 +79,7 @@ def post_data_with_key(key: str):
         schema:
           type: object
           properties:
-            key:
+            some_value:
               type: string
     responses:
       200:
