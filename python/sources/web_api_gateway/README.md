@@ -1,4 +1,4 @@
-# Flask Web Gateway
+# HTTP API Source
 
 [This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/web_api_gateway) demonstrates how to run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.
 

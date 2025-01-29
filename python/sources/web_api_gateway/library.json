@@ -1,6 +1,6 @@
 {
   "libraryItemId": "web-api-gateway",
-  "name": "HTTP API",
+  "name": "HTTP API Source",
   "language": "Python",
   "IsHighlighted": true,
   "DisplayOrder": 6,
