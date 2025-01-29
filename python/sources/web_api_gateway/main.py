@@ -23,6 +23,13 @@ producer = quix_app.get_producer()
 logger = get_logger()
 
 app = Flask(__name__)
+
+app.config['SWAGGER'] = {
+    'title': 'HTTP API Source',
+    'description': 'Test your HTTP API with this Swagger interface. Send data and see it arrive in Quix.',
+    'uiversion': 3
+}
+
 swagger = Swagger(app)
 
 @app.route("/", methods=['GET'])
