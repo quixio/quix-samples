@@ -6,7 +6,6 @@
     "Complexity": ["Easy"],
     "Technology": ["Redis"],
     "Pipeline Stage": ["Server"],
-    "Type": ["Cache"],
     "Vendor": ["Redis"]
   },
   "shortDescription": "Run a redis cache in your pipeline.",
