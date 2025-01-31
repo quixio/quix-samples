@@ -5,7 +5,7 @@
     "tags": {
         "Pipeline Stage": ["Source"],
         "Type": ["Connectors"],
-        "Technology": ["Kafka"]
+        "Category": ["Data streaming"]
     },
     "IconFile": "icon.png",
     "shortDescription": "Install a Kafka Connect source connector in the Quix platform",

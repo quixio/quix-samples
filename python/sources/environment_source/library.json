@@ -5,7 +5,7 @@
   "tags": {
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
-    "Technology": ["Kafka", "QuixStreams"]
+    "Category": ["Data streaming"]
   },
   "shortDescription": "Consume data from a Kafka topic in another environment. Useful to mirror production data to dev environments.",
   "DefaultFile": "main.py",

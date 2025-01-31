@@ -3,10 +3,9 @@
   "name": "Snowplow Source",
   "language": "Python",
   "tags": {
-    "Technology": ["QuixStreams"],
     "Type": ["Connectors"],
     "Pipeline Stage": ["Source"],
-    "Vendor": ["Snowplow", "AWS"]
+    "Category": ["SQL DB"]
   },
   "shortDescription": "Read data from Snowplow and publish it to a Kafka topic.",
   "longDescription": "Use this connector to connect to Snowplow and publish your data to a Kafka topic .<br/>This connector is for an AWS Kinesis backed Snowplow installation",

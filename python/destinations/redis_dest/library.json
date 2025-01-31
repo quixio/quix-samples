@@ -3,10 +3,9 @@
   "name": "Redis Sink",
   "language": "Python",
   "tags": {
-    "Technology": ["QuixStreams", "Redis"],
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],
-    "Vendor": ["Redis"]
+    "Category": ["Cache"]
   },
   "shortDescription": "Consume data from a Kafka topic and persist it to Redis.",
   "DefaultFile": "main.py",
