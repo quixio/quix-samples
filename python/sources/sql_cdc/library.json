@@ -5,7 +5,7 @@
   "tags": {
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
-    "Technology": ["SQL", "CDC", "QuixStreams", "Database"]
+    "Category": ["SQL DB"]
   },
   "shortDescription": "Capture changes to an SQL database table and publish the change events to a Kafka topic.",
   "DefaultFile": "main.py",

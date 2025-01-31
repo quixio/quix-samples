@@ -6,7 +6,7 @@
   "tags": {
     "Type": ["Connectors"],
     "Pipeline Stage": ["Source"],
-    "Technology": ["Database", "QuixStreams", "CDC"]
+    "Category": ["SQL DB"]
   },
   "shortDescription": "Capture changes to a Postgres database table and publish the change events to a Kafka topic.",
   "EntryPoint": "dockerfile",
