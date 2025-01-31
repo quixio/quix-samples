@@ -1,6 +1,6 @@
-# HTTP API Source
+# HTTP Data API
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/web_api_gateway) demonstrates how to run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/sources/web_api_gateway) allows you to publish to Quix via HTTP POST requests.
 
 ## How to run
 
