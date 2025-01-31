@@ -5,11 +5,9 @@
   "IsHighlighted": true,
   "DisplayOrder": 6,
   "tags": {
-    "Complexity": ["Easy"],
-    "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Source"],
     "Popular Subjects": ["Quick Start"],
-    "Type": ["Connectors"]
+    "Category": ["External APIs"]
   },
   "shortDescription": "Run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.",
   "DefaultFile": "main.py",
