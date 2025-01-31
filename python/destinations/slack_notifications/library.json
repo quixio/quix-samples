@@ -3,10 +3,9 @@
   "name": "Slack Sink",
   "language": "Python",
   "tags": {
-    "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],
-    "Vendor": ["Slack"]
+    "Category": ["Alerting", "External APIs"]
   },
   "shortDescription": "Consume data from a Kafka topic and send Slack notifications based on your matching criteria.",
   "DefaultFile": "quix_function.py",

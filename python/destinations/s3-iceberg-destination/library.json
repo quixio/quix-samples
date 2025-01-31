@@ -3,10 +3,9 @@
     "name": "AWS S3 Iceberg Sink",
     "language": "Python",
     "tags": {
-        "Technology": ["QuixStreams", "AWS Glue", "AWS S3", "Apache Iceberg"],
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
-        "Vendor": ["AWS"]
+        "Category": ["Open table format"]
     },
     "shortDescription": "Consume data from a Kafka topic and write it to an Apache Iceberg table stored in AWS S3 using the AWS Glue Data Catalog.",
     "DefaultFile": "main.py",

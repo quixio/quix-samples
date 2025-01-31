@@ -5,8 +5,7 @@
   "tags": {
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
-    "Vendor": ["Confluent"],
-    "Technology": ["Kafka", "QuixStreams"]
+    "Category": ["Data streaming"]
   },
   "shortDescription": "Consume data from a Kafka topic in Confluent Cloud and publish it to a topic in Quix",
   "DefaultFile": "main.py",
