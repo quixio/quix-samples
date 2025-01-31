@@ -3,11 +3,9 @@
   "name": "Telegraf source",
   "language": "docker",
   "tags": {
-    "Complexity": ["Easy"],
-    "Technology": ["Telegraf"],
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
-    "Vendor": ["InfluxData"]
+    "Category": ["External APIs"]
   },
   "shortDescription": "Collect data with Telegraf and publish it to a topic in Quix",
   "DefaultFile": "dockerfile",

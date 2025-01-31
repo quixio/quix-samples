@@ -3,10 +3,9 @@
   "name": "InfluxDB 3.0 Sink",
   "language": "Python",
   "tags": {
-    "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],
-    "Vendor": ["InfluxData"]
+    "Category": ["Time series DB"]
   },
   "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an InfluxDB 3.0 database.",
   "DefaultFile": "main.py",
