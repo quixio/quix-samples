@@ -13,16 +13,16 @@ ARG MAINAPPPATH=.
 WORKDIR /app
 
 # Copy requirements to leverage Docker cache
-COPY ${MAINAPPPATH}/requirements.txt ${MAINAPPPATH}/requirements.txt
+COPY "${MAINAPPPATH}/requirements.txt" "${MAINAPPPATH}/requirements.txt"
 
 # Install dependencies without caching
-RUN pip install --no-cache-dir -r ${MAINAPPPATH}/requirements.txt
+RUN pip install --no-cache-dir -r "${MAINAPPPATH}/requirements.txt"
 
 # Copy entire application into container
 COPY . .
 
 # Set working directory to main app path
-WORKDIR /app/${MAINAPPPATH}
+WORKDIR "/app/${MAINAPPPATH}"
 
 # Define the container's startup command
 ENTRYPOINT ["python3", "main.py"]
