@@ -1,4 +1,5 @@
 streamlit
+websockets
 pandas
 plotly
-python-dotenv
+asyncio
