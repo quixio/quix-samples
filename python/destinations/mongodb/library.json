@@ -95,7 +95,7 @@
       "Name": "BUFFER_SIZE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The number of records that sink holds before flush data to the InfluxDb",
+      "Description": "The number of records that sink waits before flushing data to MongoDB",
       "DefaultValue": "1000",
       "Required": false
     },
@@ -103,7 +103,7 @@
       "Name": "BUFFER_TIMEOUT",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The number of seconds that sink holds before flush data to the InfluxDb",
+      "Description": "The number of seconds that sink waits before flushing data to MongoDB",
       "DefaultValue": "1",
       "Required": false
     }
