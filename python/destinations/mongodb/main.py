@@ -14,7 +14,7 @@ from quixstreams.sinks.base.item import SinkItem
 # load_dotenv()
 
 
-# --------------- helper functions ----------------
+# --------------- environment helper functions ---------------
 # These handle the transition between the MongoDBSink and connector by
 # parsing environment variables.
 
