@@ -27,14 +27,16 @@ The connector uses the following environment variables (which correspond to the
 - `MONGODB_COLLECTION`: MongoDB collection name
 
 ### Optional
+Unless explicitly defined, these are set to the `MongoDBSink` defaults.
+
 - `MONGODB_DOCUMENT_MATCHER`: How documents are selected to update.    
     Accepts a JSON-serializable string formatted as a MongoDB filter Query.    
     Can handle kafka message refs using `__{ref}` with dot notation for nested fields.  
     ex: `'{"_id": "__key", "first_name": "__value.name.first"}'`    
     Possible refs: key, value, headers, timestamp, topic, partition, offset.    
     **Default**: '{"_id": "__key"}'.
-- `MONGODB_UPSERT`: Create documents if no matches with `MONGODB_DOCUMENT_MATCHER`.    
-    **Default**: 'true'
+- `MONGODB_UPSERT`: Boolean to create documents if no matches with `MONGODB_DOCUMENT_MATCHER`.    
+    **Default**: "true"
 - `MONGODB_UPDATE_METHOD`: How documents found with `MONGODB_DOCUMENT_MATCHER` are updated.    
     'Update*' options will only update fields included in the kafka message.    
     'Replace*' option fully replaces the document with the contents of kafka message.    
@@ -42,9 +44,9 @@ The connector uses the following environment variables (which correspond to the
     - "UpdateMany": Updates ALL matching documents (usually NOT based on `_id`).    
     - "ReplaceOne": Replaces the first matching document (usually based on `_id`).    
     **Default**: "UpdateOne".
-- `MONGODB_ADD_MESSAGE_METADATA`: include key, timestamp, and headers as `__{field}`    
+- `MONGODB_ADD_MESSAGE_METADATA`: Boolean to include key, timestamp, and headers as `__{field}`    
     **Default**: "false"
-- `MONGODB_ADD_TOPIC_METADATA`: include topic, partition, and offset as `__{field}`    
+- `MONGODB_ADD_TOPIC_METADATA`: Boolean to include topic, partition, and offset as `__{field}`    
     **Default**: "false"
 
 

@@ -1,14 +1,14 @@
 {
-  "libraryItemId": "influxdb-3-destination",
-  "name": "MongoDB 3.0 Sink",
+  "libraryItemId": "mongodb-destination",
+  "name": "MongoDB Sink",
   "language": "Python",
   "tags": {
     "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],
-    "Vendor": ["InfluxData"]
+    "Vendor": ["MongoDB"]
   },
-  "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an MongoDB 3.0 database.",
+  "shortDescription": "Consume data from a Kafka topic in Quix write it to a MongoDB database.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
@@ -18,80 +18,78 @@
       "Name": "input",
       "Type": "EnvironmentVariable",
       "InputType": "InputTopic",
-      "Description": "This is the input topic",
+      "Description": "The input Kafka topic name",
       "DefaultValue": "input-data",
       "Required": true
     },
     {
-      "Name": "INFLUXDB_HOST",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Host address for the MongoDB instance.",
-      "DefaultValue": "https://eu-central-1-1.aws.cloud2.influxdata.com",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_TOKEN",
+      "Name": "MONGODB_URL",
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
-      "Description": "Authentication token to access MongoDB.",
+      "Description": "MongoDB url; most commonly mongodb://username:password@host:port",
       "Required": true
     },
     {
-      "Name": "INFLUXDB_ORG",
+      "Name": "MONGODB_DB",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Organization name in MongoDB.",
+      "Description": "MongoDB database name",
+      "Required": true
+    },
+        {
+      "Name": "MONGODB_COLLECTION",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "MongoDB collection name",
+      "Required": true
+    },
+    {
+      "Name": "MONGODB_DOCUMENT_MATCHER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "How documents are selected to update; accepts a JSON-serializable string formatted as a MongoDB filter Query.",
       "DefaultValue": "",
       "Required": false
     },
     {
-      "Name": "INFLUXDB_MEASUREMENT_NAME",
+      "Name": "MONGODB_UPSERT",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The MongoDB measurement to write data to. If not specified, the name of the input topic will be used",
-      "DefaultValue": "measurement1",
+      "Description": "Boolean to create documents if no matches with MONGODB_DOCUMENT_MATCHER",
+      "DefaultValue": "true",
       "Required": false
     },
     {
-      "Name": "INFLUXDB_DATABASE",
+      "Name": "MONGODB_UPDATE_METHOD",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Database name in MongoDB where data should be stored.",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_TAG_KEYS",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The tags to include when writing the measurement data. Example: Tag1,Tag2",
-      "DefaultValue": "",
+      "Description": "How documents found with MONGODB_DOCUMENT_MATCHER are updated",
+      "DefaultValue": "UpdateOne",
       "Required": false
     },
     {
-      "Name": "INFLUXDB_FIELD_KEYS",
+      "Name": "MONGODB_ADD_MESSAGE_METADATA",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The fields to include when writing the measurement data. Example: Field1,Field2",
-      "DefaultValue": "",
-      "Required": true
+      "Description": "Boolean to include key, timestamp, and headers as '__{field}'",
+      "DefaultValue": "false",
+      "Required": false
+    },
+    {
+      "Name": "MONGODB_ADD_TOPIC_METADATA",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Boolean to include topic, partition, and offset as '__{field}'",
+      "DefaultValue": "false",
+      "Required": false
     },
     {
       "Name": "CONSUMER_GROUP_NAME",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The name of the consumer group to use when consuming from Kafka",
-      "DefaultValue": "influxdb-sink",
+      "DefaultValue": "quixstreams-mongodb-sink",
       "Required": true
-    },
-    {
-      "Name": "TIMESTAMP_COLUMN",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The column containing the timestamp column. NOTE: Must be nanoseconds",
-      "DefaultValue": "",
-      "Required": false
     },
     {
       "Name": "BUFFER_SIZE",
