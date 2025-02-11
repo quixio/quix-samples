@@ -27,7 +27,7 @@ The connector uses the following environment variables (which correspond to the
 - `MONGODB_COLLECTION`: MongoDB collection name
 
 ### Optional
-Unless explicitly defined, these are set to the `MongoDBSink` defaults.
+Unless explicitly defined, these are set to the [`MongoDBSink` defaults](https://quix.io/docs/quix-streams/connectors/sinks/mongodb-sink.html#configuration-options).
 
 - `MONGODB_DOCUMENT_MATCHER`: How documents are selected to update.    
     Accepts a JSON-serializable string formatted as a MongoDB filter Query.    
