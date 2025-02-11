@@ -100,7 +100,7 @@ input_topic = app.topic(os.environ["input"])
 
 
 kwargs_defaults = get_kwargs_defaults()
-influxdb__sink = MongoDBSink(
+mongodb_sink = MongoDBSink(
     # required settings
     url=os.environ["MONGODB_URL"],
     db=os.environ["MONGODB_DB"],
@@ -118,7 +118,7 @@ influxdb__sink = MongoDBSink(
 
 sdf = app.dataframe(input_topic)
 # sdf.print() - can use this to view incoming messages
-sdf.sink(influxdb__sink)
+sdf.sink(mongodb_sink)
 
 
 # --------------- Run Application ---------------

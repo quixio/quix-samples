@@ -1,6 +1,6 @@
 # MongoDB
 
-[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/influxdb_3) 
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/mongodb) 
 demonstrates how to consume data from a Kafka topic in Quix and write the data to a 
 MongoDB database using the [Quix Streams MongoDB sink](https://quix.io/docs/quix-streams/connectors/sinks/mongodb-sink.html).
 
