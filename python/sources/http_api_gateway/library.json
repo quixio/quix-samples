@@ -1,0 +1,18 @@
+{
+  "libraryItemId": "http-api-gateway",
+  "name": "HTTP API Sample",
+  "language": "Python",
+  "IsHighlighted": true,
+  "DisplayOrder": 6,
+  "tags": {
+    "Complexity": ["Easy"],
+    "Technology": ["QuixStreams"],
+    "Pipeline Stage": ["Source"],
+    "Popular Subjects": ["Quick Start"]
+  },
+  "shortDescription": "Run a Flask HTTP API gateway.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": []
+}
