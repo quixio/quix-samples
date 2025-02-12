@@ -18,13 +18,13 @@ Then either:
 This connector uses the following environment variables:
 
 - **output**: The output topic to stream Segment data into
-- **s3_bucket**: The URI or URL to your S3 bucket
-- **s3_region**: The region of your S3 bucket
-- **s3_secret**: Your AWS secret
-- **s3_access_key_id**: Your AWS Access Key
-- **s3_folder_path**: The path to the S3 folder to consume
-- **s3_file_format**: The file format of the files
-- **s3_file_compression**: The type of file compression used for the files
+- **S3_BUCKET**: The URI or URL to your S3 bucket
+- **S3_REGION**: The region of your S3 bucket
+- **S3_SECRET**: Your AWS secret
+- **S3_ACCESS_KEY_ID**: Your AWS Access Key
+- **S3_FOLDER_PATH**: The path to the S3 folder to consume
+- **S3_FILE_FORMAT**: The file format of the files
+- **S3_FILE_COMPRESSION**: The type of file compression used for the files
 
 ## Contribute
 
