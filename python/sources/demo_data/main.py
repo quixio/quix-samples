@@ -1,5 +1,4 @@
 import os
-from uuid import uuid4
 
 import pandas as pd
 
@@ -17,8 +16,9 @@ if topic_name is None:
         "The 'output' environment variable is required. This is the output topic that data will be published to."
     )
 
-# Generate a random consumer group to run multiple instances independently
-consumer_group = str(uuid4())
+# Use "Quix__Deployment__Id" env variable as a consumer group name to run multiple instances independently
+# If not provided, "demo-data" will be used
+consumer_group = os.getenv('Quix__Deployment__Id', 'demo-data')
 
 # Create an Application.
 app = Application(consumer_group=consumer_group)
