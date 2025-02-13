@@ -1,15 +1,14 @@
 import os
-import random
+from uuid import uuid4
+
+import pandas as pd
 
 # import the dotenv module to load environment variables from a file
 from dotenv import load_dotenv
 from quixstreams import Application
-from quixstreams.sources.core.csv import CSVSource
+from quixstreams.sources.community.pandas import PandasDataFrameSource
 
 load_dotenv(override=False)
-
-# Create an Application.
-app = Application()
 
 # Define the topic using the "output" environment variable
 topic_name = os.getenv("output")
@@ -18,39 +17,37 @@ if topic_name is None:
         "The 'output' environment variable is required. This is the output topic that data will be published to."
     )
 
+# Generate a random consumer group to run multiple instances independently
+consumer_group = str(uuid4())
+
+# Create an Application.
+app = Application(consumer_group=consumer_group)
+
 # Specify the filename here
 filename = "demo-data.csv"
 
-message_key = f"{filename}_{str(random.randint(1, 100)).zfill(3)}"
+# Read data from the csv file
+df = pd.read_csv(filename)
 
-
-def key_extractor(row: dict) -> str:
-    """
-    Generate a random message key for each source run
-    """
-    return message_key
-
-
-def timestamp_extractor(row: dict) -> int:
-    """
-    Extract a timestamp from each row and use it as a Kafka message timestamp
-    """
-    return int(int(row["Timestamp"]) / 1_000_000)
-
-
-csv_source = CSVSource(
-    path=filename,
-    name="csv",
-    key_extractor=key_extractor,
-    timestamp_extractor=timestamp_extractor,
-    delay=0.2,
+# Create a Source instance based on a DataFrame
+pandas_source = PandasDataFrameSource(
+    df=df,
+    name=f"pandas-source-{consumer_group}",  # Use random consumer group as a name to generate random intermediate topics on each Source run
+    key_column="SessionId",  # use the "SessionId" column for message keys
+    timestamp_column="Timestamp",  # use the "Timestamp" column for message timestamps
+    delay=0.2,  # Add a delay between each row to simulate real-time processing
 )
-sdf = app.dataframe(source=csv_source)
 output_topic = app.topic(topic_name)
 
+# Connect the Source to a StreamingDataFrame
+sdf = app.dataframe(source=pandas_source)
+
+# Print incoming data
 sdf.print(metadata=True)
+# Send data to the output topic
 sdf.to_topic(output_topic)
 
 
 if __name__ == "__main__":
+    # Start the application
     app.run(sdf)
