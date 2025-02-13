@@ -34,8 +34,7 @@ pandas_source = PandasDataFrameSource(
     df=df,
     name=f"pandas-source-{consumer_group}",  # Use random consumer group as a name to generate random intermediate topics on each Source run
     key_column="SessionId",  # use the "SessionId" column for message keys
-    timestamp_column="Timestamp",  # use the "Timestamp" column for message timestamps
-    delay=0.2,  # Add a delay between each row to simulate real-time processing
+    delay=0.05,  # Add a delay between each row to simulate real-time processing
 )
 output_topic = app.topic(topic_name)
 
