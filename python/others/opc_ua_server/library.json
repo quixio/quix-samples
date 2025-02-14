@@ -4,7 +4,7 @@
     "language": "Python",
     "tags": {
         "Pipeline Stage": ["Server"],
-        "Category": ["Message queue"],
+        "Category": ["External APIs"],
         "Technology": ["OPCUA"]
     },
     "shortDescription": "This is an OPC UA server for testing purposes.",
