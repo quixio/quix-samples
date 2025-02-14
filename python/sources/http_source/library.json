@@ -14,6 +14,7 @@
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
+  "IconFile": "icon.png",
   "Variables": [
     {
       "Name": "output",
