@@ -7,7 +7,8 @@
   "tags": {
     "Pipeline Stage": ["Source"],
     "Popular Subjects": ["Quick Start"],
-    "Category": ["External APIs"]
+    "Category": ["External APIs"],
+    "Type": ["Connectors"]
   },
   "shortDescription": "Run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.",
   "DefaultFile": "main.py",
