@@ -66,12 +66,15 @@ class SubHandler:
 
         # Extract the DataValue from the data parameter
         data_value = data.monitored_item.Value
+
         # Extract the source timestamp
         server_timestamp = data_value.ServerTimestamp
-        # Convert to Unix timestamp in seconds
-        server_timestamp_seconds = server_timestamp.timestamp()
-        # Convert to Unix timestamp in nanoseconds
-        server_timestamp_nanoseconds = int(server_timestamp_seconds * 1_000_000_000)
+        
+        if server_timestamp is not None:
+            server_timestamp_nanoseconds = int(server_timestamp.timestamp() * 1_000_000_000)
+        else:
+            server_timestamp_nanoseconds = None
+        
         # Extract the variant type
         variant_type = data_value.Value.VariantType
 
