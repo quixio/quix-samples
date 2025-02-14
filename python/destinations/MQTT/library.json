@@ -5,7 +5,7 @@
   "tags": {
     "Pipeline Stage": ["Destination"],
     "Type": ["Connectors"],
-    "Technology": ["MQTT", "QuixStreams"]
+    "Category": ["Message queue"]
   },
   "shortDescription": "Consume data from a Kafka topic and publish it to an MQTT broker",
   "DefaultFile": "mqtt_function.py",

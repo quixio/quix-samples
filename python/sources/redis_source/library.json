@@ -3,10 +3,9 @@
   "name": "Redis Source",
   "language": "Python",
   "tags": {
-    "Technology": ["QuixStreams", "Redis"],
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
-    "Vendor": ["Redis"]
+    "Category": ["Cache"]
   },
   "shortDescription": "Periodically query a Redis database and publish the results to a Kafka topic.",
   "DefaultFile": "main.py",

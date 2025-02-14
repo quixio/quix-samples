@@ -3,10 +3,9 @@
   "name": "InfluxDB 2.0 Source",
   "language": "Python",
   "tags": {
-    "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
-    "Vendor": ["InfluxData"]
+    "Category": ["Time series DB"]
   },
   "shortDescription": "Periodically query InfluxDB 2.0 and publish the results to a Kafka topic.",
   "DefaultFile": "main.py",

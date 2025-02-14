@@ -4,10 +4,9 @@
     "language": "Python",
     "IconFile": "icon.png",
     "tags": {
-      "Technology": ["QuixStreams"],
       "Type": ["Connectors"],
       "Pipeline Stage": ["Destination"],
-      "Vendor": ["Google", "GCP"]
+      "Category": ["Data warehouse"]
     },
     "shortDescription": "Persist data from Quix to BigQuery",
     "EntryPoint": "dockerfile",
