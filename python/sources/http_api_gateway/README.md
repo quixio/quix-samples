@@ -1,6 +1,6 @@
 # HTTP API Source
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/web_api_gateway) demonstrates how to run a Flask web gateway and use it to publish to a Kafka topic via HTTP POST requests.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/http_api_gateway) demonstrates how to run a Flask HTTP API within Quix.
 
 ## How to run
 
@@ -11,12 +11,6 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 You can test your endpoint by sending a message via curl:
 `curl -X POST -H "Content-Type: application/json" -d '{"sessionId": "000001", "name": "Tony Hawk", "purchase": "skateboard" }' https://<your-deployment-url>/data/
 `
-
-## Environment variables
-
-The code sample uses the following environment variables:
-
-- **output**: This is the output topic for hello world data.
 
 ## Contribute
 
