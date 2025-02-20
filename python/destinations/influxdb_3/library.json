@@ -74,7 +74,7 @@
       "InputType": "FreeText",
       "Description": "The fields to include when writing the measurement data. Example: Field1,Field2",
       "DefaultValue": "",
-      "Required": true
+      "Required": false
     },
     {
       "Name": "CONSUMER_GROUP_NAME",
