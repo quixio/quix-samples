@@ -54,6 +54,6 @@ sdf.sink(influxdb_v3_sink)
 
 if __name__ == "__main__":
     logger.info("Starting application")
-    app.run(sdf)
+    app.run()
 
 
