@@ -62,7 +62,7 @@ def post_data_without_key():
 
     producer.produce(topic.name, json.dumps(data))
 
-    # Return a normal 200 response; CORS headers are added automatically by Flask-CORS
+    # Return a normal 200 response; CORS headers are added automatically by Flask-CORS 
     return Response(status=200)
 
 @app.route("/data/<key>", methods=['POST'])
