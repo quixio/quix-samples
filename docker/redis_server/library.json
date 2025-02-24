@@ -4,9 +4,7 @@
   "language": "csharp",
   "tags": {
     "Complexity": ["Easy"],
-    "Technology": ["Redis"],
-    "Pipeline Stage": ["Server"],
-    "Vendor": ["Redis"]
+    "Technology": ["Redis"]
   },
   "shortDescription": "Run a redis cache in your pipeline.",
   "DefaultFile": "dockerfile",
