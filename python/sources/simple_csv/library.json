@@ -3,7 +3,7 @@
   "name": "CSV Source",
   "language": "Python",
   "tags": {
-    "Technology": ["QuixStreams"],
+    "Technology": ["Quix Streams"],
     "Pipeline Stage": ["Source"],
     "Popular Subjects": ["Quick Start"],
     "Type": ["Demos"]

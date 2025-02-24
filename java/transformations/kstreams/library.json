@@ -6,7 +6,7 @@
   "DisplayOrder": 2,
   "tags": {
     "Complexity": ["Medium"],
-    "Technology": ["KafkaStreams"],
+    "Technology": ["Kafka Streams"],
     "Pipeline Stage": ["Transformation"],
     "Type": ["Basic templates"]
   },

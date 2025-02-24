@@ -5,7 +5,6 @@
   "IsHighlighted": true,
   "DisplayOrder": 1,
   "tags": {
-    "Technology": ["QuixStreams"],
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"]  
   },
