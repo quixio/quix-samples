@@ -8,6 +8,11 @@ Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or 
 
 Clicking `Edit code` on the Sample, forks the project to your own Git repo so you can customize it before deploying.
 
+`important`: Update the license server on line 13 of the docker file to reflect your Matlab license server.
+
+`ENV MLM_LICENSE_FILE=27000@your-license-server`
+
+
 ## Environment variables
 
 The code sample uses the following environment variables:
