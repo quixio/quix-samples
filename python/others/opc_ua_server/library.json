@@ -3,7 +3,9 @@
     "name": "OPC UA Server",
     "language": "Python",
     "tags": {
-        "Technology": ["OPC UA"]
+        "Pipeline Stage": ["Server"],
+        "Category": ["External APIs"],
+        "Technology": ["OPCUA"]
     },
     "shortDescription": "This is an OPC UA server for testing purposes.",
     "DefaultFile": "main.py",
