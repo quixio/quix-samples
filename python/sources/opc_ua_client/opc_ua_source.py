@@ -41,25 +41,22 @@ class OpcUaSource(Source):
             namespace_array = await namespace_array_node.read_value()
             target_namespace_index = 0
             
-            print("3")
             # determine namespace index
             if self.opc_namespace in namespace_array:
                 target_namespace_index = namespace_array.index(self.opc_namespace)
-
-            print("4")
 
             # Get the Objects node
             objects_node = client.nodes.objects
             # Get all child nodes of the Objects node
             objects = await objects_node.get_children()
-            print("5")
+            
             # Iterate over each object node
             for obj in objects:
-                print("6")
+                
                 # Get the object's browse name
                 browse_name = await obj.read_browse_name()
                 children = await obj.get_children()
-                print("7")
+                
                 for child in children:
                     child_browse_name = await child.read_browse_name()
                     child_name = child_browse_name.Name
@@ -67,10 +64,7 @@ class OpcUaSource(Source):
                         param_string = f"/Objects/{target_namespace_index}:{browse_name.Name}/{target_namespace_index}:{child_browse_name.Name}"
                         if child_name in self.parameters:
                             myvar = await client.nodes.root.get_child(param_string)
-                            print("8")
-                            print(param_string)
                             self.tracked_values[param_string] = myvar
-                            print("9")
                     except Exception as e:
                         print(e)
 
