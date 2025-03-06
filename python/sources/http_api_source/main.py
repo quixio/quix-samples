@@ -6,8 +6,9 @@ from flasgger import Swagger
 from waitress import serve
 import time
 
-from setup_logging import get_logger
+from flask_cors import CORS
 
+from setup_logging import get_logger
 from quixstreams import Application
 
 # for local dev, load env vars from a .env file
@@ -17,12 +18,15 @@ load_dotenv()
 service_url = os.environ["Quix__Deployment__Network__PublicUrl"]
 
 quix_app = Application()
-topic =  quix_app.topic(os.environ["output"])
+topic = quix_app.topic(os.environ["output"])
 producer = quix_app.get_producer()
 
 logger = get_logger()
 
 app = Flask(__name__)
+
+# Enable CORS for all routes and origins by default
+CORS(app)
 
 app.config['SWAGGER'] = {
     'title': 'HTTP API Source',
@@ -54,15 +58,12 @@ def post_data_without_key():
         description: Data received successfully
     """
     data = request.json
-
     logger.debug(f"{data}")
 
     producer.produce(topic.name, json.dumps(data))
 
-    response = Response(status=200)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-
-    return response
+    # Return a normal 200 response; CORS headers are added automatically by Flask-CORS 
+    return Response(status=200)
 
 @app.route("/data/<key>", methods=['POST'])
 def post_data_with_key(key: str):
@@ -86,19 +87,13 @@ def post_data_with_key(key: str):
         description: Data received successfully
     """
     data = request.json
-
     logger.debug(f"{data}")
 
     producer.produce(topic.name, json.dumps(data), key.encode())
 
-    response = Response(status=200)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-
-    return response
-
+    return Response(status=200)
 
 if __name__ == '__main__':
-
     print("=" * 60)
     print(" " * 20 + "CURL EXAMPLE")
     print("=" * 60)
@@ -110,6 +105,6 @@ curl -L -X POST \\
     {service_url}/data
     """
     )
-    print("=" * 60) 
+    print("=" * 60)
 
     serve(app, host="0.0.0.0", port=80)

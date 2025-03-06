@@ -5,8 +5,7 @@
   "IconFile": "icon.png",
   "tags": {
     "Complexity": ["Medium"],
-    "Technology": ["QuixStreams"],
-    "Vendor": ["Streamlit"]
+    "Technology": ["Quix Streams", "Streamlit"]
   },
   "shortDescription": "Run a Streamlit real-time dashboard that displays data from database.",
   "longDescription": "Run a Streamlit real-time dashboard that displays data from database. In the example there is InfluxDb2 example.",

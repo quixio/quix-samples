@@ -39,7 +39,6 @@ topic = app.topic(TOPIC_NAME)
 
 app.add_source(opc_ua_source, topic)
 
-
 if __name__ == "__main__":
     try:
         logging.basicConfig(level=logging.INFO)
