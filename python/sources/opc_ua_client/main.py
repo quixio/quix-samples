@@ -9,11 +9,7 @@ from asyncua import Client, ua
 from quixstreams import Application
 from opc_ua_source import OpcUaSource
 
-# keep the app running?
-run = True
-
 OPC_URL = os.environ["OPC_SERVER_URL"]
-
 OPC_NAMESPACE = os.environ["OPC_NAMESPACE"]
 TOPIC_NAME = os.environ["output"]
 
@@ -38,6 +34,7 @@ opc_ua_source = OpcUaSource("opc_ua_source", OPC_URL, OPC_NAMESPACE, PARAMETER_N
 topic = app.topic(TOPIC_NAME)
 
 app.add_source(opc_ua_source, topic)
+
 
 if __name__ == "__main__":
     try:
