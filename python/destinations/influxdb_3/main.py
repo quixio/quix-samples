@@ -1,11 +1,10 @@
 # import Utility modules
 import os
-import ast
 import logging
 
 # import vendor-specific modules
 from quixstreams import Application
-from quixstreams.sinks.influxdb_v3 import InfluxDBV3Sink
+from quixstreams.sinks.core.influxdb3 import InfluxDB3Sink
 
 # for local dev, load env vars from a .env file
 from dotenv import load_dotenv
@@ -30,6 +29,7 @@ app = Application(
     auto_offset_reset="earliest",
     commit_every=buffer_size,
     commit_interval=buffer_delay)
+    
 input_topic = app.topic(os.environ["input"])
 
 # Read the environment variable and convert it to a dictionary
@@ -37,7 +37,7 @@ tag_keys = os.environ.get("INFLUXDB_TAG_KEYS", "").split(",") if os.environ.get(
 field_keys = os.environ.get("INFLUXDB_FIELD_KEYS", "").split(",")if os.environ.get("INFLUXDB_FIELD_KEYS") else []
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
 
-influxdb_v3_sink = InfluxDBV3Sink(
+influxdb_v3_sink = InfluxDB3Sink(
                             token=os.environ["INFLUXDB_TOKEN"],
                             host=os.environ["INFLUXDB_HOST"],
                             organization_id=os.environ["INFLUXDB_ORG"],
@@ -48,9 +48,12 @@ influxdb_v3_sink = InfluxDBV3Sink(
                             measurement=measurement_name)
 
 sdf = app.dataframe(input_topic)
+
 #sdf.print()
 sdf.sink(influxdb_v3_sink)
 
 if __name__ == "__main__":
     logger.info("Starting application")
-    app.run(sdf)
+    app.run()
+
+
