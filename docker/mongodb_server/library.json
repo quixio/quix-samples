@@ -1,0 +1,27 @@
+{
+  "libraryItemId": "MongoDB",
+  "name": "MongoDB",
+  "tags": {
+    "Complexity": ["Easy"],
+    "Technology": ["MongoDB"]
+  },
+  "shortDescription": "Run a Mongo Database in your pipeline",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 500,
+    "MemoryInMb": 1000,
+    "Replicas": 1,
+    "Network": {
+      "ServiceName": "mongodb",
+      "Ports":
+      [
+        {
+          "Port": 27017,
+          "TargetPort": 27017
+        }
+      ]
+    }
+  }
+}
