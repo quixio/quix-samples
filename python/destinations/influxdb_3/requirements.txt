@@ -1,3 +1,2 @@
---extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/
-quixstreams[influxdb3]==2.9.0a
+quixstreams[influxdb3]==3.8.1
 python-dotenv
