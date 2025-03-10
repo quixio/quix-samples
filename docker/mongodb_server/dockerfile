@@ -1,0 +1,7 @@
+FROM mongo:latest
+
+RUN mkdir -p /app/state && chown -R mongodb:mongodb /app/state
+
+CMD ["mongod", "--bind_ip_all", "--dbpath", "/app/state"]
+
+EXPOSE 27017
