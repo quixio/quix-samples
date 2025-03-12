@@ -1,23 +1,50 @@
-import os
+# import the Quix Streams modules for interacting with Kafka.
+# For general info, see https://quix.io/docs/quix-streams/introduction.html
 from quixstreams import Application
 
+import os
+
 # for local dev, load env vars from a .env file
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
-app = Application(consumer_group="transformation-v1", auto_offset_reset="earliest")
 
-input_topic = app.topic(os.environ["input"])
-output_topic = app.topic(os.environ["output"])
+def main():
+    """
+    Transformations generally read from, and produce to, Kafka topics.
 
-sdf = app.dataframe(input_topic)
+    They are conducted with Applications and their accompanying StreamingDataFrames
+    which define what transformations to perform on incoming data.
 
-# put transformation logic here
-# see docs for what you can do
-# https://quix.io/docs/get-started/quixtour/process-threshold.html
+    Be sure to explicitly produce output to any desired topic(s); it does not happen
+    automatically!
 
-sdf.print()
-sdf.to_topic(output_topic)
+    To learn about what operations are possible, the best place to start is:
+    https://quix.io/docs/quix-streams/processing.html
+    """
 
-if __name__ == "__main__":
+    # Setup necessary objects
+    app = Application(
+        consumer_group="my_transformation",
+        auto_create_topics=True,
+        auto_offset_reset="earliest"
+    )
+    input_topic = app.topic(name=os.environ["input"])
+    output_topic = app.topic(name=os.environ["output"])
+    sdf = app.dataframe(topic=input_topic)
+
+    # Do StreamingDataFrame operations/transformations here
+    # See https://quix.io/docs/quix-streams/processing.html
+    sdf = sdf.apply(lambda row: row).filter(lambda row: row["field"] == "this_value")
+    sdf = sdf.print(metadata=True)
+
+    # Finish off by writing to the final result to the output topic
+    sdf.to_topic(output_topic)
+
+    # With our pipeline defined, now run the Application
     app.run()
+
+
+# It is recommended to execute Applications under a conditional main
+if __name__ == "__main__":
+    main()

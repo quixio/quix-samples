@@ -14,7 +14,7 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 
 The code sample uses the following environment variables:
 
-- **Topic**: Name of the output topic to write into.
+- **output**: Name of the output topic to write into.
 
 ## Contribute
 
