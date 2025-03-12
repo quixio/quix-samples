@@ -1,26 +1,26 @@
 {
-  "libraryItemId": "prometheus-pushgateway",
-  "name": "Prometheus PushGateway",
+  "libraryItemId": "prometheus",
+  "name": "Prometheus",
   "language": "docker",
   "tags": {
     "Category": ["Monitoring"]
   },
-  "shortDescription": "Run Prometheus Pushgateway in your pipeline.",
+  "shortDescription": "Run Prometheus in your pipeline.",
   "DefaultFile": "dockerfile",
   "EntryPoint": "dockerfile",
   "IconFile": "icon.png",
   "DeploySettings": {
     "DeploymentType": "Service",
-    "CpuMillicores": 100,
-    "MemoryInMb": 400,
+    "CpuMillicores": 500,
+    "MemoryInMb": 2000,
     "Replicas": 1,
     "Network": {
-      "ServiceName": "pushgateway",
+      "ServiceName": "prometheus",
       "Ports":
       [
         {
           "Port": 80,
-          "TargetPort": 9091
+          "TargetPort": 9090
         }
       ]
     }
