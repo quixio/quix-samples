@@ -7,41 +7,7 @@ This sample demonstrates how to deploy and use InfluxDB v2 as a time series data
 1. Create an account or log in to your [Quix](https://portal.platform.quix.io/signup?xlink=github) account and navigate to the Code Samples section.
 2. Click `Deploy` to launch a pre-built container in Quix.
 3. Complete the required environment variables to configure your InfluxDB instance.
-
-After deploying InfluxDB v2 to your pipeline, edit the pipeline YAML to add the necessary network configuration:
-
-- Click the `YAML` button in the top right of the pipeline view.
-- Click `Edit code` near the top right of the displayed YAML code.
-- Locate the `deployments` section of the YAML.
-- Find the `influxdb` deployment (e.g. look for `- name: influxdb`).
-- Add the snippet below under `resources` (ensure `network` is at the same level as `resources`):
-
-```yaml
-network:
-  serviceName: influxdb
-  ports:
-    - port: 8086
-      targetPort: 8086
-```
-The complete deployment entry for InfluxDB v2 should resemble:
-```yaml
-deployments:
-  - name: influxdb
-    application: influxdb
-    version: latest
-    deploymentType: Service
-    resources:
-      cpu: 1000
-      memory: 8000
-      replicas: 1
-    network:
-      serviceName: influxdb
-      ports:
-        - port: 8086
-          targetPort: 8086
-```
-
-Once you’ve updated the YAML, click the blue Sync environment button and then select Sync to this commit on the popup. Your updated configuration will be applied, and the InfluxDB service will restart.
+4. Make sure State is enabled, otherwise changes will be lost on restart.
 
 ## How to Use
 To interact with InfluxDB v2 from your pipeline, add influxdb-client to your requirements.txt file and use the following Python code:

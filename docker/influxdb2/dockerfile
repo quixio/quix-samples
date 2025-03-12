@@ -1,6 +1,9 @@
 # Use the official InfluxDB image from the Docker Hub
 FROM influxdb:2.7.11
 
+# To enable function without State enabled, however will only be temporary
+RUN mkdir -p /app/state/influxdb2
+
 # Copy the InfluxDB configuration file if needed
 ADD influx-configs.toml /etc/influxdb2/influx-configs.toml
 ENV INFLUXD_CONFIG_PATH=/etc/influxdb2/influx-configs.toml

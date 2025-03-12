@@ -3,6 +3,13 @@ FROM grafana/grafana:11.5.2
 
 COPY provisioning/ /provisioning
 
+# To enable function without State enabled, however will only be temporary
+USER root
+RUN mkdir -p /app/state
+RUN chown grafana /app/state
+USER grafana
+RUN mkdir -p /app/state/data /app/state/logs /app/state/plugins /app/state/dashboards
+
 # Set environment variables to point to /state/ folder
 ENV GF_PATHS_DATA=/app/state/data \
     GF_PATHS_LOGS=/app/state/logs \

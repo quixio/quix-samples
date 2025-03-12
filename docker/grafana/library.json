@@ -21,10 +21,6 @@
       "Ports":
       [
         {
-          "Port": 3000,
-          "TargetPort": 3000
-        },
-        {
           "Port": 80,
           "TargetPort": 3000
         }

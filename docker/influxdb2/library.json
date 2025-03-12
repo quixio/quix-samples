@@ -21,10 +21,6 @@
       "Ports":
       [
         {
-          "Port": 8086,
-          "TargetPort": 8086
-        },
-        {
           "Port": 80,
           "TargetPort": 8086
         }
