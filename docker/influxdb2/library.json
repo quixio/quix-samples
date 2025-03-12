@@ -1,6 +1,6 @@
 {
   "libraryItemId": "influxdb2",
-  "name": "InfluxDB 2",
+  "name": "InfluxDB v2",
   "language": "docker",
   "tags": {
     "Category": ["Time series DB"]
