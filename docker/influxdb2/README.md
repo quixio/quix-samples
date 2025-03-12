@@ -24,7 +24,7 @@ network:
       targetPort: 8086
 ```
 The complete deployment entry for InfluxDB v2 should resemble:
-```
+```yaml
 deployments:
   - name: influxdb
     application: influxdb
@@ -79,7 +79,7 @@ client.close()
 
 ## Contribute
 
-Feel free to fork this project on the Influx GitHub repository and contribute your enhancements. Any accepted contributions will be attributed accordingly.
+Feel free to fork this project on the [GitHub](https://github.com/quixio/quix-samples) repository and contribute your enhancements. Any accepted contributions will be attributed accordingly.
 
 ## License & Support
 

@@ -37,7 +37,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
       "Description": "Default Admin Token to initialize Influx with",
-      "DefaultValue": "",
+      "DefaultValue": "INFLUX_ADMIN_TOKEN",
       "Required": true
     },
     {
@@ -45,7 +45,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
       "Description": "Default Admin password to initialize Influx with",
-      "DefaultValue": "",
+      "DefaultValue": "ADMIN_PASSWORD",
       "Required": true
     },
     {
