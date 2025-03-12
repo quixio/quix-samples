@@ -1,5 +1,5 @@
 # Use the official Prometheus Pushgateway image as the base image
-FROM prom/pushgateway:v0.10.01.11.0
+FROM prom/pushgateway:v1.11.0
 
 # Expose the default Pushgateway port
 EXPOSE 9091
