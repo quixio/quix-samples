@@ -52,9 +52,9 @@ class MemoryUsageGenerator(Source):
                 event = next(data)
                 event_serialized = self.serialize(key=event["host"], value=event)
                 self.produce(key=event_serialized.key, value=event_serialized.value)
-                print('produced!')
+                print("Source produced event successfully!")
             except StopIteration:
-                print("All data produced!")
+                print("Source finished producing messages.")
                 return
 
 
@@ -69,7 +69,7 @@ def main():
     # --- Setup Source ---
     # OPTION 1: no additional processing with a StreamingDataFrame
     # Generally the recommended approach; no additional operations needed!
-    app.add_source(memory_usage_source, topic=output_topic)
+    app.add_source(source=memory_usage_source, topic=output_topic)
 
     # OPTION 2: additional processing with a StreamingDataFrame
     # Useful for consolidating additional data cleanup into 1 Application.
