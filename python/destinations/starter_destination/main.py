@@ -24,7 +24,7 @@ class MyDatabaseSink(BatchingSink):
     https://quix.io/docs/quix-streams/connectors/sinks/index.html
     """
     def _write_to_db(self, data):
-        """Placeholder for database operations"""
+        """Placeholder for transformations and database write operation"""
         ...
 
     def write(self, batch: SinkBatch):
