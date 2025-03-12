@@ -34,7 +34,6 @@ def main():
     sdf = app.dataframe(topic=input_topic)
 
     # Do StreamingDataFrame operations/transformations here
-    # See https://quix.io/docs/quix-streams/processing.html
     sdf = sdf.apply(lambda row: row).filter(lambda row: row["field"] == "this_value")
     sdf = sdf.print(metadata=True)
 
