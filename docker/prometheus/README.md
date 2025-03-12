@@ -11,8 +11,8 @@ This sample demonstrates how to deploy and use Prometheus for monitoring in your
 
 For more configuration options and details, refer to:
 
-[Prometheus Configuration Documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
-[Prometheus Docker Hub](https://hub.docker.com/r/prom/prometheus)
+- [Prometheus Configuration Documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/)
+- [Prometheus Docker Hub](https://hub.docker.com/r/prom/prometheus)
 
 ## Contribute
 
