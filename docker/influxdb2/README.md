@@ -49,4 +49,4 @@ Feel free to fork this project on the [GitHub](https://github.com/quixio/quix-sa
 
 ## License & Support
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo. Remember, this image is provided by Influx and is offered as-is, with no specific support from Quix.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo. Remember, this image is provided by Influx and is offered as-is, with no InfluxDB specific support from Quix.
