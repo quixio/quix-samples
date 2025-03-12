@@ -7,7 +7,7 @@ This sample demonstrates how to deploy and use Grafana as a visualization tool i
 1. Log in or sign up at [Quix](https://portal.platform.quix.io/signup?xlink=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
 3. Fill in the required environment variables for your Grafana instance.
-4. Make sure State is enabled, otherwise changes will be lost on restart.
+4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
 
 ## Save dashboards with code
 

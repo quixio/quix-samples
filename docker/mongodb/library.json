@@ -1,0 +1,46 @@
+{
+  "libraryItemId": "mongodb",
+  "name": "MongoDB",
+  "language": "docker",
+  "tags": {
+    "Category": ["Database"]
+  },
+  "shortDescription": "Run MongoDB in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 800,
+    "Replicas": 1,
+    "Network": {
+      "ServiceName": "mongodb",
+      "Ports":
+      [
+        {
+          "Port": 27017,
+          "TargetPort": 27017
+        }
+      ]
+    }
+  },
+  "Variables": [
+    {
+      "Name": "MONGO_INITDB_ROOT_USERNAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The root username to initialize MongoDB with",
+      "DefaultValue": "admin",
+      "Required": true
+    },
+    {
+      "Name": "MONGO_INITDB_ROOT_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "The root password to initialize MongoDB with",
+      "DefaultValue": "MONGO_ROOT_PASSWORD",
+      "Required": true
+    }
+  ]  
+}
