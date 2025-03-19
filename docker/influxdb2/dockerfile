@@ -1,0 +1,22 @@
+# Use the official InfluxDB image from the Docker Hub
+FROM influxdb:2.7.11
+
+# To enable function without State enabled, however will only be temporary
+RUN mkdir -p /app/state/influxdb2
+
+# Copy the InfluxDB configuration file if needed
+ADD influx-configs.toml /etc/influxdb2/influx-configs.toml
+ENV INFLUXD_CONFIG_PATH=/etc/influxdb2/influx-configs.toml
+
+# Define initial setup environment variables
+ENV DOCKER_INFLUXDB_INIT_MODE setup
+ENV DOCKER_INFLUXDB_INIT_USERNAME admin
+ENV DOCKER_INFLUXDB_INIT_ORG quix
+
+# Expose the necessary ports (8086 is the default port for InfluxDB)
+EXPOSE 8086
+
+# Define the default command to run when starting the container
+COPY init.sh /init.sh
+RUN chmod +x init.sh
+CMD ["/init.sh"]

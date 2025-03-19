@@ -1,10 +1,8 @@
 # Use the official Redis image from the Docker Hub
-FROM redis:latest
+FROM redis:7.4.2
 
-# Install net-tools to get ifconfig
-RUN apt-get update && apt-get install -y net-tools
 
-# Create the /state directory where your PVC is mounted
+# To enable function without State enabled, however will only be temporary
 RUN mkdir -p /app/state/
 
 # Copy the custom redis.conf file

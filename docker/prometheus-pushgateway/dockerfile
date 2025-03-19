@@ -1,0 +1,8 @@
+# Use the official Prometheus Pushgateway image as the base image
+FROM prom/pushgateway:v1.11.0
+
+# Expose the default Pushgateway port
+EXPOSE 9091
+
+# Default command to run the Pushgateway
+CMD ["--web.listen-address=:9091"]
