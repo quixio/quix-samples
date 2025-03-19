@@ -1,5 +1,5 @@
 # Use the official Telegraf image for the final container
-FROM quixanalytics/quix-telegraf:latest
+FROM telegraf:latest
 
 # Copy custom Telegraf configuration
 COPY telegraf.conf /etc/telegraf/telegraf.conf
