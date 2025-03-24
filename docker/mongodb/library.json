@@ -3,7 +3,8 @@
   "name": "MongoDB",
   "language": "docker",
   "tags": {
-    "Category": ["Database"]
+    "Category": ["Database"],
+    "Type": ["Auxiliary Services"]
   },
   "shortDescription": "Run MongoDB in your pipeline.",
   "DefaultFile": "dockerfile",

@@ -3,7 +3,8 @@
   "name": "Grafana",
   "language": "docker",
   "tags": {
-    "Category": ["Monitoring"]
+    "Category": ["Monitoring"],
+    "Type": ["Auxiliary Services"]
   },
   "shortDescription": "Run Grafana in your pipeline.",
   "DefaultFile": "dockerfile",
