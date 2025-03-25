@@ -3,7 +3,8 @@
   "name": "InfluxDB v2",
   "language": "docker",
   "tags": {
-    "Category": ["Time series DB"]
+    "Category": ["Time series DB"],
+    "Type": ["Auxiliary Services"]
   },
   "shortDescription": "Run InfluxDB v2 in your pipeline.",
   "DefaultFile": "dockerfile",

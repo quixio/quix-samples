@@ -3,7 +3,8 @@
   "name": "Redis Cache",
   "language": "docker",
   "tags": {
-    "Category": ["Database"]
+    "Category": ["Database"],
+    "Type": ["Auxiliary Services"]
   },
   "shortDescription": "Run a redis cache in your pipeline.",
   "DefaultFile": "dockerfile",

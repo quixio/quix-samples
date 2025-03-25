@@ -3,7 +3,8 @@
   "name": "Prometheus PushGateway",
   "language": "docker",
   "tags": {
-    "Category": ["Monitoring"]
+    "Category": ["Monitoring"],
+    "Type": ["Auxiliary Services"]
   },
   "shortDescription": "Run Prometheus Pushgateway in your pipeline.",
   "DefaultFile": "dockerfile",
