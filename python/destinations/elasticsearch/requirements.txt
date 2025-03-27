@@ -1,2 +1,2 @@
-quixstreams[elasticsearch]
+quixstreams[elasticsearch] @ git+https://github.com/quixio/quix-streams.git@sink/elasticsearch
 python-dotenv
