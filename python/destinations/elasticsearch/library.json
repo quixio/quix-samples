@@ -24,7 +24,7 @@
     {
       "Name": "ELASTICSEARCH_URL",
       "Type": "EnvironmentVariable",
-      "InputType": "Secret",
+      "InputType": "FreeText",
       "Description": "Elasticsearch url",
       "Required": true
     },
