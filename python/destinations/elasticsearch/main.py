@@ -72,7 +72,6 @@ input_topic = app.topic(os.environ["input"])
 
 
 kwargs_defaults = get_kwargs_defaults()
-print(kwargs_defaults)
 elasticsearch_sink = ElasticsearchSink(
     # required settings
     url=os.environ["ELASTICSEARCH_URL"],
