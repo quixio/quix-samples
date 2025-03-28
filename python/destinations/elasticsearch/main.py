@@ -2,6 +2,7 @@
 import inspect
 import os
 import json
+from datetime import datetime
 from typing import Union, Any, Optional
 
 # import vendor-specific modules
@@ -92,6 +93,7 @@ elasticsearch_sink = ElasticsearchSink(
 
 sdf = app.dataframe(input_topic)
 # sdf.print() - can use this to view incoming messages
+sdf["time"] = sdf.apply(lambda row, key, timestamp, h: datetime.fromtimestamp(timestamp/1000).isoformat(), metadata=True)
 sdf.sink(elasticsearch_sink)
 
 
