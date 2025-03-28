@@ -65,7 +65,7 @@ app = Application(
 )
 
 # Use app to specify ingress topic
-input_topic = app.topic(os.environ["input"])
+input_topic = app.topic(os.environ["input"], key_deserializer="str")
 
 
 # --------------- Sink Configuration ---------------
@@ -77,6 +77,7 @@ elasticsearch_sink = ElasticsearchSink(
     url=os.environ["ELASTICSEARCH_URL"],
     index=os.environ["ELASTICSEARCH_INDEX"],
     # optional settings (have defaults)
+    document_id_setter=lambda row: f"{row.key}-{str(row.timestamp)}-{row.value['id']}",
     mapping=_as_optional_dict(os.getenv("ELASTICSEARCH_MAPPING", kwargs_defaults["mapping"])),
     batch_size=_as_int(os.getenv("ELASTICSEARCH_BATCH_SIZE", kwargs_defaults["batch_size"])),
     max_bulk_retries=_as_int(os.getenv("ELASTICSEARCH_MAX_BULK_RETRIES", kwargs_defaults["max_bulk_retries"])),
