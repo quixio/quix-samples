@@ -24,6 +24,7 @@
             "Name": "AWS_S3_URI",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
+            "multiline": true,
             "Description": "The URI or URL to your S3 bucket",
             "DefaultValue": "",
             "Required": true
@@ -56,6 +57,7 @@
             "Name": "table_name",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
+            "multiline": true,
             "Description": "The table to publish data to",
             "DefaultValue": "",
             "Required": true
