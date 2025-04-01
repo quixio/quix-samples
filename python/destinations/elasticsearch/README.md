@@ -1,6 +1,6 @@
 # Elasticsearch
 
-[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/mongodb) 
+[This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/elasticsearch) 
 demonstrates how to consume data from a Kafka topic in Quix and write the data to a 
 Elasticsearch using the [Quix Streams Elasticsearch sink](https://quix.io/docs/quix-streams/connectors/sinks/mongodb-sink.html).
 

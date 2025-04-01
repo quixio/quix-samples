@@ -32,7 +32,7 @@ def get_kwargs_defaults() -> dict[str, Any]:
 
 def _as_bool(value: Union[str, bool]) -> bool:
     """
-    Parse boolean-based kwargs.
+    Parse boolean-based arg.
     """
     if isinstance(value, bool):
         return value
@@ -41,7 +41,7 @@ def _as_bool(value: Union[str, bool]) -> bool:
 
 def _as_int(value: Union[str, int]) -> int:
     """
-    Parse boolean-based kwargs.
+    Parse integer-based arg.
     """
     if isinstance(value, str):
         return int(value)
@@ -49,6 +49,9 @@ def _as_int(value: Union[str, int]) -> int:
 
 
 def _as_optional_dict(value: Optional[str]) -> Optional[dict]:
+    """
+    Parse optional dict arg.
+    """
     if value and isinstance(value, str):
         return json.loads(value)
     return value
