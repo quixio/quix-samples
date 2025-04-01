@@ -26,13 +26,13 @@ class MemoryUsageGenerator(Source):
     """
 
     memory_allocation_data = [
-        {"m": "mem", "host": "host1", "used_percent": "64.56", "time": "1577836800000000000"},
-        {"m": "mem", "host": "host2", "used_percent": "71.89", "time": "1577836801000000000"},
-        {"m": "mem", "host": "host1", "used_percent": "63.27", "time": "1577836803000000000"},
-        {"m": "mem", "host": "host2", "used_percent": "73.45", "time": "1577836804000000000"},
-        {"m": "mem", "host": "host1", "used_percent": "62.98", "time": "1577836806000000000"},
-        {"m": "mem", "host": "host2", "used_percent": "74.33", "time": "1577836808000000000"},
-        {"m": "mem", "host": "host1", "used_percent": "65.21", "time": "1577836810000000000"},
+        {"m": "mem", "host": "host1", "used_percent": 64.56, "time": 1577836800000000000},
+        {"m": "mem", "host": "host2", "used_percent": 71.89, "time": 1577836801000000000},
+        {"m": "mem", "host": "host1", "used_percent": 63.27, "time": 1577836803000000000},
+        {"m": "mem", "host": "host2", "used_percent": 73.45, "time": 1577836804000000000},
+        {"m": "mem", "host": "host1", "used_percent": 62.98, "time": 1577836806000000000},
+        {"m": "mem", "host": "host2", "used_percent": 74.33, "time": 1577836808000000000},
+        {"m": "mem", "host": "host1", "used_percent": 65.21, "time": 1577836810000000000},
     ]
 
     def run(self):
