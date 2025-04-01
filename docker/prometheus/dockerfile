@@ -1,0 +1,17 @@
+# Use the official Prometheus Docker image
+FROM prom/prometheus:v3.2.1
+
+# To enable function without State enabled, however will only be temporary
+USER root
+RUN mkdir -p /app/state
+RUN chown nobody /app/state
+USER nobody
+
+# Copy Prometheus configuration file into the container
+COPY prometheus.yml /etc/prometheus/prometheus.yml
+
+# Set Prometheus as the entrypoint
+ENTRYPOINT [ "/bin/prometheus" ]
+
+# Set command to specify the config file
+CMD [ "--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.path=/app/state/prom", "--storage.tsdb.retention.size=1GB" ]

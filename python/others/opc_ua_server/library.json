@@ -5,7 +5,8 @@
     "tags": {
         "Pipeline Stage": ["Server"],
         "Category": ["External APIs"],
-        "Technology": ["OPCUA"]
+        "Technology": ["OPCUA"],
+        "Type": ["Auxiliary Services"]
     },
     "shortDescription": "This is an OPC UA server for testing purposes.",
     "DefaultFile": "main.py",
