@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "mongodb-destination",
+  "libraryItemId": "elastic-search-destination",
   "name": "Elasticsearch Sink",
   "language": "Python",
   "tags": {
