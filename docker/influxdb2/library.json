@@ -1,0 +1,57 @@
+{
+  "libraryItemId": "influxdb2",
+  "name": "InfluxDB v2",
+  "language": "docker",
+  "tags": {
+    "Category": ["Time series DB"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run InfluxDB v2 in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 1000,
+    "MemoryInMb": 8000,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "UrlPrefix": "influxdb",
+    "Network": {
+      "ServiceName": "influxdb",
+      "Ports":
+      [
+        {
+          "Port": 80,
+          "TargetPort": 8086
+        }
+      ]
+    }
+  },
+  "Variables": [
+    {
+      "Name": "DOCKER_INFLUXDB_INIT_ADMIN_TOKEN",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Default Admin Token to initialize Influx with",
+      "DefaultValue": "INFLUX_ADMIN_TOKEN",
+      "Required": true
+    },
+    {
+      "Name": "DOCKER_INFLUXDB_INIT_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Default Admin password to initialize Influx with",
+      "DefaultValue": "ADMIN_PASSWORD",
+      "Required": true
+    },
+    {
+      "Name": "DOCKER_INFLUXDB_INIT_BUCKET",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Bucket Name to initialize Influx with",
+      "DefaultValue": "demo",
+      "Required": true
+    }
+  ]  
+}

@@ -1,0 +1,11 @@
+bolt-path = "/app/state/influxdb2/influxd.bolt"
+sqlite-path = "/app/state/influxdb2/influxd.sqlite"
+engine-path = "/app/state/influxdb2/engine/data" 
+
+log-level = "info"
+
+default-url = "http://localhost:8086"
+default-org = "quix"
+default-active = true
+
+store = "disk"
