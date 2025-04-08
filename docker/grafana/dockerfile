@@ -1,0 +1,29 @@
+# Use the official Grafana image from the Docker Hub
+FROM grafana/grafana:11.5.2
+
+COPY provisioning/ /provisioning
+
+# To enable function without State enabled, however will only be temporary
+USER root
+RUN mkdir -p /app/state
+RUN chown grafana /app/state
+USER grafana
+RUN mkdir -p /app/state/data /app/state/logs /app/state/plugins /app/state/dashboards
+
+# Set environment variables to point to /state/ folder
+ENV GF_PATHS_DATA=/app/state/data \
+    GF_PATHS_LOGS=/app/state/logs \
+    GF_PATHS_PLUGINS=/app/state/plugins \
+    GF_PATHS_PROVISIONING=/provisioning \
+    GF_DASHBOARDS_PATH=/app/state/dashboards
+
+# Set environment variables for the admin user.
+ENV GF_SECURITY_ADMIN_USER=admin 
+
+
+# Optionally, override Grafana's default port
+ENV GF_SERVER_HTTP_PORT=3000
+EXPOSE 3000
+
+# Command to start Grafana
+CMD ["grafana-server", "--homepath=/usr/share/grafana"]
