@@ -1,29 +1,29 @@
 {
-  "libraryItemId": "redis-cache",
-  "name": "Redis Cache",
+  "libraryItemId": "prometheus",
+  "name": "Prometheus",
   "language": "docker",
   "tags": {
-    "Category": ["Database"],
+    "Category": ["Monitoring"],
     "Type": ["Auxiliary Services"]
   },
-  "shortDescription": "Run a redis cache in your pipeline.",
+  "shortDescription": "Run Prometheus in your pipeline.",
   "DefaultFile": "dockerfile",
   "EntryPoint": "dockerfile",
   "IconFile": "icon.png",
   "DeploySettings": {
     "DeploymentType": "Service",
     "CpuMillicores": 500,
-    "MemoryInMb": 1000,
+    "MemoryInMb": 2000,
     "Replicas": 1,
     "Network": {
-      "ServiceName": "redis",
+      "ServiceName": "prometheus",
       "Ports":
       [
         {
-          "Port": 6379,
-          "TargetPort": 6379
+          "Port": 80,
+          "TargetPort": 9090
         }
       ]
     }
-  }
+  }  
 }

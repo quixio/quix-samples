@@ -1,0 +1,49 @@
+{
+  "libraryItemId": "grafana",
+  "name": "Grafana",
+  "language": "docker",
+  "tags": {
+    "Category": ["Monitoring"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run Grafana in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 800,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "UrlPrefix": "grafana",
+    "Network": {
+      "ServiceName": "grafana",
+      "Ports":
+      [
+        {
+          "Port": 80,
+          "TargetPort": 3000
+        }
+      ]
+    }
+  },
+  "Variables": [
+    {
+      "Name": "GF_SECURITY_ADMIN_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Password for the admin user",
+      "DefaultValue": "ADMIN_PASSWORD",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_TOKEN",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "The optional InfluxDB Token to use",
+      "DefaultValue": "INFLUXDB_ADMIN_TOKEN",
+      "Required": false
+    }
+  ]  
+}

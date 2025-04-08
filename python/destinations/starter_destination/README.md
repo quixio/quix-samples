@@ -1,10 +1,10 @@
 # Starter transformation
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/starter_destination) demonstrates how to consume data from a Kafka topic, perform an operation on that data, then persist or publish that data to an external destination.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/destinations/starter_destination) demonstrates how use the Quix Streams Sink framework to 
+consume and alter data from a Kafka topic, and publish these results to an external 
+destination. 
 
-The simple boilerplate code consumes to data from the source topic, prints the content to console output and publishes to any destination based on code that that you must add yourself.
-
-To use the sample, first modify the Python code to publish to your chosen destination(s).
+This is just a template, so add your own operations as required.
 
 ## How to run
 
@@ -18,6 +18,12 @@ The code sample uses the following environment variables:
 
 - **input**: Name of the input topic to listen to.
 - **output**: Name of the output topic to write to.
+
+## Using Premade Sinks
+
+Quix Streams has numerous prebuilt sinks available to use out of the box, so be 
+sure to [check them out!](https://quix.io/docs/quix-streams/connectors/sinks/index.html)
+
 
 ## Contribute
 

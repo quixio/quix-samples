@@ -1,6 +1,9 @@
 # Starter data source
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/starter_source) demonstrates how to publish hard-coded lines of JSON data to a Kafka topic in Quix.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/starter_source) demonstrates how to use the Quix Streams Source framework to publish 
+hard-coded lines of JSON data to a Kafka topic.
+
+This boilerplate runs in Quix Cloud without any necessary alterations.
 
 ## How to run
 
@@ -14,7 +17,12 @@ Clicking `Edit code` on the Sample, forks the project to your own Git repo so yo
 
 The code sample uses the following environment variables:
 
-- **Topic**: Name of the output topic to write into.
+- **output**: Name of the output topic to write into.
+
+## Using Premade Sources
+
+Quix Streams has numerous prebuilt sources available to use out of the box, so be 
+sure to [check them out!](https://quix.io/docs/quix-streams/connectors/sources/index.html)
 
 ## Contribute
 
