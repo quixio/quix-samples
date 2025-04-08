@@ -1,2 +1,2 @@
-quixstreams[mongodb]==3.8.0
+quixstreams[mongodb] @ git+https://github.com/quixio/quix-streams.git@sink/mongodb-add-metadata-fix
 python-dotenv
