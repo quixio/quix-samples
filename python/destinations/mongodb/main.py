@@ -1,4 +1,5 @@
 # import Utility modules
+import inspect
 import os
 import json
 from typing import Union, Any, Callable, Optional
@@ -20,17 +21,14 @@ from quixstreams.sinks.base.item import SinkItem
 
 def get_kwargs_defaults() -> dict[str, Any]:
     """
-    Gets the default kwargs of MongoDBSink so they can be passed in instances where
-    the user did not provide an environment variable.
+    Gets the default kwargs of MongoDBSink so they can be passed in instances
+    where the user did not provide an environment variable.
     """
-    init_method = MongoDBSink.__init__
-    kwargs_defaults = {}
-    if default_kwargs_names := init_method.__defaults__:
-        arg_names = init_method.__code__.co_varnames[1:]
-        defaults_start_index = len(arg_names) - len(default_kwargs_names)
-        for i, default_value in enumerate(default_kwargs_names):
-            kwargs_defaults[arg_names[defaults_start_index + i]] = default_value
-    return kwargs_defaults
+    params = inspect.signature(MongoDBSink.__init__).parameters.values()
+    return {
+        param.name: param.default for param in params if
+        param.default is not inspect.Parameter.empty
+    }
 
 
 def _as_bool(value: Union[str, bool]) -> bool:
