@@ -44,7 +44,7 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        print("ERROR: An error occurred in the application.")
+        print("ERROR! - An error occurred in the application.")
         traceback.print_exc()
         if 'app' in locals():  # Ensure app exists before stopping it
             app.stop()
