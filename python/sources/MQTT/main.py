@@ -70,7 +70,7 @@ def on_connect_cb(client: paho.Client, userdata: any, connect_flags: paho.Connec
         mqtt_client.subscribe(mqtt_topic, qos = 1)
         print("CONNECTED!") # required for Quix to know this has connected
     else:
-        print(f"ERROR ({reason_code.value}). {reason_code.getName()}")
+        print(f"ERROR! - ({reason_code.value}). {reason_code.getName()}")
 
 # print message, useful for checking if it was successful
 def on_message_cb(client: paho.Client, userdata: any, msg: paho.MQTTMessage):
