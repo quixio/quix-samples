@@ -24,7 +24,7 @@
     {
       "Name": "MONGODB_URL",
       "Type": "EnvironmentVariable",
-      "InputType": "Secret",
+      "InputType": "FreeText",
       "Description": "MongoDB url; most commonly mongodb://username:password@host:port",
       "Required": true
     },
