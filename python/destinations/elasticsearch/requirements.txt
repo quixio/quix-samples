@@ -1,2 +1,2 @@
-quixstreams[elasticsearch] @ git+https://github.com/quixio/quix-streams.git@sink/elasticsearch
+quixstreams[elasticsearch]==3.13.1
 python-dotenv
