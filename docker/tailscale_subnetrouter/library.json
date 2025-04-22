@@ -4,12 +4,13 @@
   "language": "docker",
   "tags": {
     "Pipeline Stage": ["Infrastructure"],
-    "Type": ["Utilities"],
+    "Type": ["Auxiliary Services"],
     "Category": ["Network"]
   },
   "shortDescription": "Tailscale subnet router to access private network resources securely.",
   "DefaultFile": "start.sh",
   "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
   "RunEntryPoint": "dockerfile",
   "Variables": [
     {
