@@ -20,7 +20,7 @@ Then either:
 
 * Or click `Customise service` to inspect or alter the code before deployment.
 
-For optimal experience, read the `## Installation and Setting up of persistent storage` section below.
+For optimal experience, read the `Installation and Setting up of persistent storage` section below.
 
 ## Environment Variables
 
