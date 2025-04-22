@@ -68,6 +68,10 @@
     "MemoryInMb": 500,
     "Replicas": 1,
     "PublicAccess": false,
-    "ValidateConnection": true
+    "ValidateConnection": true,
+    "State": {
+      "StateEnabled": true,
+      "StateSize": 1
+    }
   }
 }
