@@ -1,14 +1,15 @@
 {
   "libraryItemId": "redis-cache",
   "name": "Redis Cache",
-  "language": "csharp",
+  "language": "docker",
   "tags": {
-    "Complexity": ["Easy"],
-    "Technology": ["Redis"]
+    "Category": ["Database"],
+    "Type": ["Auxiliary Services"]
   },
   "shortDescription": "Run a redis cache in your pipeline.",
   "DefaultFile": "dockerfile",
   "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
   "DeploySettings": {
     "DeploymentType": "Service",
     "CpuMillicores": 500,

@@ -1,0 +1,29 @@
+{
+  "libraryItemId": "prometheus",
+  "name": "Prometheus",
+  "language": "docker",
+  "tags": {
+    "Category": ["Monitoring"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run Prometheus in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 500,
+    "MemoryInMb": 2000,
+    "Replicas": 1,
+    "Network": {
+      "ServiceName": "prometheus",
+      "Ports":
+      [
+        {
+          "Port": 80,
+          "TargetPort": 9090
+        }
+      ]
+    }
+  }  
+}

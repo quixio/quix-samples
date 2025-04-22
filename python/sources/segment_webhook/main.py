@@ -44,7 +44,7 @@ def webhook():
     # compare the HMAC to the header signature provided by Segment
     if(header_sig != hex_digest):
         # if they don't match its no bueno
-        return "ERROR", 401
+        return "ERROR!", 401
     
     # if they do then publish to the topic
     producer.produce(topic=output_topic.name,

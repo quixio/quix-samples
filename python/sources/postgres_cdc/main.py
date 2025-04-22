@@ -24,7 +24,7 @@ try:
     conn = connect_postgres()
     logger.info("CONNECTED!")
 except Exception as e:
-    logger.info(f"ERROR!: {e}")
+    logger.info(f"ERROR! - {e}")
     raise
 
 # should the main loop run?

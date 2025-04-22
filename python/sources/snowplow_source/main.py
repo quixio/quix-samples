@@ -36,7 +36,7 @@ def connect_to_aws() -> bool:
             region_name = os.environ["aws_region_name"]
         )
     except Exception as e:
-        print(f"Failed to connect to AWS: {e}")
+        print(f"ERROR! - Failed to connect to AWS: {e}")
         return False
 
 def publish_to_quix(data):
@@ -137,7 +137,7 @@ def main():
         print("Exiting.")
         run = False
     except Exception as e:
-        print("ERROR: {}".format(traceback.format_exc()))
+        print("ERROR! - {}".format(traceback.format_exc()))
         raise e
 
 if __name__ == "__main__":

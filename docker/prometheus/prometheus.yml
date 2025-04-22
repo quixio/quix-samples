@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s  # Set the scrape interval to every 15 seconds
+
+scrape_configs:
+  - job_name: 'join-example'
+    static_configs:
+      - targets: ['pushgateway:80']
