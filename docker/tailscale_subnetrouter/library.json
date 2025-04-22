@@ -1,6 +1,6 @@
 {
-  "libraryItemId": "starter-source",
-  "name": "Starter Source",
+  "libraryItemId": "tailscale-subnetrouter",
+  "name": "Tailscale Subnet Router",
   "language": "docker",
   "tags": {
     "Pipeline Stage": ["Infrastructure"],
@@ -12,14 +12,6 @@
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "dockerfile",
   "Variables": [
-    {
-      "Name": "output",
-      "Type": "EnvironmentVariable",
-      "InputType": "OutputTopic",
-      "Description": "Name of the output topic to write into",
-      "DefaultValue": "csv-data",
-      "Required": true
-    },
     {
       "Name": "TS_AUTHKEY",
       "Type": "EnvironmentVariable",
