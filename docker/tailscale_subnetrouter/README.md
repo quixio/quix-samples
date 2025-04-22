@@ -7,7 +7,6 @@ This container runs a Tailscale subnet router that allows secure connection to y
 This container runs a Tailscale subnet router in userspace networking mode, which allows you to:
 - Connect to your Quix deployment securely via Tailscale
 - Access internal services within your Quix deployment from your Tailscale network
-- Route traffic between your Tailscale network and your environment
 
 ## How to run
 
