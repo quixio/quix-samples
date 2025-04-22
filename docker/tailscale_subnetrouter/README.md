@@ -1,6 +1,6 @@
 # Tailscale Subnet Router for Quix
 
-This container runs a Tailscale subnet router that allows securely connecting to your Quix deployment from your private Tailscale network.
+This container runs a Tailscale subnet router that allows secure connection to your Quix deployment from your private Tailscale network.
 
 ## Overview
 
@@ -11,14 +11,16 @@ This container runs a Tailscale subnet router in userspace networking mode, whic
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Services` tab to deploy this service.
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the `Services` tab to deploy this service.
 
 Clicking `Set up service` allows you to enter your connection details and runtime parameters.
 
 Then either: 
-* click `Deploy` to deploy the pre-built and configured container into Quix.
+* Click `Deploy` to deploy the pre-built and configured container into Quix.
 
-* or click `Customise service` to inspect or alter the code before deployment.
+* Or click `Customise service` to inspect or alter the code before deployment.
+
+For optimal experience, read the `## Installation and Setting up of persistent storage` section below.
 
 ## Environment Variables
 
@@ -48,7 +50,7 @@ You will need:
 1. A Tailscale account and network set up
 2. An authentication key generated from the Tailscale admin console
 3. The subnet CIDR of your Quix deployment that you want to expose
-4. Set up Persistent Storage when deploying this application.
+4. Persistent Storage set up when deploying this application
 
 ## Deployment Settings
 
@@ -65,18 +67,18 @@ State preservation is important for maintaining the same Tailscale identity acro
 
 In the Quix UI:
 1. Click Templates (left-hand side)
-2. search for and select the Tailscale Subnet Router
+2. Search for and select the Tailscale Subnet Router
 3. Click Preview code just below the Description field to verify contents of the template
 4. Click the TS_AUTHKEY field
-5. Click + Secrets Management, add the field TS_AUTHKEY. set **any** string as the value for either the default or the environment column
+5. Click + Secrets Management, add the field TS_AUTHKEY. Set **any** string as the value for either the default or the environment column
 6. Save Changes, return to the Deployment
 7. Click TS_AUTHKEY field again, and select the new secret called TS_AUTHKEY
 8. Fill hostname and subnet values with your desired options
 9. Click Deploy, wait for the deployment to finish
 10. Go to deployments (left-hand column) and select your new subnet router deployment (it will have failed with runtime error)
 
-In the tailscale UI:
-1. Click ACLs tab, add the following tag to your ACL json definition
+In the Tailscale UI:
+1. Click ACLs tab, add the following tag to your ACL JSON definition
 ```json
 	"tagOwners": {
 		"tag:subnet-router": ["autogroup:admin"],
@@ -90,16 +92,16 @@ In the tailscale UI:
 		},
 	},
 ```
-This will define a tag called `subnet-router`, you may change this as you wish. It will also set this tag up to allow the automatic acceptance of the subnet route your new Tailscale Subnet Router application will export to your Tailscale network. If you require tighter Access Control, you may set these under the `acls` key.
+This will define a tag called `subnet-router`, which you may change as you wish. It will also set this tag up to allow the automatic acceptance of the subnet route your new Tailscale Subnet Router application will export to your Tailscale network. If you require tighter Access Control, you may set these under the `acls` key.
 
-2. Once the new ACLs are applied, navigate back to `Machines` tab, click `Add Device` and choose Linux server
-3. for Tags choose `tag:subnet-router` or your chosen name, and any additional tags you require.
+2. Once the new ACLs are applied, navigate back to the `Machines` tab, click `Add Device` and choose Linux server
+3. For Tags, choose `tag:subnet-router` or your chosen name, and any additional tags you require
 4. Enable toggle for `Ephemeral`
 5. Scroll down the page, click `Generate install script`
 6. Copy the authentication key, it begins with `ts-authkey-`
 
 In the Quix UI:
-1. looking at the Deployment's settings page, on the left hand side click field called TS_AUTHKEY, then Secrets Management
+1. Looking at the Deployment's settings page, on the left-hand side click the field called TS_AUTHKEY, then Secrets Management
 2. Paste the ts-authkey- value where we put the arbitrary string (either default or the field for the environment), click X on the Secrets Management panel
 3. At the bottom of the `Edit deployment` panel, toggle `State Management` to true and choose the smallest available storage amount (1GB)
 4. Click Redeploy
@@ -108,9 +110,8 @@ If done correctly, this will allow you to deploy and redeploy the application us
 
 ## Troubleshooting
 
-- There are numbers attached to the end of your ts hostname in the Tailscale UI
-When this happens, it's because the nodekey isn't being persisted to State Storage in Quix. Ensure that the deployment has `State Management` enabled in the settings. Once toggled to true, delete unnecessary machines from tailscale, generate a new TS_AUTHKEY, and redeploy the application.
-
+- If there are numbers attached to the end of your ts hostname in the Tailscale UI:
+This happens because the nodekey isn't being persisted to State Storage in Quix. Ensure that the deployment has `State Management` enabled in the settings. Once toggled to true, delete unnecessary machines from Tailscale, generate a new TS_AUTHKEY, and redeploy the application.
 
 ## Notes
 
