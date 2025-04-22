@@ -116,8 +116,6 @@ This happens because the nodekey isn't being persisted to State Storage in Quix.
 ## Notes
 
 - The container saves the Tailscale machine and node keys for reuse to maintain the same identity even if the pod is restarted
-- The container requires no special permissions in Kubernetes
-
 ## Open Source
 
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
