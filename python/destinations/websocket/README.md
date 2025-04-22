@@ -1,28 +1,24 @@
-# Websocket Destination
+# WebSocket Destination
 
-This connector demonstrates how to consume data from a Kafka topic using Quix Streams and send it to connected WebSocket clients.
+A service that streams data from a Quix input stream to connected WebSocket clients.
 
-## How to run
+## Overview
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
-
-Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
-
-Then either: 
-* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
-
-* or click `Customise connector` to inspect or alter the code before deployment.
-
-## Environment Variables
-
-The connector uses the following environment variables:
-
-- **input**: This is the input topic (Default: `input`, Required: `True`)
-- **WS_USERNAME**: Username for WebSocket authentication (Required: `True`)
-- **WS_PASSWORD**: Password for WebSocket authentication (Required: `True`)
-
+This service receives data from a Quix input stream and forwards it to all connected WebSocket clients. It acts as a bridge between Quix and any application that can consume WebSocket data.
 
 ## Configuration
+
+The service requires the following environment variables:
+
+| Variable | Description |
+|----------|-------------|
+| `input` | The input topic name to listen to in Quix |
+| `WS_USERNAME` | Username for WebSocket authentication (Required: `True`) |
+| `WS_PASSWORD` | Password for WebSocket authentication (Required: `True`) |
+
+### Authentication
+
+Authentication is required and is easy to configure. Provide a user name and password in the above environment variables, these will be used to authenticate users.
 
 If deploying to Quix Cloud you will need to create secrets for the username and password.
 See the [docs](https://quix.io/docs/deploy/secrets-management.html) for more information on how to do this.
@@ -41,16 +37,77 @@ Alternatively to subscribe to data from all message keys use `*`:
 
 NOTE: if deploying on a secure port use `wss://` in place os `ws://` (Quix Cloud uses secure connections)
 
+## Data Format
 
-## Requirements / Prerequisites
+Data is sent as JSON strings over the WebSocket connection. The format mirrors the structure received from Quix, including timestamp, tag names, and values.
 
-You will need to have a Quix account and a Kafka topic to consume data from. 
+## Running Locally
 
-## How it works
+1. Set up the required environment variables
+2. Install dependencies: `pip install -r requirements.txt`
+3. Run the service: `python main.py`
 
-The application sets up a WebSocket server that listens for incoming connections. Clients can connect to the WebSocket server and authenticate using basic authentication. Once authenticated, clients can receive messages from the Kafka topic.
+## Deploying to Quix
 
-The server checks if the key of the incoming message matches any of the connected clients' paths or if any client is connected with a wildcard `*`. If a match is found, the message is sent to the respective clients.
+This sample can be deployed directly to your Quix environment.
+
+Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in to your existing environment and visit the `Connectors` tab to use this connector.
+
+Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
+
+Then either: 
+* click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
+
+* or click `Customise connector` to inspect or alter the code before deployment.
+
+## Example code
+
+An example of how to connect to this server from a `javascript` client is shown below.
+
+```js
+// Example client to connect to the websocket server
+const WebSocket = require('websocket').client;
+// or use browser WebSocket API: const ws = new WebSocket(url);
+
+// Connection details
+const url = "ws://your-server-address"; // Replace with actual address
+const username = "your-username"; // Must match WS_USERNAME env variable 
+const password = "your-password"; // Must match WS_PASSWORD env variable
+const path = "your-topic-name"; // Or use "*" for all messages
+
+// Create connection with basic auth
+const ws = new WebSocket();
+ws.connect(`${url}/${path}`, null, null, {
+  "Authorization": "Basic " + Buffer.from(`${username}:${password}`).toString("base64")
+});
+
+// Handle connection events
+ws.on('connect', (connection) => {
+  console.log('Connected to WebSocket server');
+  
+  // Handle incoming messages
+  connection.on('message', (message) => {
+    if (message.type === 'utf8') {
+      const data = JSON.parse(message.utf8Data);
+      console.log('Received data:', data);
+    }
+  });
+  
+  // Handle connection close
+  connection.on('close', () => {
+    console.log('Connection closed');
+  });
+});
+
+// Handle connection errors
+ws.on('connectFailed', (error) => {
+  console.error('Connection failed:', error.toString());
+});
+```
+
+## Limitations
+
+- The service does not support bidirectional communication - it only sends data from Quix topics to WebSocket clients
 
 ## Contribute
 
@@ -59,3 +116,4 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 ## Open Source
 
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo. Please star us and mention us on social to show your appreciation.
+
