@@ -35,6 +35,30 @@
       "Description": "Subnet CIDR to advertise (e.g. '10.128.0.0/9')",
       "DefaultValue": "10.128.0.0/9",
       "Required": true
+    },
+    {
+      "Name": "TAILSCALE_STATE_DIR",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Directory to store Tailscale state files",
+      "DefaultValue": "/app/state",
+      "Required": false
+    },
+    {
+      "Name": "TAILSCALE_SOCKS5_PORT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Port for the SOCKS5 proxy",
+      "DefaultValue": "1055",
+      "Required": false
+    },
+    {
+      "Name": "TAILSCALE_EXTRA_ARGS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Additional arguments to pass to \"tailscale up\" command",
+      "DefaultValue": "",
+      "Required": false
     }
   ],
   "DeploySettings": {
