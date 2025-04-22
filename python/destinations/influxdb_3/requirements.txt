@@ -1,2 +1,2 @@
-quixstreams[influxdb3]==3.8.1
+quixstreams[influxdb3]
 python-dotenv
