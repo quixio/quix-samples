@@ -28,52 +28,63 @@ if [ -f "$MACHINE_KEY_FILE" ] && [ -f "$NODE_KEY_FILE" ]; then
     
     # Start tailscaled with existing keys
     /usr/sbin/tailscaled --tun=userspace-networking --statedir=$STATE_DIR --socks5-server=0.0.0.0:$SOCKS5_PORT &
-else
-    echo "No existing keys found, starting with fresh identity..."
-    # Start tailscaled without existing keys
-    /usr/sbin/tailscaled --tun=userspace-networking --statedir=$STATE_DIR --socks5-server=0.0.0.0:$SOCKS5_PORT --state=mem: &
-fi
-
-TAILSCALED_PID=$!
-
-# Wait for tailscaled to initialize
-sleep 2
-
-# Check if TS_AUTHKEY environment variable exists
-if [ -n "$TS_AUTHKEY" ]; then
-    echo "Connecting to Tailscale network..."
+    
+    TAILSCALED_PID=$!
+    
+    # Wait for tailscaled to initialize
+    sleep 2
+    
+    echo "Reconnecting to Tailscale network with existing identity..."
     
     # Additional Tailscale options if provided
     TAILSCALE_EXTRA_ARGS=${TAILSCALE_EXTRA_ARGS:-""}
     
-    # Connect to Tailscale
-    /usr/bin/tailscale up --authkey="$TS_AUTHKEY" --hostname="$HOSTNAME_CLEAN" --advertise-routes="$TAILSCALE_SUBNET" $TAILSCALE_EXTRA_ARGS
+    # When we have existing keys, we don't need to use the authkey again
+    # Just connect with the stored identity and advertise routes
+    /usr/bin/tailscale up --hostname="$HOSTNAME_CLEAN" --advertise-routes="$TAILSCALE_SUBNET" $TAILSCALE_EXTRA_ARGS
+else
+    echo "No existing keys found, starting with fresh identity..."
+    # Start tailscaled without existing keys
+    /usr/sbin/tailscaled --tun=userspace-networking --statedir=$STATE_DIR --socks5-server=0.0.0.0:$SOCKS5_PORT --state=mem: &
     
-    # Save machine and node keys for future pod recreations 
-    # (only if we didn't already have them)
-    if [ ! -f "$MACHINE_KEY_FILE" ] || [ ! -f "$NODE_KEY_FILE" ]; then
+    TAILSCALED_PID=$!
+    
+    # Wait for tailscaled to initialize
+    sleep 2
+    
+    # Check if TS_AUTHKEY environment variable exists
+    if [ -n "$TS_AUTHKEY" ]; then
+        echo "Connecting to Tailscale network with auth key..."
+        
+        # Additional Tailscale options if provided
+        TAILSCALE_EXTRA_ARGS=${TAILSCALE_EXTRA_ARGS:-""}
+        
+        # Connect to Tailscale using the auth key for new setup
+        /usr/bin/tailscale up --authkey="$TS_AUTHKEY" --hostname="$HOSTNAME_CLEAN" --advertise-routes="$TAILSCALE_SUBNET" $TAILSCALE_EXTRA_ARGS
+        
+        # Save machine and node keys for future pod recreations
         echo "Saving Tailscale keys for reuse..."
         /usr/bin/tailscale status --json | jq -r .MachineKey > "$MACHINE_KEY_FILE"
         /usr/bin/tailscale status --json | jq -r .NodeKey > "$NODE_KEY_FILE"
         # Secure the keys
         chmod 600 "$MACHINE_KEY_FILE" "$NODE_KEY_FILE"
+    else
+        echo "TS_AUTHKEY not found. Tailscale cannot be authenticated."
+        kill $TAILSCALED_PID 2>/dev/null || true
+        exit 1
     fi
-    
-    echo "Tailscale connected successfully"
-    echo "Tailscale IP: $(/usr/bin/tailscale ip -4)"
-    echo "======== service domain suffix =============="
-    echo ".$(grep search /etc/resolv.conf | awk '{print $2}' | sed 's/^svc.//')"
-    
-    # Instead of sleeping, monitor tailscaled process
-    echo "Tailscale subnet router is running. Monitoring tailscaled..."
-    
-    # Trap for cleanup
-    trap 'kill $TAILSCALED_PID 2>/dev/null || true; echo "Shutting down tailscale..."; sleep 1; exit 0' TERM INT
-    
-    # Wait for tailscaled process - this replaces "sleep infinity"
-    wait $TAILSCALED_PID
-else
-    echo "TS_AUTHKEY not found. Tailscale cannot be authenticated."
-    kill $TAILSCALED_PID 2>/dev/null || true
-    exit 1
 fi
+
+echo "Tailscale connected successfully"
+echo "Tailscale IP: $(/usr/bin/tailscale ip -4)"
+echo "======== service domain suffix =============="
+echo ".$(grep search /etc/resolv.conf | awk '{print $2}' | sed 's/^svc.//')"
+
+# Instead of sleeping, monitor tailscaled process
+echo "Tailscale subnet router is running. Monitoring tailscaled..."
+
+# Trap for cleanup
+trap 'kill $TAILSCALED_PID 2>/dev/null || true; echo "Shutting down tailscale..."; sleep 1; exit 0' TERM INT
+
+# Wait for tailscaled process - this replaces "sleep infinity"
+wait $TAILSCALED_PID

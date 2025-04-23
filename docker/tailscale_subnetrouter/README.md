@@ -27,7 +27,7 @@ The container supports the following environment variables:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `TS_AUTHKEY` | **Required** Tailscale authentication key | - |
+| `TS_AUTHKEY` | **Required for initial setup only** Tailscale authentication key. After first setup with persistent storage, the auth key is no longer used as the identity is stored. | - |
 | `TAILSCALE_HOSTNAME` | Hostname for the Tailscale node | deployment name or "tailscale-subnetrouter" |
 | `TAILSCALE_SUBNET` | **Required** Subnet CIDR to advertise (e.g. "10.128.0.0/9") | - |
 | `TAILSCALE_STATE_DIR` | Directory to store Tailscale state files | /app/state |
@@ -39,15 +39,17 @@ The container supports the following environment variables:
 The container is designed to run as a service in Quix. It will:
 
 1. Start tailscaled in userspace mode
-2. Connect to your Tailscale network using the provided auth key
-3. Advertise the specified subnet to your Tailscale network
-4. Maintain the connection and restart if necessary
+2. Check for existing identity in persistent storage
+3. If identity exists, reconnect using stored credentials (without using the auth key)
+4. If no identity exists, connect using the provided auth key and store the identity for future use
+5. Advertise the specified subnet to your Tailscale network
+6. Maintain the connection and restart if necessary
 
 ## Requirements / Prerequisites
 
 You will need:
 1. A Tailscale account and network set up
-2. An authentication key generated from the Tailscale admin console
+2. An authentication key generated from the Tailscale admin console (ephemeral key recommended)
 3. The subnet CIDR of your Quix deployment that you want to expose
 
 ## Deployment Settings
@@ -94,7 +96,6 @@ This will define a tag called `subnet-router`, which you may change as you wish.
 In the Quix UI:
 1. Click Services (left-hand side)
 2. Search for and select the Tailscale Subnet Router
-3. Click Preview code just below the Description field to verify contents of the template
 4. Click the TS_AUTHKEY field
 5. Click + Secrets Management, add the field TS_AUTHKEY and paste the authentication key from Tailscale (the one beginning with `ts-authkey-`)
 6. Save Changes
@@ -107,6 +108,9 @@ That's it! Your Tailscale Subnet Router is now deployed with state persistence e
 
 - If there are numbers attached to the end of your ts hostname in the Tailscale UI:
 This might happen if there was an issue with state persistence. If you're using a version of Quix that supports automatic state management (as configured in this template), this should not occur. If it does, please check the deployment logs for any errors.
+
+- If you see authentication errors after redeploying:
+This can happen if you're using a one-time auth key that has already been used. In this case, you may need to generate a new auth key in Tailscale, update the TS_AUTHKEY secret in Quix, and redeploy. With the updated script, this should only be necessary if the persistent storage was lost or the original stored identity was revoked.
 
 ## Notes
 
