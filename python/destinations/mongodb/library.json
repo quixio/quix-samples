@@ -22,10 +22,24 @@
       "Required": true
     },
     {
-      "Name": "MONGODB_URL",
+      "Name": "MONGODB_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "MongoDB host name",
+      "Required": true
+    },
+    {
+      "Name": "MONGODB_USERNAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "MongoDB username",
+      "Required": true
+    },
+    {
+      "Name": "MONGODB_PASSWORD",
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
-      "Description": "MongoDB url; most commonly mongodb://username:password@host:port",
+      "Description": "MongoDB password",
       "Required": true
     },
     {
@@ -41,6 +55,13 @@
       "InputType": "FreeText",
       "Description": "MongoDB collection name",
       "Required": true
+    },
+    {
+      "Name": "MONGODB_PORT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "MongoDB host port",
+      "Required": false
     },
     {
       "Name": "MONGODB_DOCUMENT_MATCHER",
