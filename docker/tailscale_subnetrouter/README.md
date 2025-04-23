@@ -39,9 +39,9 @@ The container supports the following environment variables:
 The container is designed to run as a service in Quix. It will:
 
 1. Start tailscaled in userspace mode with the persistent state directory
-2. Check if existing Tailscale state exists in the persistent storage
-3. If state exists, attempt to reconnect using the stored state (without using the auth key)
-4. If reconnection fails or no state exists, try to connect using the provided auth key
+2. Check if valid Tailscale state exists in the persistent storage
+3. If valid state exists, attempt to reconnect using the stored state (without using the auth key)
+4. If reconnection fails or no valid state exists, try to connect using the provided auth key
 5. Advertise the specified subnet to your Tailscale network
 6. Maintain the connection and restart if necessary
 
@@ -63,6 +63,20 @@ When deploying this service, the following settings are pre-configured:
 - State Management: Enabled (1GB)
 
 State preservation is important for maintaining the same Tailscale identity across pod restarts. The service automatically saves all Tailscale state to the `/app/state/ts` directory.
+
+## How State Persistence Works
+
+For effective state persistence, the container needs to properly store and retrieve Tailscale identity information:
+
+1. **Initial deployment**: Requires a valid auth key to authenticate with Tailscale
+2. **State creation**: Upon successful authentication, Tailscale automatically stores its state
+3. **Subsequent restarts**: The container checks for valid state files:
+   - Looking for a sufficiently-sized state file (>100 bytes)
+   - Checking for the existence of nodekey and machinekey files
+4. **If valid state exists**: The container will attempt to reconnect without using the auth key
+5. **If state is invalid/missing**: Falls back to auth key authentication
+
+This approach ensures that the same Tailscale identity is maintained as long as the persistent volume is preserved.
 
 ## Installation
 
@@ -112,6 +126,7 @@ That's it! Your Tailscale Subnet Router is now deployed with state persistence e
   This happens if the service can't automatically authenticate. Check if:
   1. Your auth key might have expired or been already used (Tailscale auth keys are often one-time use)
   2. There might be an issue with the persistent storage
+  3. The state files might exist but be invalid or incomplete
   
   **Solution**: Generate a new auth key in Tailscale, update the TS_AUTHKEY secret in Quix, and redeploy.
 
@@ -126,12 +141,19 @@ That's it! Your Tailscale Subnet Router is now deployed with state persistence e
   1. Verify that the State configuration is enabled in the deployment settings
   2. Check that the filesystem is writable by the container
   3. Check logs for any permission errors
+  4. Inspect the state directory contents with `ls -la /app/state/ts`
   
-  The Tailscale state is stored in the `/app/state/ts` directory.
+  The Tailscale state is stored in the `/app/state/ts` directory and should contain several files including `tailscaled.state`, `nodekey`, and `machinekey`.
+
+- **If you see "state file is missing or too small" in logs**:
+  This means that the state file exists but doesn't contain valid data. It might have been truncated or corrupted.
+  
+  **Solution**: Delete the existing files in the state directory (if possible) or redeploy with a new auth key.
 
 ## Notes
 
 - The container uses Tailscale's built-in state management to maintain identity
+- The script performs validation on state files to ensure they're not just present but actually valid
 - No special privileges are required to run the container
 
 ## Open Source

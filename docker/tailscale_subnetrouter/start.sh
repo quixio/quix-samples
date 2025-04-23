@@ -57,15 +57,37 @@ sleep 2
 
 # Check for state directory contents
 echo "Checking for existing state in $TS_STATE_DIR..."
-if [ -d "$TS_STATE_DIR" ] && ls -la "$TS_STATE_DIR"; then
+STATE_FILE="$TS_STATE_DIR/tailscaled.state"
+NODE_KEY_FILE="$TS_STATE_DIR/nodekey"
+LOCAL_KEY_FILE="$TS_STATE_DIR/machinekey"
+
+if ls -la "$TS_STATE_DIR"; then
     echo "Directory content shown above"
+    # Check if state file exists and has meaningful content (> 100 bytes)
+    if [ -f "$STATE_FILE" ] && [ $(stat -c%s "$STATE_FILE") -gt 100 ]; then
+        echo "State file exists and appears to have valid content"
+        HAS_VALID_STATE=true
+    else
+        echo "State file is missing or too small to contain valid state"
+        HAS_VALID_STATE=false
+    fi
+    
+    # Also check for node key and machine key
+    if [ -f "$NODE_KEY_FILE" ] && [ -f "$LOCAL_KEY_FILE" ]; then
+        echo "Node key and machine key files exist"
+        HAS_VALID_STATE=true
+    else
+        echo "Node key or machine key files are missing"
+        HAS_VALID_STATE=false
+    fi
 else
     echo "Error listing directory contents"
+    HAS_VALID_STATE=false
 fi
 
-# Check if we have existing state
-if [ -d "$TS_STATE_DIR" ] && [ -n "$(ls -A "$TS_STATE_DIR" 2>/dev/null)" ]; then
-    echo "Found existing Tailscale state, attempting to reuse previous identity..."
+# Proceed based on state validity
+if [ "$HAS_VALID_STATE" = true ]; then
+    echo "Found valid Tailscale state, attempting to reuse previous identity..."
     
     # Try to connect without auth key using the existing state
     echo "Reconnecting with existing state..."
@@ -87,7 +109,7 @@ if [ -d "$TS_STATE_DIR" ] && [ -n "$(ls -A "$TS_STATE_DIR" 2>/dev/null)" ]; then
         fi
     fi
 else
-    echo "No existing state found, starting with fresh identity..."
+    echo "No valid existing state found, starting with fresh identity..."
     
     # Check if TS_AUTHKEY environment variable exists
     if [ -n "$TS_AUTHKEY" ]; then
@@ -106,6 +128,8 @@ fi
 
 # Check connection status
 echo "Checking Tailscale connection status..."
+sleep 3  # Give tailscale a moment to establish connection
+
 if TAILSCALE_IP=$(/usr/bin/tailscale ip -4 2>/dev/null); then
     echo "Tailscale connected successfully"
     echo "Tailscale IP: $TAILSCALE_IP"
