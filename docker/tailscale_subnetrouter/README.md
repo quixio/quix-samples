@@ -27,7 +27,7 @@ The container supports the following environment variables:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `TS_AUTHKEY` | **Required for initial setup only** Tailscale authentication key. After first setup with persistent storage, the auth key is no longer used as the identity is stored. | - |
+| `TS_AUTHKEY` | **Required for initial setup only** Tailscale authentication key. After first setup with persistent storage, the auth key is no longer needed as the identity is stored in state. | - |
 | `TAILSCALE_HOSTNAME` | Hostname for the Tailscale node | deployment name or "tailscale-subnetrouter" |
 | `TAILSCALE_SUBNET` | **Required** Subnet CIDR to advertise (e.g. "10.128.0.0/9") | - |
 | `TAILSCALE_STATE_DIR` | Directory to store Tailscale state files | /app/state |
@@ -38,10 +38,10 @@ The container supports the following environment variables:
 
 The container is designed to run as a service in Quix. It will:
 
-1. Start tailscaled in userspace mode
-2. Check for existing identity in persistent storage
-3. If identity exists, reconnect using stored credentials (without using the auth key)
-4. If no identity exists, connect using the provided auth key and store the identity for future use
+1. Start tailscaled in userspace mode with the persistent state directory
+2. Check if existing Tailscale state exists in the persistent storage
+3. If state exists, attempt to reconnect using the stored state (without using the auth key)
+4. If reconnection fails or no state exists, try to connect using the provided auth key
 5. Advertise the specified subnet to your Tailscale network
 6. Maintain the connection and restart if necessary
 
@@ -62,7 +62,7 @@ When deploying this service, the following settings are pre-configured:
 - Public Access: Not required
 - State Management: Enabled (1GB)
 
-State preservation is important for maintaining the same Tailscale identity across pod restarts. The service automatically saves state to the `/app/state` directory.
+State preservation is important for maintaining the same Tailscale identity across pod restarts. The service automatically saves all Tailscale state to the `/app/state/ts` directory.
 
 ## Installation
 
@@ -96,25 +96,43 @@ This will define a tag called `subnet-router`, which you may change as you wish.
 In the Quix UI:
 1. Click Services (left-hand side)
 2. Search for and select the Tailscale Subnet Router
-4. Click the TS_AUTHKEY field
-5. Click + Secrets Management, add the field TS_AUTHKEY and paste the authentication key from Tailscale (the one beginning with `ts-authkey-`)
-6. Save Changes
-7. Fill hostname and subnet values with your desired options
-8. Click Deploy and wait for the deployment to finish
+3. Click the TS_AUTHKEY field
+4. Click + Secrets Management, add the field TS_AUTHKEY and paste the authentication key from Tailscale (the one beginning with `ts-authkey-`)
+5. Save Changes
+6. Fill hostname and subnet values with your desired options
+7. Click Deploy and wait for the deployment to finish
 
-That's it! Your Tailscale Subnet Router is now deployed with state persistence enabled automatically. This allows you to deploy and redeploy the application using the same `ts_hostname` you set.
+That's it! Your Tailscale Subnet Router is now deployed with state persistence enabled automatically. This allows you to maintain the same Tailscale identity even when redeploying the service.
 
 ## Troubleshooting
 
-- If there are numbers attached to the end of your ts hostname in the Tailscale UI:
-This might happen if there was an issue with state persistence. If you're using a version of Quix that supports automatic state management (as configured in this template), this should not occur. If it does, please check the deployment logs for any errors.
+### Authentication Issues
 
-- If you see authentication errors after redeploying:
-This can happen if you're using a one-time auth key that has already been used. In this case, you may need to generate a new auth key in Tailscale, update the TS_AUTHKEY secret in Quix, and redeploy. With the updated script, this should only be necessary if the persistent storage was lost or the original stored identity was revoked.
+- **If you see an interactive authentication URL in the logs**:
+  This happens if the service can't automatically authenticate. Check if:
+  1. Your auth key might have expired or been already used (Tailscale auth keys are often one-time use)
+  2. There might be an issue with the persistent storage
+  
+  **Solution**: Generate a new auth key in Tailscale, update the TS_AUTHKEY secret in Quix, and redeploy.
+
+- **If there are numbers attached to the end of your ts hostname in the Tailscale UI**:
+  This indicates that a new Tailscale identity was created instead of reusing the previous one.
+  
+  **Solution**: Ensure state persistence is working by checking the deployment logs. If you need to, delete the redundant machine from Tailscale, update your auth key, and redeploy.
+
+### Persistent Storage Issues
+
+- **If state isn't persisting between restarts**:
+  1. Verify that the State configuration is enabled in the deployment settings
+  2. Check that the filesystem is writable by the container
+  3. Check logs for any permission errors
+  
+  The Tailscale state is stored in the `/app/state/ts` directory.
 
 ## Notes
 
-- The container saves the Tailscale machine and node keys for reuse to maintain the same identity even if the pod is restarted
+- The container uses Tailscale's built-in state management to maintain identity
+- No special privileges are required to run the container
 
 ## Open Source
 
