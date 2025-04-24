@@ -1,0 +1,33 @@
+FROM debian:bookworm-slim
+			
+# Set environment variables for non-interactive setup
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Environment variables with defaults
+ENV TAILSCALE_STATE_DIR="/app/state" \
+    TAILSCALE_SOCKS5_PORT="1055"
+
+# Install Tailscale using official method
+RUN apt-get update && \
+    apt-get install -y curl gnupg apt-transport-https ca-certificates jq && \
+    curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg | \
+      tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null && \
+    curl -fsSL https://pkgs.tailscale.com/stable/debian/bookworm.tailscale-keyring.list | \
+      tee /etc/apt/sources.list.d/tailscale.list && \
+    apt-get update && \
+    apt-get install -y tailscale && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+			
+# Set working directory inside the container
+WORKDIR /app
+			
+# Create state directory
+RUN mkdir -p ${TAILSCALE_STATE_DIR} && chmod 755 ${TAILSCALE_STATE_DIR}
+
+# Copy start script only (we don't need the entire application)
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+					
+# Define the container's startup command
+ENTRYPOINT ["/app/start.sh"]

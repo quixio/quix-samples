@@ -1,0 +1,77 @@
+{
+  "libraryItemId": "tailscale-subnetrouter",
+  "name": "Tailscale Subnet Router",
+  "language": "docker",
+  "tags": {
+    "Pipeline Stage": ["Infrastructure"],
+    "Type": ["Auxiliary Services"],
+    "Category": ["Network"]
+  },
+  "shortDescription": "Tailscale subnet router to access private network resources securely.",
+  "DefaultFile": "start.sh",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "RunEntryPoint": "dockerfile",
+  "Variables": [
+    {
+      "Name": "TS_AUTHKEY",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Tailscale authentication key for connecting to your tailnet",
+      "DefaultValue": "TS_AUTHKEY",
+      "Required": true
+    },
+    {
+      "Name": "TAILSCALE_HOSTNAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Hostname for the Tailscale node",
+      "DefaultValue": "quix-tailscale-subnetrouter",
+      "Required": true
+    },
+    {
+      "Name": "TAILSCALE_SUBNET",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Subnet CIDR to advertise (e.g. '10.128.0.0/9')",
+      "DefaultValue": "10.128.0.0/9",
+      "Required": true
+    },
+    {
+      "Name": "TAILSCALE_STATE_DIR",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Directory to store Tailscale state files",
+      "DefaultValue": "/app/state",
+      "Required": false
+    },
+    {
+      "Name": "TAILSCALE_SOCKS5_PORT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Port for the SOCKS5 proxy",
+      "DefaultValue": "1055",
+      "Required": false
+    },
+    {
+      "Name": "TAILSCALE_EXTRA_ARGS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Additional arguments to pass to \"tailscale up\" command",
+      "DefaultValue": "",
+      "Required": false
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true,
+    "State": {
+      "StateEnabled": true,
+      "StateSize": 1
+    }
+  }
+}
