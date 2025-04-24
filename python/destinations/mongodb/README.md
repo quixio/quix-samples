@@ -4,6 +4,20 @@
 demonstrates how to consume data from a Kafka topic in Quix and write the data to a 
 MongoDB database using the [Quix Streams MongoDB sink](https://quix.io/docs/quix-streams/connectors/sinks/mongodb-sink.html).
 
+## Using with a Quix Cloud MongoDB Service
+
+This deployment will work seamlessly with a [Quix Cloud MongoDB service](https://github.com/quixio/quix-samples/tree/main/docker/mongodb).
+
+Simply provide the following arguments to this connector, 
+where `username` and `password` are are the credentials used when 
+creating the **Quix Cloud MongoDB service**: 
+
+```shell
+MONGODB_USERNAME="<YOUR USERNAME>"  # (default: "admin")
+MONGODB_PASSWORD="<YOUR PASSWORD>"
+MONGODB_HOST="mongodb"
+MONGODB_PORT="27017"
+```
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
