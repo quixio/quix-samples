@@ -100,7 +100,7 @@ input_topic = app.topic(os.environ["input"])
 kwargs_defaults = get_kwargs_defaults()
 mongodb_sink = MongoDBSink(
     # required settings
-    host=os.environ["MONGODB_URL"],
+    host=os.environ["MONGODB_HOST"],
     username=os.environ["MONGODB_USERNAME"],
     password=os.environ["MONGODB_PASSWORD"],
     db=os.environ["MONGODB_DB"],

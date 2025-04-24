@@ -26,6 +26,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "MongoDB host name",
+      "DefaultValue": "mongodb",
       "Required": true
     },
     {
@@ -33,6 +34,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "MongoDB username",
+      "DefaultValue": "admin",
       "Required": true
     },
     {
@@ -61,6 +63,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "MongoDB host port",
+      "DefaultValue": "27017",
       "Required": false
     },
     {
