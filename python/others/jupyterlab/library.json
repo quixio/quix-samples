@@ -1,5 +1,5 @@
 {
-  "libraryItemId": "JupyterLab",
+  "libraryItemId": "jupyterlab",
   "name": "JupyterLab",
   "language": "docker",
   "tags": {
