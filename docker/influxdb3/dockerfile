@@ -3,9 +3,9 @@ FROM quay.io/influxdb/influxdb3-core
 USER root
 
 # Create the data directory and set permissions
-RUN mkdir -p /app/state/influxdb3 \
+RUN mkdir -p /app/state \
  && chown -R influxdb3:influxdb3 /app/state \
- && chmod -R 755 /app/state
+ && chmod -R 700 /app/state
 
 RUN cat <<'ENTRYPOINT_SCRIPT' > /entrypoint.sh
 #!/bin/bash
