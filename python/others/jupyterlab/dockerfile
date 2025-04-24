@@ -1,0 +1,59 @@
+# Use official Python image
+FROM python:3.11-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Build argument for setting the main app path
+ARG MAINAPPPATH=.
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements to leverage Docker cache
+COPY "${MAINAPPPATH}/requirements.txt" "${MAINAPPPATH}/requirements.txt"
+
+# Install Jupyter and useful libraries
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Create state directory for Jupyter config and set correct permissions
+RUN mkdir -p /app/state && \
+    chown -R 1000:1000 /app/state && \
+    chmod -R 700 /app/state
+
+# Expose Jupyter Notebook port
+EXPOSE 8888
+
+# Set environment variables
+ENV JUPYTER_CONFIG_DIR=/app/state \
+    JUPYTER_DATA_DIR=/app/state 
+    JUPYTER_RUNTIME_DIR=/app/state
+
+
+# Create jupyter_start.sh script using a heredoc for better readability
+RUN cat <<JUPYTER_START_SH > /jupyter_start.sh
+#!/bin/bash
+
+# Generate hashed password at runtime
+HASHED_PASSWORD=\$(python -c "from jupyter_server.auth import passwd; import os; print(passwd(os.getenv('JUPYTER_PASSWORD', '')))")
+
+# Write Jupyter config with updated settings
+cat <<CONFIG > /app/state/jupyter_notebook_config.py
+c.ServerApp.identity_provider_class = "jupyter_server.auth.identity.PasswordIdentityProvider"
+c.PasswordIdentityProvider.hashed_password = '\${HASHED_PASSWORD}'
+c.IdentityProvider.token = ""
+c.ServerApp.open_browser = False
+c.ServerApp.ip = "0.0.0.0"
+c.ServerApp.port = 8888
+CONFIG
+
+# Start Jupyter Notebook
+exec jupyter notebook --no-browser --allow-root --notebook-dir=/app
+JUPYTER_START_SH
+
+
+RUN chmod +x /jupyter_start.sh
+CMD ["/jupyter_start.sh"]
