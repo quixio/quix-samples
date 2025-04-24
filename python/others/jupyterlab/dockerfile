@@ -29,7 +29,7 @@ EXPOSE 8888
 
 # Set environment variables
 ENV JUPYTER_CONFIG_DIR=/app/state \
-    JUPYTER_DATA_DIR=/app/state 
+    JUPYTER_DATA_DIR=/app/state \
     JUPYTER_RUNTIME_DIR=/app/state
 
 
