@@ -2,6 +2,9 @@
 
 [This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/influxdb_3) demonstrates how to consume data from a Kafka topic in Quix and persist the data to an InfluxDB v3 database using the InfluxDB write API.
 
+To learn more about how it functions, [check out the underlying 
+Quix Streams `InfluxDB3Source`](https://quix.io/docs/quix-streams/connectors/sinks/influxdb3-sink.html).
+
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
