@@ -1,3 +1,3 @@
-quixstreams[mongodb] @ git+https://github.com/quixio/quix-streams.git@sink/mongodb-add-metadata-fix
+# TODO: remove "@ git+" version of install before merging PR
+quixstreams[mongodb] @ git+https://github.com/quixio/quix-streams.git@sink/mongodb-auth-adjust
 python-dotenv
-
