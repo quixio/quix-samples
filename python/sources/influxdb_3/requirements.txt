@@ -1,3 +1,4 @@
-quixstreams[influxdb3]
+# TODO: remove "@ git+" version of install before merging PR
+quixstreams[influxdb3] @ git+https://github.com/quixio/quix-streams.git@source/influxdb
 python-dotenv
 dateutil
