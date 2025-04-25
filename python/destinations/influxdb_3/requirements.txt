@@ -1,3 +1,3 @@
 # TODO: remove "@ git+" version of install before merging PR
-quixstreams[influxdb3] @ git+https://github.com/quixio/quix-streams.git@sink/influxdb3-improve-time-type-handling
+quixstreams[influxdb3] @ git+https://github.com/quixio/quix-streams.git
 python-dotenv

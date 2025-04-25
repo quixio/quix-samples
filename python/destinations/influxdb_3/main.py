@@ -10,10 +10,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-tag_keys = os.environ.get("INFLUXDB_TAG_KEYS", "").split(",") if os.environ.get("INFLUXDB_TAG_KEYS") else []
-field_keys = os.environ.get("INFLUXDB_FIELD_KEYS", "").split(",")if os.environ.get("INFLUXDB_FIELD_KEYS") else []
+tag_keys = keys.split(",") if (keys := os.environ.get("INFLUXDB_TAG_KEYS")) else []
+field_keys = keys.split(",") if (keys := os.environ.get("INFLUXDB_FIELD_KEYS")) else []
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
-time_setter = os.environ.get("TIMESTAMP_COLUMN") if os.environ.get("TIMESTAMP_COLUMN") else None
+time_setter = col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None
 
 influxdb_v3_sink = InfluxDB3Sink(
     token=os.environ["INFLUXDB_TOKEN"],
