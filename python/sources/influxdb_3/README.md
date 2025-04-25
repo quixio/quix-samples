@@ -6,6 +6,21 @@ query InfluxDB3 and publish the results to a Kafka topic.
 To learn more about how it functions, [check out the underlying 
 Quix Streams `InfluxDB3Source`](https://quix.io/docs/quix-streams/connectors/sources/influxdb3-source.html).
 
+
+
+## Using with a Quix Cloud InfluxDB3 Service
+
+This deployment will work seamlessly with a [Quix Cloud InfluxDB3 service](https://github.com/quixio/quix-samples/tree/main/docker/influxdb_3).
+
+Simply provide the following arguments when setting up this connector:
+
+```shell
+INFLUXDB_HOST="http://influxdb3:80"
+INFLUXDB_ORG="<ANYTHING>"  # required, but ignored
+INFLUXDB_TOKEN="<ANYTHING>"  # required, but ignored
+```
+
+
 ## How to run
 
 Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
@@ -16,6 +31,8 @@ Then either:
 * click `Test connection & deploy` to deploy the pre-built and configured container into Quix. 
 
 * or click `Customise connector` to inspect or alter the code before deployment.
+
+
 
 ## Environment Variables
 
