@@ -24,4 +24,4 @@ USER influxdb3
 EXPOSE 8181
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["serve", "--node-id", "node0", "--object-store", "file", "--data-dir", "/app/state/influxdb3"]
+CMD ["serve", "--without-auth", "--node-id", "node0", "--object-store", "file", "--data-dir", "/app/state/influxdb3"]
