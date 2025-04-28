@@ -1,6 +1,7 @@
 from dateutil import parser
 import os
 import inspect
+from typing import Any
 
 from quixstreams import Application
 from quixstreams.sources.community.influxdb3 import InfluxDB3Source
