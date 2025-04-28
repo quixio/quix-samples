@@ -62,8 +62,8 @@ influxdb3_source = InfluxDB3Source(
     start_date=_start_date() or kwargs_defaults["start_date"],
     end_date=_end_date() or kwargs_defaults["end_date"],
     time_delta=os.getenv("INFLUXDB_QUERY_TIME_DELTA") or kwargs_defaults["time_delta"],
-    max_retries=int(retries) if (retries := os.getenv("INFLUXDB_QUERY_MAX_RETRIES")) is not None else kwargs_defaults["max_retries"],
-    delay=float(delay) if (delay := os.getenv("INFLUXDB_QUERY_DELAY_SECONDS")) is not None else kwargs_defaults["delay"],
+    max_retries=int(retries) if (retries := os.getenv("INFLUXDB_QUERY_MAX_RETRIES", '')) != '' else kwargs_defaults["max_retries"],
+    delay=float(delay) if (delay := os.getenv("INFLUXDB_QUERY_DELAY_SECONDS", '')) != '' else kwargs_defaults["delay"],
 )
 
 # Create a Quix platform-specific application instead
