@@ -1,4 +1,3 @@
 # TODO: remove "@ git+" version of install before merging PR
 quixstreams[postgresql] @ git+https://github.com/quixio/quix-streams.git@sinks/postgres-tablename-variable
-psycopg2-binary
 python-dotenv
