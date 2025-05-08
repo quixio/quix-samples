@@ -11,27 +11,12 @@ ENV POSTGRES_DB=quix
 USER root
 
 # Create the data directory and set permissions
-RUN mkdir -p /app/state/pgdata \
+RUN mkdir -p "$PGDATA" \
  && chown -R postgres:postgres /app/state \
  && chmod -R 700 /app/state
-
-# Entrypoint script
-RUN cat <<'ENTRYPOINT_SCRIPT' > /entrypoint.sh
-#!/bin/bash
-set -e
-
-# Ensure the data directory exists
-mkdir -p "$PGDATA"
-
-# Run postgres with any passed arguments
-exec postgres "$@"
-ENTRYPOINT_SCRIPT
-
-RUN chmod +x /entrypoint.sh
 
 USER postgres
 
 EXPOSE 5432
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["-c", "listen_addresses='*'"]
+CMD ["postgres", "-c", "listen_addresses=*"]
