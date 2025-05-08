@@ -26,7 +26,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Host address for the PostgreSQL instance.",
-      "DefaultValue": "localhost",
+      "DefaultValue": "postgresql",
       "Required": true
     },
     {
@@ -34,7 +34,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Port number for the PostgreSQL instance.",
-      "DefaultValue": "5432",
+      "DefaultValue": 80,
       "Required": true
     },
     {
@@ -42,7 +42,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Database name in PostgreSQL where data should be stored.",
-      "DefaultValue": "mydatabase",
+      "DefaultValue": "quix",
       "Required": true
     },
     {
@@ -50,7 +50,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Username for the PostgreSQL database.",
-      "DefaultValue": "myuser",
+      "DefaultValue": "admin",
       "Required": true
     },
     {
@@ -65,8 +65,15 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The PostgreSQL table where data will be stored. If the table does not exist, it will be created automatically.",
-      "DefaultValue": "numbers",
       "Required": true
+    },
+    {
+      "Name": "POSTGRES_SCHEMA",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The schema name. Schemas are a way of organizing tables and not related to the table data, referenced as `<schema_name>.<table_name>`. PostrgeSQL uses 'public' by default under the hood.",
+      "DefaultValue": "public",
+      "Required": false
     },
     {
       "Name": "SCHEMA_AUTO_UPDATE",
