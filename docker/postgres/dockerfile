@@ -1,0 +1,37 @@
+FROM postgres:16
+
+# Set environment variables for PostgreSQL (will be overridden in K8s runtime if needed)
+ENV PGDATA=/app/state/pgdata
+ENV POSTGRES_USER=admin
+ENV POSTGRES_DB=quix
+
+# Create non-root user (if not using built-in `postgres` user)
+# We'll use the default `postgres` user that already exists in the base image.
+
+USER root
+
+# Create the data directory and set permissions
+RUN mkdir -p /app/state/pgdata \
+ && chown -R postgres:postgres /app/state \
+ && chmod -R 700 /app/state
+
+# Entrypoint script
+RUN cat <<'ENTRYPOINT_SCRIPT' > /entrypoint.sh
+#!/bin/bash
+set -e
+
+# Ensure the data directory exists
+mkdir -p "$PGDATA"
+
+# Run postgres with any passed arguments
+exec postgres "$@"
+ENTRYPOINT_SCRIPT
+
+RUN chmod +x /entrypoint.sh
+
+USER postgres
+
+EXPOSE 5432
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["-c", "listen_addresses='*'"]
