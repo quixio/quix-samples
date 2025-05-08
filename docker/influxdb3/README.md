@@ -19,7 +19,7 @@ You can learn more about InfluxDB3 [from their documentation](https://docs.influ
 
 ## How to Use
 To interact with InfluxDB v3 from your pipeline, either use one of the no-code [influxdb3 connectors](https://quix.io/integrations?category=Time+series+DB)
-in Quix Cloud or use a Quix Streams [InfluxDBSource](https://quix.io/docs/quix-streams/connectors/sinks/influxdb3-sink.html) or [InfluxDB3Sink](https://quix.io/docs/quix-streams/connectors/sinks/influxdb3-sink.html) directly.
+in Quix Cloud or use a Quix Streams [InfluxDBSource](https://quix.io/docs/quix-streams/connectors/sources/influxdb3-source.html) or [InfluxDB3Sink](https://quix.io/docs/quix-streams/connectors/sinks/influxdb3-sink.html) directly.
 
 Use the following values to connect:
 ```shell
