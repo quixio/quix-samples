@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
 
 COPY ./go_bin /app/bin
 COPY ./main.sh /app/main.sh
-RUN chmod +x /app/main.sh
+RUN chmod +x /app/main.sh /app/bin/*
 
 WORKDIR /app
 ENTRYPOINT ["/app/main.sh"]
