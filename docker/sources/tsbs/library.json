@@ -7,7 +7,7 @@
     "Pipeline Stage": ["Source"],
     "Type": ["Connectors"],
     "Category": ["External APIs"],
-    "Technology": ["Go", "TSBS"]
+    "Technology": ["TSBS"]
   },
   "shortDescription": "Push sample data to a Quix topic using TSBS data generation",
   "longDescription": "Push sample data to a Quix topic using TSBS data generation",
@@ -15,14 +15,6 @@
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.sh",
   "Variables": [
-    {
-      "Name": "TSBS_USE_CASE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The type of data; options: cpu-only, devops, iot",
-      "DefaultValue": "cpu-only",
-      "Required": true
-    },
     {
       "Name": "TSBS_USE_CASE",
       "Type": "EnvironmentVariable",
@@ -60,7 +52,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The end time for the data's timestamps, formatted as Y-M-DTH:M:SZ",
-      "DefaultValue": "2025-01-01T00:00:00Z",
+      "DefaultValue": "2025-01-01T00:10:00Z",
       "Required": true
     },
     {
