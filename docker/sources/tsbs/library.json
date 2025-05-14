@@ -16,6 +16,14 @@
   "RunEntryPoint": "main.sh",
   "Variables": [
     {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the Quix Topic that will receive the generated data",
+      "DefaultValue": "tsbs_data",
+      "Required": true
+    },
+    {
       "Name": "TSBS_USE_CASE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
@@ -62,20 +70,14 @@
       "Description": "how much time should be between each reading per device, formatted as Nt",
       "DefaultValue": "10s",
       "Required": true
-    },
-    {
-      "Name": "output",
-      "Type": "EnvironmentVariable",
-      "InputType": "OutputTopic",
-      "Description": "This is the Quix Topic that will receive the generated data",
-      "DefaultValue": "tsbs_data",
-      "Required": true
     }
   ],
   "DeploySettings": {
     "DeploymentType": "Job",
     "CpuMillicores": 200,
     "MemoryInMb": 1000,
-    "Replicas": 1
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": false
   }
 }
