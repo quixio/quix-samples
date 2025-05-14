@@ -4,11 +4,13 @@
   "language": "Go",
   "IconFile": "icon.png",
   "tags": {
-    "Complexity": ["Medium"],
+    "Pipeline Stage": ["Source"],
+    "Type": ["Connectors"],
+    "Category": ["External APIs"],
     "Technology": ["Go", "TSBS"]
   },
-  "shortDescription": "Push data to a Quix topic using TSBS data generation",
-  "longDescription": "Push data to a Quix topic using TSBS data generation",
+  "shortDescription": "Push sample data to a Quix topic using TSBS data generation",
+  "longDescription": "Push sample data to a Quix topic using TSBS data generation",
   "DefaultFile": "main.sh",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.sh",
