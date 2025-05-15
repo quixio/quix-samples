@@ -48,7 +48,7 @@
       "Required": true
     },
     {
-      "Name": "TSBS_START_TIMESTAMP",
+      "Name": "TSBS_TIMESTAMP_START",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "A start time for the data's timestamps, formatted as Y-M-DTH:M:SZ",
@@ -56,7 +56,7 @@
       "Required": true
     },
     {
-      "Name": "TSBS_END_TIMESTAMP",
+      "Name": "TSBS_TIMESTAMP_END",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The end time for the data's timestamps, formatted as Y-M-DTH:M:SZ",
