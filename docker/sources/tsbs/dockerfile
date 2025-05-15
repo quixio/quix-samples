@@ -1,0 +1,23 @@
+# Stage 1: build Go runtime binaries
+FROM golang:1.20 AS builder
+RUN apt-get update && apt-get install -y git make
+RUN git clone --depth 1 --branch quix https://github.com/quixio/tsbs-quix.git /src
+WORKDIR /src
+RUN make tsbs_generate_data tsbs_load_kafka_quix
+
+
+# Stage 2: build runtime container
+FROM debian:bookworm-slim
+
+# Install CA certs for HTTPS
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /src/bin/tsbs_generate_data /app/bin/tsbs_generate_data
+COPY --from=builder /src/bin/tsbs_load_kafka_quix /app/bin/tsbs_load_kafka_quix
+COPY ./main.sh /app/main.sh
+WORKDIR /app
+
+RUN chmod +x main.sh bin/tsbs_generate_data bin/tsbs_load_kafka_quix
+
+ENTRYPOINT ["./main.sh"]
