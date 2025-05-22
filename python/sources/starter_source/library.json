@@ -27,7 +27,7 @@
   "DeploySettings": {
     "DeploymentType": "Job",
     "CpuMillicores": 100,
-    "MemoryInMb": 100,
+    "MemoryInMb": 150,
     "Replicas": 1,
     "PublicAccess": false,
     "ValidateConnection": false
