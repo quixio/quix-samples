@@ -1,0 +1,54 @@
+{
+  "libraryItemId": "postgresql",
+  "name": "postgreSQL",
+  "language": "docker",
+  "tags": {
+    "Category": ["Database"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run postgreSQL in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 1000,
+    "MemoryInMb": 8000,
+    "Replicas": 1,
+    "Network": {
+      "ServiceName": "postgresql",
+      "Ports":
+      [
+        {
+          "Port": 80,
+          "TargetPort": 5432
+        }
+      ]
+    }
+  },
+  "Variables": [
+    {
+      "Name": "POSTGRES_USER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The root username to initialize PostgreSQL with",
+      "DefaultValue": "admin",
+      "Required": true
+    },
+    {
+      "Name": "POSTGRES_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "The root password to initialize MongoDB with",
+      "Required": true
+    },
+        {
+      "Name": "POSTGRES_DB",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The default database name to initialize PostgreSQL with",
+      "DefaultValue": "quix",
+      "Required": true
+    }
+  ]
+}

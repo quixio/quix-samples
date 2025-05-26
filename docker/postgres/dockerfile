@@ -1,0 +1,22 @@
+FROM postgres:16
+
+# Set environment variables for PostgreSQL (will be overridden in K8s runtime if needed)
+ENV PGDATA=/app/state/pgdata
+ENV POSTGRES_USER=admin
+ENV POSTGRES_DB=quix
+
+# Create non-root user (if not using built-in `postgres` user)
+# We'll use the default `postgres` user that already exists in the base image.
+
+USER root
+
+# Create the data directory and set permissions
+RUN mkdir -p "$PGDATA" \
+ && chown -R postgres:postgres /app/state \
+ && chmod -R 700 /app/state
+
+USER postgres
+
+EXPOSE 5432
+
+CMD ["postgres", "-c", "listen_addresses=*"]
