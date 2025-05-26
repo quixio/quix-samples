@@ -100,10 +100,13 @@ input_topic = app.topic(os.environ["input"])
 kwargs_defaults = get_kwargs_defaults()
 mongodb_sink = MongoDBSink(
     # required settings
-    url=os.environ["MONGODB_URL"],
+    host=os.environ["MONGODB_HOST"],
+    username=os.environ["MONGODB_USERNAME"],
+    password=os.environ["MONGODB_PASSWORD"],
     db=os.environ["MONGODB_DB"],
     collection=os.environ["MONGODB_COLLECTION"],
     # optional settings (have defaults)
+    port=int(port) if (port := os.getenv("MONGODB_PORT")) else kwargs_defaults["port"],
     update_method=os.getenv("MONGODB_UPDATE_METHOD", kwargs_defaults["update_method"]),
     upsert=_as_bool(os.getenv("MONGODB_UPSERT", kwargs_defaults["upsert"])),
     document_matcher=document_matcher_env_parser() or kwargs_defaults["document_matcher"],
