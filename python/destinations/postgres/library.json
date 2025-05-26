@@ -34,7 +34,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Port number for the PostgreSQL instance.",
-      "DefaultValue": 80,
+      "DefaultValue": "80",
       "Required": true
     },
     {
