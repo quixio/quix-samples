@@ -1,2 +1,2 @@
-quixstreams[elasticsearch]==3.13.1
+quixstreams[elasticsearch]==3.14.1
 python-dotenv
