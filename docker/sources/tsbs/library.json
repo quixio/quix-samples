@@ -1,0 +1,83 @@
+{
+  "libraryItemId": "tsbs-quix-data-generator",
+  "name": "TSBS Quix Data Generator",
+  "language": "Go",
+  "IconFile": "icon.png",
+  "tags": {
+    "Pipeline Stage": ["Source"],
+    "Type": ["Connectors"],
+    "Category": ["External APIs"],
+    "Technology": ["TSBS"]
+  },
+  "shortDescription": "Push sample data to a Quix topic using TSBS data generation",
+  "longDescription": "Push sample data to a Quix topic using TSBS data generation",
+  "DefaultFile": "main.sh",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.sh",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the Quix Topic that will receive the generated data",
+      "DefaultValue": "tsbs_data",
+      "Required": true
+    },
+    {
+      "Name": "TSBS_USE_CASE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The type of data; options: cpu-only, devops, iot",
+      "DefaultValue": "cpu-only",
+      "Required": true
+    },
+    {
+      "Name": "TSBS_SEED",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "an integer PRNG seed for deterministic generation. ",
+      "DefaultValue": "123",
+      "Required": true
+    },
+    {
+      "Name": "TSBS_SCALE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of devices / trucks to generate data for",
+      "DefaultValue": "5",
+      "Required": true
+    },
+    {
+      "Name": "TSBS_TIMESTAMP_START",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "A start time for the data's timestamps, formatted as Y-M-DTH:M:SZ",
+      "DefaultValue": "2025-01-01T00:00:00Z",
+      "Required": true
+    },
+    {
+      "Name": "TSBS_TIMESTAMP_END",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The end time for the data's timestamps, formatted as Y-M-DTH:M:SZ",
+      "DefaultValue": "2025-01-01T00:10:00Z",
+      "Required": true
+    },
+    {
+      "Name": "TSBS_LOG_INTERVAL",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "how much time should be between each reading per device, formatted as Nt",
+      "DefaultValue": "10s",
+      "Required": true
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Job",
+    "CpuMillicores": 200,
+    "MemoryInMb": 1000,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": false
+  }
+}
