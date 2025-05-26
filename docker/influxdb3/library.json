@@ -1,0 +1,30 @@
+{
+  "libraryItemId": "influxdb3",
+  "name": "InfluxDB v3 alpha",
+  "language": "docker",
+  "tags": {
+    "Category": ["Time series DB"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run InfluxDB v3 alpha in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 1000,
+    "MemoryInMb": 8000,
+    "Replicas": 1,
+    "Network": {
+      "ServiceName": "influxdb3",
+      "Ports":
+      [
+        {
+          "Port": 80,
+          "TargetPort": 8181
+        }
+      ]
+    }
+  },
+  "Variables": []
+}
