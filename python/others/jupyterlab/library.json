@@ -18,8 +18,8 @@
     "PublicAccess": true,
     "UrlPrefix": "jupyterlab",
     "State:": {
-      "Enabled": true,
-      "Size": 1
+      "StateEnabled": true,
+      "StateSize": 1
     },
     "Network": {
       "ServiceName": "jupyterlab",
