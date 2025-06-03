@@ -1,0 +1,41 @@
+name: video-static-feature
+language: Python
+variables:
+  - name: output
+    inputType: OutputTopic
+    description: This is the output topic
+    defaultValue: none
+    required: true
+  - name: MYSQL_HOST
+    inputType: FreeText
+    description: Host name of MySQL
+    required: true
+  - name: MYSQL_PORT
+    inputType: FreeText
+    description: Port of MySQL
+    defaultValue: 3306
+    required: true
+  - name: MYSQL_USER
+    inputType: FreeText
+    description: Username of MySQL
+    required: true
+  - name: MYSQL_PASSWORD
+    inputType: HiddenText
+    description: Password of MySQL
+    required: true
+  - name: MYSQL_DATABASE
+    inputType: FreeText
+    description: Database name of MySQL
+    required: true
+  - name: MYSQL_SCHEMA
+    inputType: FreeText
+    description: Name of schema/database for CDC
+    required: true
+  - name: MYSQL_TABLE
+    inputType: FreeText
+    description: Name of table for CDC
+    required: true
+dockerfile: dockerfile
+runEntryPoint: main.py
+defaultFile: main.py
+libraryItemId: mysql-cdc-source

@@ -1,0 +1,89 @@
+{
+  "libraryItemId": "mysql-cdc-source",
+  "name": "MySQL CDC Source",
+  "language": "Python",
+  "IconFile": "icon.png",
+  "tags": {
+    "Type": ["Connectors"],
+    "Pipeline Stage": ["Source"],
+    "Category": ["SQL DB"]
+  },
+  "shortDescription": "Capture changes to a MySQL database table and publish the change events to a Kafka topic using binary log replication.",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "DefaultFile": "main.py",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the output topic",
+      "DefaultValue": "mysql-cdc-source",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Host name of MySQL",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_PORT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Port of MySQL",
+      "DefaultValue": "3306",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_USER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Username of MySQL",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "HiddenText",
+      "Description": "Password of MySQL",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_DATABASE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Database name of MySQL",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_SCHEMA",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Name of schema/database for CDC",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_TABLE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Name of table for CDC",
+      "DefaultValue": "",
+      "Required": true
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
+} 
