@@ -1,6 +1,14 @@
 # MySQL CDC
 
-This connector demonstrates how to capture changes to a MySQL database table (using CDC) and publish the change events to a Kafka topic using MySQL binary log replication.
+This connector demonstrates how to capture changes to a MySQL database table (using CDC) and publish the change events to a Kafka topic using MySQL binary log replication. It features **persistent binlog position tracking** to ensure exactly-once processing and automatic recovery after restarts.
+
+## Key Features
+
+- **Persistent Binlog Position**: Automatically saves and resumes from the last processed binlog position
+- **Exactly-Once Processing**: No data loss during application restarts or failures
+- **Initial Snapshot**: Optionally capture existing data before starting CDC
+- **Automatic Recovery**: Seamlessly resume processing after interruptions
+- **Change Buffering**: Batches changes for efficient Kafka publishing
 
 ## How to run
 
@@ -11,8 +19,7 @@ This connector demonstrates how to capture changes to a MySQL database table (us
 
 ## Environment variables
 
-The connector uses the following environment variables:
-
+### Required MySQL Connection
 - **output**: Name of the output topic to write into.
 - **MYSQL_HOST**: The IP address or fully qualified domain name of your MySQL server.
 - **MYSQL_PORT**: The Port number to use for communication with the server (default: 3306).
@@ -22,11 +29,127 @@ The connector uses the following environment variables:
 - **MYSQL_SCHEMA**: The name of the schema/database for CDC (same as MYSQL_DATABASE).
 - **MYSQL_TABLE**: The name of the table for CDC.
 
+### Optional Configuration
+- **MYSQL_SNAPSHOT_HOST**: MySQL host for initial snapshot (defaults to MYSQL_HOST if not set). Use this if you want to perform initial snapshot from a different MySQL instance (e.g., read replica).
+- **INITIAL_SNAPSHOT**: Set to "true" to perform initial snapshot of existing data (default: false).
+- **SNAPSHOT_BATCH_SIZE**: Number of rows to process in each snapshot batch (default: 1000).
+- **FORCE_SNAPSHOT**: Set to "true" to force snapshot even if already completed (default: false).
+
+### State Management
+- **Quix__State__Dir**: Directory for storing application state including binlog positions (default: "state").
+
+## Binlog Position Persistence
+
+The connector automatically tracks the MySQL binlog position and saves it to disk after successful Kafka delivery. This ensures:
+
+- **No data loss** during application restarts
+- **Exactly-once processing** of database changes
+- **Automatic resumption** from the last processed position
+
+Position files are stored in: `{STATE_DIR}/binlog_position_{schema}_{table}.json`
+
+Example position file:
+```json
+{
+  "log_file": "mysql-bin.000123",
+  "log_pos": 45678,
+  "timestamp": 1704067200.0,
+  "readable_time": "2024-01-01 12:00:00 UTC"
+}
+```
+
+## Initial Snapshot
+
+Enable initial snapshot to capture existing table data before starting CDC:
+
+```env
+INITIAL_SNAPSHOT=true
+SNAPSHOT_BATCH_SIZE=1000
+MYSQL_SNAPSHOT_HOST=replica.mysql.example.com  # Optional: use read replica
+```
+
+The initial snapshot:
+- Processes data in configurable batches to avoid memory issues
+- Sends snapshot records with `"kind": "snapshot_insert"` to distinguish from real inserts
+- Marks completion to avoid re-processing on restart
+- Can be forced to re-run with `FORCE_SNAPSHOT=true`
+
 ## Requirements / Prerequisites
 
 - A MySQL Database with binary logging enabled.
 - Set `log-bin=mysql-bin` and `binlog-format=ROW` in MySQL configuration.
 - MySQL user with `REPLICATION SLAVE` and `REPLICATION CLIENT` privileges.
+- For initial snapshot: `SELECT` privilege on the target table.
+
+### MySQL Configuration Example
+```ini
+[mysqld]
+server-id = 1
+log_bin = /var/log/mysql/mysql-bin.log
+binlog_expire_logs_seconds = 864000
+max_binlog_size = 100M
+binlog-format = ROW
+binlog_row_metadata = FULL
+binlog_row_image = FULL
+```
+
+### MySQL User Permissions
+```sql
+-- Create replication user
+CREATE USER 'cdc_user'@'%' IDENTIFIED BY 'secure_password';
+
+-- Grant replication privileges
+GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'cdc_user'@'%';
+
+-- Grant select for initial snapshot
+GRANT SELECT ON your_database.your_table TO 'cdc_user'@'%';
+
+FLUSH PRIVILEGES;
+```
+
+## Change Event Format
+
+### INSERT/Snapshot Insert
+```json
+{
+  "kind": "insert",  // or "snapshot_insert" for initial snapshot
+  "schema": "database_name",
+  "table": "table_name",
+  "columnnames": ["id", "name"],
+  "columnvalues": [123, "John Doe"],
+  "oldkeys": {}
+}
+```
+
+### UPDATE
+```json
+{
+  "kind": "update",
+  "schema": "database_name",
+  "table": "table_name", 
+  "columnnames": ["id", "name"],
+  "columnvalues": [123, "Jane Doe"],
+  "oldkeys": {
+    "keynames": ["id", "name"],
+    "keyvalues": [123, "John Doe"]
+  }
+}
+```
+
+### DELETE
+```json
+{
+  "kind": "delete",
+  "schema": "database_name",
+  "table": "table_name",
+  "columnnames": [],
+  "columnvalues": [],
+  "oldkeys": {
+    "keynames": ["id", "name"], 
+    "keyvalues": [123, "Jane Doe"]
+  }
+}
+```
 
 ## Contribute
 

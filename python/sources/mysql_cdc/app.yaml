@@ -1,4 +1,4 @@
-name: video-static-feature
+name: video-cdc-source
 language: Python
 variables:
   - name: output
@@ -10,6 +10,10 @@ variables:
     inputType: FreeText
     description: Host name of MySQL
     required: true
+  - name: MYSQL_SNAPSHOT_HOST
+    inputType: FreeText
+    description: Host name of MySQL for snapshot
+    required: false
   - name: MYSQL_PORT
     inputType: FreeText
     description: Port of MySQL
@@ -35,6 +39,17 @@ variables:
     inputType: FreeText
     description: Name of table for CDC
     required: true
+  - name: INITIAL_SNAPSHOT
+    inputType: FreeText
+    description: Whether to perform an initial snapshot
+    required: false
+    defaultValue: false
+  - name: SNAPSHOT_BATCH_SIZE
+    inputType: FreeText
+    description: Batch size for initial snapshot
+    required: false
+    defaultValue: 1000
+
 dockerfile: dockerfile
 runEntryPoint: main.py
 defaultFile: main.py
