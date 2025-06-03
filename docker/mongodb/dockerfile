@@ -2,8 +2,6 @@ FROM mongo:8.0.5
 
 EXPOSE 27017
 
-RUN usermod -u 999 mongodb && groupmod -g 999 mongodb
-
 # Define the default command to run when starting the container
 COPY init.sh /init.sh
 RUN chmod +x /init.sh

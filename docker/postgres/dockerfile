@@ -7,8 +7,6 @@ ENV POSTGRES_DB=quix
 
 EXPOSE 5432
 
-RUN usermod -u 999 postgres && groupmod -g 999 postgres
-
 # Define the default command to run when starting the container
 USER root
 COPY init.sh /init.sh
