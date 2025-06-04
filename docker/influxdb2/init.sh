@@ -28,7 +28,7 @@ ACTUAL_GID=$(stat -c '%g' "$TARGET_DIR")
 CURRENT_UID=$(id -u "$TARGET_USER")
 CURRENT_GID=$(id -g "$TARGET_USER")
 
-if [ "$ACTUAL_UID" -ne "$CURRENT_UID" ]; then
+if [ "$ACTUAL_UID" -ne "$CURRENT_UID" ] && [ "$ACTUAL_UID" -ne 0 ]; then
   usermod -u "$ACTUAL_UID" "$TARGET_USER" || {
     echo "❌ Failed to update $TARGET_USER UID"
     exit 1
