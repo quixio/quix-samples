@@ -1,10 +1,11 @@
 # MySQL CDC
 
-This connector demonstrates how to capture changes to a MySQL database table (using CDC) and publish the change events to a Kafka topic using MySQL binary log replication. It features **persistent binlog position tracking** to ensure exactly-once processing and automatic recovery after restarts.
+This connector demonstrates how to capture changes to a MySQL database table (using CDC) and publish the change events to a Kafka topic using MySQL binary log replication. It's built using **Quix Streams StatefulSource** to ensure exactly-once processing and automatic recovery after restarts.
 
 ## Key Features
 
-- **Persistent Binlog Position**: Automatically saves and resumes from the last processed binlog position
+- **Quix Streams StatefulSource**: Built on Quix Streams' robust stateful source framework
+- **Automatic State Management**: Integrated state store for binlog position and snapshot tracking
 - **Exactly-Once Processing**: No data loss during application restarts or failures
 - **Initial Snapshot**: Optionally capture existing data before starting CDC
 - **Automatic Recovery**: Seamlessly resume processing after interruptions
@@ -35,26 +36,26 @@ This connector demonstrates how to capture changes to a MySQL database table (us
 - **SNAPSHOT_BATCH_SIZE**: Number of rows to process in each snapshot batch (default: 1000).
 - **FORCE_SNAPSHOT**: Set to "true" to force snapshot even if already completed (default: false).
 
-### State Management
-- **Quix__State__Dir**: Directory for storing application state including binlog positions (default: "state").
+## Quix Streams StatefulSource
 
-## Binlog Position Persistence
+The connector uses Quix Streams' `StatefulSource` class which provides:
 
-The connector automatically tracks the MySQL binlog position and saves it to disk after successful Kafka delivery. This ensures:
+- **Automatic State Persistence**: Binlog positions and snapshot status are automatically saved to the state store
+- **Exactly-Once Guarantees**: Built-in mechanisms ensure no data loss or duplication
+- **Fault Tolerance**: Automatic recovery from failures with consistent state
+- **Production-Ready**: Built on Quix Streams' proven architecture
 
-- **No data loss** during application restarts
-- **Exactly-once processing** of database changes
-- **Automatic resumption** from the last processed position
+### State Management:
+- **Binlog Position**: Automatically tracked as `binlog_position_{schema}_{table}`
+- **Snapshot Completion**: Tracked as `snapshot_completed_{schema}_{table}`
+- **Transactional Processing**: State changes are committed atomically with message production
 
-Position files are stored in: `{STATE_DIR}/binlog_position_{schema}_{table}.json`
-
-Example position file:
+Example state data:
 ```json
 {
   "log_file": "mysql-bin.000123",
   "log_pos": 45678,
-  "timestamp": 1704067200.0,
-  "readable_time": "2024-01-01 12:00:00 UTC"
+  "timestamp": 1704067200.0
 }
 ```
 
@@ -71,7 +72,7 @@ MYSQL_SNAPSHOT_HOST=replica.mysql.example.com  # Optional: use read replica
 The initial snapshot:
 - Processes data in configurable batches to avoid memory issues
 - Sends snapshot records with `"kind": "snapshot_insert"` to distinguish from real inserts
-- Marks completion to avoid re-processing on restart
+- Marks completion in the StatefulSource state store to avoid re-processing on restart
 - Can be forced to re-run with `FORCE_SNAPSHOT=true`
 
 ## Requirements / Prerequisites

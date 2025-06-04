@@ -1,15 +1,16 @@
 # MySQL CDC Setup
 
-This application implements MySQL CDC using MySQL binary log replication with **persistent binlog position tracking** for exactly-once processing and automatic recovery.
+This application implements MySQL CDC using MySQL binary log replication with **Quix Streams StatefulSource** for exactly-once processing and automatic recovery.
 
 ## Key Features
 
-- **Persistent Binlog Position**: Automatically saves and resumes from the last processed binlog position
+- **Quix Streams StatefulSource**: Built on Quix Streams' robust stateful source framework
+- **Automatic State Management**: Integrated state store for binlog position and snapshot tracking
 - **Exactly-Once Processing**: No data loss during application restarts or failures  
 - **Initial Snapshot**: Optionally capture existing data before starting CDC
 - **Automatic Recovery**: Seamlessly resume processing after interruptions
 - **Change Buffering**: Batches changes for efficient Kafka publishing
-- **State Management**: Integrated state persistence for production reliability
+- **Built-in Reliability**: Leverages Quix Streams' production-ready state management
 
 ## Prerequisites
 
@@ -59,9 +60,6 @@ Set the following environment variables:
 - `SNAPSHOT_BATCH_SIZE` - Rows per snapshot batch (default: 1000)
 - `FORCE_SNAPSHOT` - Set to "true" to force re-snapshot (default: false)
 
-### State Management
-- `Quix__State__Dir` - Directory for storing state files (default: "state")
-
 ### Kafka Output
 - `output` - Kafka topic name for publishing changes
 
@@ -85,40 +83,47 @@ INITIAL_SNAPSHOT=true
 SNAPSHOT_BATCH_SIZE=1000
 FORCE_SNAPSHOT=false
 
-# State Management
-Quix__State__Dir=./state
-
 # Kafka Output
 output=cdc-changes-topic
 ```
 
-## Binlog Position Persistence
+## Quix Streams StatefulSource Architecture
 
-The application automatically tracks MySQL binlog positions and persists them to disk:
+The application uses Quix Streams' `StatefulSource` class which provides:
 
-### How it works:
-1. **Position Tracking**: Records current binlog file and position during processing
-2. **Automatic Saving**: Saves position after successful Kafka delivery
-3. **Recovery**: Automatically resumes from last saved position on restart
-4. **Exactly-Once**: Ensures no data loss or duplication
+### Built-in State Management:
+- **Automatic Persistence**: State is automatically saved to the configured state store
+- **Exactly-Once Guarantees**: Built-in mechanisms ensure no data loss or duplication
+- **Transactional Processing**: State changes are committed atomically with message production
+- **Fault Tolerance**: Automatic recovery from failures with consistent state
 
-### Position Storage:
-- Location: `{STATE_DIR}/binlog_position_{schema}_{table}.json`
-- Format:
-  ```json
-  {
-    "log_file": "mysql-bin.000123",
-    "log_pos": 45678,
-    "timestamp": 1704067200.0,
-    "readable_time": "2024-01-01 12:00:00 UTC"
-  }
-  ```
+### State Storage:
+The StatefulSource manages two types of state:
+1. **Binlog Position**: `binlog_position_{schema}_{table}`
+   ```json
+   {
+     "log_file": "mysql-bin.000123",
+     "log_pos": 45678,
+     "timestamp": 1704067200.0
+   }
+   ```
+
+2. **Snapshot Completion**: `snapshot_completed_{schema}_{table}`
+   ```json
+   {
+     "completed_at": 1704067200.0,
+     "schema": "database_name",
+     "table": "table_name",
+     "timestamp": "2024-01-01 12:00:00 UTC"
+   }
+   ```
 
 ### Benefits:
-- ✅ **No data loss** during application restarts
-- ✅ **Exactly-once processing** of database changes
-- ✅ **Automatic recovery** from last processed position
-- ✅ **Production-ready** state management
+- ✅ **Production-Ready**: Built on Quix Streams' proven architecture
+- ✅ **No Manual State Management**: Automatic state persistence and recovery
+- ✅ **Exactly-Once Processing**: Guaranteed delivery semantics
+- ✅ **Simplified Operations**: Reduced complexity compared to manual state management
+- ✅ **Scalable**: Can be easily deployed and scaled in production environments
 
 ## Initial Snapshot
 
@@ -135,14 +140,14 @@ MYSQL_SNAPSHOT_HOST=replica.mysql.example.com  # Optional
 - **Batched Processing**: Configurable batch sizes to handle large tables
 - **Memory Efficient**: Processes data in chunks to avoid memory issues
 - **Read Replica Support**: Use `MYSQL_SNAPSHOT_HOST` to snapshot from replica
-- **Completion Tracking**: Marks snapshot completion to avoid re-processing
+- **Completion Tracking**: Marks snapshot completion in StatefulSource state store
 - **Force Re-snapshot**: Use `FORCE_SNAPSHOT=true` to re-run if needed
 
 ### Snapshot Process:
 1. Connects to snapshot host (or main host if not specified)
 2. Processes table data in batches
 3. Sends records with `"kind": "snapshot_insert"`
-4. Marks completion in state file
+4. Marks completion in StatefulSource state store
 5. Proceeds to real-time CDC
 
 ## Dependencies
@@ -152,7 +157,8 @@ Install the required Python packages:
 pip install -r requirements.txt
 ```
 
-The key MySQL-specific dependencies are:
+The key dependencies are:
+- `quixstreams` - Quix Streams library with StatefulSource support
 - `pymysql` - MySQL database connector
 - `mysql-replication` - MySQL binary log replication library
 
@@ -224,23 +230,24 @@ The MySQL CDC produces change events in the following format:
    ```
 
 ### Application Flow:
-1. **Load State**: Attempts to load saved binlog position
-2. **Initial Snapshot** (if enabled and not completed):
+1. **StatefulSource Initialization**: Quix Streams creates the MySQL CDC source
+2. **State Recovery**: Automatically loads saved binlog position and snapshot status
+3. **Initial Snapshot** (if enabled and not completed):
    - Connects to snapshot host
    - Processes existing data in batches
    - Sends snapshot events to Kafka
-   - Marks completion
-3. **Real-time CDC**:
+   - Marks completion in state store
+4. **Real-time CDC**:
    - Connects to MySQL binlog stream
    - Resumes from saved position (or current if first run)
    - Monitors specified table for changes
    - Buffers changes and publishes to Kafka every 500ms
-   - Saves binlog position after successful delivery
-4. **Recovery**: On restart, automatically resumes from last saved position
+   - Automatically commits state after successful delivery
+5. **Automatic Recovery**: On restart, StatefulSource handles state recovery
 
 ### Monitoring:
 - Check application logs for binlog position updates
-- Monitor state directory for position files
+- Monitor Quix Streams state store for position and snapshot data
 - Verify Kafka topic for change events
 - Use MySQL's `SHOW MASTER STATUS` to compare positions
 
@@ -256,9 +263,10 @@ The MySQL CDC produces change events in the following format:
    - Error: Access denied
    - Solution: Grant REPLICATION SLAVE, REPLICATION CLIENT privileges
 
-3. **Position file corruption**:
-   - Delete position file to restart from current position
-   - Location: `{STATE_DIR}/binlog_position_{schema}_{table}.json`
+3. **StatefulSource state issues**:
+   - StatefulSource automatically handles state recovery
+   - Check Quix Streams configuration and state store connectivity
+   - Review application logs for state-related errors
 
 4. **Snapshot issues**:
    - Check `MYSQL_SNAPSHOT_HOST` connectivity
@@ -267,6 +275,7 @@ The MySQL CDC produces change events in the following format:
 
 ### Best Practices:
 - Use read replicas for initial snapshots on large tables
-- Monitor disk space for state directory
+- Configure appropriate Quix Streams state store settings
 - Set appropriate `SNAPSHOT_BATCH_SIZE` based on available memory
-- Regularly backup state files for disaster recovery 
+- Monitor Quix Streams metrics for source performance
+- Ensure proper Kafka connectivity for reliable message delivery 
