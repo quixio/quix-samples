@@ -1,7 +1,7 @@
 import logging
 
 # Set up logger
-PROD_ENV = False
+PROD_ENV = True
 logger = logging.getLogger("MySQL CDC")
 logging.basicConfig()
 

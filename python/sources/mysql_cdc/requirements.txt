@@ -1,4 +1,4 @@
-quixstreams==2.9.0
+quixstreams==3.15.0
 pymysql
 mysql-replication
 python-dotenv

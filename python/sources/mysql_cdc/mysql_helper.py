@@ -286,7 +286,7 @@ def perform_initial_snapshot(schema_name: str, table_name: str, batch_size: int 
                 processed_rows += len(rows)
                 offset += batch_size
                 
-                if processed_rows % 10000 == 0:  # Log progress every 10k rows
+                if processed_rows % 50000 == 0:  # Log progress every 50k rows
                     logger.info(f"Snapshot progress: {processed_rows}/{total_rows} rows processed")
             
             logger.info(f"Initial snapshot completed: {processed_rows} rows captured")
