@@ -22,6 +22,8 @@ The connector uses the following environment variables:
 - **kafka_secret**: Obtained from the Confluent Kafka portal.
 - **kafka_broker_address**: Obtained from the Confluent Kafka portal.
 - **kafka_topic**: The Confluent Kafka Topic you wish to read from.
+- **kafka_ca_location**: (Optional) Path to the SSL CA certificate file for secure connections. If not provided, the system's default CA certificates will be used.
+- **kafka_sasl_mechanism**: (Optional) SASL mechanism for authentication. Defaults to "SCRAM-SHA-256".
 
 ## Contribute
 

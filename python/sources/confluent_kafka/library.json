@@ -60,6 +60,14 @@
       "Description": "The Confluent Kafka Topic you wish to read from",
       "DefaultValue": "",
       "Required": true
+    },
+    {
+      "Name": "kafka_ca_location",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Path to the SSL CA certificate file for secure connections. If not provided, the system's default CA certificates will be used",
+      "DefaultValue": "",
+      "Required": false
     }
   ],
   "DeploySettings": {
