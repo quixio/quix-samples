@@ -1,0 +1,113 @@
+{
+  "libraryItemId": "tdengine-destination",
+  "name": "TDengine Sink",
+  "language": "Python",
+  "tags": {
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Category": ["Time series DB"]
+  },
+  "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an TDengine database.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "IconFile": "icon.webp",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "This is the input topic",
+      "DefaultValue": "cell",
+      "Required": true
+    },
+    {
+      "Name": "TDENGINE_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Host address for the TDengine instance.",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "TDENGINE_TOKEN",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Authentication token to access TDengine.",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "TDENGINE_SUPERTABLE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "supertable",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "TDENGINE_DATABASE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "TDengine database name.",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "TDENGINE_TAG_KEYS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The tags to include when writing the measurement data. Example: Tag1,Tag2",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "TDENGINE_FIELD_KEYS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The fields to include when writing the measurement data. Example: Field1,Field2",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "CONSUMER_GROUP_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The name of the consumer group to use when consuming from Kafka",
+      "DefaultValue": "tdengine-sink",
+      "Required": true
+    },
+    {
+      "Name": "TIMESTAMP_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The column containing the timestamp column. NOTE: Must be nanoseconds",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "BUFFER_SIZE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of records that sink holds before flush data to the InfluxDb",
+      "DefaultValue": "1",
+      "Required": false
+    },
+    {
+      "Name": "BUFFER_TIMEOUT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of seconds that sink holds before flush data to the InfluxDb",
+      "DefaultValue": "1",
+      "Required": false
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
+}
