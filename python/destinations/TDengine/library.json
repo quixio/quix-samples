@@ -26,7 +26,6 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Host address for the TDengine instance.",
-      "DefaultValue": "",
       "Required": true
     },
     {
@@ -34,15 +33,13 @@
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
       "Description": "Authentication token to access TDengine.",
-      "DefaultValue": "",
       "Required": true
     },
     {
       "Name": "TDENGINE_SUPERTABLE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "supertable",
-      "DefaultValue": "",
+      "Description": "The TDengine supertable name.",
       "Required": true
     },
     {
@@ -50,7 +47,6 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "TDengine database name.",
-      "DefaultValue": "",
       "Required": true
     },
     {
