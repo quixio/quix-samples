@@ -25,16 +25,12 @@ def mqtt_protocol_version():
     print("Defaulting to MQTT version 3.1.1")
     return paho.MQTTv311
 
-def configure_authentication(mqtt_client):
-    mqtt_username = os.getenv("mqtt_username", "") 
-    if mqtt_username != "":
-        mqtt_password = os.getenv("mqtt_password", "")
-        if mqtt_password == "":
-           raise ValueError('mqtt_password must set when mqtt_username is set')
-        print("Using username & password authentication")
-        mqtt_client.username_pw_set(os.environ["mqtt_username"], os.environ["mqtt_password"])
-        return
-    print("Using anonymous authentication")
+def configure_authentication(mqtt_client, mqtt_username):
+    mqtt_password = os.getenv("mqtt_password", "")
+    if mqtt_password == "":
+       raise ValueError('mqtt_password must set when mqtt_username is set')
+    print("Using username & password authentication")
+    mqtt_client.username_pw_set(mqtt_username, mqtt_password)
 
 
 mqtt_topic = os.getenv("mqtt_topic", "")
