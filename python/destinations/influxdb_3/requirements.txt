@@ -1,3 +1,3 @@
 # TODO: remove "@ git+" version of install before merging PR
-quixstreams[influxdb3]==3.14.1
+quixstreams[influxdb3] @ git+https://github.com/quixio/quix-streams.git@influxsink-reenable-v2
 python-dotenv
