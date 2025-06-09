@@ -52,7 +52,9 @@ mqtt_client = paho.Client(callback_api_version=paho.CallbackAPIVersion.VERSION2,
 
 if mqtt_username:
     mqtt_client.tls_set(tls_version = mqtt.client.ssl.PROTOCOL_TLS)  # we'll be using tls
-    configure_authentication(mqtt_client)
+    configure_authentication(mqtt_client, mqtt_username)
+else:
+    print("Using anonymous authentication")
     
 mqtt_client.reconnect_delay_set(5, 60)
 
