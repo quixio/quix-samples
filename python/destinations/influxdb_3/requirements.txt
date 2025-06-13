@@ -1,3 +1,2 @@
-# TODO: remove "@ git+" version of install before merging PR
-quixstreams[influxdb3]==3.14.1
+quixstreams[influxdb3]==3.16.1
 python-dotenv
