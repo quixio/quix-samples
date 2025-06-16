@@ -7,7 +7,7 @@ from asyncua import Client, ua
 from quixstreams.models.topics import Topic
 from quixstreams.sources.base import Source
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('quixstreams')
 
 
 class OpcUaSource(Source):
@@ -16,18 +16,18 @@ class OpcUaSource(Source):
         name: str,
         opc_url: str,
         opc_namespace: str,
-        parameters: str
+        parameters: str,
+        ignore_processing_errors: bool = False,
     ) -> None:  
 
         self.opc_url = opc_url
         self.opc_namespace = opc_namespace
         self.parameters = parameters
+        self.ignore_processing_errors = ignore_processing_errors
 
         self.tracked_values = {}
-        
+
         super().__init__(name=name, shutdown_timeout=10)
-
-
 
     def run(self):
         asyncio.run(self.run_async())
@@ -73,32 +73,32 @@ class OpcUaSource(Source):
             handles = {}
             for val in self.tracked_values:
                 # Get the node for the current value
-                myvar = await client.nodes.root.get_child(val)  # Adjust this line to get the correct node
+                myvar = await client.nodes.root.get_child(val)
+
                 # Create a handler and subscription for each node
-                handler = SubHandler(self.opc_namespace, self)
+                handler = SubHandler(self)
                 sub = await client.create_subscription(10, handler)
+
                 # Subscribe to data changes for the node
                 handle = await sub.subscribe_data_change(myvar)
                                 
-                # Subscribe to data changes for the node with TimestampsToReturn.Both
+                #Subscribe to data changes for the node with TimestampsToReturn.Both
                 handle = await sub.subscribe_data_change(
                     myvar,
                     ua.TimestampsToReturn.Both  # Request both source and server timestamps
                 )
-                print("1")
-                # Store the subscription and handle
+
+                #Store the subscription and handle
                 subscriptions[val] = sub
                 handles[val] = handle
-                print("2")
-            
+
                 # Optional: Sleep to stagger subscriptions
                 await asyncio.sleep(0.1)
 
-
             # keep working while 'run' flag is True
+            logger.info("Subscriptions complete; now handling OPC events...")
             while self.running:
                 await asyncio.sleep(1)
-
 
             # unsubscribe handlers on exit
             for val in self.tracked_values:
@@ -107,9 +107,6 @@ class OpcUaSource(Source):
                 await sub.unsubscribe(handle)
                 await sub.delete()
 
-            
-  
-
     def default_topic(self) -> Topic:
         return Topic(
             name=self.name,
@@ -117,63 +114,65 @@ class OpcUaSource(Source):
             key_deserializer="string",
             value_deserializer="json",
             value_serializer="json",
-        ) 
-    
-
-
-class SubHandler:
-    
-        
-    def __init__(self, opc_namespace: str, producer: OpcUaSource):
-        self.producer= producer
-        self.opc_namespace = opc_namespace
-
-    async def datachange_notification(self, node, val, data):
-
-        parent = await node.get_parent()
-        machine_browse_name = await parent.read_browse_name()
-        machine_name = machine_browse_name.Name
-
-        parameter_browse_name = await node.read_browse_name()
-        parameter_name = parameter_browse_name.Name
-
-        print(f"Data change event for node {machine_name}: {val}")
-        id = f'{self.opc_namespace}/{machine_name}'
-
-        # Extract the DataValue from the data parameter
-        data_value = data.monitored_item.Value
-
-        # Extract the source timestamp
-        server_timestamp = data_value.ServerTimestamp
-        
-        if server_timestamp is not None:
-            server_timestamp_nanoseconds = int(server_timestamp.timestamp() * 1_000_000_000)
-        else:
-            server_timestamp_nanoseconds = None
-        
-        # Extract the variant type
-        variant_type = data_value.Value.VariantType
-
-        json_obj = {
-            'srv_ts': server_timestamp_nanoseconds,
-            'connector_ts': time.time_ns(),
-            'type': variant_type.name,
-            'val': val,
-            'param': parameter_name,
-            'machine': machine_name
-        }
-
-        json_str = json.dumps(json_obj)
-        json_bytes = json_str.encode('utf-8')
-
-
-        # publish the data to the topic
-        self.producer.produce(
-            key=id,
-            value=json_bytes,
         )
 
 
-    def event_notification(self, event):
-        print("New event", event)
+class SubHandler:
 
+    def __init__(self, opcua_source: OpcUaSource):
+        self._source = opcua_source
+
+    async def datachange_notification(self, node, val, data):
+        try:
+            parent = await node.get_parent()
+            machine_browse_name = await parent.read_browse_name()
+            machine_name = machine_browse_name.Name
+
+            parameter_browse_name = await node.read_browse_name()
+            parameter_name = parameter_browse_name.Name
+
+            logger.debug(f"Data change event for node {machine_name}: {val}")
+
+            # Extract the DataValue from the data parameter
+            data_value = data.monitored_item.Value
+
+            # Extract the source timestamp
+            server_timestamp = data_value.ServerTimestamp
+
+            if server_timestamp is not None:
+                server_timestamp_nanoseconds = int(server_timestamp.timestamp() * 1e9)
+            else:
+                server_timestamp_nanoseconds = None
+
+            # Extract the variant type
+            variant_type = data_value.Value.VariantType
+
+            json_obj = {
+                'srv_ts': server_timestamp_nanoseconds,
+                'connector_ts': time.time_ns(),
+                'type': variant_type.name,
+                'val': val,
+                'param': parameter_name,
+                'machine': machine_name
+            }
+            json_str = json.dumps(json_obj)
+            json_bytes = json_str.encode('utf-8')
+
+            # publish the data to the topic
+            self._source.produce(
+                key=f'{self._source.opc_namespace}/{machine_name}',
+                value=json_bytes,
+            )
+        except Exception as e:
+            if not self._source.ignore_processing_errors:
+                logger.error(f"{e}; shutting down...")
+                self._source.stop()
+
+    def event_notification(self, event):
+        logger.debug(f"New event: {event}")
+
+    def status_change_notification(self, status):
+        logger.info(f"Subscription status changed: {status}")
+        if status != ua.StatusCode(ua.StatusCodes.Good):
+            logger.error(f"Server shutdown or connection lost. Shutting down...")
+            self._source.stop()

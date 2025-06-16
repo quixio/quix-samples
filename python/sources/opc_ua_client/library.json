@@ -44,6 +44,14 @@
         "Description": "List of parameters from your OPC UA server that you want to process. e.g. ['a', 'b', 'c']. NB:Use single quotes.",
         "DefaultValue": "['THERMO_PROBE_1', 'THERMO_PROBE_2']",
         "Required": true
+      },
+            {
+        "Name": "LOGLEVEL",
+        "Type": "EnvironmentVariable",
+        "InputType": "FreeText",
+        "Description": "Desired loglevel; Use 'DEBUG' to see change events, else INFO for max performance.",
+        "DefaultValue": "INFO",
+        "Required": false
       }
     ],
     "DeploySettings": {
