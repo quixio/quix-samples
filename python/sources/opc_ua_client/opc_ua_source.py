@@ -66,7 +66,8 @@ class OpcUaSource(Source):
                             myvar = await client.nodes.root.get_child(param_string)
                             self.tracked_values[param_string] = myvar
                     except Exception as e:
-                        print(e)
+                        logger.error(e)
+                        # TODO: Should we shut down here?
 
             # subscribing to a variable node
             subscriptions = {}
