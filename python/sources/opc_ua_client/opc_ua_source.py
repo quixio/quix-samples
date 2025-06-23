@@ -66,8 +66,8 @@ class OpcUaSource(Source):
                             myvar = await client.nodes.root.get_child(param_string)
                             self.tracked_values[param_string] = myvar
                     except Exception as e:
-                        logger.error(e)
-                        # TODO: Should we shut down here?
+                        logger.error(f"{e}; shutting down source...")
+                        return
 
             # subscribing to a variable node
             subscriptions = {}
@@ -82,14 +82,8 @@ class OpcUaSource(Source):
 
                 # Subscribe to data changes for the node
                 handle = await sub.subscribe_data_change(myvar)
-                                
-                #Subscribe to data changes for the node with TimestampsToReturn.Both
-                handle = await sub.subscribe_data_change(
-                    myvar,
-                    ua.TimestampsToReturn.Both  # Request both source and server timestamps
-                )
 
-                #Store the subscription and handle
+                # Store the subscription and handle
                 subscriptions[val] = sub
                 handles[val] = handle
 
@@ -166,7 +160,7 @@ class SubHandler:
             )
         except Exception as e:
             if not self._source.ignore_processing_errors:
-                logger.error(f"{e}; shutting down...")
+                logger.error(f"{e}; shutting down source...")
                 self._source.stop()
 
     def event_notification(self, event):
