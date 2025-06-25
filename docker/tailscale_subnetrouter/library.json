@@ -70,8 +70,8 @@
     "PublicAccess": false,
     "ValidateConnection": true,
     "State": {
-      "StateEnabled": true,
-      "StateSize": 1
+      "Enabled": true,
+      "Size": 1
     }
   }
 }

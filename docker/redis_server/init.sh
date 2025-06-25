@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 
-TARGET_DIR="/app/state/influxdb2"
-TARGET_USER="influxdb"
-TARGET_GROUP="influxdb"
+TARGET_DIR="/app/state/redis"
+TARGET_USER=redis
+TARGET_GROUP=redis
 
 # Check if directory already exists
 if [ ! -d "$TARGET_DIR" ]; then
@@ -23,10 +23,10 @@ fi
 # Get actual uid and gid assigned
 ACTUAL_DIR_UID=$(stat -c '%u' "$TARGET_DIR")
 ACTUAL_DIR_GID=$(stat -c '%g' "$TARGET_DIR")
-
 # Update user/group if needed
 TARGET_USER_UID=$(id -u "$TARGET_USER")
 TARGET_USER_GID=$(id -g "$TARGET_USER")
+
 
 if [ "$ACTUAL_DIR_UID" -ne "$TARGET_USER_UID" ] && [ "$ACTUAL_DIR_UID" -ne 0 ]; then
   usermod -u "$ACTUAL_DIR_UID" "$TARGET_USER" || {
@@ -42,27 +42,5 @@ if [ "$ACTUAL_DIR_GID" -ne "$TARGET_USER_GID" ] && [ "$ACTUAL_DIR_GID" -ne 0 ]; 
   }
 fi
 
-# Launch the influx setup in the background.
-(
-    #echo "Waiting for InfluxDB to be available at localhost:8086..."
-    until curl -s localhost:8086/health | grep -q '"status":"pass"'; do
-    sleep 0.5
-    done
 
-    #echo "InfluxDB is available, running setup..."
-    if influx setup \
-    --username "${DOCKER_INFLUXDB_INIT_USERNAME}" \
-    --password "${DOCKER_INFLUXDB_INIT_PASSWORD}" \
-    --token "${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}" \
-    --org "${DOCKER_INFLUXDB_INIT_ORG}" \
-    --bucket "${DOCKER_INFLUXDB_INIT_BUCKET}" \
-    --force 2>/dev/null; then
-    echo "Setup succeeded"
-    else
-    #    echo "Setup failed or already set up, continuing..."
-        :
-    fi
-) &
-
-# Replace the shell with influxd as the primary process.
-exec influxd
+exec su -s /bin/sh $TARGET_USER -c "redis-server /usr/local/etc/redis/redis.conf"

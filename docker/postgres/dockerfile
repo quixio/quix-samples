@@ -5,18 +5,10 @@ ENV PGDATA=/app/state/pgdata
 ENV POSTGRES_USER=admin
 ENV POSTGRES_DB=quix
 
-# Create non-root user (if not using built-in `postgres` user)
-# We'll use the default `postgres` user that already exists in the base image.
-
-USER root
-
-# Create the data directory and set permissions
-RUN mkdir -p "$PGDATA" \
- && chown -R postgres:postgres /app/state \
- && chmod -R 700 /app/state
-
-USER postgres
-
 EXPOSE 5432
 
-CMD ["postgres", "-c", "listen_addresses=*"]
+# Define the default command to run when starting the container
+USER root
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+ENTRYPOINT ["/init.sh"]

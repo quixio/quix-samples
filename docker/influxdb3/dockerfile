@@ -2,26 +2,9 @@ FROM quay.io/influxdb/influxdb3-core
 
 USER root
 
-# Create the data directory and set permissions
-RUN mkdir -p /app/state \
- && chown -R influxdb3:influxdb3 /app/state \
- && chmod -R 700 /app/state
-
-RUN cat <<'ENTRYPOINT_SCRIPT' > /entrypoint.sh
-#!/bin/bash
-
-# Ensure the data directory exists
-mkdir -p /app/state/influxdb3
-
-# Run influxdb3 with passed args
-exec influxdb3 "$@"
-ENTRYPOINT_SCRIPT
-
-RUN chmod +x /entrypoint.sh
-
-USER influxdb3
-
 EXPOSE 8181
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["serve", "--without-auth", "--node-id", "node0", "--object-store", "file", "--data-dir", "/app/state/influxdb3"]
+# Define the default command to run when starting the container
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+ENTRYPOINT ["/init.sh"]

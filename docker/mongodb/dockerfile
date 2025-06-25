@@ -1,8 +1,8 @@
 FROM mongo:8.0.5
 
-# To enable function without State enabled, however will only be temporary
-RUN mkdir -p /app/state && chown -R mongodb:mongodb /app/state
-
 EXPOSE 27017
 
-CMD ["mongod", "--bind_ip_all", "--dbpath", "/app/state"]
+# Define the default command to run when starting the container
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+ENTRYPOINT ["/init.sh"]
