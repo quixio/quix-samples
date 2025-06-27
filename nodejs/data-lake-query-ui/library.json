@@ -1,0 +1,32 @@
+{
+    "libraryItemId": "query-ui",
+    "name": "SQL Query UI",
+    "language": "Python",
+    "tags": {
+        "Pipeline Stage": ["Destination"],
+        "Type": ["UI"],  
+        "Category": ["Analytics"]
+    },
+    "shortDescription": "A web-based SQL query interface with hive table browser and interactive query editor for data exploration and analysis.",
+    "DefaultFile": "index.html",
+    "EntryPoint": "dockerfile",
+    "RunEntryPoint": "index.html",
+    "IconFile": "icon.png",
+    "Variables": [{
+            "Name": "QUERY_API_URL",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "URL of the DuckDB Query API service to connect to",
+            "DefaultValue": "",
+            "Required": true
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 100,
+        "MemoryInMb": 128,
+        "Replicas": 1,
+        "PublicAccess": true,
+        "ValidateConnection": false
+    }
+}

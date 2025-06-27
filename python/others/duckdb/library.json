@@ -1,0 +1,56 @@
+{
+    "libraryItemId": "duckdb-query-api",
+    "name": "DuckDB Query API",
+    "language": "Python",
+    "tags": {
+        "Pipeline Stage": ["Destination"],
+        "Type": ["API"],
+        "Category": ["Analytics"]
+    },
+    "shortDescription": "A Flask-based HTTP API service that provides SQL querying capabilities over DuckDB with S3 integration for data analytics.",
+    "DefaultFile": "main.py",
+    "EntryPoint": "dockerfile",
+    "RunEntryPoint": "main.py",
+    "IconFile": "icon.png",
+    "Variables": [{
+            "Name": "AWS_ACCESS_KEY_ID",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "AWS Access Key ID for S3 access",
+            "DefaultValue": "AWS_ACCESS_KEY_ID",
+            "Required": true
+        },
+        {
+            "Name": "AWS_SECRET_ACCESS_KEY",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "AWS Secret Access Key for S3 access",
+            "DefaultValue": "AWS_SECRET_ACCESS_KEY",
+            "Required": true
+        },
+        {
+            "Name": "S3_BUCKET",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "S3 bucket name containing the data",
+            "DefaultValue": "quix-test-bucket",
+            "Required": false
+        },
+        {
+            "Name": "S3_PREFIX",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "S3 prefix path for data location",
+            "DefaultValue": "events6/",
+            "Required": false
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 500,
+        "MemoryInMb": 1000,
+        "Replicas": 1,
+        "PublicAccess": true,
+        "ValidateConnection": false
+    }
+}

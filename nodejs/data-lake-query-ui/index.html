@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Console</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar - Hive Tree -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Hive Tables</h3>
+                <button id="refresh-tree" class="refresh-btn">↻</button>
+            </div>
+            <div id="hive-tree" class="tree-container">
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Selected Folder Display -->
+            <div id="selected-folder" class="selected-folder" style="display: none;">
+                <strong>Selected:</strong> <span id="selected-path"></span>
+                <button id="clear-selection" class="clear-selection-btn">✕</button>
+            </div>
+
+            <!-- SQL Query Section -->
+            <div class="query-section">
+                <div class="query-header">
+                    <h3>Query Editor</h3>
+                </div>
+                <textarea id="sql-editor" placeholder="SELECT * FROM events_hive LIMIT 10;">SELECT
+    DATE_TRUNC('hours', to_timestamp(ts_ms/1000)) AS hour_bucket,
+    COUNT(*)
+FROM :selected:
+GROUP BY hour_bucket</textarea>
+                <div class="query-actions">
+                    <button id="run-query" class="query-btn">Run Query</button>
+                    <button id="clear-query" class="clear-btn">Clear</button>
+                </div>
+            </div>
+
+            <!-- Resizer -->
+            <div class="resizer" id="resizer"></div>
+
+            <!-- Results Section -->
+            <div class="results-section">
+                <div class="results-header">
+                    <h3>Query Results</h3>
+                    <div id="query-status" class="status"></div>
+                </div>
+                <div id="results-container" class="results-container">
+                    <div class="no-results">Run a query to see results</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
