@@ -1,0 +1,4 @@
+quixstreams==3.16.1
+python-dotenv
+duckdb
+pyarrow

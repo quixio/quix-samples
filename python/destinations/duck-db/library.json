@@ -1,0 +1,72 @@
+{
+    "libraryItemId": "s3-iceberg-destination",
+    "name": "AWS S3 Iceberg Sink",
+    "language": "Python",
+    "tags": {
+        "Pipeline Stage": ["Destination"],
+        "Type": ["Connectors"],
+        "Category": ["Open table format"]
+    },
+    "shortDescription": "Consume data from a Kafka topic and write it to an Apache Iceberg table stored in AWS S3 using the AWS Glue Data Catalog.",
+    "DefaultFile": "main.py",
+    "EntryPoint": "dockerfile",
+    "RunEntryPoint": "main.py",
+    "IconFile": "icon.png",
+    "Variables": [{
+            "Name": "input",
+            "Type": "EnvironmentVariable",
+            "InputType": "InputTopic",
+            "Description": "Name of the input topic to listen to.",
+            "DefaultValue": "topic",
+            "Required": true
+        },
+        {
+            "Name": "AWS_ACCESS_KEY_ID",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "",
+            "DefaultValue": "AWS_ACCESS_KEY_ID",
+            "Required": true
+        },
+        {
+            "Name": "AWS_SECRET_ACCESS_KEY",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "",
+            "DefaultValue": "AWS_SECRET_ACCESS_KEY",
+            "Required": true
+        },
+        {
+            "Name": "S3_BUCKET",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "",
+            "DefaultValue": "quix-test-bucket",
+            "Required": false
+        },
+        {
+            "Name": "S3_PREFIX",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "",
+            "DefaultValue": "",
+            "Required": false
+        },
+        {
+            "Name": "PARTITION_BY",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "",
+            "DefaultValue": "day, __key",
+            "Required": true
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 500,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}
