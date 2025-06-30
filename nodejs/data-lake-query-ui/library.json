@@ -3,8 +3,12 @@
     "name": "SQL Query UI",
     "language": "Python",
     "tags": {
-        "Type": ["UI"],  
-        "Category": ["Analytics"]
+        "Complexity": [
+      "Easy"
+    ],
+    "Type": [
+      "Basic templates"
+    ]
     },
     "shortDescription": "A web-based SQL query interface with hive table browser and interactive query editor for data exploration and analysis.",
     "DefaultFile": "index.html",
