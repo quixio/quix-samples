@@ -3,9 +3,8 @@
     "name": "DuckDB Query API",
     "language": "Python",
     "tags": {
-        "Pipeline Stage": ["Destination"],
-        "Type": ["API"],
-        "Category": ["Analytics"]
+        "Category": ["Analytics"],
+        "Type": ["Auxiliary Services"]
     },
     "shortDescription": "A Flask-based HTTP API service that provides SQL querying capabilities over DuckDB with S3 integration for data analytics.",
     "DefaultFile": "main.py",

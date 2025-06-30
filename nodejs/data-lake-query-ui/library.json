@@ -3,7 +3,6 @@
     "name": "SQL Query UI",
     "language": "Python",
     "tags": {
-        "Pipeline Stage": ["Destination"],
         "Type": ["UI"],  
         "Category": ["Analytics"]
     },
