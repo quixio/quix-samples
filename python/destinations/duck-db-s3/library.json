@@ -1,6 +1,6 @@
 {
-    "libraryItemId": "s3-iceberg-destination",
-    "name": "AWS S3 Iceberg Sink",
+    "libraryItemId": "duck-db-s3-destination",
+    "name": "DuckDb S3 Sink",
     "language": "Python",
     "tags": {
         "Pipeline Stage": ["Destination"],
