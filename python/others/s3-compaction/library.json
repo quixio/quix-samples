@@ -1,0 +1,87 @@
+{
+    "libraryItemId": "parquets-s3-compaction",
+    "name": "S3 Parquet Compaction",
+    "language": "Python", 
+    "tags": {
+        "Pipeline Stage": ["Server"],
+        "Type": ["Auxiliary Services"]
+    },
+    "shortDescription": "Compact small Parquet files in S3 into larger optimized files for better query performance and reduced storage costs.",
+    "DefaultFile": "main.py",
+    "EntryPoint": "dockerfile", 
+    "RunEntryPoint": "main.py",
+    "IconFile": "icon.png",
+    "Variables": [{
+            "Name": "AWS_ACCESS_KEY_ID",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "AWS Access Key ID for S3 access",
+            "DefaultValue": "AWS_ACCESS_KEY_ID",
+            "Required": true
+        },
+        {
+            "Name": "AWS_SECRET_ACCESS_KEY", 
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "AWS Secret Access Key for S3 access",
+            "DefaultValue": "AWS_SECRET_ACCESS_KEY",
+            "Required": true
+        },
+        {
+            "Name": "S3_BUCKET",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "S3 bucket name containing the Parquet files",
+            "DefaultValue": "quix-test-bucket",
+            "Required": true
+        },
+        {
+            "Name": "AWS_REGION",
+            "Type": "EnvironmentVariable", 
+            "InputType": "FreeText",
+            "Description": "AWS region where the S3 bucket is located",
+            "DefaultValue": "eu-west-2",
+            "Required": true
+        },
+        {
+            "Name": "S3_PREFIX",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText", 
+            "Description": "S3 prefix path to limit compaction scope",
+            "DefaultValue": "events6/day=2025-02-09",
+            "Required": false
+        },
+        {
+            "Name": "SMALL_FILE_MB",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Size threshold in MB - files smaller than this will be compacted",
+            "DefaultValue": "64",
+            "Required": false
+        },
+        {
+            "Name": "TARGET_FILE_MB", 
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Target size in MB for compacted files",
+            "DefaultValue": "256",
+            "Required": false
+        },
+        {
+            "Name": "DRY_RUN",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Set to '1' to preview compaction without deleting original files",
+            "DefaultValue": "0",
+            "Required": false
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Job",
+        "CpuMillicores": 1000,
+        "MemoryInMb": 2048,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}

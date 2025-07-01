@@ -1,0 +1,6 @@
+flask
+pandas
+duckdb==1.3.0
+boto3
+pyarrow
+python-dotenv
