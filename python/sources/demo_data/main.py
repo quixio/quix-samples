@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-# import the dotenv module to load en vironmen t variabl es from a  file
+# import the dotenv module to l oad en vironmen t variabl es from a  file
 from dotenv import load_dotenv
 from quixstreams import Application
 from quixstreams.sources.community.pandas import PandasDataFrameSource
