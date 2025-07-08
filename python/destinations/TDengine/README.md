@@ -20,14 +20,50 @@ Then either:
 
 The connector uses the following environment variables:
 
-- **input**: This is the input topic (Default: `detection-result`, Required: `True`)
-- **TDENGINE_HOST**: Host address for the TDengine instance. (Required: `True`)
-- **TDENGINE_TOKEN**: Authentication token to access TDengine. (Required: `True`)
-- **TDENGINE_DATABASE**: Database name in TDengine where data should be stored. (Required: `True`)
-- **TDENGINE_SUPERTABLE**: Supertable name in TDengine. (Required: `True`)
-- **TIMESTAMP_COLUMN**: This is the column in your data that represents the timestamp in nanoseconds. Defaults to use the message timestamp received from the broker if not supplied. Case sensitive. (Default: ``, Required: `False`)
-- **TDENGINE_TAG_KEYS**: Keys to be used as tags when writing data to TDengine. These are columns that are available in the input topic. (Default: ``, Required: `False`)
-- **TDENGINE_FIELD_KEYS**: Keys to be used as fields when writing data to TDengine. These are columns that are available in the input topic. (Default: ``, Required: `True`)
+
+### Required
+- **input**: This is the input topic.
+- **TDENGINE_HOST**: Host address for the TDengine instance.
+- **TDENGINE_DATABASE**: TDengine database name.
+- **TDENGINE_TIME_PRECISION**: Time precision used when converting timestamps. Options: `ns`, `us`, `ms`, `s`.  
+  Default: `ms`
+- **CONSUMER_GROUP_NAME**: The name of the Kafka consumer group to use.  
+  Default: `tdengine-sink`
+
+  #### Required: Auth option 1
+- **TDENGINE_USERNAME**: Username to access TDengine.
+- **TDENGINE_PASSWORD**: Password to access TDengine.
+
+  #### Required: Auth option 2
+- **TDENGINE_TOKEN**: Authentication token to access TDengine.
+
+  #### Required: If not replaced in code template
+  Since callables cannot be safely passed in environment variables, these are required 
+  in the event that their functionality is not replaced with user-defined callables
+  (see `main.py` for details).
+
+- **TDENGINE_SUPERTABLE**: The TDengine supertable name.
+- **TDENGINE_SUBTABLE**: The TDengine subtable name.
+
+
+### Optional
+- **TDENGINE_TAGS_KEYS**: Comma-separated keys to be used as tags when writing data to TDengine. Can optionally ignore this and replace in code with a callable for more control (see `main.py` for details).
+- **TDENGINE_FIELDS_KEYS**: Comma-separated keys to be used as fields when writing data to TDengine. Can optionally ignore this and replace in code with a callable for more control (see `main.py` for details).
+- **TIMESTAMP_COLUMN**: A key to be used as 'time' when converting to InfluxDB line protocol, else uses Kafka timestamp. May require adjusting `TDENGINE_TIME_PRECISION` to match.
+- **TDENGINE_ALLOW_MISSING_FIELDS**: If `true`, missing field keys are skipped; otherwise a `KeyError` is raised.  
+  Default: `false`
+- **TDENGINE_INCLUDE_METADATA_TAGS**: If `true`, includes Kafka metadata (`key`, `topic`, `partition`) as tags.  
+  Default: `false`
+- **TDENGINE_CONVERT_INTS_TO_FLOATS**: If `true`, converts all integer values to floats.  
+  Default: `false`
+- **TDENGINE_ENABLE_GZIP**: If `true`, enables gzip compression when writing data.  
+  Default: `true`
+- **BUFFER_SIZE**: Number of records to buffer before writing to TDengine.  
+  Default: `1`
+- **BUFFER_TIMEOUT**: Maximum time (in seconds) to buffer records before writing to TDengine.  
+  Default: `1`
+
+
 
 ## Requirements / Prerequisites
 

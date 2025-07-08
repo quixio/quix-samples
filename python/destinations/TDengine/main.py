@@ -3,25 +3,52 @@ import os
 
 # import vendor-specific modules
 from quixstreams import Application
-from quixstreams.sinks.community.tdengine.sink import TDengineSink
+from quixstreams.sinks.community.tdengine.sink import (
+    TDengineSink,
+    FieldsSetter,
+    TagsSetter,
+    SupertableSetter,
+    SubtableNameSetter,
+)
 
 # for local dev, load env vars from a .env file
 from dotenv import load_dotenv
 load_dotenv()
 
 
-tag_keys = keys.split(",") if (keys := os.environ.get("TDENGINE_TAG_KEYS")) else []
-field_keys = keys.split(",") if (keys := os.environ.get("TDENGINE_FIELD_KEYS")) else []
-time_setter = col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None
+def _as_bool(env_var: str) -> bool:
+    return os.environ.get(env_var, "true").lower() == "true"
+
+
+def _as_iterable(env_var) -> list[str]:
+    return keys.split(",") if (keys := os.environ.get(env_var)) else []
+
+
+# Potential Callables - can manually edit these to instead use your own callables.
+# --Required--
+supertable: SupertableSetter = os.getenv("TDENGINE_SUPERTABLE")
+subtable: SubtableNameSetter = os.getenv("TDENGINE_SUBTABLE")
+# --Optional--
+tags_keys: TagsSetter = _as_iterable("TDENGINE_TAGS_KEYS")
+fields_keys: FieldsSetter = _as_iterable("TDENGINE_FIELDS_KEYS")
+
 
 tdengine_sink = TDengineSink(
-    token=os.environ["TDENGINE_TOKEN"],
     host=os.environ["TDENGINE_HOST"],
-    tags_keys=tag_keys,
-    fields_keys=field_keys,
-    time_setter=time_setter,
-    database=os.environ["TDENGINE_DATABASE"],
-    measurement=os.environ["TDENGINE_SUPERTABLE"],
+    database=os.getenv("TDENGINE_DATABASE"),
+    token=os.getenv("TDENGINE_TOKEN"),
+    username=os.getenv("TDENGINE_USERNAME"),
+    password=os.getenv("TDENGINE_PASSWORD"),
+    supertable=supertable,
+    subtable=subtable,
+    fields_keys=fields_keys,
+    tags_keys=tags_keys,
+    time_key=col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None,
+    time_precision=os.environ["TDENGINE_TIME_PRECISION"],
+    allow_missing_fields=_as_bool("TDENGINE_ALLOW_MISSING_FIELDS"),
+    include_metadata_tags=_as_bool("TDENGINE_INCLUDE_METADATA_TAGS"),
+    convert_ints_to_floats=_as_bool("TDENGINE_CONVERT_INTS_TO_FLOATS"),
+    enable_gzip=_as_bool("TDENGINE_ENABLE_GZIP"),
 )
 
 
