@@ -59,7 +59,7 @@ The connector uses the following environment variables:
 - **TDENGINE_ENABLE_GZIP**: If `true`, enables gzip compression when writing data.  
   Default: `true`
 - **BUFFER_SIZE**: Number of records to buffer before writing to TDengine.  
-  Default: `1`
+  Default: `50`
 - **BUFFER_TIMEOUT**: Maximum time (in seconds) to buffer records before writing to TDengine.  
   Default: `1`
 
