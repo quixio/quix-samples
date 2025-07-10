@@ -1,3 +1,2 @@
-# TODO: remove "@ git+" version of install before merging PR
-quixstreams @ git+https://github.com/quixio/quix-streams.git
+quixstreams==3.19.0
 python-dotenv

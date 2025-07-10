@@ -63,13 +63,6 @@
       "Required": false
     },
     {
-      "Name": "TDENGINE_SUBTABLE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The TDengine subtable name; required when a custom callable is not defined in the code.",
-      "Required": false
-    },
-    {
       "Name": "TDENGINE_TAGS_KEYS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
@@ -99,6 +92,14 @@
       "Description": "time precision assumed when converting to InfluxDB line protocol. Possible values: 'ms', 'ns', 'us', 's'.",
       "DefaultValue": "ms",
       "Required": true
+    },
+    {
+      "Name": "TDENGINE_NAME_SUBTABLES_FROM_TAGS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "If `true`, name subtables using the tag values (joined on `__`), else use TDengine's auto-generated randomized values.",
+      "DefaultValue": "false",
+      "Required": false
     },
     {
       "Name": "TDENGINE_ALLOW_MISSING_FIELDS",
@@ -144,15 +145,15 @@
       "Name": "BUFFER_SIZE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The number of records that sink holds before flush data to the InfluxDb",
-      "DefaultValue": "1",
+      "Description": "The number of records that sink holds before flush data to TDengine",
+      "DefaultValue": "1000",
       "Required": false
     },
     {
       "Name": "BUFFER_TIMEOUT",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The number of seconds that sink holds before flush data to the InfluxDb",
+      "Description": "The number of seconds that sink holds before flush data to TDengine",
       "DefaultValue": "1",
       "Required": false
     }

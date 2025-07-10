@@ -29,24 +29,13 @@ The connector uses the following environment variables:
   Default: `ms`
 - **CONSUMER_GROUP_NAME**: The name of the Kafka consumer group to use.  
   Default: `tdengine-sink`
-
-  #### Required: Auth option 1
-- **TDENGINE_USERNAME**: Username to access TDengine.
-- **TDENGINE_PASSWORD**: Password to access TDengine.
-
-  #### Required: Auth option 2
 - **TDENGINE_TOKEN**: Authentication token to access TDengine.
-
-  #### Required: If not replaced in code template
-  Since callables cannot be safely passed in environment variables, these are required 
-  in the event that their functionality is not replaced with user-defined callables
-  (see `main.py` for details).
-
-- **TDENGINE_SUPERTABLE**: The TDengine supertable name.
-- **TDENGINE_SUBTABLE**: The TDengine subtable name.
-
+- **TDENGINE_SUPERTABLE**: The TDengine supertable name. This is required in the event 
+  that its functionality is not directly replaced in the template with a user-defined 
+  callable (see `main.py` for details).
 
 ### Optional
+- **TDENGINE_NAME_SUBTABLES_FROM_TAGS**: If `true`, name subtables using the tag values (joined on `__`), else use TDengine's auto-generated randomized values. Can optionally ignore this and replace in code with a different callable for more control (see `main.py` for details).
 - **TDENGINE_TAGS_KEYS**: Comma-separated keys to be used as tags when writing data to TDengine. Can optionally ignore this and replace in code with a callable for more control (see `main.py` for details).
 - **TDENGINE_FIELDS_KEYS**: Comma-separated keys to be used as fields when writing data to TDengine. Can optionally ignore this and replace in code with a callable for more control (see `main.py` for details).
 - **TIMESTAMP_COLUMN**: A key to be used as 'time' when converting to InfluxDB line protocol, else uses Kafka timestamp. May require adjusting `TDENGINE_TIME_PRECISION` to match.
