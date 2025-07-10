@@ -35,20 +35,6 @@
       "Required": false
     },
     {
-      "Name": "TDENGINE_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Username to access TDengine; must also include a password. Can alternatively use just a token instead.",
-      "Required": false
-    },
-    {
-      "Name": "TDENGINE_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Password to access TDengine; must also include a username. Can alternatively use just a token instead.",
-      "Required": false
-    },
-    {
       "Name": "TDENGINE_DATABASE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
