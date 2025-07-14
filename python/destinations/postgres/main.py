@@ -5,6 +5,15 @@ from quixstreams.sinks.community.postgresql import PostgreSQLSink
 from dotenv import load_dotenv
 load_dotenv()
 
+
+def _as_bool(env_var: str, default="false") -> bool:
+    return os.environ.get(env_var, default).lower() == "true"
+
+
+def _as_iterable(env_var) -> list[str]:
+    return keys.split(",") if (keys := os.environ.get(env_var)) else []
+
+
 # Initialize PostgreSQL Sink
 postgres_sink = PostgreSQLSink(
     host=os.environ["POSTGRES_HOST"],
@@ -14,7 +23,9 @@ postgres_sink = PostgreSQLSink(
     password=os.environ["POSTGRES_PASSWORD"],
     table_name=os.environ["POSTGRES_TABLE"],
     schema_name=os.getenv("POSTGRES_SCHEMA", "public"),
-    schema_auto_update=os.environ.get("SCHEMA_AUTO_UPDATE", "true").lower() == "true",
+    schema_auto_update=_as_bool("POSTGRES_SCHEMA_AUTO_UPDATE", "true"),
+    primary_keys=_as_iterable("POSTGRES_PRIMARY_KEYS"),
+    upsert_on_primary_key=_as_bool("POSTGRES_UPSERT_ON_PRIMARY_KEY"),
 )
 
 # Initialize the application

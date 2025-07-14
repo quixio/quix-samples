@@ -76,11 +76,26 @@
       "Required": false
     },
     {
-      "Name": "SCHEMA_AUTO_UPDATE",
+      "Name": "POSTGRES_SCHEMA_AUTO_UPDATE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Automatically update the schema by adding new columns when new fields are detected.",
       "DefaultValue": "true",
+      "Required": false
+    },
+    {
+      "Name": "POSTGRES_PRIMARY_KEYS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "An optional comma-separated list of primary key column(s). Often paired with `POSTGRES_UPSERT_ON_PRIMARY_KEY=true`",
+      "Required": false
+    },
+    {
+      "Name": "POSTGRES_UPSERT_ON_PRIMARY_KEY",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "If `true`, upsert based on the given `primary_keys`, else every message is treated as an independent entry, and any primary key collisions will consequently raise an exception.",
+      "DefaultValue": "false",
       "Required": false
     },
     {
