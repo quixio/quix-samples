@@ -1,0 +1,2 @@
+quixstreams[influxdb3]==3.19.0
+python-dotenv
