@@ -71,7 +71,7 @@
       "Name": "POSTGRES_SCHEMA",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The schema name. Schemas are a way of organizing tables and not related to the table data, referenced as `<schema_name>.<table_name>`. PostrgeSQL uses 'public' by default under the hood.",
+      "Description": "The schema name. Schemas are a way of organizing tables and not related to the table data, referenced as `<schema_name>.<table_name>`. PostrgeSQL uses `public` by default under the hood.",
       "DefaultValue": "public",
       "Required": false
     },

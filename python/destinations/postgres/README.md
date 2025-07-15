@@ -17,19 +17,30 @@ Then either:
 
 The connector uses the following environment variables:
 
-- **input**: This is the input topic (Default: `detection-result`, Required: `True`)
-- **POSTGRES_HOST**: Host address for the PostgreSQL instance. (Default: `localhost`, Required: `True`)
-- **POSTGRES_PORT**: Port number for the PostgreSQL instance. (Default: `5432`, Required: `True`)
-- **POSTGRES_DBNAME**: Database name in PostgreSQL where data should be stored. (Default: `mydatabase`, Required: `True`)
-- **POSTGRES_USER**: Username for the PostgreSQL database. (Default: `myuser`, Required: `True`)
-- **POSTGRES_PASSWORD**: Password for the PostgreSQL database. (Default: `mypassword`, Required: `True`)
-- **POSTGRES_TABLE**: The PostgreSQL table where data will be stored. If the table does not exist, it will be created automatically. (Default: `numbers`, Required: `True`)
-- **POSTGRES_SCHEMA_AUTO_UPDATE**: Automatically update the schema by adding new columns when new fields are detected. (Default: `true`, Required: `False`)
-- **POSTGRES_PRIMARY_KEYS**: An optional comma-separated list of primary key column(s). Often paired with `POSTGRES_UPSERT_ON_PRIMARY_KEY=true`. (Required: `False`)
-- **POSTGRES_UPSERT_ON_PRIMARY_KEY**: If `true`, upsert based on the given `primary_keys`, else every message is treated as an independent entry, and any primary key collisions will consequently raise an exception. (Default: `true`, Required: `False`)
-- **CONSUMER_GROUP_NAME**: The name of the consumer group to use when consuming from Kafka. (Default: `postgres-sink`, Required: `True`)
-- **BATCH_SIZE**: The number of records that the sink holds before flushing data to PostgreSQL. (Default: `1000`, Required: `False`)
-- **BATCH_TIMEOUT**: The number of seconds that the sink holds before flushing data to PostgreSQL. (Default: `1`, Required: `False`)
+### Required
+- **input**: The input kafka topic.
+- **POSTGRES_HOST**: Host address for the PostgreSQL instance.
+- **POSTGRES_PORT**: Port number for the PostgreSQL instance.
+- **POSTGRES_DBNAME**: Database name in PostgreSQL where data should be stored.
+- **POSTGRES_USER**: Username for the PostgreSQL database.
+- **POSTGRES_PASSWORD**: Password for the PostgreSQL database.
+- **POSTGRES_TABLE**: The PostgreSQL table where data will be stored. If the table does not exist, it will be created automatically.  
+  Default: `default_table`
+
+### Optional
+- **POSTGRES_SCHEMA**: The schema name. Schemas are a way of organizing tables and not related to the table data, referenced as `<schema_name>.<table_name>`.  
+  Default: `public` (also the Postgres default).
+- **POSTGRES_SCHEMA_AUTO_UPDATE**: Automatically update the schema by adding new columns when new fields are detected.  
+  Default: `true`
+- **POSTGRES_PRIMARY_KEYS**: An optional comma-separated list of primary key column(s). Often paired with `POSTGRES_UPSERT_ON_PRIMARY_KEY=true`.
+- **POSTGRES_UPSERT_ON_PRIMARY_KEY**: If `true`, upsert based on the given `primary_keys`, else every message is treated as an independent entry, and any primary key collisions will consequently raise an exception.  
+  Default: `true`
+- **CONSUMER_GROUP_NAME**: The name of the consumer group to use when consuming from Kafka.  
+  Default: `postgres-sink`
+- **BATCH_SIZE**: The number of records that the sink holds before flushing data to PostgreSQL.  
+  Default: `1000`
+- **BATCH_TIMEOUT**: The number of seconds that the sink holds before flushing data to PostgreSQL.  
+  Default: `1`
 
 ## Requirements / Prerequisites
 

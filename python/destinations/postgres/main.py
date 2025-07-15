@@ -20,7 +20,7 @@ def _as_iterable(env_var) -> list[str]:
 
 # Potential Callables - can manually edit these to instead use your own callables.
 # --Required--
-table_name: TableName = os.environ["POSTGRES_TABLE"]
+table_name: TableName = os.getenv("POSTGRES_TABLE", "default_table")
 # --Optional--
 primary_keys: PrimaryKeySetter = _as_iterable("POSTGRES_PRIMARY_KEYS")
 
