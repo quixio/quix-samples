@@ -24,7 +24,7 @@ MQTT_PORT="1883"
 3. Fill in the required environment variables for your MongoDB instance.
 4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
 
-For more configuration options and details, refer to [Mongo Docker Hub](https://hub.docker.com/_/mongo).
+For more configuration options and details, refer to [Mosquitto Docker Hub](https://hub.docker.com/_/eclipse-mosquitto).
 
 
 ## Contribute
