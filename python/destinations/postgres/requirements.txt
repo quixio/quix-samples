@@ -1,3 +1,3 @@
 # TODO: remove "@ git+" version of install before merging PR
-quixstreams[postgresql] @ git+https://github.com/quixio/quix-streams.git@sinks/sinks/postgres-primary-keys
+quixstreams[postgresql] @ git+https://github.com/quixio/quix-streams.git@sinks/postgres-primary-keys
 python-dotenv
