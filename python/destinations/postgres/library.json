@@ -84,7 +84,7 @@
       "Required": false
     },
     {
-      "Name": "POSTGRES_PRIMARY_KEYS",
+      "Name": "POSTGRES_PRIMARY_KEY_COLUMNS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "An optional comma-separated list of primary key column(s). Often paired with `POSTGRES_UPSERT_ON_PRIMARY_KEY=true`",

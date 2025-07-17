@@ -22,7 +22,7 @@ def _as_iterable(env_var) -> list[str]:
 # --Required--
 table_name: TableName = os.getenv("POSTGRES_TABLE", "default_table")
 # --Optional--
-primary_keys: PrimaryKeySetter = _as_iterable("POSTGRES_PRIMARY_KEYS")
+primary_key_columns: PrimaryKeySetter = _as_iterable("POSTGRES_PRIMARY_KEY_COLUMNS")
 
 
 # Initialize PostgreSQL Sink
@@ -35,7 +35,7 @@ postgres_sink = PostgreSQLSink(
     table_name=table_name,
     schema_name=os.getenv("POSTGRES_SCHEMA", "public"),
     schema_auto_update=_as_bool("POSTGRES_SCHEMA_AUTO_UPDATE", "true"),
-    primary_keys=primary_keys,
+    primary_key_columns=primary_key_columns,
     upsert_on_primary_key=_as_bool("POSTGRES_UPSERT_ON_PRIMARY_KEY"),
 )
 

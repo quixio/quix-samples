@@ -32,7 +32,7 @@ The connector uses the following environment variables:
   Default: `public` (also the Postgres default).
 - **POSTGRES_SCHEMA_AUTO_UPDATE**: Automatically update the schema by adding new columns when new fields are detected.  
   Default: `true`
-- **POSTGRES_PRIMARY_KEYS**: An optional comma-separated list of primary key column(s). Often paired with `POSTGRES_UPSERT_ON_PRIMARY_KEY=true`.
+- **POSTGRES_PRIMARY_KEY_COLUMNS**: An optional comma-separated list of primary key column(s). Often paired with `POSTGRES_UPSERT_ON_PRIMARY_KEY=true`.
 - **POSTGRES_UPSERT_ON_PRIMARY_KEY**: If `true`, upsert based on the given `primary_keys`, else every message is treated as an independent entry, and any primary key collisions will consequently raise an exception.  
   Default: `true`
 - **CONSUMER_GROUP_NAME**: The name of the consumer group to use when consuming from Kafka.  
