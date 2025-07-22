@@ -46,7 +46,7 @@ if mqtt_topic == "":
 if not mqtt_port.isnumeric():
     raise ValueError('mqtt_port must be a numeric value')
 
-client_id = os.getenv("Quix__Deployment__Name", "default")
+client_id = os.getenv("Quix__Deployment__Id", "default")
 mqtt_client = paho.Client(callback_api_version=paho.CallbackAPIVersion.VERSION2,
                           client_id = client_id, userdata = None, protocol = mqtt_protocol_version())
 
