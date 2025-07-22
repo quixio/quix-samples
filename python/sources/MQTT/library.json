@@ -25,6 +25,7 @@
       "Name": "mqtt_topic",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
+      "DefaultValue": "#",
       "Description": "The root for messages in MQTT, this can be anything",
       "Required": true
     },
