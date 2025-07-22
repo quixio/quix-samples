@@ -76,13 +76,8 @@ def on_connect_cb(client: paho.Client, userdata: any, connect_flags: paho.Connec
 
 # print message, useful for checking if it was successful
 def on_message_cb(client: paho.Client, userdata: any, msg: paho.MQTTMessage):
-    message_key = str(msg.topic).replace("/", "-")
-
-    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
-
-    # publish to the putput topic
     producer.produce(topic=output_topic.name,
-                    key=message_key,
+                    key=msg.topic,
                     value=msg.payload)
 
 # print which topic was subscribed to
