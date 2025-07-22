@@ -48,7 +48,7 @@
     {
       "Name": "PG_PASSWORD",
       "Type": "EnvironmentVariable",
-      "InputType": "HiddenText",
+      "InputType": "Secret",
       "Description": "Password of Postgres",
       "DefaultValue": "",
       "Required": true

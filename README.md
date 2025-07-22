@@ -121,7 +121,7 @@ Each variable will create a unique setup field in the Quix Code Samples.
 
 **"InputType"**
 
-  - **"HiddenText"** for tokens and credentials 
+  - **"Secret"** for tokens and credentials 
 
   - **"FreeText"** for anything else
 
