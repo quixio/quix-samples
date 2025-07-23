@@ -52,7 +52,7 @@
         {
             "Name": "mqtt_password",
             "Type": "EnvironmentVariable",
-            "InputType": "HiddenText",
+            "InputType": "Secret",
             "Description": "Password for the MQTT user",
             "Required": false
         },

@@ -31,7 +31,7 @@
     {
       "Name": "kafka_key",
       "Type": "EnvironmentVariable",
-      "InputType": "HiddenText",
+      "InputType": "Secret",
       "Description": "Obtained from the Confluent Kafka portal",
       "DefaultValue": "",
       "Required": true
@@ -39,7 +39,7 @@
     {
       "Name": "kafka_secret",
       "Type": "EnvironmentVariable",
-      "InputType": "HiddenText",
+      "InputType": "Secret",
       "Description": "Obtained from the Confluent Kafka portal",
       "DefaultValue": "",
       "Required": true
