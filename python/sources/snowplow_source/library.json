@@ -33,7 +33,7 @@
     {
       "Name": "aws_secret_access_key",
       "Type": "EnvironmentVariable",
-      "InputType": "HiddenText",
+      "InputType": "Secret",
       "Description": "AWS Secret Access Key",
       "DefaultValue": "",
       "Required": true

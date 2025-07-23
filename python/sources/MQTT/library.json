@@ -25,6 +25,7 @@
       "Name": "mqtt_topic",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
+      "DefaultValue": "#",
       "Description": "The root for messages in MQTT, this can be anything",
       "Required": true
     },
@@ -53,7 +54,7 @@
     {
       "Name": "mqtt_password",
       "Type": "EnvironmentVariable",
-      "InputType": "HiddenText",
+      "InputType": "Secret",
       "Description": "Password for the MQTT user",
       "Required": false
     },
