@@ -1,0 +1,27 @@
+{
+  "libraryItemId": "flet-destination",
+  "name": "Flet Real-time Waveform Viewer",
+  "language": "Python",
+  "IsHighlighted": true,
+  "DisplayOrder": 3,
+  "tags": {
+    "Complexity": ["Medium"],
+    "Technology": ["Quix Streams", "Flet"],
+    "Pipeline Stage": ["Destination"],
+    "Popular Subjects": ["Data Visualization", "Real-time"],
+    "Type": ["Visualization"]
+  },
+  "shortDescription": "Real-time web-based data visualization using Flet framework to display streaming sensor data with interactive charts.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "Name of the input topic to listen to (expects data with 'temperature' and 'humidity' fields).",
+      "DefaultValue": "sensor-data"
+    }
+  ]
+}
