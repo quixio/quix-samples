@@ -2,8 +2,6 @@
   "libraryItemId": "flet-destination",
   "name": "Flet Real-time Waveform Viewer",
   "language": "Python",
-  "IsHighlighted": true,
-  "DisplayOrder": 3,
   "tags": {
     "Complexity": ["Medium"],
     "Technology": ["Quix Streams", "Flet"],
