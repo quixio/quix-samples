@@ -1,13 +1,12 @@
 import flet as ft
 import threading
 import time
-from collections import deque
-from datetime import datetime, timedelta
+from datetime import datetime
 from shared_quix_service import shared_quix_service
 
 
 class QuixTimeseriesPlot:
-    def __init__(self, title: str, y_axis_label: str, units: str, height: int = 300, max_age_seconds: int = 60, 
+    def __init__(self, title: str, y_axis_label: str, units: str, height: int = 300, 
                  update_callback=None, page_update_callback=None, update_interval: float = 1.0):
         """
         Create a custom timeseries plot component for Quix data with multiple series support
@@ -17,7 +16,6 @@ class QuixTimeseriesPlot:
             y_axis_label: Label for the Y axis (e.g., "Temperature")
             units: Units for the data (e.g., "°C")
             height: Height of the chart in pixels
-            max_age_seconds: Maximum age of data points to keep
             update_callback: Function to call when data is updated (data_points, last_update_time)
             page_update_callback: Function to call to update the page
             update_interval: How often to update the chart in seconds
@@ -26,8 +24,6 @@ class QuixTimeseriesPlot:
         self.y_axis_label = y_axis_label
         self.units = units
         self.height = height
-        self.max_age_seconds = max_age_seconds
-        self.max_age = timedelta(seconds=max_age_seconds)
         self.update_callback = update_callback
         self.page_update_callback = page_update_callback
         self.update_interval = update_interval
@@ -123,7 +119,10 @@ class QuixTimeseriesPlot:
             # Auto-create series with default settings
             self.add_series(series_name)
         
-        # Data is automatically stored in shared service, just trigger callback
+        # Store data in shared service using the provided timestamp and value
+        shared_quix_service.add_data_point(series_name, timestamp, value)
+        
+        # Trigger callback
         if self.update_callback:
             try:
                 total_points = self.get_data_point_count()
@@ -137,37 +136,30 @@ class QuixTimeseriesPlot:
                     print(f"Error in plot update callback: {e}")
     
     def update(self):
-        """Update the chart with latest data from all series"""
-        series_names = shared_quix_service.get_all_series_names()
-        if not series_names:
+        """Update the chart with latest data from configured plot series"""
+        if not self.series_configs:
             return
             
         all_chart_labels = []
         min_x = float('inf')
         max_x = float('-inf')
         
-        # Update each series
-        for i, series_name in enumerate(series_names):
-            if i < len(self.chart.data_series):
-                chart_points, chart_labels = self._get_chart_data(series_name)
+        # Update each configured series
+        for i, series_name in enumerate(self.series_configs.keys()):
+            chart_points, chart_labels = self._get_chart_data(series_name)
+            
+            if chart_points:
+                self.chart.data_series[i].data_points = chart_points
                 
-                if chart_points:
-                    # Update tooltips to include series name
-                    for point in chart_points:
-                        formatted_time = datetime.fromtimestamp(point.x / 1000).strftime("%H:%M:%S")
-                        point.tooltip = f"Time: {formatted_time}\n{series_name}: {point.y:.1f} {self.units}"
-                    
-                    self.chart.data_series[i].data_points = chart_points
-                    
-                    # Track min/max x values across all series
-                    series_min_x = chart_points[0].x
-                    series_max_x = chart_points[-1].x
-                    min_x = min(min_x, series_min_x)
-                    max_x = max(max_x, series_max_x)
-                    
-                    # Use labels from the first series (they should be similar across series)
-                    if i == 0:
-                        all_chart_labels = chart_labels
+                # Track min/max x values across all series
+                series_min_x = chart_points[0].x
+                series_max_x = chart_points[-1].x
+                min_x = min(min_x, series_min_x)
+                max_x = max(max_x, series_max_x)
+                
+                # Use labels from the first series (they should be similar across series)
+                if i == 0:
+                    all_chart_labels = chart_labels
         
         # Update chart bounds
         if min_x != float('inf'):
@@ -218,22 +210,14 @@ class QuixTimeseriesPlot:
             series_name: Name of series to remove
         """
         if series_name in self.series_configs:
-            # Find the index of this series
             series_index = list(self.series_configs.keys()).index(series_name)
-            
-            # Remove from local config
             del self.series_configs[series_name]
-            
-            # Clear data in shared service
             shared_quix_service.clear_data(series_name)
-            
-            # Remove from chart
-            if series_index < len(self.chart.data_series):
-                self.chart.data_series.pop(series_index)
+            self.chart.data_series.pop(series_index)
     
     def get_series_names(self):
-        """Get list of all series names"""
-        return shared_quix_service.get_all_series_names()
+        """Get list of configured plot series names"""
+        return list(self.series_configs.keys())
     
     def get_container(self):
         """Get the container widget to add to the page"""
@@ -258,8 +242,7 @@ class QuixTimeseriesPlot:
             
             # Update chart
             series_index = list(self.series_configs.keys()).index(series_name)
-            if series_index < len(self.chart.data_series):
-                self.chart.data_series[series_index].color = color
+            self.chart.data_series[series_index].color = color
     
     def get_data_point_count(self, series_name: str = None):
         """
@@ -317,8 +300,7 @@ class QuixTimeseriesPlot:
         chart_x_labels = []
         
         for timestamp, value in data_snapshot:
-            # Create data point with custom tooltip
-            formatted_time = datetime.fromtimestamp(timestamp / 1000).strftime("%Y-%m-%d %H:%M:%S")
+            formatted_time = datetime.fromtimestamp(timestamp / 1000).strftime("%H:%M:%S")
             tooltip_text = f"Time: {formatted_time}\n{series_name}: {value:.1f} {self.units}"
             
             chart_points.append(ft.LineChartDataPoint(
@@ -327,32 +309,21 @@ class QuixTimeseriesPlot:
                 tooltip=tooltip_text
             ))
         
-        # Create labels from actual data points, selecting specific indices to fit limit
+        # Create labels from data points
         if data_snapshot:
             max_labels = 4
             data_len = len(data_snapshot)
+            step = max(1, data_len // max_labels) if data_len > max_labels else 1
             
-            if data_len <= max_labels:
-                # If we have fewer points than max labels, use all points
-                selected_indices = list(range(data_len))
-            else:
-                # Calculate which indices to select to get exactly max_labels
-                selected_indices = []
-                for i in range(max_labels):
-                    # Distribute indices evenly across the data range
-                    idx = int(i * (data_len - 1) / (max_labels - 1))
-                    selected_indices.append(idx)
-            
-            # Create labels only for selected data points
-            for idx in selected_indices:
-                timestamp = data_snapshot[idx][0]
+            for i in range(0, data_len, step):
+                timestamp = data_snapshot[i][0]
                 chart_x_labels.append(ft.ChartAxisLabel(
-                    timestamp, 
+                    timestamp,
                     ft.Text(
                         datetime.fromtimestamp(timestamp / 1000).strftime("%H:%M:%S"),
                         size=10,
                         bgcolor=ft.Colors.RED
-                        )
+                    )
                 ))
         
         return chart_points, chart_x_labels

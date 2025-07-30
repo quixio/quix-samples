@@ -1,6 +1,6 @@
 {
-  "libraryItemId": "flet-destination",
-  "name": "Flet Real-time Waveform Viewer",
+  "libraryItemId": "flet-waveform",
+  "name": "Flet Waveform",
   "language": "Python",
   "tags": {
     "Complexity": ["Medium"],
