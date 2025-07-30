@@ -1,5 +1,6 @@
 import flet as ft
 import os
+from datetime import datetime
 from shared_quix_service import shared_quix_service
 from quix_timeseries_plot import QuixTimeseriesPlot
 from dotenv import load_dotenv
@@ -29,17 +30,17 @@ class WaveformViewer:
         
         # Create timeseries plots
         self.temperature_plot = QuixTimeseriesPlot(
-            title="Sensor Data",
-            y_axis_label="Values",
-            units="Mixed",
+            title="CPU usage",
+            y_axis_label="Usage",
+            units="%",
             height=300,
             update_callback=self.on_data_updated,
             page_update_callback=self.page.update
         )
         
         # Add multiple series with distinct colors
-        self.temperature_plot.add_series("temperature", ft.Colors.BLUE, 2)
-        self.temperature_plot.add_series("humidity", ft.Colors.ORANGE, 2)
+        self.temperature_plot.add_series("usage_user", ft.Colors.ORANGE, 2)
+        self.temperature_plot.add_series("usage_system", ft.Colors.BLUE, 2)
         
         self.setup_ui()
         self.start_services()
@@ -60,10 +61,14 @@ class WaveformViewer:
     
     def handle_kafka_data(self, data, timestamp, counter):
         """Handle incoming Kafka data"""
-        if "temperature" in data:
-            self.temperature_plot.add_data_point("temperature", timestamp, float(data["temperature"]))
-        if "humidity" in data:
-            self.temperature_plot.add_data_point("humidity", timestamp, float(data["humidity"]))
+        # Data is already stored in shared service, just trigger callback
+        if self.temperature_plot.update_callback:
+            try:
+                total_points = self.temperature_plot.get_data_point_count()
+                current_time = datetime.now().strftime('%H:%M:%S')
+                self.temperature_plot.update_callback(total_points, current_time)
+            except Exception as e:
+                print(f"Error in update callback: {e}")
     
     def handle_kafka_status(self, status, color):
         """Handle Kafka connection status updates"""
@@ -83,6 +88,8 @@ class WaveformViewer:
         """Start the shared Quix service"""
         # Get topic name from environment variable
         topic_name = os.environ["input"]
+
+        print(topic_name)
         
         # Set topic and add callbacks to shared service
         shared_quix_service.set_topic(topic_name)

@@ -102,10 +102,11 @@ class SharedQuixService:
             self.last_update_time = datetime.now()
     
     def get_series_data(self, series_name):
-        """Get data for a specific series"""
+        """Get data for a specific series, sorted by timestamp"""
         with self._lock:
             if series_name in self.series_data:
-                return list(self.series_data[series_name])
+                data_list = list(self.series_data[series_name])
+                return sorted(data_list, key=lambda x: x[0])  # Sort by timestamp (first element)
             return []
     
     def get_all_series_names(self):
@@ -122,14 +123,19 @@ class SharedQuixService:
                 self.series_data[series_name].clear()
     
     def _cleanup_old_data(self, series_name):
-        """Remove data points older than max_age"""
+        """Remove data points older than max_age relative to latest data point"""
         if series_name not in self.series_data:
             return
             
-        cutoff_time = datetime.now() - self.max_age
         data_deque = self.series_data[series_name]
+        if not data_deque:
+            return
+            
+        # Use the latest data point timestamp as reference
+        latest_timestamp = data_deque[-1][0]  # Last item timestamp
+        cutoff_timestamp = latest_timestamp - (self.max_age_seconds * 1000)  # Convert seconds to milliseconds
         
-        while data_deque and datetime.fromtimestamp(data_deque[0][0] / 1000) < cutoff_time:
+        while data_deque and data_deque[0][0] < cutoff_timestamp:
             data_deque.popleft()
     
     def _notify_data_callbacks(self, data, timestamp, counter):
@@ -162,14 +168,13 @@ class SharedQuixService:
             input_topic = app.topic(self.topic_name)
             consumer = app.get_consumer()
             consumer.subscribe([input_topic.name])
-            
+            print(self.topic_name)
             # Update connection status
             self._notify_status_callbacks("Connected", "GREEN")
             
             while self.running:
                 # Poll for new messages
                 message = consumer.poll(timeout=1.0)
-                
                 if message is not None:
                     self.msg_counter += 1
                     
