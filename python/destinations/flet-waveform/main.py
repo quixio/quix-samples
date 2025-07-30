@@ -3,9 +3,9 @@ import os
 from datetime import datetime
 from shared_quix_service import shared_quix_service
 from quix_timeseries_plot import QuixTimeseriesPlot
-from dotenv import load_dotenv
 
-load_dotenv("waveform/.env")
+#from dotenv import load_dotenv
+#load_dotenv(".env")
 
 
 class WaveformViewer:
@@ -59,16 +59,6 @@ class WaveformViewer:
             else:
                 print(f"Error updating data stats in instance {self.instance_id}: {e}")
     
-    def handle_kafka_data(self, data, timestamp, counter):
-        """Handle incoming Kafka data"""
-        # Data is already stored in shared service, just trigger callback
-        if self.temperature_plot.update_callback:
-            try:
-                total_points = self.temperature_plot.get_data_point_count()
-                current_time = datetime.now().strftime('%H:%M:%S')
-                self.temperature_plot.update_callback(total_points, current_time)
-            except Exception as e:
-                print(f"Error in update callback: {e}")
     
     def handle_kafka_status(self, status, color):
         """Handle Kafka connection status updates"""
@@ -93,7 +83,6 @@ class WaveformViewer:
         
         # Set topic and add callbacks to shared service
         shared_quix_service.set_topic(topic_name)
-        shared_quix_service.add_data_callback(self.handle_kafka_data)
         shared_quix_service.add_status_callback(self.handle_kafka_status)
         print(f"Instance {self.instance_id} registered callbacks")
         
@@ -121,7 +110,6 @@ class WaveformViewer:
         """Clean up callbacks when closing the app instance"""
         if not hasattr(self, '_cleaned_up'):
             print(f"Cleaning up instance {self.instance_id}")
-            shared_quix_service.remove_data_callback(self.handle_kafka_data)
             shared_quix_service.remove_status_callback(self.handle_kafka_status)
             self._cleaned_up = True
     
