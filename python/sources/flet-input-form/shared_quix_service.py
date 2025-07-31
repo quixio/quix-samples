@@ -67,9 +67,6 @@ class SharedQuixService:
             Exception: If producer not initialized or send fails
         """
         try:
-            if not self.producer or not self.output_topic:
-                raise Exception("Producer not initialized")
-            
             # Ensure message is properly formatted as JSON string
             if isinstance(message_data, dict):
                 message_json = json.dumps(message_data)
