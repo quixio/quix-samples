@@ -4,11 +4,15 @@
     "branch": "main"
   },
     {
-    "httpUrl": "https://github.com/quixio/template-http-ingestion.git",
-    "branch": "configurable/static"
+    "httpUrl": "https://github.com/quixio/template-mqtt-ingestion.git",
+    "branch": "main"
   },
   {
-    "httpUrl": "https://github.com/quixio/template-mqtt-ingestion.git",
+    "httpUrl": "https://github.com/quixio/template-static-configuration.git",
+    "branch": "main"
+  },
+  {
+    "httpUrl": "https://github.com/quixio/template-dynamic-configuration.git",
     "branch": "main"
   }
 ]
