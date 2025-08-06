@@ -1,0 +1,6 @@
+quixstreams==3.16.1
+python-dotenv
+requests
+pandas
+boto3
+pyarrow
