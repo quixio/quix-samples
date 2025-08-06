@@ -17,18 +17,18 @@ load_dotenv()
 
 
 def _as_bool(env_var: str) -> bool:
-    return os.environ.get(env_var, "false").lower() == "true"
+    return os.getenv(env_var, "false").lower() == "true"
 
 
 def _as_iterable(env_var) -> list[str]:
-    return keys.split(",") if (keys := os.environ.get(env_var)) else []
+    return keys.split(",") if (keys := os.getenv(env_var)) else []
 
 
 def _as_int(env_var, default) -> int:
     return int(os.getenv(env_var, default))
 
 
-def _as_float(env_var, default) -> int:
+def _as_float(env_var, default) -> float:
     return float(os.getenv(env_var, default))
 
 
@@ -61,7 +61,7 @@ supertable: SupertableSetter = os.getenv("TDENGINE_SUPERTABLE")
 tags_keys: TagsSetter = _as_iterable("TDENGINE_TAGS_KEYS")
 fields_keys: FieldsSetter = _as_iterable("TDENGINE_FIELDS_KEYS")
 subtable: SubtableNameSetter = _get_tdengine_subtable_name(tags_keys)
-time_setter: Optional[TimeSetter] = col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None
+time_setter: Optional[TimeSetter] = col if (col := os.getenv("TIMESTAMP_COLUMN")) else None
 
 tdengine_sink = TDengineSink(
     host=os.environ["TDENGINE_HOST"],
@@ -83,10 +83,10 @@ tdengine_sink = TDengineSink(
 
 
 app = Application(
-    consumer_group=os.environ.get("CONSUMER_GROUP_NAME", "tdengine-data-writer"),
+    consumer_group=os.getenv("CONSUMER_GROUP_NAME", "tdengine-data-writer"),
     auto_offset_reset="earliest",
-    commit_every=int(os.environ.get("BUFFER_SIZE", "1000")),
-    commit_interval=float(os.environ.get("BUFFER_DELAY", "1")),
+    commit_every=_as_int("BUFFER_SIZE", 1000),
+    commit_interval=_as_float("BUFFER_DELAY", 1.0),
 )
 input_topic = app.topic(os.environ["input"])
 app.dataframe(input_topic).sink(tdengine_sink)
