@@ -1,2 +1,3 @@
-quixstreams[tdengine]==3.19.0
+# TODO: confirm version
+quixstreams[tdengine]==3.21.1
 python-dotenv

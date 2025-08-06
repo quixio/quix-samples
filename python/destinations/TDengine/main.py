@@ -8,6 +8,7 @@ from quixstreams.sinks.community.tdengine.sink import (
     TagsSetter,
     SupertableSetter,
     SubtableNameSetter,
+    TimeSetter
 )
 
 # for local dev, load env vars from a .env file
@@ -21,6 +22,14 @@ def _as_bool(env_var: str) -> bool:
 
 def _as_iterable(env_var) -> list[str]:
     return keys.split(",") if (keys := os.environ.get(env_var)) else []
+
+
+def _as_int(env_var, default) -> int:
+    return int(os.getenv(env_var, default))
+
+
+def _as_float(env_var, default) -> int:
+    return float(os.getenv(env_var, default))
 
 
 def _get_tdengine_subtable_name(
@@ -52,7 +61,7 @@ supertable: SupertableSetter = os.getenv("TDENGINE_SUPERTABLE")
 tags_keys: TagsSetter = _as_iterable("TDENGINE_TAGS_KEYS")
 fields_keys: FieldsSetter = _as_iterable("TDENGINE_FIELDS_KEYS")
 subtable: SubtableNameSetter = _get_tdengine_subtable_name(tags_keys)
-
+time_setter: Optional[TimeSetter] = col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None
 
 tdengine_sink = TDengineSink(
     host=os.environ["TDENGINE_HOST"],
@@ -62,12 +71,14 @@ tdengine_sink = TDengineSink(
     subtable=subtable,
     fields_keys=fields_keys,
     tags_keys=tags_keys,
-    time_key=col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None,
+    time_setter=time_setter,
     time_precision=os.environ["TDENGINE_TIME_PRECISION"],
     allow_missing_fields=_as_bool("TDENGINE_ALLOW_MISSING_FIELDS"),
     include_metadata_tags=_as_bool("TDENGINE_INCLUDE_METADATA_TAGS"),
     convert_ints_to_floats=_as_bool("TDENGINE_CONVERT_INTS_TO_FLOATS"),
     enable_gzip=_as_bool("TDENGINE_ENABLE_GZIP"),
+    max_retries=_as_int("TDENGINE_MAX_RETRIES", 5),
+    retry_backoff_factor=_as_float("TDENGINE_RETRY_BACKOFF_FACTOR", 1.0)
 )
 
 
