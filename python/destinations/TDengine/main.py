@@ -63,6 +63,7 @@ fields_keys: FieldsSetter = _as_iterable("TDENGINE_FIELDS_KEYS")
 subtable: SubtableNameSetter = _get_tdengine_subtable_name(tags_keys)
 time_setter: Optional[TimeSetter] = col if (col := os.getenv("TIMESTAMP_COLUMN")) else None
 
+
 tdengine_sink = TDengineSink(
     host=os.environ["TDENGINE_HOST"],
     database=os.environ["TDENGINE_DATABASE"],
