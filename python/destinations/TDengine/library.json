@@ -112,6 +112,14 @@
       "Required": false
     },
     {
+      "Name": "TDENGINE_ENABLE_GZIP",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "if `true`, enables gzip compression for writes.",
+      "DefaultValue": "true",
+      "Required": false
+    },
+    {
       "Name": "TDENGINE_MAX_RETRIES",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
