@@ -1,4 +1,4 @@
-# Quix Code Samples   
+# Quix Code Samples    
 
 ## Samples repository for the [Quix](https://quix.io) platform. 
 
