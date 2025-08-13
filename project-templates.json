@@ -14,5 +14,9 @@
   {
     "httpUrl": "https://github.com/quixio/template-dynamic-configuration.git",
     "branch": "main"
+  },
+   {
+    "httpUrl": "https://github.com/luisquix/stunning-garbanzo.git",
+    "branch": "test-emanuel"
   }
 ]
