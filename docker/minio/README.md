@@ -1,6 +1,6 @@
 # MinIO
 
-This sample demonstrates how to deploy and use MinIO in your pipeline. Please note: this image is provided by MinIO and is offered as-is, with no specific support from Quix.
+This sample demonstrates how to deploy and use MinIO in your pipeline.
 
 ## Using with a Quix Cloud Amazon S3 Connectors
 
