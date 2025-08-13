@@ -1,11 +1,11 @@
 {
-    "libraryItemId": "s3-iceberg-destination",
-    "name": "AWS S3 Iceberg Sink",
+    "libraryItemId": "s3-file",
+    "name": "AWS S3 File Sink",
     "language": "Python",
     "tags": {
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
-        "Category": ["Open table format"]
+        "Category": ["File Store"]
     },
     "shortDescription": "Consume data from a Kafka topic and write it to an AWS S3 bucket path.",
     "DefaultFile": "main.py",
@@ -35,13 +35,6 @@
             "Description": "An optional path within the S3 bucket to use, else uses root.",
             "DefaultValue": "",
             "Required": false
-        },
-        {
-            "Name": "AWS_ENDPOINT_URL",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "The URL to your S3 instance.",
-            "Required": true
         },
         {
             "Name": "AWS_REGION_NAME",
