@@ -25,7 +25,6 @@ The connector uses the following environment variables (which generally correspo
 - `AWS_REGION_NAME`: The region of your S3 bucket.
 - `AWS_SECRET_ACCESS_KEY`: Your AWS secret.
 - `AWS_ACCESS_KEY_ID`: Your AWS Access Key.
-- `FILE_FORMAT`: The file format to publish data as; options: \[parquet, json\].
 
 ### Optional
 Unless explicitly defined, these are optional, or generally set to the [`S3FileSink`](https://quix.io/docs/quix-streams/connectors/sinks/amazon-s3-sink.html) defaults.
