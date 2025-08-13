@@ -1,20 +1,20 @@
-# MongoDB
+# MinIO
 
 This sample demonstrates how to deploy and use MongoDB in your pipeline. Please note: this image is provided by MongoDB and is offered as-is, with no specific support from Quix.
 
-## Using with a Quix Cloud MongoDB Connector
+## Using with a Quix Cloud Amazon S3 Connectors
 
-This deployment will work seamlessly with the [Quix Cloud MongoDB sink connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/mongodb).
+This deployment will work seamlessly with the Quix Cloud Amazon S3 Source/Sink connectors.
 
-Simply provide the following arguments to the connector, 
-where `username` and `password` are the credentials used when 
-creating this service: 
+Simply set your environment variables for either connector:
 
 ```shell
-MONGODB_USERNAME="<YOUR USERNAME>"  # (default: "admin")
-MONGODB_PASSWORD="<YOUR PASSWORD>"
-MONGODB_HOST="mongodb"
-MONGODB_PORT="27017"
+S3_BUCKET="<MINIO BUCKET NAME>"
+AWS_ENDPOINT_URL="http://minio:80"
+AWS_REGION_NAME="<ANY STR>"
+AWS_ACCESS_KEY_ID: "<MINIO ROOT USERNAME>"
+AWS_SECRET_ACCESS_KEY: "<MINIO ROOT PASSWORD>"
+
 ```
 
 ## How to Run
