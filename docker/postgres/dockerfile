@@ -1,5 +1,8 @@
 FROM postgres:16
 
+# Install wal2json plugin
+RUN apt-get update && apt-get install -y postgresql-16-wal2json
+
 # Set environment variables for PostgreSQL (will be overridden in K8s runtime if needed)
 ENV PGDATA=/app/state/pgdata
 ENV POSTGRES_USER=admin
