@@ -15,16 +15,20 @@
     "httpUrl": "https://github.com/quixio/template-dynamic-configuration.git",
     "branch": "main"
   },
-    {
+  {
     "httpUrl": "https://github.com/quixio/template-prometheus-monitoring.git",
     "branch": "main"
   },
-    {
+  {
     "httpUrl": "https://github.com/quixio/simulink-quix-integration.git",
     "branch": "task/first-version"
   },
-    {
+  {
     "httpUrl": "https://github.com/quixio/matlab-quix-integration.git",
     "branch": "task/first-version"
+  },
+  {
+    "httpUrl": "https://github.com/quixio/template-quixlake.git",
+    "branch": "main"
   }
 ]
