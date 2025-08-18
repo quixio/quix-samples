@@ -18,5 +18,13 @@
     {
     "httpUrl": "https://github.com/quixio/template-prometheus-monitoring.git",
     "branch": "main"
+  },
+    {
+    "httpUrl": "https://github.com/quixio/simulink-quix-integration.git",
+    "branch": "main"
+  },
+    {
+    "httpUrl": "https://github.com/quixio/matlab-quix-integration.git",
+    "branch": "main"
   }
 ]
