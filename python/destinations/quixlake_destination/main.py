@@ -30,9 +30,10 @@ HIVE_COLUMNS = os.getenv("HIVE_COLUMNS", "").split(",") if os.getenv("HIVE_COLUM
 TIMESTAMP_COLUMN = os.getenv("TIMESTAMP_COLUMN", "ts_ms")
 TIMESTAMP_FORMAT = os.getenv("TIMESTAMP_FORMAT", "day")  # day, hour, month
 
-# Optional QuixLake API for table registration
-QUIXLAKE_API_URL = os.getenv("QUIXLAKE_API_URL")  # Optional
+# Optional REST Catalog for table registration
+CATALOG_URL = os.getenv("CATALOG_URL")  # Optional
 AUTO_DISCOVER = os.getenv("AUTO_DISCOVER", "true").lower() == "true"
+CATALOG_NAMESPACE = os.getenv("CATALOG_NAMESPACE", "default")
 
 # Kafka Configuration
 BATCH_SIZE = int(os.getenv("BATCH_SIZE", "1000"))
@@ -63,8 +64,9 @@ def main():
         hive_columns=HIVE_COLUMNS,
         timestamp_column=TIMESTAMP_COLUMN,
         timestamp_format=TIMESTAMP_FORMAT,
-        api_url=QUIXLAKE_API_URL,
-        auto_discover=AUTO_DISCOVER
+        catalog_url=CATALOG_URL,
+        auto_discover=AUTO_DISCOVER,
+        namespace=CATALOG_NAMESPACE
     )
     
     # Get input topic
@@ -78,8 +80,8 @@ def main():
     logger.info(f"Consuming from topic: {input_topic_name}")
     logger.info(f"Writing to S3: s3://{S3_BUCKET}/{S3_PREFIX}/{TABLE_NAME}")
     
-    if QUIXLAKE_API_URL and AUTO_DISCOVER:
-        logger.info(f"Table will be auto-registered in QuixLake on first write")
+    if CATALOG_URL and AUTO_DISCOVER:
+        logger.info(f"Table will be auto-registered in REST Catalog on first write")
     
     # Run the application
     app.run()

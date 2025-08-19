@@ -25,8 +25,9 @@ class S3DirectSink(BatchingSink):
                  hive_columns: List[str] = None,
                  timestamp_column: str = "ts_ms",
                  timestamp_format: str = "day",
-                 api_url: str = None,
-                 auto_discover: bool = True):
+                 catalog_url: str = None,
+                 auto_discover: bool = True,
+                 namespace: str = "default"):
         """
         Initialize S3 Direct Sink
         
@@ -37,8 +38,9 @@ class S3DirectSink(BatchingSink):
             hive_columns: List of columns to use for Hive partitioning
             timestamp_column: Column containing timestamp (for time-based partitioning)
             timestamp_format: Time partition format ('day', 'hour', 'month')
-            api_url: Optional QuixLake API URL for table registration
+            catalog_url: Optional REST Catalog URL for table registration
             auto_discover: Whether to auto-register table on first write
+            namespace: Catalog namespace (default: "default")
         """
         self.s3_bucket = s3_bucket
         self.s3_prefix = s3_prefix
@@ -46,8 +48,9 @@ class S3DirectSink(BatchingSink):
         self.hive_columns = hive_columns or []
         self.timestamp_column = timestamp_column
         self.timestamp_format = timestamp_format
-        self.api_url = api_url.rstrip('/') if api_url else None
+        self.catalog_url = catalog_url.rstrip('/') if catalog_url else None
         self.auto_discover = auto_discover
+        self.namespace = namespace
         self.table_registered = False
         
         self.logger = logging.getLogger(__name__)
@@ -70,14 +73,14 @@ class S3DirectSink(BatchingSink):
             self.s3_client.head_bucket(Bucket=self.s3_bucket)
             self.logger.info("Successfully connected to S3 bucket: %s", self.s3_bucket)
             
-            # Test API connection if configured
-            if self.api_url:
+            # Test Catalog connection if configured
+            if self.catalog_url:
                 try:
-                    response = requests.get(f"{self.api_url}/tables", timeout=5)
+                    response = requests.get(f"{self.catalog_url}/health", timeout=5)
                     response.raise_for_status()
-                    self.logger.info("Successfully connected to QuixLake API at %s", self.api_url)
+                    self.logger.info("Successfully connected to REST Catalog at %s", self.catalog_url)
                 except Exception as e:
-                    self.logger.warning("Could not connect to QuixLake API: %s. Table registration disabled.", e)
+                    self.logger.warning("Could not connect to REST Catalog: %s. Table registration disabled.", e)
                     self.auto_discover = False
                     
         except Exception as e:
@@ -86,6 +89,10 @@ class S3DirectSink(BatchingSink):
     
     def write(self, batch: SinkBatch):
         """Write batch directly to S3"""
+        # Register table before first write if auto-discover is enabled
+        if self.auto_discover and not self.table_registered and self.catalog_url:
+            self._register_table()
+            
         attempts = 3
         while attempts:
             start = time.perf_counter()
@@ -93,11 +100,6 @@ class S3DirectSink(BatchingSink):
                 self._write_batch(batch)
                 elapsed_ms = (time.perf_counter() - start) * 1000
                 self.logger.info("✔ wrote %d rows to S3 in %.1f ms", batch.size, elapsed_ms)
-                
-                # Register table on first successful write
-                if self.auto_discover and not self.table_registered and self.api_url:
-                    self._register_table()
-                    
                 return
             except Exception as exc:
                 attempts -= 1
@@ -152,10 +154,18 @@ class S3DirectSink(BatchingSink):
                 
                 # Write to S3
                 self._write_parquet_to_s3(data_df, s3_key)
+                
+                # Register file in manifest if catalog is configured
+                if self.catalog_url and self.table_registered:
+                    self._register_file_in_manifest(s3_key, len(data_df), partition_columns, group_values)
         else:
             # No partitioning - write as single file
             s3_key = f"{self.s3_prefix}/{self.table_name}/data_{uuid.uuid4().hex}.parquet"
             self._write_parquet_to_s3(df, s3_key)
+            
+            # Register file in manifest if catalog is configured
+            if self.catalog_url and self.table_registered:
+                self._register_file_in_manifest(s3_key, len(df), [], [])
     
     def _add_timestamp_partitions(self, df: pd.DataFrame) -> pd.DataFrame:
         """Add timestamp-based partition columns"""
@@ -220,36 +230,106 @@ class S3DirectSink(BatchingSink):
         self.logger.debug("Wrote %d rows to s3://%s/%s", len(df), self.s3_bucket, s3_key)
     
     def _register_table(self):
-        """Register the table in QuixLake using the discover endpoint"""
-        if not self.api_url:
+        """Register the table in REST Catalog"""
+        if not self.catalog_url:
             return
             
         try:
+            # First check if table already exists
+            check_response = requests.get(
+                f"{self.catalog_url}/namespaces/{self.namespace}/tables/{self.table_name}",
+                timeout=5
+            )
+            
+            if check_response.status_code == 200:
+                self.logger.info("Table '%s' already exists in catalog", self.table_name)
+                self.table_registered = True
+                return
+            
+            # Table doesn't exist, create it
             s3_path = f"s3://{self.s3_bucket}/{self.s3_prefix}/{self.table_name}"
-            response = requests.post(
-                f"{self.api_url}/discover",
-                params={
-                    "table": self.table_name,
-                    "s3_path": s3_path
+            
+            # Define partition spec based on configuration
+            partition_spec = self.hive_columns.copy()
+            
+            # Add time partition columns
+            time_columns = self._get_time_partition_columns()
+            for col in time_columns:
+                if col not in partition_spec:
+                    partition_spec.append(col)
+            
+            # Create table with minimal schema (will be inferred from data)
+            create_response = requests.put(
+                f"{self.catalog_url}/namespaces/{self.namespace}/tables/{self.table_name}",
+                json={
+                    "location": s3_path,
+                    "partition_spec": partition_spec,
+                    "properties": {
+                        "created_by": "quix-lake-sink",
+                        "auto_discovered": "false"
+                    }
                 },
                 timeout=30
             )
             
-            if response.status_code == 200:
-                result = response.json()
+            if create_response.status_code in [200, 201]:
                 self.logger.info(
-                    "Successfully registered table '%s' in QuixLake catalog: %d files, %.2f MB",
+                    "Successfully created table '%s' in REST Catalog with partitions: %s",
                     self.table_name,
-                    result['discovery_result']['file_count'],
-                    result['discovery_result']['total_size_mb']
+                    partition_spec
                 )
                 self.table_registered = True
             else:
                 self.logger.warning(
-                    "Failed to register table '%s': %s", 
+                    "Failed to create table '%s': %s", 
                     self.table_name, 
-                    response.text
+                    create_response.text
                 )
                 
         except Exception as e:
             self.logger.warning("Failed to register table '%s': %s", self.table_name, e)
+    
+    def _register_file_in_manifest(self, s3_key: str, row_count: int, 
+                                  partition_columns: List[str], partition_values: tuple):
+        """Register a newly written file in the catalog manifest"""
+        try:
+            # Build S3 URL
+            file_path = f"s3://{self.s3_bucket}/{s3_key}"
+            
+            # Get file size
+            try:
+                response = self.s3_client.head_object(Bucket=self.s3_bucket, Key=s3_key)
+                file_size = response['ContentLength']
+            except:
+                file_size = 0
+            
+            # Build partition values dict
+            partition_dict = {}
+            if partition_columns and partition_values:
+                for col, val in zip(partition_columns, partition_values):
+                    partition_dict[col] = str(val)
+            
+            # Create file entry
+            file_entry = {
+                "file_path": file_path,
+                "file_size": file_size,
+                "last_modified": datetime.utcnow().isoformat(),
+                "partition_values": partition_dict,
+                "row_count": row_count
+            }
+            
+            # Send to catalog
+            response = requests.post(
+                f"{self.catalog_url}/namespaces/{self.namespace}/tables/{self.table_name}/manifest/add-files",
+                json={"files": [file_entry]},
+                timeout=5
+            )
+            
+            if response.status_code == 200:
+                self.logger.debug("Registered file in manifest: %s", file_path)
+            else:
+                self.logger.warning("Failed to register file in manifest: %s", response.text)
+                
+        except Exception as e:
+            # Don't fail the write if manifest registration fails
+            self.logger.warning("Failed to register file in manifest: %s", e)

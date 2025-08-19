@@ -69,18 +69,18 @@
             "Required": false
         },
         {
-            "Name": "QUIXLAKE_API_URL",
+            "Name": "CATALOG_URL",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
-            "Description": "QuixLake API URL for optional table registration (leave empty to skip)",
-            "DefaultValue": "http://quixlake-api",
+            "Description": "REST Catalog URL for optional table registration (leave empty to skip)",
+            "DefaultValue": "http://iceberg-rest-catalog:5001",
             "Required": false
         },
         {
             "Name": "AUTO_DISCOVER",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
-            "Description": "Automatically register table in QuixLake catalog on first write",
+            "Description": "Automatically register table in REST Catalog on first write",
             "DefaultValue": "true",
             "Required": false
         },
@@ -138,6 +138,14 @@
             "InputType": "FreeText",
             "Description": "AWS region for S3 bucket",
             "DefaultValue": "us-east-1",
+            "Required": false
+        },
+        {
+            "Name": "CATALOG_NAMESPACE",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Catalog namespace for table registration",
+            "DefaultValue": "default",
             "Required": false
         }
     ],
