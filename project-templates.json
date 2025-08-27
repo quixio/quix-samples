@@ -25,7 +25,7 @@
   },
   {
     "httpUrl": "https://github.com/quixio/matlab-quix-integration.git",
-    "branch": "task/first-version"
+    "branch": "main"
   },
   {
     "httpUrl": "https://github.com/quixio/template-quixlake.git",
