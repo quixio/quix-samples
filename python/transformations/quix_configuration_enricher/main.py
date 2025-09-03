@@ -39,12 +39,7 @@ def main():
     specified.
     """
 
-    app = Application(
-        consumer_group=os.environ["CONSUMER_GROUP_NAME"],
-        auto_offset_reset="earliest",
-        commit_interval=float(os.environ.get("BATCH_TIMEOUT", "1")),
-        commit_every=int(os.environ.get("BATCH_SIZE", "1000"))
-    )
+    app = Application(consumer_group=os.environ["CONSUMER_GROUP_NAME"])
 
     data_topic = app.topic(name=os.environ["DATA_TOPIC"], key_deserializer="str")
     config_topic = app.topic(name=os.environ["CONFIG_TOPIC"])

@@ -38,6 +38,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "a JSON-serialized string that contains the desired field names with corresponding config field references. See 'get_fields' function in code for example.",
+      "Multiline": true,
       "Required": true
     },
     {
@@ -45,24 +46,8 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The name of the consumer group to use when consuming from Kafka",
-      "DefaultValue": "postgres-sink",
+      "DefaultValue": "quix-configuration-enricher",
       "Required": true
-    },
-    {
-      "Name": "BATCH_SIZE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The number of records that the sink holds before flushing data to PostgreSQL.",
-      "DefaultValue": "1000",
-      "Required": false
-    },
-    {
-      "Name": "BATCH_TIMEOUT",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The number of seconds that the sink holds before flushing data to PostgreSQL.",
-      "DefaultValue": "1",
-      "Required": false
     }
   ],
   "DeploySettings": {

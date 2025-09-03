@@ -24,11 +24,7 @@ The connector uses the following environment variables:
 
 ### Optional
 - **CONSUMER_GROUP_NAME**: The name of the consumer group to use when consuming from Kafka.  
-  Default: `postgres-sink`
-- **BATCH_SIZE**: The number of records that the sink holds before flushing data to PostgreSQL.  
-  Default: `1000`
-- **BATCH_TIMEOUT**: The number of seconds that the sink holds before flushing data to PostgreSQL.  
-  Default: `1`
+  Default: `quix-configuration-enricher`
 
 ## Requirements / Prerequisites
 
