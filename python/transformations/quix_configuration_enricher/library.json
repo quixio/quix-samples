@@ -4,8 +4,8 @@
   "language": "Python",
   "tags": {
     "Pipeline Stage": ["Transformation"],
-    "Type": ["Connectors"],
-    "Category": ["Quix Configuration"]
+    "Type": ["Code samples"],
+    "Category": ["Quix Configuration Service"]
   },
   "shortDescription": "Consume data from a Kafka topic and enrich it using a Quix Configuration Service topic.",
   "DefaultFile": "main.py",
