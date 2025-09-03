@@ -47,6 +47,7 @@ def main():
     sdf = app.dataframe(topic=data_topic)
 
     # Enrich data using the config service (lookup_join)
+    # Other transformations could be added here if desired.
     sdf = sdf.join_lookup(
         lookup=QuixConfigurationService(
             topic=config_topic,
