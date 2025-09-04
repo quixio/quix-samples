@@ -40,7 +40,7 @@ The columns included in this CSV sample are:
 | Brake                 | Amount of brake being applied                                                                                                                               |
 | DriverStatus          | Information about the drivers status, e.g. Flying_lap or In_garage                                                                                          |
 | LapNumber             | The current lap number                                                                                                                                      |
-| LapValidity           | Is the lap valid? If the driver comitted an office the lap may not be valid                                                                                 |
+| LapValidity           | Is the lap valid? If the driver committed an offense the lap may not be valid                                                                              |
 | PitStatus             | Is the vehicle in the pit                                                                                                                                   |
 | Sector                | Which sector the vehicle is currently completing                                                                                                            |
 | SessionID             | The session ID associated with this stream                                                                                                                  |
