@@ -2,11 +2,11 @@
 
 if [ -z "$CONNECTOR_NAME" ] || [ "$CONNECTOR_NAME" == "connector-name" ]; then
     echo "Error: CONNECTOR_NAME environment variable is required but not set."
-    echo "Please specify a Confluent Hub connector name (e.g., debezium/debezium-connector-postgresql:2.2.1)"
+    echo "Please specify a Confluent Hub connector name (e.g., snowflakeinc/snowflake-kafka-connector:2.1.2)"
     exit 1
 fi
 
-echo "Downloading connector: $CONNECTOR_NAME"
+echo "Installing connector: $CONNECTOR_NAME"
 
 # Ensure plugins directory exists
 mkdir -p /opt/kafka/plugins

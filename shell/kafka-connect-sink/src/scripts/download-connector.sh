@@ -6,7 +6,7 @@ if [ -z "$CONNECTOR_NAME" ] || [ "$CONNECTOR_NAME" == "connector-name" ]; then
     exit 1
 fi
 
-echo "Downloading connector: $CONNECTOR_NAME"
+echo "Installing connector: $CONNECTOR_NAME"
 
 # Ensure plugins directory exists
 mkdir -p /opt/kafka/plugins
