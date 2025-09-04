@@ -4,7 +4,7 @@
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Templates` tab to use this connector.
+Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account or log-in and visit the `Templates` tab to use this connector.
 
 Clicking `Deploy` allows you to deploy the server to your Quix instance.
 Clicking `Preview code` allows you to view or save the code to the repo that backs your Quix cloud instance.
