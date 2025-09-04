@@ -17,7 +17,7 @@ Then either:
 
 The connector uses the following environment variables:
 
-- **output**: This is the ouput topic that will receive the stream (Default: `influxdb`, Required: `True`)
+- **output**: This is the output topic that will receive the stream (Default: `influxdb`, Required: `True`)
 - **task_interval**: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1mo, 1y (Default: `5m`, Required: `True`)
 - **INFLUXDB_HOST**: Host address for the InfluxDB instance. (Default: `eu-central-1-1.aws.cloud2.influxdata.com`, Required: `True`)
 - **INFLUXDB_TOKEN**: Authentication token to access InfluxDB. (Default: `<TOKEN>`, Required: `True`)

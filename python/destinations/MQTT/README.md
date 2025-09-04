@@ -17,7 +17,7 @@ Then either:
 
 ## Requirements / Prerequisites
 
-You'll need to have a MQTT either locally or in the cloud
+You'll need to have an MQTT broker either locally or in the cloud
 
 ## Environment Variables
 

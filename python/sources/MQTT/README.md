@@ -26,7 +26,7 @@ The connector uses the following environment variables:
 
 ## Requirements / Prerequisites
 
-You'll need to have a MQTT broker either locally or in the cloud
+You'll need to have an MQTT broker either locally or in the cloud
 
 ## Contribute
 

@@ -19,8 +19,7 @@ Then either:
 
 The connector uses the following environment variables:
 
-- **output**: This is the ouput topic that will receive the stream (Default: `output`, Required: `True`)
-- **redis_host**: Host address for the Redis instance (Required: `True`)
+- **output**: This is the output topic that will receive the stream (Default: `output`, Required: `True`)
 - **redis_host**: Host address for the Redis instance (Required: `True`)
 - **redis_port**: Port for the Redis instance (Default: `6379`, Required: `True`)
 - **redis_password**: Password for the Redis instance (Default: `None`, Required: `False`)

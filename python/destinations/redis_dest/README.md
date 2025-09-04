@@ -24,7 +24,6 @@ The connector uses the following environment variables:
 
 - **input**: This is the input topic (Default: `input`, Required: `True`)
 - **redis_host**: Host address for the Redis instance (Required: `True`)
-- **redis_host**: Host address for the Redis instance (Required: `True`)
 - **redis_port**: Port for the Redis instance (Default: `6379`, Required: `True`)
 - **redis_password**: Password for the Redis instance (Default: `None`, Required: `False`)
 - **redis_username**: Username for the Redis instance (Default: `None`, Required: `False`)
