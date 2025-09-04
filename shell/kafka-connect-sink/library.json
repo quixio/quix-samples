@@ -4,6 +4,7 @@
     "language": "Java",
     "tags": {
         "Pipeline Stage": ["Destination"],
+        "Type": ["Connectors"],
         "Category": ["Data streaming"]
     },
     "IconFile": "icon.png",
