@@ -4,7 +4,7 @@
 
 ## Getting started
 
-Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account or log-in and visit the `Templates` tab to use this template, then **Save to your repo** to modify the code or configuration before deployment.
+Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account or log-in and visit the `Templates` tab to use this template, then `Save to your repo` to modify the code or configuration before deployment.
 
 ## How it works
 
