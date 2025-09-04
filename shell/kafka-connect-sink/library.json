@@ -1,7 +1,7 @@
 {
     "libraryItemId": "kafka-connect-sink",
     "name": "Kafka Connect Sink",
-    "language": "Python",
+    "language": "Java",
     "tags": {
         "Pipeline Stage": ["Destination"],
         "Type": ["Connectors"],
