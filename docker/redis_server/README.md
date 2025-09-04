@@ -4,7 +4,7 @@ This sample demonstrates how to run a Redis cache in your Quix Cloud pipeline.
 
 ## How to Run
 
-1. Log in or sign up at [Quix](https://portal.platform.quix.io/signup?xlink=github) and navigate to the Code Samples section.
+1. Log in or sign up at [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
 3. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
 
