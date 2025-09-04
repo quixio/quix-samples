@@ -47,6 +47,10 @@ The connector uses the following environment variables:
   Default: `false`
 - **TDENGINE_ENABLE_GZIP**: If `true`, enables gzip compression when writing data.  
   Default: `true`
+- **TDENGINE_MAX_RETRIES**: Maximum number of retries for failed requests.  
+  Default: `5`
+- **TDENGINE_RETRY_BACKOFF_FACTOR**: A {factor * 2^(retry_count)} backoff factor per retry attempt, starting from the second.  
+  Default: `1.0`
 - **BUFFER_SIZE**: Number of records to buffer before writing to TDengine.  
   Default: `50`
 - **BUFFER_TIMEOUT**: Maximum time (in seconds) to buffer records before writing to TDengine.  
