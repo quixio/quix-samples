@@ -13,7 +13,7 @@ RUN apk update \
   && apk add --no-cache bash openjdk17-jre \
   && wget https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz \
   && mkdir confluent-hub \
-  && tar -xvzf confluent-hub-client-latest.tar.gz -C confluent-hub 
+  && tar -xzf confluent-hub-client-latest.tar.gz -C confluent-hub 
 
 FROM alpine:3.19
 
