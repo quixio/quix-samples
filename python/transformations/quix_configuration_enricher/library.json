@@ -1,0 +1,61 @@
+{
+  "libraryItemId": "quix-configuration-enricher",
+  "name": "Quix Configuration Enricher",
+  "language": "Python",
+  "tags": {
+    "Pipeline Stage": ["Transformation"],
+    "Type": ["Code samples"],
+    "Category": ["Quix Configuration Service"]
+  },
+  "shortDescription": "Consume data from a Kafka topic and enrich it using a Quix Configuration Service topic.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "DATA_TOPIC",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "The topic containing your data to be enriched.",
+      "Required": true
+    },
+    {
+      "Name": "CONFIG_TOPIC",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "The topic managed by your Quix Configuration Service.",
+      "Required": true
+    },
+    {
+      "Name": "OUTPUT_TOPIC",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "The topic to write the enriched data to.",
+      "Required": true
+    },
+    {
+      "Name": "LOOKUP_FIELDS_JSON",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "a JSON-serialized string that contains the desired field names with corresponding config field references. See 'get_fields' function in code for example.",
+      "Multiline": true,
+      "Required": true
+    },
+    {
+      "Name": "CONSUMER_GROUP_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The name of the consumer group to use when consuming from Kafka",
+      "DefaultValue": "quix-configuration-enricher",
+      "Required": true
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
+}
