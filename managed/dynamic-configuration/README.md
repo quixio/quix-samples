@@ -15,15 +15,17 @@ The **Quix Configuration Service** offers a web interface and API for managing c
 
 ### Required Configuration
 
-- **topic**: Kafka topic for real-time updates.
-- **mongoDatabase**: MongoDB database name
-- **mongoCollection**: MongoDB collection name
-- **mongoUrlSecret**: MongoDB connection URL (example: `mongo://user:password@mongo:27017`)
+- **topic**: Kafka topic for configuration real-time updates.
+- **mongoHost**: MongoDB host.
+- **mongoPort**: MongoDB port.
+- **mongoUser**: MongoDB user.
+- **mongoPasswordSecret**: MongoDB password secret.
+- **mongoDatabase**: MongoDB database name.
+- **mongoCollection**: MongoDB collection name.
 
-### API Configuration
+### Optional Configuration
 
-- **port**: HTTP server port (default: `80`)
-- **workers**: Number of HTTP worker processes (default: `1`)
-- **logLevel**: Logging level (`INFO` or `DEBUG`, default: `INFO`)
-- **kafkaFlushTimeout**: Timeout for flushing updates to Kafka (default: `5`)
-- **contentStore**: Storage backend for configuration content (`mongo` or `file`, default: `mongo`)
+- **consumerGroup**: Kafka consumer group identifier (default: `config-api-v1`).
+- **port**: HTTP port of the API (default: `80`).
+- **workers**: Number of worker processes (default: `1`).
+- **contentStore**: Storage backend for configuration content (`mongo` or `file`, default: `mongo`).
