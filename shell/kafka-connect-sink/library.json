@@ -47,7 +47,7 @@
             "Name" : "CONNECTOR_NAME",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "The Confluent Hub (https://www.confluent.io/hub) Kafka connector to use (Free licence connectors only for now)",
+            "Description" : "The Confluent Hub (https://www.confluent.io/hub) Kafka connector to use (Free licence connectors only)",
             "DefaultValue" : "",
             "Required": true
         }
