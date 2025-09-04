@@ -25,15 +25,15 @@ def get_fields():
 
 def main():
     """
-    This template deploys a simple enricher using the QuixConfigurationService, which
-    enriches by performing a join by adding fields specified by the user in the
+    This template deploys a simple enricher using the Quix Streams `QuixConfigurationService`,
+    which enriches through a record join that adds fields specified by the user in the
     LOOKUP_FIELDS_JSON environment variable.
 
-    The join is achieved by retrieves configs from a specified topic maintained by a
-    `Quix Dynamic Configuration Service`.
+    The join is achieved by retrieving configs from a specified topic maintained by a
+    Quix Configuration Service deployment.
 
-    The `Quix Dynamic Configuration Service` itself helps manage versioning of configs,
-    and the QuixConfigurationService helps streamline interacting with it.
+    The Quix Configuration Service deployment helps manage versioning of configs,
+    and the Quix Streams `QuixConfigurationService` helps streamline interacting with it.
 
     The respective config applied is based on a combination of message key and the config "type"
     specified.

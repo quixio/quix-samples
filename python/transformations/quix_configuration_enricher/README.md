@@ -1,7 +1,23 @@
 # Quix Configuration Enricher
 
 [This code sample](https://github.com/quixio/quix-samples/tree/main/python/transformations/quix_configuration_enricher) demonstrates how to 
-enrich your data using a `Quix Configuration Service` (through a topic managed by the service).
+enrich your data using configuration data stored with 
+`Quix Configuration Service` (through a topic managed by the service).
+
+## App Details
+
+This template deploys a simple enricher using the Quix Streams `QuixConfigurationService`, 
+which enriches through a record join that adds fields specified by the user in the
+LOOKUP_FIELDS_JSON environment variable.
+
+The join is achieved by retrieving configs from a specified topic maintained by a
+**Quix Configuration Service** deployment.
+
+The **Quix Configuration Service** deployment helps manage versioning of configs,
+and the Quix Streams `QuixConfigurationService` helps streamline interacting with it.
+
+The respective config applied is based on a combination of message key and the config "type"
+specified.
 
 ## How to run
 
@@ -26,7 +42,7 @@ The connector uses the following environment variables:
 
 ## Requirements / Prerequisites
 
-You will need to have a `Quix Configuration Service` instance running and any desired
+You will need to have a **Quix Configuration Service** instance running and any desired
 configurations actively available on its corresponding topic.
 
 ## Contribute
