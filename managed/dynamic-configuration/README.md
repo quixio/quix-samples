@@ -1,6 +1,6 @@
-# Quix Configuration Manager
+# Dynamic Configuration Manager
 
-The **Quix Configuration Service** offers a web interface and API for managing configurations, retrieve, update, and delete. It supports versioning, metadata, and event notifications via Kafka. Designed for seamless integration with the Quix SDK and platform.
+The **Dynamic Configuration Manager** offers a web interface and API for managing configurations, retrieve, update, and delete. It supports versioning, metadata, and event notifications via Kafka. Designed for seamless integration with the Quix SDK and platform.
 
 ## How to Run
 
