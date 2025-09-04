@@ -4,7 +4,6 @@
     "language": "Java",
     "tags": {
         "Pipeline Stage": ["Source"],
-        "Type": ["Connectors"],
         "Category": ["Data streaming"]
     },
     "IconFile": "icon.png",
@@ -51,14 +50,5 @@
             "DefaultValue" : "",
             "Required": true
         }
-    ],
-    "DeploySettings":
-    {
-        "DeploymentType": "Service",
-        "CpuMillicores": 200,
-        "MemoryInMb": 500,
-        "Replicas": 1,
-        "PublicAccess": false,
-        "ValidateConnection": false
-    } 
+    ]
 }
