@@ -1,0 +1,20 @@
+{
+  "libraryItemId": "data-lake-sink",
+  "name": "Quix DataLake Sink",
+  "language": "Managed",
+  "tags": {
+      "Pipeline Stage": ["Destination"],
+      "Type": ["Connectors"],
+      "Category": ["Quix DataLake"]
+  },
+  "IconFile": "icon.png",
+  "shortDescription": "Consume data from a Kafka topic and write it to Quix DataLake.",
+  "DeploySettings": {
+      "DeploymentType": "Managed",
+      "CpuMillicores": 500,
+      "MemoryInMb": 1500,
+      "Replicas": 1,
+      "PublicAccess": false,
+      "ValidateConnection": false
+  }
+}

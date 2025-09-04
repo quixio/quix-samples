@@ -1,0 +1,19 @@
+{
+  "libraryItemId": "dynamic-configuration",
+  "name": "Dynamic Configuration Manager",
+  "language": "Managed",
+  "tags": {
+    "Category": ["Database"],
+    "Type": ["Auxiliary Services"]
+  },
+  "IconFile": "icon.png",
+  "shortDescription": "RESTful service for versioned JSON configuration management with high-throughput reads and update notifications.",
+  "DeploySettings": {
+    "DeploymentType": "Managed",
+    "CpuMillicores": 500,
+    "MemoryInMb": 1000,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": false
+  }
+}
