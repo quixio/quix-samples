@@ -21,8 +21,20 @@ fi
 echo "Using worker config: $WORKER_CONFIG"
 echo "Installing to: /opt/kafka/plugins"
 
+# Determine confluent-hub location (build vs runtime)
+if [ -f "/confluent-hub/bin/confluent-hub" ]; then
+    CONFLUENT_HUB="/confluent-hub/bin/confluent-hub"
+elif [ -f "/opt/confluent/bin/confluent-hub" ]; then
+    CONFLUENT_HUB="/opt/confluent/bin/confluent-hub"
+else
+    echo "Error: confluent-hub binary not found"
+    exit 1
+fi
+
+echo "Using confluent-hub from: $CONFLUENT_HUB"
+
 # Install connector with required flags
-/opt/confluent/bin/confluent-hub install "$CONNECTOR_NAME" \
+$CONFLUENT_HUB install "$CONNECTOR_NAME" \
     --no-prompt \
     --component-dir /opt/kafka/plugins \
     --worker-configs $WORKER_CONFIG
