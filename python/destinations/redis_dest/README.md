@@ -9,7 +9,7 @@ Note that you need [Redis Stack](https://redis.io/docs/about/about-stack/) to us
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
+Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account or log-in and visit the `Connectors` tab to use this connector.
 
 Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
