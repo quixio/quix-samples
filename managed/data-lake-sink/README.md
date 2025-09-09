@@ -38,4 +38,4 @@ These parameters are unique to the Quix Datalake Sink:
 
 ### Blob Storage
 
-This service can leverage blob storage configured on our platform (see [blob storage docs](https://quix.io/docs/deploy/blob-storage.html) for setup instructions).
+This service can leverage a blob storage configured on our platform (see [blob storage docs](https://quix.io/docs/deploy/blob-storage.html) for setup instructions).
