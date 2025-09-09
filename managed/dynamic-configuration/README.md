@@ -70,6 +70,12 @@ real time without pushing them directly through Kafka.
 - **workers**: Number of worker processes (default: `1`).
 - **contentStore**: Storage backend for configuration content (`mongo` or `file`, default: `mongo`).
 
+### Blob Storage
+
+This service can leverage blob storage configured on our platform (see [blob storage docs](https://quix.io/docs/deploy/blob-storage.html) for setup instructions).
+
+The blob storage configuration is automatically injected only when `contentStore` is set to `file`.
+
 ## Learn More
 
 For complete details, check our [official documentation](https://quix.io/docs/quix-cloud/managed-services/dynamic-configuration.html).

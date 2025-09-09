@@ -35,3 +35,7 @@ These parameters are unique to the Quix Datalake Sink:
 - **indexRowCount**: Number of checkpoints per index file (default: `1000`)
 - **datacatalogRequestTimeout**: Data Catalog API timeout in seconds (default: `5`)
 - **logLevel**: Logging level (`INFO` or `DEBUG`, default: `INFO`)
+
+### Blob Storage
+
+This service can leverage blob storage configured on our platform (see [blob storage docs](https://quix.io/docs/deploy/blob-storage.html) for setup instructions).
