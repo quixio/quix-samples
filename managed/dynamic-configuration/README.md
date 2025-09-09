@@ -1,22 +1,46 @@
 # Dynamic Configuration Manager
 
-The **Dynamic Configuration Manager** is a managed service to store, version, and distribute application configuration at runtime. It provides a simple REST API and lightweight UI, persists configuration in a backing store, and emits change events to Kafka so services can react immediately. It works great with the Quix platform and SDK, and can be used from any HTTP/Kafka client.
+The **Dynamic Configuration Manager** is a managed service for handling
+**large, versioned configuration files** related to devices, sensors, or
+physical assets.
+These configurations often change in real time (e.g., updates to
+equipment parameters, IoT sensor mappings, or lab/test system setups),
+but are **too large to send through Kafka directly**.
 
-## Key capabilities
+Instead of streaming entire configuration payloads, the service:
 
-- CRUD configuration items with optional metadata
-- Versioning and history
-- Real-time change notifications on a Kafka topic
-- Pluggable content store (Mongo by default; file for simple setups)
-- Simple REST API and web UI
-- Horizontal scaling via workers
-- Optional consumer group for isolated consumption
+- Stores configurations centrally and versions them.
+- Publishes a **lightweight Kafka event** with only the URL, version,
+and timestamp of the new configuration.
+- Works together with the **Quix Streams SDK**, which will
+fetch, cache, and enrich data streams with the appropriate configuration
+values.
 
-## How it works (high-level)
+## Key Capabilities
 
-1. Create/update requests persist content and produce a new version.
-2. The service publishes a change event to the configured Kafka topic.
-3. Consumers subscribe to that topic and apply changes
+- Stores and versions large configuration files (JSON or Binary).
+- Emits lightweight **Kafka change events** (URL + timestamp +
+  version).
+- Enables **real-time enrichment** of data streams without sending
+  configs through Kafka.
+- Designed for **physical asset/device configurations**.
+- Provides a simple REST API and embedded UI for browsing/editing
+  configs.
+- Supports multiple content stores: Mongo (default) or blob/object
+  storage (file mode).
+- Works seamlessly with the Quix Streams SDK to fetch, cache, and join configs with live data.
+
+## How It Works (High-Level)
+
+1. A new or updated configuration is **persisted and versioned** in the
+   service.
+2. The service publishes a **Kafka event** containing metadata (URL,
+   timestamp, version).
+3. Quix Streams SDK consumers subscribe to the topic using join_lookup feature.
+4. **Quix Streams SDK downloads the config changes from the API** in realtime, caches it locally, and joins it with incoming data streams using JSONPath or custom join logic.
+
+This design makes it possible to use very large configuration files in
+real time without pushing them directly through Kafka.
 
 ## How to Run
 
