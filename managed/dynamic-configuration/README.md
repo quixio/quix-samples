@@ -69,3 +69,7 @@ real time without pushing them directly through Kafka.
 - **port**: Port of the API (default: `80`).
 - **workers**: Number of worker processes (default: `1`).
 - **contentStore**: Storage backend for configuration content (`mongo` or `file`, default: `mongo`).
+
+## Learn More
+
+For complete details, check our [official documentation](https://quix.io/docs/quix-cloud/managed-services/dynamic-configuration.html).
