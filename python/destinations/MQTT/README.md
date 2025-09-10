@@ -24,11 +24,18 @@ You'll need to have an MQTT broker either locally or in the cloud
 The connector uses the following environment variables:
 
 - **input**: Name of the input topic to listen to.
-- **mqtt_topic_root**: The root for messages in MQTT, this can be anything.
-- **mqtt_server**: The address of your MQTT server.
-- **mqtt_port**: The port of your MQTT server.
-- **mqtt_username**: Username of your MQTT user.
-- **mqtt_password**: Password for the MQTT user.
+- **MQTT_CLIENT_ID**: A client ID for the sink.  
+  **Default**: `mqtt-sink`
+- **MQTT_TOPIC_ROOT**: The root for messages in MQTT, this can be anything.
+- **MQTT_SERVER**: The address of your MQTT server.
+- **MQTT_PORT**: The port of your MQTT server.  
+  **Default**: `8883`
+- **MQTT_USERNAME**: Username of your MQTT user.
+- **MQTT_PASSWORD**: Password for the MQTT user.
+- **MQTT_VERSION**: MQTT protocol version; choose 3.1, 3.1.1, or 5.  
+  **Default**: `3.1.1`
+- **MQTT_USE_TLS**: Set to true if the server uses TLS.  
+  **Default**: `True`
 
 ## Contribute
 
