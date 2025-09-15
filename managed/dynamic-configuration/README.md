@@ -72,7 +72,7 @@ real time without pushing them directly through Kafka.
 
 ### Blob Storage
 
-This service can leverage a blob storage configured on our platform (see [blob storage docs](https://quix.io/docs/deploy/blob-storage.html) for setup instructions).
+This service can leverage a blob storage configured on our platform (see [blob storage docs](https://quix.io/docs/quix-cloud/managed-services/blob-storage.html) for setup instructions).
 
 The blob storage configuration is automatically injected only when `contentStore` is set to `file`.
 
