@@ -78,4 +78,4 @@ The blob storage configuration is automatically injected only when `contentStore
 
 ## Learn More
 
-For complete details, check our [official documentation](https://quix.io/docs/quix-cloud/managed-services/dynamic-configuration.html).
+For complete details, check our [official documentation](https://quix.io/docs/quix-cloud/managed-services/blob-storage.html).
