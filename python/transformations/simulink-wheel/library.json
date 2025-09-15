@@ -1,0 +1,56 @@
+{
+    "libraryItemId": "f7169a9d-edef-417f-94d6-4cbfb89ba22c",
+    "name": "SIMULINK",
+    "language": "Python",
+    "tags": {
+        "Complexity": [
+            "Advanced"
+        ],
+        "Technology": [
+            "QuixStreams"
+        ],
+        "Type": [
+            "Code samples"
+        ],
+        "Pipeline Stage": [
+            "Transformation"
+        ],
+        "Popular Subjects": [
+            "MathWorks",
+            "Simulink",
+            "MATLAB",
+            "Scientific Computing"
+        ]
+    },
+    "shortDescription": "Transform Quix streams using MATLAB and Simulink",
+    "longDescription": "Run Simulink models on Quix as Python-compatible .whl packages",
+    "DefaultFile": "main.py",
+    "EntryPoint": "build/dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name": "input",
+            "Type": "EnvironmentVariable",
+            "InputType": "InputTopic",
+            "Description": "Input topic.",
+            "DefaultValue": "input-topic",
+            "Required": true
+        },
+        {
+            "Name": "output",
+            "Type": "EnvironmentVariable",
+            "InputType": "OutputTopic",
+            "Description": "Output topic.",
+            "DefaultValue": "output-topic",
+            "Required": true
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 2000,
+        "MemoryInMb": 4000,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}
