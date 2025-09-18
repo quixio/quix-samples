@@ -1,31 +1,19 @@
 {
-    "libraryItemId": "f7169a9d-edef-417f-94d6-4cbfb89ba22c",
-    "name": "SIMULINK",
+    "libraryItemId": "simulink-wheel-transformation",
+    "name": "Simulink Wheel Transformation",
     "language": "Python",
+    "IsHighlighted": false,
     "tags": {
-        "Complexity": [
-            "Advanced"
-        ],
-        "Technology": [
-            "QuixStreams"
-        ],
-        "Type": [
-            "Code samples"
-        ],
-        "Pipeline Stage": [
-            "Transformation"
-        ],
-        "Popular Subjects": [
-            "MathWorks",
-            "Simulink",
-            "MATLAB",
-            "Scientific Computing"
-        ]
+        "Complexity": ["Advanced"],
+        "Technology": ["QuixStreams", "Simulink"],
+        "Type": ["Code samples"],
+        "Pipeline Stage": ["Transformation"],
+        "Popular Subjects": ["MathWorks", "Simulink", "MATLAB", "Scientific Computing"]
     },
-    "shortDescription": "Transform Quix streams using MATLAB and Simulink",
+    "shortDescription": "Transform Quix streams using Simulink",
     "longDescription": "Run Simulink models on Quix as Python-compatible .whl packages",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {
