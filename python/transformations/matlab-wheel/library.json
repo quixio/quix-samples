@@ -4,28 +4,16 @@
     "language": "Python",
     "IsHighlighted": false,
     "tags": {
-        "Complexity": [
-            "Advanced"
-        ],
-        "Technology": [
-            "QuixStreams"
-        ],
-        "Type": [
-            "Code samples"
-        ],
-        "Pipeline Stage": [
-            "Transformation"
-        ],
-        "Popular Subjects": [
-            "MathWorks",
-            "MATLAB",
-            "Scientific Computing"
-        ]
+        "Complexity": ["Advanced"],
+        "Technology": ["QuixStreams", "Matlab"],
+        "Type": ["Code samples"],
+        "Pipeline Stage": ["Transformation"],
+        "Popular Subjects": ["MathWorks", "MATLAB", "Scientific Computing"]
     },
-    "shortDescription": "Transform Quix streams using MATLAB and Simulink",
+    "shortDescription": "Transform Quix streams using MATLAB functions as .whl packages",
     "longDescription": "Run MATLAB and Simulink models on Quix using the MATLAB runtime for Python",
     "DefaultFile": "main.py",
-    "EntryPoint": "build/dockerfile",
+    "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "Variables": [
         {

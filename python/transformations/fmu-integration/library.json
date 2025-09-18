@@ -3,7 +3,6 @@
   "name": "FMU Integration Transformation",
   "language": "Python",
   "IsHighlighted": false,
-  "DisplayOrder": 5,
   "tags": {
     "Complexity": ["Medium"],
     "Technology": ["Quix Streams", "FMU"],
@@ -12,7 +11,7 @@
     "Popular Subjects": ["Mathworks"]
   },
   "shortDescription": "Consume data from a topic, run an FMU model on it and publish the enriched results to an output topic",
-  "DefaultFile": "quix_function.py",
+  "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
   "Variables": [
