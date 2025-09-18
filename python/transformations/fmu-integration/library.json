@@ -1,0 +1,36 @@
+{
+  "libraryItemId": "fmu-integration-transformation",
+  "name": "FMU Integration Transformation",
+  "language": "Python",
+  "IsHighlighted": false,
+  "DisplayOrder": 5,
+  "tags": {
+    "Complexity": ["Medium"],
+    "Technology": ["Quix Streams", "FMU"],
+    "Pipeline Stage": ["Transformation"],
+    "Type": ["Code samples"],
+    "Popular Subjects": ["Mathworks"]
+  },
+  "shortDescription": "Consume data from a topic, run an FMU model on it and publish the enriched results to an output topic",
+  "DefaultFile": "quix_function.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "Name of the input topic to listen to",
+      "DefaultValue": "2d-vector",
+      "Required": true
+    },
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Name of the output topic to write to.",
+      "DefaultValue": "fmu-output",
+      "Required": true
+    }
+  ]
+}
