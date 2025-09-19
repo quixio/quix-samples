@@ -1,0 +1,44 @@
+{
+    "libraryItemId": "matlab-wheel-transformation",
+    "name": "MATLAB Wheel Transformation",
+    "language": "Python",
+    "IsHighlighted": false,
+    "tags": {
+        "Complexity": ["Advanced"],
+        "Technology": ["QuixStreams", "Matlab"],
+        "Type": ["Code samples"],
+        "Pipeline Stage": ["Transformation"],
+        "Popular Subjects": ["MathWorks", "Scientific Computing"]
+    },
+    "shortDescription": "Transform Quix streams using MATLAB functions as .whl packages",
+    "longDescription": "Run MATLAB and Simulink models on Quix using the MATLAB runtime for Python",
+    "DefaultFile": "main.py",
+    "EntryPoint": "dockerfile",
+    "RunEntryPoint": "main.py",
+    "Variables": [
+        {
+            "Name": "input",
+            "Type": "EnvironmentVariable",
+            "InputType": "InputTopic",
+            "Description": "Input topic.",
+            "DefaultValue": "input-topic",
+            "Required": true
+        },
+        {
+            "Name": "output",
+            "Type": "EnvironmentVariable",
+            "InputType": "OutputTopic",
+            "Description": "Output topic.",
+            "DefaultValue": "output-topic",
+            "Required": true
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 2000,
+        "MemoryInMb": 4000,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}
