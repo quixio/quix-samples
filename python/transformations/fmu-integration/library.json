@@ -8,7 +8,7 @@
     "Technology": ["Quix Streams", "FMU"],
     "Pipeline Stage": ["Transformation"],
     "Type": ["Code samples"],
-    "Popular Subjects": ["Mathworks"]
+    "Popular Subjects": []
   },
   "shortDescription": "Consume data from a topic, run an FMU model on it and publish the enriched results to an output topic",
   "DefaultFile": "main.py",

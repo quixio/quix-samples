@@ -5,7 +5,7 @@
     "IsHighlighted": false,
     "tags": {
         "Complexity": ["Advanced"],
-        "Technology": ["QuixStreams", "Simulink"],
+        "Technology": ["QuixStreams"],
         "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"],
         "Popular Subjects": ["MathWorks", "Simulink", "MATLAB", "Scientific Computing"]

@@ -8,7 +8,7 @@
         "Technology": ["QuixStreams", "Matlab"],
         "Type": ["Code samples"],
         "Pipeline Stage": ["Transformation"],
-        "Popular Subjects": ["MathWorks", "MATLAB", "Scientific Computing"]
+        "Popular Subjects": ["MathWorks", "Scientific Computing"]
     },
     "shortDescription": "Transform Quix streams using MATLAB functions as .whl packages",
     "longDescription": "Run MATLAB and Simulink models on Quix using the MATLAB runtime for Python",
