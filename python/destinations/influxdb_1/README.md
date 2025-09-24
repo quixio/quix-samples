@@ -41,14 +41,14 @@ The connector uses the following environment variables:
 - **TIMESTAMP_COLUMN**: This is the column in your data that represents the timestamp in nanoseconds. 
   Defaults to use the message timestamp received from the broker if not supplied.
   Can optionally replace with a callable in the template directly.
-- **BUFFER_SIZE**: Number of records to buffer before writing to TDengine.  
-  Default: `50`
-- **BUFFER_TIMEOUT**: Maximum time (in seconds) to buffer records before writing to TDengine.  
+- **BUFFER_SIZE**: Number of records to buffer before writing to InfluxDB.  
+  Default: `1000`
+- **BUFFER_TIMEOUT**: Maximum time (in seconds) to buffer records before writing to InfluxDB.  
   Default: `1`
 
 ## Requirements / Prerequisites
 
-You will need to have an InfluxDB 3.0 instance available and an API authentication token.
+You will need to have an InfluxDB 1.0 instance (using authentication) available.
 
 ## Contribute
 
