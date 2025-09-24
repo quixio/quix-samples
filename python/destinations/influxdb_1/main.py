@@ -5,7 +5,7 @@ from typing import Optional
 
 # import vendor-specific modules
 from quixstreams import Application
-from quixstreams.sinks.core.influxdb1 import (
+from quixstreams.sinks.community.influxdb1 import (
     InfluxDB1Sink,
     FieldsSetter,
     MeasurementSetter,
