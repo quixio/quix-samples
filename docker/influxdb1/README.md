@@ -6,17 +6,14 @@ This sample demonstrates how to deploy and use InfluxDB v1 as a time series data
 
 1. Create an account or log in to your [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account and navigate to the Code Samples section.
 2. Click `Deploy` to launch a pre-built container in Quix.
-3. **\[Recommended, Optional\]** configure your DB name with the environment variable:   
-    - `INFLUXDB_DB`: Database name to create (else, defaults to: `quix`)
-4. **\[Recommended, Optional\]** configure authentication (username + password) for your InfluxDB instance (else none required for read/write):
+3. Configure authentication (username + password) for your InfluxDB instance:
     - `INFLUXDB_ADMIN_USER`: Admin username
     - `INFLUXDB_ADMIN_PASSWORD`: Admin password
     > Note: If non-empty username + password are provided, HTTP API authentication is also enabled
+4. **\[Recommended, Optional\]** configure your DB name with the environment variable:   
+    - `INFLUXDB_DB`: Database name to create (else, defaults to: `quix`)
 5. **\[Recommended, Optional\]** Enable state, otherwise changes will be lost on restart.  
     > Note: the necessary storage type may not be supported on all Quix Platforms.
-6. \[Optional\] Enable external access to the DB (exposes access to entire internet).
-    - Otherwise, only apps within the same Quix environment can access the DB.
-    > !!WARNING!!: If enabled, and a username + password is NOT set, then ANYONE can freely access your database!
 
 ## How to Use
 
@@ -28,8 +25,8 @@ from influxdb import InfluxDBClient
 # Configure client settings
 host = "influxdb"
 port = 8086
-username = "admin"  # your admin username (can also be None)
-password = "your-password"  # your admin password (can also be None)
+username = "admin"  # your admin username
+password = "your-password"  # your admin password
 database = "quix"  # your database name
 
 # Connect to InfluxDB v1

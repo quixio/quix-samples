@@ -23,18 +23,17 @@ export INFLUXDB_DATA_DIR="$TARGET_DIR/data"
 export INFLUXDB_META_DIR="$TARGET_DIR/meta"
 export INFLUXDB_DATA_WAL_DIR="$TARGET_DIR/wal"
 
-# Unset empty auth variables
+# Fail if admin user or password is not set or empty
 if [ -z "$INFLUXDB_ADMIN_USER" ]; then
-  unset INFLUXDB_ADMIN_USER
+  echo "❌ ERROR: INFLUXDB_ADMIN_USER is required but not set or empty"
+  exit 1
 fi
 if [ -z "$INFLUXDB_ADMIN_PASSWORD" ]; then
-  unset INFLUXDB_ADMIN_PASSWORD
+  echo "❌ ERROR: INFLUXDB_ADMIN_PASSWORD is required but not set or empty"
+  exit 1
 fi
 
-# Auto-enable HTTP auth if both user and password are set
-if [ -n "$INFLUXDB_ADMIN_USER" ] && [ -n "$INFLUXDB_ADMIN_PASSWORD" ]; then
-  export INFLUXDB_HTTP_AUTH_ENABLED=true
-fi
+export INFLUXDB_HTTP_AUTH_ENABLED=true
 
 # Call the original InfluxDB entrypoint with our config
 exec /entrypoint.sh influxd -config "${INFLUXD_CONFIG_PATH}"
