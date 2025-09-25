@@ -1,0 +1,122 @@
+{
+  "libraryItemId": "influxdb-1-destination",
+  "name": "InfluxDB 1.0 Sink",
+  "language": "Python",
+  "tags": {
+    "Pipeline Stage": ["Destination"],
+    "Type": ["Connectors"],
+    "Category": ["Time series DB"]
+  },
+  "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an InfluxDB 3.0 database.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "IconFile": "icon.png",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "This is the input topic",
+      "DefaultValue": "input-data",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Host address for the InfluxDB instance (formatted as https://<host>).",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_PORT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Port for the InfluxDB instance.",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_USERNAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Username for the InfluxDB instance.",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Password for the InfluxDB instance.",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_MEASUREMENT_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The InfluxDB measurement to write data to. Can optionally replace with a callable in the template directly.",
+      "DefaultValue": "default",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_DATABASE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Database name in InfluxDB where data should be stored.",
+      "DefaultValue": "quix",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_TAG_KEYS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The tags to include when writing the measurement data. Example: Tag1,Tag2. Can optionally replace with a callable in the template directly.",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_FIELD_KEYS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The fields to include when writing the measurement data. Example: `Field1,Field2`. Can optionally replace with a callable in the template directly. ",
+      "Required": false
+    },
+    {
+      "Name": "CONSUMER_GROUP_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The name of the consumer group to use when consuming from Kafka",
+      "DefaultValue": "influxdb1-sink",
+      "Required": true
+    },
+    {
+      "Name": "TIMESTAMP_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The column containing the timestamp column. NOTE: Must be nanoseconds. Can optionally replace with a callable in the template directly.",
+      "Required": false
+    },
+    {
+      "Name": "BUFFER_SIZE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of records that sink holds before flush data to the InfluxDb",
+      "DefaultValue": "1000",
+      "Required": false
+    },
+    {
+      "Name": "BUFFER_TIMEOUT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of seconds that sink holds before flush data to the InfluxDb",
+      "DefaultValue": "1",
+      "Required": false
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
+}
