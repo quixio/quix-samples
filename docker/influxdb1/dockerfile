@@ -1,0 +1,15 @@
+# Use the official InfluxDB image from the Docker Hub
+FROM influxdb:1.8
+
+ENV INFLUXD_CONFIG_PATH=/etc/influxdb/influx.conf
+
+# Copy the InfluxDB configuration file if needed
+ADD influx.conf "${INFLUXD_CONFIG_PATH}"
+
+# Expose the necessary ports (8086 is the default port for InfluxDB)
+EXPOSE 8086
+
+# Define the default command to run when starting the container
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+ENTRYPOINT ["/init.sh"]
