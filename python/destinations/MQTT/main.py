@@ -88,7 +88,7 @@ mqtt_client.loop_start()
 
 print("Starting application")
 # run the data processing pipeline
-app.run(sdf)
+app.run()
 
 # stop handling MQTT messages
 mqtt_client.loop_stop()

@@ -41,4 +41,4 @@ sdf = sdf.apply(send_to_slack)
 
 if __name__ == "__main__":
     print("Starting application")
-    app.run(sdf)
+    app.run()

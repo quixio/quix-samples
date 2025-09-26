@@ -1,4 +1,4 @@
-from quixstreams.app import Application
+from quixstreams import Application
 from quixstreams.kafka.producer import Producer
 from datetime import datetime
 import json
@@ -68,4 +68,4 @@ sdf = sdf.update(handle_message)
 
 if __name__ == "__main__":
     print("Starting application")
-    app.run(sdf)
+    app.run()

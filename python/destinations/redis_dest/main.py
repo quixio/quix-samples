@@ -45,4 +45,4 @@ sdf = sdf.update(send_data_to_redis)
 
 if __name__ == "__main__":
     print("Starting application")
-    app.run(sdf)
+    app.run()

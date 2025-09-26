@@ -104,4 +104,4 @@ sdf.sink(elasticsearch_sink)
 # --------------- Run Application ---------------
 
 if __name__ == "__main__":
-    app.run(sdf)
+    app.run()

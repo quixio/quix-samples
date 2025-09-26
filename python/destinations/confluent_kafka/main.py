@@ -1,4 +1,4 @@
-from quixstreams.app import Application
+from quixstreams import Application
 from quixstreams import message_context
 from quixstreams.kafka.producer import Producer
 import os
@@ -71,4 +71,4 @@ def produce_to_kafka(value):
 sdf = sdf.update(produce_to_kafka)
 
 # Run the application to start consuming, processing, and producing data
-app.run(dataframe=sdf)
+app.run()
