@@ -90,7 +90,7 @@ def main():
         for message_key, row_data in read_csv_file(file_path=csv_file_path):
             # Serialize row value to bytes
             serialized_value = serializer(
-                value=row_data, ctx=SerializationContext(topic=topic.name)
+                value=row_data, ctx=SerializationContext(topic=topic.name, field="value")
             )
 
             # publish the data to the topic

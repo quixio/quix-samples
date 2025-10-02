@@ -1,0 +1,13 @@
+services:
+  flet-waveform-destination:
+    build:
+      context: ../../../python/destinations/flet-waveform
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for flet-waveform destination'
+      "
+
+    stop_grace_period: 3s

@@ -33,6 +33,8 @@ def configure_authentication(mqtt_client):
     print("Using anonymous authentication")
 
 mqtt_port = os.environ["mqtt_port"]
+mqtt_tls_enabled = os.getenv("mqtt_tls_enabled", "true").lower() == "true"
+
 # Validate the config
 if not mqtt_port.isnumeric():
     raise ValueError('mqtt_port must be a numeric value')
@@ -40,12 +42,19 @@ if not mqtt_port.isnumeric():
 client_id = os.getenv("Quix__Deployment__Id", "default")
 mqtt_client = paho.Client(callback_api_version=paho.CallbackAPIVersion.VERSION2,
                           client_id = client_id, userdata = None, protocol = mqtt_protocol_version())
-mqtt_client.tls_set(tls_version = mqtt.client.ssl.PROTOCOL_TLS)  # we'll be using tls
+
+if mqtt_tls_enabled:
+    print("TLS enabled")
+    mqtt_client.tls_set(tls_version = mqtt.client.ssl.PROTOCOL_TLS)
+else:
+    print("TLS disabled")
+
 mqtt_client.reconnect_delay_set(5, 60)
 configure_authentication(mqtt_client)
 
 # Create a Quix platform-specific application instead
-app = Application(consumer_group="mqtt_consumer_group", auto_offset_reset='earliest')
+consumer_group = os.getenv("consumer_group_name", "mqtt_consumer_group")
+app = Application(consumer_group=consumer_group, auto_offset_reset='earliest')
 # initialize the topic, this will combine the topic name with the environment details to produce a valid topic identifier
 input_topic = app.topic(os.environ["input"])
 
@@ -77,8 +86,9 @@ sdf = app.dataframe(input_topic)
 def publish_to_mqtt(data, key, timestamp, headers):
     json_data = json.dumps(data)
     message_key_string = key.decode('utf-8')  # Convert to string using utf-8 encoding
-    # publish to MQTT
-    mqtt_client.publish(mqtt_topic_root + "/" + message_key_string, payload = json_data, qos = 1)
+    # publish to MQTT with retain=True so messages are available for late subscribers
+    mqtt_client.publish(mqtt_topic_root + "/" + message_key_string, payload = json_data, qos = 1, retain=True)
+    return data
 
 sdf = sdf.apply(publish_to_mqtt, metadata=True)
 
@@ -88,7 +98,7 @@ mqtt_client.loop_start()
 
 print("Starting application")
 # run the data processing pipeline
-app.run(sdf)
+app.run()
 
 # stop handling MQTT messages
 mqtt_client.loop_stop()

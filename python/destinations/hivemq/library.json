@@ -63,6 +63,22 @@
             "Description": "MQTT protocol version: 3.1, 3.1.1, 5",
             "DefaultValue": "3.1.1",
             "Required": true
+        },
+        {
+            "Name": "mqtt_tls_enabled",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Enable TLS for MQTT connection (true/false)",
+            "DefaultValue": "true",
+            "Required": false
+        },
+        {
+            "Name": "consumer_group_name",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Kafka consumer group name for the HiveMQ destination",
+            "DefaultValue": "mqtt_consumer_group",
+            "Required": false
         }
     ],
     "DeploySettings": {

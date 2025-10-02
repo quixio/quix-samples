@@ -1,0 +1,63 @@
+# timeout: 60
+services:
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  demo-data-source:
+    build:
+      context: ../../../python/sources/demo_data
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - output=test-demo-output
+      - MAX_ROWS=100
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-demo-output
+      - TEST_TIMEOUT=25
+      - TEST_MIN_EXPECTED_COUNT=1
+    command: >
+      sh -c "
+        echo 'Waiting for demo-data-source to produce messages...' &&
+        sleep 5 &&
+        echo 'Verifying messages in output topic...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      demo-data-source:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

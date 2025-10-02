@@ -1,0 +1,69 @@
+# timeout: 50
+services:
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  http-api-source:
+    build:
+      context: ../../../python/sources/http_api_source
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - output=test-http-api-output
+      - Quix__Deployment__Network__PublicUrl=http://http-api-source
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-http-api-output
+      - TEST_MESSAGE_COUNT=3
+      - HTTP_API_HOST=http-api-source
+      - HTTP_API_PORT=80
+    command: >
+      sh -c "
+        echo 'Waiting for HTTP API to start...' &&
+        sleep 3 &&
+        echo 'Posting data to HTTP API...' &&
+        python /tests/post_data.py &&
+        echo 'Waiting for data to be published to Kafka...' &&
+        sleep 3 &&
+        echo 'Verifying output from Kafka...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./post_data.py:/tests/post_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      http-api-source:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

@@ -1,0 +1,13 @@
+services:
+  big-query-destination:
+    build:
+      context: ../../../python/destinations/big_query
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for big_query destination'
+      "
+
+    stop_grace_period: 3s

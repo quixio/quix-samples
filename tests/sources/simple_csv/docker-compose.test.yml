@@ -1,0 +1,64 @@
+# timeout: 70
+services:
+  csv-source:
+    build:
+      context: ../../../python/sources/simple_csv
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - Quix__Consumer__Group=csv-source-test
+      - Quix__Deployment__Id=test-csv-source
+      - output=test-csv-output
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  test-verifier:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+        echo 'Waiting for source to produce...' &&
+        sleep 15 &&
+        echo 'Verifying output...' &&
+        python /tests/verify_output.py
+      "
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-csv-output
+      - TEST_TIMEOUT=40
+      - TEST_EXPECTED_COUNT=1
+    volumes:
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      csv-source:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge
