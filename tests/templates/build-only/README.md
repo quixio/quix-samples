@@ -31,7 +31,7 @@ Build-only tests validate Docker build and Python syntax without running the ful
 
 **docker-compose.test.yml:**
 - [ ] Service name: `[app-name]`
-- [ ] Build context path: Point to your app directory (e.g., `../../../transformations/your_app`)
+- [ ] Build context path: Point to your app directory (e.g., `../../../python/transformations/your_app`)
 - [ ] Entrypoint: Update `main.py` to your app's entry point if different
 - [ ] Optional: Add comment with timeout if needed
 
@@ -42,7 +42,7 @@ Build-only tests validate Docker build and Python syntax without running the ful
 services:
   your-app:
     build:
-      context: ../../../transformations/your_app
+      context: ../../../python/transformations/your_app
       dockerfile: Dockerfile
     entrypoint: ["python", "-m", "py_compile", "main.py"]
 ```
@@ -66,4 +66,4 @@ Most tests should DELETE this README after copying. However, if your test has un
 - `tests/destinations/websocket/` - Async patterns, key-based routing
 
 ## More Help
-See main test README: `../../README.md`
+See main test README: `../../../tests/README.md`

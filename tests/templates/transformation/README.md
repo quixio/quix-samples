@@ -55,7 +55,7 @@ tests/transformations/your_app/
 - [ ] Output topic name (must match docker-compose.test.yml)
 - [ ] Output message structure validation
 - [ ] Transformed field validations (check transformation logic worked)
-- [ ] Expected count (use `TEST_MIN_EXPECTED_COUNT` for filtering/aggregation)
+- [ ] Expected count (use `TEST_EXPECTED_COUNT` for filtering/aggregation)
 - [ ] Timeout duration if different from 60 seconds
 
 ## Run Test

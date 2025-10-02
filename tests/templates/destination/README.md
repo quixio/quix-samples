@@ -39,10 +39,10 @@ tests/destinations/your_app/
 **docker-compose.test.yml:**
 - [ ] Add destination service (database, API mock, etc.)
 - [ ] Service name: `your-app`
-- [ ] Build context path: `../../destinations/your_app`
+- [ ] Build context path: `../../../python/destinations/your_app`
 - [ ] Environment variables (especially `input`)
 - [ ] Topic name (must match produce_test_data.py)
-- [ ] Install client library in test-runner `command` section
+- [ ] Install client library in test-runner `command` section (e.g., `pip install psycopg2-binary`)
 - [ ] Optional: Add timeout comment if > 5 minutes needed
 
 **produce_test_data.py:**

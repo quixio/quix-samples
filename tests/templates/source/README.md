@@ -42,7 +42,7 @@ tests/sources/your_app/
 
 **verify_output.py:**
 - [ ] Topic name (must match docker-compose.test.yml)
-- [ ] Expected message count: `TEST_MIN_EXPECTED_COUNT`
+- [ ] Expected message count: `TEST_EXPECTED_COUNT`
 - [ ] Field validations (check for required fields, types, value ranges)
 - [ ] Timeout duration if different from 60 seconds
 
