@@ -676,7 +676,7 @@ class ReportFormatter:
         if retry_passed:
             print(f"{Colors.GREEN}Passed after retry:   {len(retry_passed)}{Colors.NC}")
             for result in retry_passed:
-                print(f"  - {result.name} ({result.duration}s on retry)")
+                print(f"  - {result.name} ({result.duration}s)")
             print()
 
         # Failed
@@ -684,7 +684,7 @@ class ReportFormatter:
         print(f"{Colors.RED}Failed:  {report.failed}{Colors.NC}")
         if failed_tests:
             for result in failed_tests:
-                print(f"  - {result.name}")
+                print(f"  - {result.name} ({result.duration}s)")
             print()
 
             # Show command to re-run failed tests
