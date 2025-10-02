@@ -1,3 +1,2 @@
-# Auto-generated certificates and credentials
-certs/
-passwd
+# These are test certificates/credentials (not secrets), so we commit them
+# to avoid needing docker during CI setup phase

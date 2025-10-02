@@ -1,9 +1,14 @@
 #!/bin/bash
 set -e
 
+# NOTE: This script is only needed if the test certificates and password file are missing.
+# These files are now committed to git (they're test credentials, not real secrets).
+# This script is kept for local development in case someone accidentally deletes them.
+
 # Generate certificates if they don't exist
 if [ ! -f certs/ca.crt ]; then
     echo "Generating TLS certificates..."
+    echo "WARNING: Certificates should be committed to git. This regeneration is for emergency use only."
     mkdir -p certs
 
     # Use alpine with openssl to generate certificates
@@ -17,12 +22,17 @@ if [ ! -f certs/ca.crt ]; then
         rm certs/server.csr
     "
 
-    echo "Certificates generated"
+    echo "Certificates generated. Please commit them to git."
+else
+    echo "Certificates already exist (as expected)."
 fi
 
 # Generate password file if it doesn't exist
 if [ ! -f passwd ]; then
     echo "Generating password file..."
+    echo "WARNING: Password file should be committed to git. This regeneration is for emergency use only."
     docker run --rm -v "$(pwd):/work" -w /work eclipse-mosquitto:2.0 mosquitto_passwd -c -b passwd testuser testpass
-    echo "Password file generated"
+    echo "Password file generated. Please commit it to git."
+else
+    echo "Password file already exists (as expected)."
 fi
