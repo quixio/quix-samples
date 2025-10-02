@@ -2,26 +2,38 @@
 """
 QuixStreams Samples - Python Test Runner
 
-A parallel test runner that provides the same functionality as test.sh
-but with better organization and maintainability.
+A parallel test runner for docker-compose based integration tests.
+Supports parallel execution, automatic retry of failures, and detailed reporting.
 
-Phase 1: Create structure with placeholders
-Phase 2: Implement core logic
-Phase 3: Add parallel execution
-Phase 4: Add retry logic
-Phase 5: Match test.sh feature parity
+Usage:
+    ./test.py test <app-path> [...]  # Test specific apps
+    ./test.py test-all               # Run all tests
+    ./test.py test-sources -p 3      # Run all source tests in parallel
+    ./test.py --help                 # Show full help
 """
 
 import asyncio
 import signal
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import List, Optional, Dict
 import subprocess
 import json
 import time
+
+
+# ============================================================================
+# Configuration Constants
+# ============================================================================
+
+# Status update timing
+STATUS_CHECK_INTERVAL = 20  # Check running tests every N seconds
+LONG_RUNNING_THRESHOLD = 35  # Only show status if any test > N seconds
+
+# Default timeouts
+DEFAULT_TEST_TIMEOUT = 300  # 5 minutes
 
 
 # ============================================================================
@@ -83,7 +95,12 @@ class TestReport:
 # ============================================================================
 
 class TestDiscovery:
-    """Discovers available tests in the test directory"""
+    """
+    Discovers available tests in the test directory.
+
+    Tests are identified by the presence of docker-compose.test.yml files
+    in subdirectories under tests/{sources,destinations,transformations}.
+    """
 
     def __init__(self, tests_dir: Path):
         self.tests_dir = tests_dir
@@ -171,9 +188,9 @@ class TestDiscovery:
 class TestExecutor:
     """Executes individual tests using docker compose"""
 
-    def __init__(self, verbose: bool = False, default_timeout: int = 300):
+    def __init__(self, verbose: bool = False, default_timeout: int = DEFAULT_TEST_TIMEOUT):
         self.verbose = verbose
-        self.default_timeout = default_timeout  # 5 minutes default
+        self.default_timeout = default_timeout
         self.script_dir = Path(__file__).parent
 
     def run_test(self, test_path: Path) -> TestResult:
@@ -347,7 +364,7 @@ class ParallelTestRunner:
     Maps to bash: run_multiple_tests_parallel() and run_all_parallel()
     """
 
-    def __init__(self, max_parallel: int = 3, enable_retry: bool = True, timeout: int = 300, verbose: bool = False):
+    def __init__(self, max_parallel: int = 3, enable_retry: bool = True, timeout: int = DEFAULT_TEST_TIMEOUT, verbose: bool = False):
         self.max_parallel = max_parallel
         self.enable_retry = enable_retry
         self.timeout = timeout
@@ -469,11 +486,11 @@ class ParallelTestRunner:
             for task in done:
                 completed_results.append(await task)
 
-            # Print status update if there are still tests running and any has been running for longer than 35 seconds
-            if pending and time.time() - last_status_time >= 20:
+            # Print status update if there are still tests running and any has been running for longer than threshold
+            if pending and time.time() - last_status_time >= STATUS_CHECK_INTERVAL:
                 current_time = time.time()
-                # Check if any test has been running > 35 seconds
-                has_long_running = any(current_time - start > 35 for start in running_tests.values())
+                # Check if any test has been running > threshold
+                has_long_running = any(current_time - start > LONG_RUNNING_THRESHOLD for start in running_tests.values())
 
                 if has_long_running:
                     print()
@@ -522,7 +539,7 @@ class SequentialTestRunner:
     Maps to bash: run_multiple_tests_sequential()
     """
 
-    def __init__(self, timeout: int = 300, verbose: bool = False):
+    def __init__(self, timeout: int = DEFAULT_TEST_TIMEOUT, verbose: bool = False):
         self.timeout = timeout
         self.executor = TestExecutor(verbose=verbose, default_timeout=timeout)
         self.discovery = TestDiscovery(Path(__file__).parent / "tests")
@@ -722,7 +739,7 @@ class TestCLI:
         self.script_dir = Path(__file__).parent
         self.discovery = TestDiscovery(self.script_dir / "tests")
         self.parallel_count = None  # None = sequential, number = parallel with count
-        self.timeout = 300  # Default 5 minutes
+        self.timeout = DEFAULT_TEST_TIMEOUT
         self.verbose = False  # Default to non-verbose
         self.repeat_count = 1  # Default to run once
 
