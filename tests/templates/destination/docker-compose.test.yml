@@ -1,0 +1,163 @@
+# Docker Compose configuration for [APP_NAME] destination integration test
+#
+# TODO: Replace all [PLACEHOLDERS] with your actual values
+# TODO: Update destination service configuration
+# TODO: Add required environment variables for your destination
+
+services:
+  # The destination system (database, data store, etc.)
+  [destination-service]:  # TODO: Replace with your service name (e.g., postgres, influxdb, mongodb, elasticsearch)
+    image: [destination-image]:[version]  # TODO: Replace with actual image (e.g., postgres:15, influxdb:2.7, mongo:7)
+    environment:
+      # TODO: Add initialization environment variables
+      # EXAMPLE for PostgreSQL:
+      # - POSTGRES_PASSWORD=testpass
+      # - POSTGRES_USER=testuser
+      # - POSTGRES_DB=testdb
+
+      # EXAMPLE for InfluxDB 2.x:
+      # - DOCKER_INFLUXDB_INIT_MODE=setup
+      # - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      # - DOCKER_INFLUXDB_INIT_PASSWORD=password123
+      # - DOCKER_INFLUXDB_INIT_ORG=testorg
+      # - DOCKER_INFLUXDB_INIT_BUCKET=testdb
+      # - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=testtokenabc123
+
+      # EXAMPLE for MongoDB:
+      # - MONGO_INITDB_ROOT_USERNAME=testuser
+      # - MONGO_INITDB_ROOT_PASSWORD=testpass
+
+      # EXAMPLE for Elasticsearch:
+      # - discovery.type=single-node
+      # - xpack.security.enabled=false
+
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "[health-check-command]"]  # TODO: Add health check command
+      # EXAMPLE for PostgreSQL: test: ["CMD-SHELL", "pg_isready -U postgres"]
+      # EXAMPLE for InfluxDB: test: ["CMD", "influx", "ping"]
+      # EXAMPLE for MongoDB: test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      # EXAMPLE for Elasticsearch: test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 3s  # Fast shutdown for tests
+    # TODO: Uncomment if you need to initialize with test data or schema
+    # volumes:
+    #   - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql  # For PostgreSQL/MySQL
+    #   - ./init-schema.js:/docker-entrypoint-initdb.d/init.js  # For MongoDB
+
+  # Kafka broker (Redpanda) - DO NOT MODIFY unless you have specific requirements
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  # Your destination application under test
+  [app-name]-destination:  # TODO: Replace [app-name] with your app name in kebab-case (e.g., my-database-destination)
+    build:
+      context: ../../../[language]/destinations/[app_name]  # TODO: Update path - replace [language] with python/dotnet and [app_name] with your folder
+      dockerfile: Dockerfile
+    environment:
+      # Kafka configuration - DO NOT MODIFY
+      - Quix__Broker__Address=kafka:9092
+      - input=test-[app-name]-input  # TODO: Replace [app-name] with your app name (e.g., test-my-database-input)
+
+      # TODO: Add destination system connection configuration
+      # EXAMPLE for database connection:
+      # - DB_HOST=[destination-service]
+      # - DB_PORT=5432
+      # - DB_NAME=testdb
+      # - DB_USER=testuser
+      # - DB_PASSWORD=testpass
+
+      # EXAMPLE for InfluxDB:
+      # - INFLUXDB_HOST=http://[destination-service]:8086
+      # - INFLUXDB_TOKEN=testtokenabc123
+      # - INFLUXDB_ORG=testorg
+      # - INFLUXDB_DATABASE=testdb
+
+      # TODO: Add destination-specific configuration
+      # EXAMPLE: Table/collection/measurement naming
+      # - TABLE_NAME=test_measurements
+      # - MEASUREMENT_NAME=test_data
+      # - COLLECTION_NAME=test_collection
+
+      # EXAMPLE: Field mapping configuration
+      # - FIELD_KEYS=temperature,humidity
+      # - TAG_KEYS=sensor_id
+
+      # EXAMPLE: Batching/buffer configuration
+      # - BUFFER_SIZE=1
+      # - BUFFER_DELAY=0.1
+      # - BATCH_SIZE=100
+
+    networks:
+      - test-network
+    depends_on:
+      [destination-service]:  # TODO: Replace with your destination service name above
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+
+  # Test runner that produces data and verifies output
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-[app-name]-input  # TODO: Replace [app-name] to match input topic above
+      - TEST_MESSAGE_COUNT=1  # Minimum messages to verify functionality
+    command: >
+      sh -c "
+        echo 'Installing [destination client library]...' &&
+        pip install [client-package-name] > /dev/null 2>&1 &&
+        echo 'Producing test messages to Kafka...' &&
+        python /tests/produce_test_data.py &&
+        echo 'Waiting for [app-name]-destination to process messages...' &&
+        sleep 15 &&
+        echo 'Verifying data in [DESTINATION_SYSTEM]...' &&
+        python /tests/verify_output.py
+      "
+      # TODO: Replace [client-package-name] with actual package
+      # EXAMPLE: pip install influxdb-client (for InfluxDB)
+      # EXAMPLE: pip install psycopg2-binary (for PostgreSQL)
+      # EXAMPLE: pip install pymongo (for MongoDB)
+      # EXAMPLE: pip install elasticsearch (for Elasticsearch)
+      # EXAMPLE: pip install redis (for Redis)
+
+      # TODO: Adjust sleep duration based on your destination's batch/buffer settings
+      # EXAMPLE: sleep 5 for fast destinations with small buffers
+      # EXAMPLE: sleep 20 for destinations with longer buffer delays
+    volumes:
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      [destination-service]:  # TODO: Replace with your destination service name
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      [app-name]-destination:  # TODO: Replace with your destination service name above
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

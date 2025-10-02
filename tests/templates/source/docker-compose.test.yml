@@ -1,0 +1,114 @@
+# Docker Compose configuration for [APP_NAME] source integration test
+#
+# TODO: Replace all [PLACEHOLDERS] with your actual values
+# TODO: Remove any optional services you don't need
+# TODO: Update environment variables for your specific source configuration
+
+services:
+  # Kafka broker (Redpanda) - DO NOT MODIFY unless you have specific requirements
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  # OPTIONAL: External service your source depends on (database, API, etc.)
+  # TODO: Uncomment and customize if your source needs an external service
+  # [external-service]:  # TODO: Replace with your service name (e.g., postgres, mysql, redis)
+  #   image: [service-image]:[version]  # TODO: Replace with actual image (e.g., postgres:15, mysql:8, redis:7)
+  #   environment:
+  #     - [ENV_VAR1]=[VALUE1]  # TODO: Add required environment variables
+  #     - [ENV_VAR2]=[VALUE2]  # EXAMPLE: POSTGRES_PASSWORD=testpass
+  #   networks:
+  #     - test-network
+  #   healthcheck:
+  #     test: ["CMD", "[health-check-command]"]  # TODO: Add health check command
+  #     # EXAMPLE for Postgres: test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     # EXAMPLE for MySQL: test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  #     # EXAMPLE for Redis: test: ["CMD", "redis-cli", "ping"]
+  #     interval: 3s
+  #     timeout: 5s
+  #     retries: 10
+  #   stop_grace_period: 3s
+
+  # Your source application under test
+  [app-name]-source:  # TODO: Replace [app-name] with your app name in kebab-case (e.g., my-data-source)
+    build:
+      context: ../../../[language]/sources/[app_name]  # TODO: Update path - replace [language] with python/dotnet/etc and [app_name] with your folder name
+      dockerfile: Dockerfile
+    environment:
+      # Kafka configuration - DO NOT MODIFY
+      - Quix__Broker__Address=kafka:9092
+      - output=test-[app-name]-output  # TODO: Replace [app-name] with your app name (e.g., test-my-data-source-output)
+
+      # TODO: Add your source-specific environment variables below
+      # EXAMPLE: API configuration
+      # - API_URL=http://[external-service]:8080
+      # - API_KEY=test-key-123
+
+      # EXAMPLE: Database configuration
+      # - DB_HOST=[external-service]
+      # - DB_PORT=5432
+      # - DB_NAME=testdb
+      # - DB_USER=testuser
+      # - DB_PASSWORD=testpass
+
+      # EXAMPLE: Source behavior configuration
+      # - POLL_INTERVAL=1
+      # - BATCH_SIZE=10
+      # - MAX_MESSAGES=100
+
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      # TODO: Uncomment if using external service
+      # [external-service]:
+      #   condition: service_healthy
+    stop_grace_period: 3s
+
+  # Test runner that verifies the output
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-[app-name]-output  # TODO: Replace [app-name] to match the output topic above
+      - TEST_TIMEOUT=40  # Maximum time to wait for messages
+      - TEST_EXPECTED_COUNT=1  # Minimum messages to verify functionality
+    command: >
+      sh -c "
+        echo 'Waiting for [app-name]-source to produce messages...' &&
+        sleep 15 &&
+        echo 'Verifying messages in output topic...' &&
+        python /tests/verify_output.py
+      "
+      # TODO: Adjust sleep duration based on how long your source takes to produce data
+      # EXAMPLE: sleep 5 for fast sources, sleep 30 for sources with rate limits
+    volumes:
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      [app-name]-source:  # TODO: Replace [app-name] with your service name above
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge
