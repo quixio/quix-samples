@@ -1,0 +1,97 @@
+# timeout: 35
+services:
+  redis:
+    image: redis/redis-stack-server:latest
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 3s
+  test-publisher:
+    image: redis/redis-stack-server:latest
+    networks:
+      - test-network
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: >
+      sh -c "
+        sleep 2 &&
+        for i in 0 1 2; do
+          redis-cli -h redis TS.ADD test_stream_$$i '*' $$i LABELS ts true name stream_$$i &&
+          echo \"Added sample $$i to test_stream_$$i\";
+        done &&
+        echo 'All test data published to Redis'
+      "
+    stop_grace_period: 3s
+  redis-source:
+    build:
+      context: ../../../python/sources/redis_source
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - Quix__Consumer__Group=redis-source-test
+      - Quix__Deployment__Id=test-redis-source
+      - output=test-redis-output
+      - redis_host=redis
+      - redis_port=6379
+      - redis_password=
+      - redis_username=
+    networks:
+      - test-network
+    depends_on:
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  test-verifier:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-redis-output
+      - TEST_TIMEOUT=40
+      - TEST_EXPECTED_COUNT=1
+    command: >
+      sh -c "
+        echo 'Waiting for source to produce...' &&
+        sleep 8 &&
+        echo 'Verifying output...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

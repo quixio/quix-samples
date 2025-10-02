@@ -60,6 +60,14 @@
       "Description": "The prefix for the key to store data under",
       "DefaultValue": "",
       "Required": false
+    },
+    {
+      "Name": "consumer_group_name",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Kafka consumer group name for the Redis destination",
+      "DefaultValue": "redis-destination",
+      "Required": false
     }
   ],
   "DeploySettings": {

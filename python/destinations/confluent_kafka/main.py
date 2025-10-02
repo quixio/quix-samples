@@ -1,4 +1,4 @@
-from quixstreams.app import Application
+from quixstreams import Application
 from quixstreams import message_context
 from quixstreams.kafka.producer import Producer
 import os
@@ -35,7 +35,8 @@ if input_topic_name == "" or output_topic_name == "":
 producer = Producer(broker_address=broker_address, extra_config=sasl_config)
 
 # Define your application
-app = Application(consumer_group="kafka-connector-consumer-group", 
+consumer_group = os.getenv("consumer_group_name", "kafka-connector-consumer-group")
+app = Application(consumer_group=consumer_group, 
                        auto_offset_reset="earliest")
 
 # Define the input and output topics
@@ -71,4 +72,4 @@ def produce_to_kafka(value):
 sdf = sdf.update(produce_to_kafka)
 
 # Run the application to start consuming, processing, and producing data
-app.run(dataframe=sdf)
+app.run()

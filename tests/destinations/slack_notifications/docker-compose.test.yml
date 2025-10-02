@@ -1,0 +1,13 @@
+services:
+  slack-notifications-destination:
+    build:
+      context: ../../../python/destinations/slack_notifications
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for slack_notifications destination'
+      "
+
+    stop_grace_period: 3s

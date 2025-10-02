@@ -1,0 +1,105 @@
+# timeout: 80
+services:
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - test-network
+  minio-setup:
+    image: python:3.11-slim
+    depends_on:
+      minio:
+        condition: service_healthy
+    volumes:
+      - ./setup_minio.py:/setup_minio.py:ro
+    command: >
+      sh -c "
+        pip install boto3 &&
+        python /setup_minio.py &&
+        touch /tmp/setup-complete &&
+        tail -f /dev/null
+      "
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/setup-complete"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+  s3-source:
+    build:
+      context: ../../../python/sources/s3_source
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - Quix__Consumer__Group=s3-source-test
+      - Quix__Deployment__Id=test-s3-source
+      - output=test-s3-output
+      - S3_BUCKET=test-bucket
+      - S3_REGION=us-east-1
+      - S3_SECRET=minioadmin
+      - S3_ACCESS_KEY_ID=minioadmin
+      - S3_FOLDER_PATH=data/
+      - S3_FILE_FORMAT=json
+      - S3_FILE_COMPRESSION=gzip
+      - S3_ENDPOINT_URL=http://minio:9000
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      minio-setup:
+        condition: service_healthy
+  test-verifier:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+        echo 'Waiting for S3 source to process files...' &&
+        sleep 5 &&
+        echo 'Verifying output...' &&
+        python /tests/verify_output.py
+      "
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-s3-output
+      - TEST_TIMEOUT=60
+      - TEST_EXPECTED_COUNT=1
+    volumes:
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      s3-source:
+        condition: service_started
+networks:
+  test-network:
+    driver: bridge

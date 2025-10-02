@@ -1,0 +1,96 @@
+# timeout: 65
+services:
+  influxdb:
+    image: influxdb:1.8
+    environment:
+      - INFLUXDB_DB=testdb
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=password
+      - INFLUXDB_USER=testuser
+      - INFLUXDB_USER_PASSWORD=testpass
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "influx", "-execute", "SHOW DATABASES"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 3s
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  influxdb-1-destination:
+    build:
+      context: ../../../python/destinations/influxdb_1
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - input=test-influxdb1-input
+      - INFLUXDB_HOST=influxdb
+      - INFLUXDB_PORT=8086
+      - INFLUXDB_USERNAME=testuser
+      - INFLUXDB_PASSWORD=testpass
+      - INFLUXDB_DATABASE=testdb
+      - INFLUXDB_MEASUREMENT_NAME=test_measurement
+      - INFLUXDB_FIELD_KEYS=temperature,humidity
+      - INFLUXDB_TAG_KEYS=sensor_id
+      - BUFFER_SIZE=1
+      - BUFFER_DELAY=0.1
+    networks:
+      - test-network
+    depends_on:
+      influxdb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-influxdb1-input
+      - TEST_MESSAGE_COUNT=1
+    command: >
+      sh -c "
+        echo 'Installing InfluxDB client...' &&
+        pip install influxdb > /dev/null 2>&1 &&
+        echo 'Producing test messages to Kafka...' &&
+        python /tests/produce_test_data.py &&
+        echo 'Waiting for influxdb-1-destination to process messages...' &&
+        sleep 15 &&
+        echo 'Verifying data in InfluxDB...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      influxdb:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      influxdb-1-destination:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

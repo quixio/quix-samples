@@ -14,6 +14,17 @@ Destinations: the connectors to analytics dashboards, alerts, data warehouses an
 
 Explore and deploy them using `quix app create` command of the [Quix CLI](https://quix.io/docs/quix-cli/cli-quickstart.html) or use them directly on [Quix Cloud](https://quix.io/docs/quix-cloud/quickstart.html).
 
+## Testing
+
+All samples include Docker Compose integration tests. Run tests using:
+
+```bash
+./test.py test sources/starter_source    # Run specific test
+./test.py test-all --parallel 3          # Run all tests
+```
+
+See [tests/README.md](tests/README.md) for complete testing documentation.
+
 ## Contributing
 
 Contributors are very welcome at Quix! Follow this guide to get a project into production on the platform.

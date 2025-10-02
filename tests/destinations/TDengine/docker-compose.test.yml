@@ -1,0 +1,110 @@
+# timeout: 60
+services:
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  tdengine:
+    image: tdengine/tdengine:3.3.0.0
+    environment:
+      - TAOS_FQDN=tdengine
+      - TAOS_FIRST_EP=tdengine
+    volumes:
+      # Mount custom config to disable UDF and prevent crash-looping udfd process
+      - ./taos.cfg:/etc/taos/taos.cfg:ro
+    ports:
+      - "6041:6041"
+    healthcheck:
+      test: ["CMD-SHELL", "taos -s 'show databases;' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 15
+      start_period: 10s
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  tdengine-dest:
+    build:
+      context: ../../../python/destinations/TDengine
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - input=test-tdengine-input
+      - TDENGINE_HOST=http://tdengine:6041
+      - TDENGINE_DATABASE=test_db
+      - TDENGINE_USERNAME=root
+      - TDENGINE_PASSWORD=taosdata
+      - TDENGINE_SUPERTABLE=sensor_data
+      - TDENGINE_TAGS_KEYS=sensor_id
+      - TDENGINE_FIELDS_KEYS=temperature,humidity
+      - TDENGINE_NAME_SUBTABLES_FROM_TAGS=true
+      - TIMESTAMP_COLUMN=timestamp
+      - TDENGINE_TIME_PRECISION=ms
+      - TDENGINE_ALLOW_MISSING_FIELDS=false
+      - TDENGINE_INCLUDE_METADATA_TAGS=false
+      - TDENGINE_CONVERT_INTS_TO_FLOATS=true
+      - TDENGINE_ENABLE_GZIP=false
+      - TDENGINE_MAX_RETRIES=5
+      - TDENGINE_RETRY_BACKOFF_FACTOR=1.0
+      - BUFFER_SIZE=1000
+      - BUFFER_DELAY=1.0
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      tdengine:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-tdengine-input
+      - TEST_MESSAGE_COUNT=1
+    command: >
+      sh -c "
+        echo 'Installing TDengine client...' &&
+        pip install taospy requests > /dev/null 2>&1 &&
+        echo 'Setting up TDengine database...' &&
+        python /tests/setup_tdengine.py &&
+        echo 'Producing test messages to Kafka...' &&
+        python /tests/produce_test_data.py &&
+        echo 'Waiting for TDengine destination to process messages...' &&
+        sleep 15 &&
+        echo 'Verifying data in TDengine...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./setup_tdengine.py:/tests/setup_tdengine.py:ro
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      tdengine:
+        condition: service_healthy
+      tdengine-dest:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge
