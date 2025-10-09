@@ -1,0 +1,77 @@
+{
+    "libraryItemId": "s3-file",
+    "name": "AWS S3 File Sink",
+    "language": "Python",
+    "tags": {
+        "Pipeline Stage": ["Destination"],
+        "Type": ["Connectors"],
+        "Category": ["File Store"]
+    },
+    "shortDescription": "Consume data from a Kafka topic and write it to an AWS S3 bucket path.",
+    "DefaultFile": "main.py",
+    "EntryPoint": "dockerfile",
+    "RunEntryPoint": "main.py",
+    "IconFile": "icon.png",
+    "Variables": [
+        {
+            "Name": "input",
+            "Type": "EnvironmentVariable",
+            "InputType": "InputTopic",
+            "Description": "The input Kafka topic.",
+            "DefaultValue": "input",
+            "Required": true
+        },
+        {
+            "Name": "S3_BUCKET",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "The S3 bucket to use.",
+            "Required": true
+        },
+        {
+            "Name": "S3_BUCKET_DIRECTORY",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "An optional path within the S3 bucket to use, else uses root.",
+            "DefaultValue": "",
+            "Required": false
+        },
+        {
+            "Name": "AWS_REGION_NAME",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "The region of your S3 bucket.",
+            "Required": true
+        },
+        {
+            "Name": "AWS_SECRET_ACCESS_KEY",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "Your AWS secret.",
+            "Required": true
+        },
+        {
+            "Name": "AWS_ACCESS_KEY_ID",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "Your AWS Access Key.",
+            "Required": true
+        },
+        {
+            "Name": "FILE_FORMAT",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "The file format to publish data as; options: [parquet, json].",
+            "DefaultValue": "parquet",
+            "Required": false
+        }
+    ],
+    "DeploySettings": {
+        "DeploymentType": "Service",
+        "CpuMillicores": 200,
+        "MemoryInMb": 500,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": false
+    }
+}
