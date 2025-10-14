@@ -1,107 +1,32 @@
-from quixstreams import Application, context
-import paho.mqtt.client as paho
-from paho import mqtt
-import json
+from quixstreams import Application
+from quixstreams.sinks.community.mqtt import MQTTSink
 import os
 
 # Load environment variables (useful when working locally)
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
-def mqtt_protocol_version():
-    if os.environ["mqtt_version"] == "3.1":
-        print("Using MQTT version 3.1")
-        return paho.MQTTv31
-    if os.environ["mqtt_version"] == "3.1.1":
-        print("Using MQTT version 3.1.1")
-        return paho.MQTTv311
-    if os.environ["mqtt_version"] == "5":
-        print("Using MQTT version 5")
-        return paho.MQTTv5
-    print("Defaulting to MQTT version 3.1.1")
-    return paho.MQTTv311
+app = Application(
+    consumer_group=os.getenv("CONSUMER_GROUP", "mqtt_consumer_group"),
+    auto_offset_reset="earliest"
+)
+input_topic = app.topic(os.environ["input"])
 
-def configure_authentication(mqtt_client):
-    mqtt_username = os.getenv("mqtt_username", "")
-    if mqtt_username != "":
-        mqtt_password = os.getenv("mqtt_password", "")
-        if mqtt_password == "":
-           raise ValueError('mqtt_password must set when mqtt_username is set')
-        print("Using username & password authentication")
-        mqtt_client.username_pw_set(os.environ["mqtt_username"], os.environ["mqtt_password"])
-        return
-    print("Using anonymous authentication")
+sink = MQTTSink(
+    client_id=os.environ["MQTT_CLIENT_ID"],
+    server=os.environ["MQTT_SERVER"],
+    port=int(os.environ["MQTT_PORT"]),
+    topic_root=os.environ["MQTT_TOPIC_ROOT"],
+    username=os.environ["MQTT_USERNAME"],
+    password=os.environ["MQTT_PASSWORD"],
+    version=os.environ["MQTT_VERSION"],
+    retain=os.getenv("MQTT_RETAIN_MESSAGES", "false").lower() == "true",
+    tls_enabled=os.environ["MQTT_USE_TLS"].lower() == "true"
+)
 
-mqtt_port = os.environ["mqtt_port"]
-mqtt_tls_enabled = os.getenv("mqtt_tls_enabled", "true").lower() == "true"
-
-# Validate the config
-if not mqtt_port.isnumeric():
-    raise ValueError('mqtt_port must be a numeric value')
-
-client_id = os.getenv("Quix__Deployment__Id", "default")
-mqtt_client = paho.Client(callback_api_version=paho.CallbackAPIVersion.VERSION2,
-                          client_id = client_id, userdata = None, protocol = mqtt_protocol_version())
-
-if mqtt_tls_enabled:
-    print("TLS enabled")
-    mqtt_client.tls_set(tls_version = mqtt.client.ssl.PROTOCOL_TLS)
-else:
-    print("TLS disabled")
-
-mqtt_client.reconnect_delay_set(5, 60)
-configure_authentication(mqtt_client)
-
-# Create a Quix platform-specific application instead
-consumer_group = os.getenv("consumer_group_name", "mqtt_consumer_group")
-app = Application(consumer_group=consumer_group, auto_offset_reset='earliest')
-# initialize the topic, this will combine the topic name with the environment details to produce a valid topic identifier
-input_topic_name = os.environ["input"]
-input_topic = app.topic(input_topic_name)
-
-# setting callbacks for different events to see if it works, print the message etc.
-def on_connect_cb(client: paho.Client, userdata: any, connect_flags: paho.ConnectFlags,
-                  reason_code: paho.ReasonCode, properties: paho.Properties):
-    if reason_code == 0:
-        print("CONNECTED!") # required for Quix to know this has connected
-    else:
-        print(f"ERROR! - ({reason_code.value}). {reason_code.getName()}")
-
-def on_disconnect_cb(client: paho.Client, userdata: any, disconnect_flags: paho.DisconnectFlags,
-                     reason_code: paho.ReasonCode, properties: paho.Properties):
-    print(f"DISCONNECTED! Reason code ({reason_code.value}) {reason_code.getName()}!")
-    
-mqtt_client.on_connect = on_connect_cb
-mqtt_client.on_disconnect = on_disconnect_cb
-
-mqtt_topic_root = os.environ["mqtt_topic_root"]
-
-# connect to MQTT Cloud on port 8883 (default for MQTT)
-mqtt_client.connect(os.environ["mqtt_server"], int(mqtt_port))
-
-# Hook up to termination signal (for docker image) and CTRL-C
-print("Listening to streams. Press CTRL-C to exit.")
-
-sdf = app.dataframe(input_topic)
-
-def publish_to_mqtt(data, key, timestamp, headers):
-    json_data = json.dumps(data)
-    message_key_string = key.decode('utf-8')  # Convert to string using utf-8 encoding
-    mqtt_topic = mqtt_topic_root + "/" + message_key_string
-    # publish to MQTT with retain=True so messages are available for late subscribers
-    mqtt_client.publish(mqtt_topic, payload = json_data, qos = 1, retain=True)
-    return data
-
-sdf = sdf.apply(publish_to_mqtt, metadata=True)
+sdf = app.dataframe(topic=input_topic)
+sdf.sink(sink)
 
 
-# start the background process to handle MQTT messages
-mqtt_client.loop_start()
-
-print("Starting application")
-# run the data processing pipeline
-app.run()
-
-# stop handling MQTT messages
-mqtt_client.loop_stop()
-print("Exiting")
+if __name__ == '__main__':
+    app.run()
