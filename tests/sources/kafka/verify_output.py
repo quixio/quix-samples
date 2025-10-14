@@ -8,7 +8,7 @@ def main():
     broker_address = os.getenv("Quix__Broker__Address", "quix-kafka:9092")
     output_topic = os.getenv("TEST_OUTPUT_TOPIC", "replicated-topic")
     timeout = int(os.getenv("TEST_TIMEOUT", "40"))
-    expected_count = int(os.getenv("TEST_EXPECTED_COUNT", "3"))
+    expected_count = 3
 
     print(f"Consuming from output topic: {output_topic}")
     print(f"Expected {expected_count} messages")

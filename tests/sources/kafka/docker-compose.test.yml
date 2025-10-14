@@ -103,7 +103,6 @@ services:
       - Quix__Broker__Address=quix-kafka:9092
       - TEST_OUTPUT_TOPIC=replicated-topic
       - TEST_TIMEOUT=40
-      - TEST_EXPECTED_COUNT=3
     volumes:
       - ./verify_output.py:/tests/verify_output.py:ro
     working_dir: /
