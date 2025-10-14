@@ -49,7 +49,9 @@ services:
         sleep 5 &&
         echo 'Generating test data to external Kafka...' &&
         python /tests/generate_data.py &&
-        echo 'Test data generated successfully'
+        echo 'Test data generated successfully' &&
+        echo 'Keeping data-generator alive to prevent test abort...' &&
+        tail -f /dev/null
       "
     volumes:
       - ./generate_data.py:/tests/generate_data.py:ro
@@ -67,6 +69,13 @@ services:
     build:
       context: ../../../python/sources/kafka
       dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Waiting for data generator to populate external Kafka...' &&
+        sleep 10 &&
+        echo 'Starting Kafka replicator source...' &&
+        python3 main.py
+      "
     environment:
       - Quix__Broker__Address=quix-kafka:9092
       - Quix__Consumer__Group=kafka-source-test
@@ -84,7 +93,7 @@ services:
       quix-kafka:
         condition: service_healthy
       data-generator:
-        condition: service_completed_successfully
+        condition: service_started
     stop_grace_period: 3s
 
   # Verify output in Quix Kafka
@@ -95,7 +104,7 @@ services:
     command: >
       sh -c "
         echo 'Waiting for kafka source to replicate data...' &&
-        sleep 15 &&
+        sleep 5 &&
         echo 'Verifying replicated data in Quix Kafka...' &&
         python /tests/verify_output.py
       "
