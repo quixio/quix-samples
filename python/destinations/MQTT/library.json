@@ -80,15 +80,15 @@
       "Required": true
     },
     {
-      "Name": "mqtt_tls_enabled",
+      "Name": "MQTT_RETAIN_MESSAGES",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Enable TLS for MQTT connection (true/false)",
-      "DefaultValue": "true",
+      "Description": "Whether to retain/persist the latest message (per key) on the MQTT topic.",
+      "DefaultValue": "false",
       "Required": false
     },
     {
-      "Name": "consumer_group_name",
+      "Name": "CONSUMER_GROUP",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Kafka consumer group name for the MQTT destination",
