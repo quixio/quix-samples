@@ -140,7 +140,7 @@
       "Required": false
     },
     {
-      "Name": "BUFFER_TIMEOUT",
+      "Name": "BUFFER_DELAY",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The number of seconds that sink holds before flush data to the InfluxDb.",
