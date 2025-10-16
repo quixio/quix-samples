@@ -1,3 +1,2 @@
-# TODO: finalize version
-quixstreams[aws]==3.22.0
+quixstreams[s3]==3.23.1
 python-dotenv
