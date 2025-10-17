@@ -136,13 +136,15 @@ class KafkaReplicatorSink(BaseSink):
             name=self._topic_name,
             value_serializer=self._value_serializer,
             key_serializer=self._key_serializer,
-            create_config=self._origin_topic.broker_config if self._origin_topic else None
+            create_config=self._origin_topic.broker_config
+            if self._origin_topic
+            else None,
         )
 
         if self._auto_create_sink_topic:
             admin = TopicAdmin(
                 broker_address=self._broker_address,
-                extra_config=self._producer_extra_config
+                extra_config=self._producer_extra_config,
             )
             admin.create_topics(topics=[self._topic])
 
