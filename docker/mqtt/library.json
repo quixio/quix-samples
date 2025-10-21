@@ -1,6 +1,6 @@
 {
   "libraryItemId": "mqtt-mosquitto",
-  "name": "MQTT Broker (Mosquitto)",
+  "name": "MQTT Broker",
   "language": "docker",
   "tags": {
     "Category": ["Server"],
