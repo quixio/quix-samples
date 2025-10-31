@@ -1,0 +1,101 @@
+# timeout: 90
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=TestPass123!
+      - MSSQL_PID=Developer
+      - MSSQL_AGENT_ENABLED=true
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P TestPass123! -C -Q 'SELECT 1' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+  sql-cdc-source:
+    build:
+      context: ../../../python/sources/sql_cdc
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - output=test-sql-cdc-output
+      - SQL_SERVER=sqlserver
+      - SQL_DATABASE=testdb
+      - SQL_USERNAME=sa
+      - SQL_PASSWORD=TestPass123!
+      - SQL_DRIVER={ODBC Driver 18 for SQL Server}
+      - SQL_SCHEMA=dbo
+      - SQL_TABLE=test_table
+      - POLL_INTERVAL_SECONDS=2
+      - LOG_LEVEL=INFO
+    networks:
+      - test-network
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-sql-cdc-output
+      - SQL_HOST=sqlserver
+      - SQL_PORT=1433
+      - SQL_USER=sa
+      - SQL_PASSWORD=TestPass123!
+      - SQL_DATABASE=testdb
+      - SQL_SCHEMA=dbo
+      - SQL_TABLE=test_table
+      - TEST_MESSAGE_COUNT=1
+      - TEST_TIMEOUT=30
+    command: >
+      sh -c "
+        echo 'Installing pymssql...' &&
+        pip install pymssql > /dev/null 2>&1 &&
+        echo 'Waiting for CDC source to initialize...' &&
+        sleep 5 &&
+        echo 'Performing database operations...' &&
+        python /tests/modify_data.py &&
+        echo 'Waiting for CDC to capture and publish changes...' &&
+        sleep 5 &&
+        echo 'Verifying CDC output from Kafka...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./modify_data.py:/tests/modify_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      sql-cdc-source:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

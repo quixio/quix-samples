@@ -4,7 +4,7 @@ This sample demonstrates how to deploy and use InfluxDB v2 as a time series data
 
 ## How to Run
 
-1. Create an account or log in to your [Quix](https://portal.platform.quix.io/signup?xlink=github) account and navigate to the Code Samples section.
+1. Create an account or log in to your [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account and navigate to the Code Samples section.
 2. Click `Deploy` to launch a pre-built container in Quix.
 3. Complete the required environment variables to configure your InfluxDB instance.
 4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.

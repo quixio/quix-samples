@@ -8,8 +8,13 @@ echo "Kafka Username: $kafkaUsername"
 echo "Kafka Password: ***"
 echo "Kafka Security Mode: $kafkaSecurityMode"
 echo "Kafka SASL Mechanism: $kafkaSaslMechanism"
-echo "Quix Broker Truststore File: $quixBrokerTruststoreFile"
-echo "Quix Broker Truststore Password: $quixBrokerTruststorePassword"
+echo "Certificates Available: $certificatesAvailable"
+if [ "$certificatesAvailable" == "true" ]; then
+    echo "Quix Broker Truststore File: $quixBrokerTruststoreFile"
+    echo "Quix Broker Truststore Password: ***"
+else
+    echo "No custom CA certificate provided, using system default trust store"
+fi
 
 # Check if the environment variable is set
 if [ -z "$BOOTSTRAP_SERVERS" ]; then
@@ -36,8 +41,19 @@ sed -i "s#<sasl_security_protocol>#${kafkaSecurityMode}#g" "$file_path"
 sed -i "s#<sasl_mechanism>#${kafkaSaslMechanism}#g" "$file_path"
 sed -i "s#<your_username>#${kafkaUsername}#g" "$file_path"
 sed -i "s#<your_password>#${kafkaPassword}#g" "$file_path"
-sed -i "s#<path_to_your_truststore>#${quixBrokerTruststoreFile}#g" "$file_path"
-sed -i "s#<your_truststore_password>#${quixBrokerTruststorePassword}#g" "$file_path"
+# Only configure custom SSL truststore if certificates are available
+if [ "$certificatesAvailable" == "true" ]; then
+    sed -i "s#<path_to_your_truststore>#${quixBrokerTruststoreFile}#g" "$file_path"
+    sed -i "s#<your_truststore_password>#${quixBrokerTruststorePassword}#g" "$file_path"
+else
+    # Comment out custom truststore configuration - will use system default trust store
+    sed -i "s#^ssl\.truststore\.location=.*##g" "$file_path"
+    sed -i "s#^ssl\.truststore\.password=.*##g" "$file_path"
+    sed -i "s#^producer\.ssl\.truststore\.location=.*##g" "$file_path"
+    sed -i "s#^producer\.ssl\.truststore\.password=.*##g" "$file_path"
+    sed -i "s#^consumer\.ssl\.truststore\.location=.*##g" "$file_path"
+    sed -i "s#^consumer\.ssl\.truststore\.password=.*##g" "$file_path"
+fi
 
 if [ "$CONNECT_MODE" == "distributed" ]; then
 

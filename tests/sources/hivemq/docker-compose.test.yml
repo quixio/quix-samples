@@ -1,0 +1,98 @@
+# timeout: 65
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - ./certs:/mosquitto/certs:ro
+      - ./passwd:/mosquitto/config/passwd:ro
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep '[m]osquitto' || exit 1"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 3s
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  hivemq-source:
+    build:
+      context: ../../../python/sources/hivemq
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - output=test-hivemq-output
+      - mqtt_server=mosquitto
+      - mqtt_port=8883
+      - mqtt_topic=test/topic
+      - mqtt_version=5
+      - mqtt_username=testuser
+      - mqtt_password=testpass
+      - mqtt_ca_cert=/app/ca.crt
+    volumes:
+      - ./certs/ca.crt:/app/ca.crt:ro
+    networks:
+      - test-network
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-hivemq-output
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=8883
+      - TEST_MESSAGE_COUNT=3
+    command: >
+      sh -c "
+        echo 'Installing MQTT client...' &&
+        pip install paho-mqtt > /dev/null 2>&1 &&
+        echo 'Waiting for HiveMQ source to connect...' &&
+        sleep 8 &&
+        echo 'Publishing MQTT messages...' &&
+        python /tests/publish_mqtt.py &&
+        echo 'Waiting for messages to be forwarded...' &&
+        sleep 5 &&
+        echo 'Verifying output from Kafka...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./publish_mqtt.py:/tests/publish_mqtt.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+      - ./certs/ca.crt:/tests/ca.crt:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      hivemq-source:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

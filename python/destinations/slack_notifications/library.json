@@ -27,6 +27,14 @@
       "InputType": "FreeText",
       "Description": "The webhook url to send notifications to",
       "Required": true
+    },
+    {
+      "Name": "consumer_group_name",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Kafka consumer group name for the Slack notifications destination",
+      "DefaultValue": "slack-notifications",
+      "Required": false
     }
   ],
   "DeploySettings": {

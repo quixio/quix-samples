@@ -4,7 +4,7 @@
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the `Connectors` tab to use this connector.
+Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account or log-in and visit the `Connectors` tab to use this connector.
 
 Locate and click the connector tile, fill in the required parameters, then click `Test connection & deploy` to deploy the connector to your Quix instance.
 

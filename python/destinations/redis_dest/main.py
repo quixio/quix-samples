@@ -18,7 +18,8 @@ r = redis.Redis(
 
 redis_key_prefix = os.environ['redis_key_prefix']
 
-app = Application(consumer_group="redis-destination")
+consumer_group = os.getenv("consumer_group_name", "redis-destination")
+app = Application(consumer_group=consumer_group)
 
 input_topic = app.topic(os.environ["input"])
 
@@ -45,4 +46,4 @@ sdf = sdf.update(send_data_to_redis)
 
 if __name__ == "__main__":
     print("Starting application")
-    app.run(sdf)
+    app.run()

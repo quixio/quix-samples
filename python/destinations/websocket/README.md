@@ -51,7 +51,7 @@ Data is sent as JSON strings over the WebSocket connection. The format mirrors t
 
 This sample can be deployed directly to your Quix environment.
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in to your existing environment and visit the `Connectors` tab to use this connector.
+Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account or log-in to your existing environment and visit the `Connectors` tab to use this connector.
 
 Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 

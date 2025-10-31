@@ -135,7 +135,7 @@ def main():
 
                 # Serialize row value to bytes
                 serialized_value = serializer(
-                    value=obj, ctx=SerializationContext(topic=topic.name)
+                    value=obj, ctx=SerializationContext(topic=topic.name, field="value")
                 )
 
                 # publish the data to the topic

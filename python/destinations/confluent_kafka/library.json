@@ -51,6 +51,14 @@
       "Description": "Obtained from the Confluent Kafka portal",
       "DefaultValue": "",
       "Required": true
+    },
+    {
+      "Name": "consumer_group_name",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Kafka consumer group name for the Confluent Kafka destination",
+      "DefaultValue": "kafka-connector-consumer-group",
+      "Required": false
     }
   ],
   "DeploySettings": {

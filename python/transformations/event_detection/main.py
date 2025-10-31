@@ -17,9 +17,10 @@ sdf = app.dataframe(input_topic)
 sdf = sdf[sdf.contains("Brake")]
 
 # Calculate hopping window of 1s with 200ms steps.
+# Use .current() instead of .final() to emit on every message
 sdf = sdf.apply(lambda row: float(row["Brake"])) \
-        .hopping_window(1000, 200).mean().final() 
-        
+        .hopping_window(1000, 200).mean().current()
+
 sdf.print()
 
 # Filter only windows where average brake force exceeded 50%.

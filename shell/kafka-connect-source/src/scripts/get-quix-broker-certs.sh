@@ -66,17 +66,48 @@ export BOOTSTRAP_SERVERS=$brokerBootsrapList
 
 # Fetch the broker certificates
 
+echo "Attempting to download broker certificates..."
 curl -L "$Quix__Portal__Api/workspaces/$Quix__Workspace__Id/certificates" -H "Authorization: Bearer $Quix__Sdk__Token" -o /opt/certs.zip
 
-mkdir -p /opt/quix
-unzip -o /opt/certs.zip -d /opt/quix
-rm -rf /opt/certs.zip
-
+# Initialize certificate variables
 quixBrokerCertsPath="/opt/quix"
-quixBrokerCertificateFile="$quixBrokerCertsPath/ca.cert"
-quixBrokerTruststoreFile="$quixBrokerCertsPath/ca.jks"
-quixBrokerTruststorePassword=$(cat /proc/sys/kernel/random/uuid)
+quixBrokerCertificateFile=""
+quixBrokerTruststoreFile=""
+quixBrokerTruststorePassword=""
+certificatesAvailable="false"
 
-# Create a truststore file based on the certificate file
+# Check if the zip file exists and is not empty
+if [ -f "/opt/certs.zip" ] && [ -s "/opt/certs.zip" ]; then
+    # Try to unzip and check if it succeeds
+    mkdir -p /opt/quix
+    if unzip -o /opt/certs.zip -d /opt/quix 2>/dev/null; then
+        rm -rf /opt/certs.zip
+        
+        # Check if the certificate file exists
+        if [ -f "$quixBrokerCertsPath/ca.cert" ]; then
+            echo "Certificate found, creating truststore..."
+            quixBrokerCertificateFile="$quixBrokerCertsPath/ca.cert"
+            quixBrokerTruststoreFile="$quixBrokerCertsPath/ca.jks"
+            quixBrokerTruststorePassword=$(cat /proc/sys/kernel/random/uuid)
+            
+            # Create a truststore file based on the certificate file
+            if keytool -importcert -file "$quixBrokerCertificateFile" -keystore "$quixBrokerTruststoreFile" -storepass "$quixBrokerTruststorePassword" -noprompt 2>/dev/null; then
+                echo "Truststore created successfully"
+                certificatesAvailable="true"
+            else
+                echo "Info: Failed to create truststore, continuing with system default CA trust store"
+            fi
+        else
+            echo "Info: No custom CA certificate found, continuing with system default CA trust store"
+        fi
+    else
+        echo "Info: Certificates archive is empty, continuing with system default CA trust store"
+        rm -rf /opt/certs.zip
+    fi
+else
+    echo "Info: No custom CA certificates provided, continuing with system default CA trust store"
+    [ -f "/opt/certs.zip" ] && rm -rf /opt/certs.zip
+fi
 
-keytool -importcert -file "$quixBrokerCertificateFile" -keystore "$quixBrokerTruststoreFile" -storepass "$quixBrokerTruststorePassword" -noprompt
+# Export the certificate availability status
+export certificatesAvailable

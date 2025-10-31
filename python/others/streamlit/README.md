@@ -10,7 +10,7 @@ as a line graph, where each column has its own line.
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 

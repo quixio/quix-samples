@@ -52,20 +52,16 @@ def create_publication_on_table(publication_name: str, table_name: str):
     '''
     try:
         run_query(conn, query)
-        conn.close()
 
     except psycopg2.errors.DuplicateObject:
         print(f"Publication {publication_name} already exists.")
-        conn.close()
-        
+
     except psycopg2.errors.UndefinedTable:
         print(f"{table_name} not found.")
-        conn.close()
         raise
 
-    else:
+    finally:
         conn.close()
-        raise
 
 def get_changes(conn, slot_name: str):
     query = f'''
