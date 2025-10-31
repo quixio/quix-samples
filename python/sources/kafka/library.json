@@ -1,0 +1,129 @@
+{
+  "libraryItemId": "kafka-replicator-source",
+  "name": "Kafka Replicator Source",
+  "language": "Python",
+  "tags": {
+    "Pipeline Stage": ["Source"],
+    "Type": ["Connectors"],
+    "Category": ["Data streaming"]
+  },
+  "shortDescription": "Replicate data from a Kafka topic to a Quix Cloud topic",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "IconFile": "icon.png",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the Quix Topic that will receive the replicated data",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "SOURCE_BROKER_ADDRESS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The source Kafka broker address (e.g., localhost:9092 or broker.example.com:9092)",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "SOURCE_TOPIC",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The source Kafka topic name to replicate from",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "AUTO_OFFSET_RESET",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "What to do when there is no initial offset in Kafka. Options: earliest, latest",
+      "DefaultValue": "latest",
+      "Required": false
+    },
+    {
+      "Name": "VALUE_DESERIALIZER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Deserializer to use for the message value. Options: json, bytes, string, double, integer",
+      "DefaultValue": "json",
+      "Required": false
+    },
+    {
+      "Name": "KEY_DESERIALIZER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Deserializer to use for the message key. Options: json, bytes, string, double, integer",
+      "DefaultValue": "bytes",
+      "Required": false
+    },
+    {
+      "Name": "CONSUMER_POLL_TIMEOUT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Consumer poll timeout in seconds (optional)",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "SHUTDOWN_TIMEOUT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Timeout for shutting down the source in seconds",
+      "DefaultValue": "10",
+      "Required": false
+    },
+    {
+      "Name": "SOURCE_KAFKA_SASL_USERNAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "SASL username for source Kafka authentication (optional)",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "SOURCE_KAFKA_SASL_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "SASL password for source Kafka authentication (optional)",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "SOURCE_KAFKA_SASL_MECHANISM",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "SASL mechanism for authentication. Options: PLAIN, SCRAM-SHA-256, SCRAM-SHA-512, GSSAPI, OAUTHBEARER, AWS_MSK_IAM",
+      "DefaultValue": "SCRAM-SHA-256",
+      "Required": false
+    },
+    {
+      "Name": "SOURCE_KAFKA_SSL_CA_LOCATION",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Path to the SSL CA certificate file for secure connections. If not provided, system default CA certificates will be used",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "CONSUMER_GROUP",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Name of the consumer group",
+      "DefaultValue": "",
+      "Required": false
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
+}
