@@ -1,5 +1,5 @@
 {
-    "libraryItemId": "starter-destination",
+    "libraryItemId": "quixlake-timeseries-destination",
     "name": "Quix TS Datalake Sink",
     "language": "Python",
     "tags": {
