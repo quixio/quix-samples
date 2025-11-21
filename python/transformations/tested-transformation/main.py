@@ -15,14 +15,15 @@ def define_pipeline(sdf: StreamingDataFrame):
     
     # Do StreamingDataFrame operations/transformations here
     sdf = sdf.apply(lambda row: row).filter(lambda row: True)
-    
-    
+
+    # Set row timestamp from payload.    
     sdf = sdf.set_timestamp(lambda row, *_: int(row["time"] / 1E6))
     
     sdf["time"] = sdf["time"].apply(lambda epoch: str(datetime.fromtimestamp(epoch / 1E9)))
     
     sdf = sdf.tumbling_window(3000).count().final()
     
+    # Optional printing for debugging.
     #sdf = sdf.print(metadata=True)
     
     return sdf
