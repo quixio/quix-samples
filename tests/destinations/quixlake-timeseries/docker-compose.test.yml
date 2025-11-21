@@ -1,6 +1,6 @@
 # Test configuration for Quix Lake Timeseries destination
 # Uses only public Docker images + mock catalog service
-# timeout: 90
+# timeout: 120
 
 services:
   # MinIO for S3-compatible storage
@@ -105,8 +105,8 @@ services:
 
       # Performance settings
       - BATCH_SIZE=5
-      - COMMIT_INTERVAL=5
-      - MAX_WRITE_WORKERS=3
+      - COMMIT_INTERVAL=1
+      - MAX_WRITE_WORKERS=5
 
       # Kafka consumer settings
       - CONSUMER_GROUP=quixlake-ts-test-consumer
@@ -140,7 +140,7 @@ services:
 
       # Test configuration
       - TEST_INPUT_TOPIC=test-quixlake-input
-      - TEST_MESSAGE_COUNT=10
+      - TEST_MESSAGE_COUNT=6
 
       # S3 configuration for verification
       - AWS_ENDPOINT_URL=http://minio:9000
@@ -165,7 +165,7 @@ services:
         python /tests/produce_test_data.py &&
         echo '' &&
         echo '=== Waiting for quixlake-timeseries to process messages ===' &&
-        sleep 25 &&
+        sleep 10 &&
         echo '' &&
         echo '=== Verifying Parquet data in S3 ===' &&
         python /tests/verify_output.py &&

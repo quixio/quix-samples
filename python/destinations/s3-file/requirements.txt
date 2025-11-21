@@ -4,3 +4,4 @@ requests
 pandas
 boto3
 pyarrow
+mypy-boto3-s3
