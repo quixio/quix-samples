@@ -79,18 +79,26 @@
       "Required": true
   },
   {
-      "Name": "S3_ENDPOINT_URL",
+      "Name": "MAX_MB_PER_MESSAGE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Custom S3 endpoint URL for MinIO or other S3-compatible services (optional)",
+      "Description": "Max size of the message in MB",
       "DefaultValue": "",
+      "Required": false
+  },
+  {
+      "Name": "DOWNLOAD_CONTENT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Whether to publish the content of the file to kafka or just the metadata.",
+      "DefaultValue": "False",
       "Required": false
   }
   ],
   "DeploySettings": {
-    "DeploymentType": "Job",
-    "CpuMillicores": 100,
-    "MemoryInMb": 100,
+    "DeploymentType": "Service",
+    "CpuMillicores": 250,
+    "MemoryInMb": 250,
     "Replicas": 1,
     "PublicAccess": false,
     "ValidateConnection": false
