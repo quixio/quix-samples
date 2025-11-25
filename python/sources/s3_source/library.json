@@ -55,43 +55,35 @@
       "Required": true
   },
   {
-      "Name": "S3_FOLDER_PATH",
+      "Name": "S3_FOLDER_PREFIX",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The path to the S3 folder to consume",
+      "Description": "The folder prefix within the S3 bucket to monitor (optional)",
       "DefaultValue": "",
-      "Required": true
+      "Required": false
   },
   {
-      "Name": "S3_FILE_FORMAT",
+      "Name": "POLL_INTERVAL_SECONDS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The file format of the files",
-      "DefaultValue": "json",
-      "Required": true
-  },
-  {
-      "Name": "S3_FILE_COMPRESSION",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The type of file compression used for the files",
-      "DefaultValue": "gzip",
-      "Required": true
+      "Description": "How often to check S3 for new files (in seconds)",
+      "DefaultValue": "30",
+      "Required": false
   },
   {
       "Name": "MAX_MB_PER_MESSAGE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Max size of the message in MB",
-      "DefaultValue": "",
+      "DefaultValue": "1",
       "Required": false
   },
   {
       "Name": "DOWNLOAD_CONTENT",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Whether to publish the content of the file to kafka or just the metadata.",
-      "DefaultValue": "False",
+      "Description": "Whether to publish the content of the file to Kafka or just the metadata",
+      "DefaultValue": "True",
       "Required": false
   }
   ],
