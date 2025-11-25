@@ -1,51 +1,50 @@
-from quixstreams import Application
-from quixstreams.sources.community.file.s3 import S3FileSource
-import time
-
 import os
+import logging
+from quixstreams import Application
+from s3_file_watcher import S3FileWatcher
 from dotenv import load_dotenv
+
+# Load environment variables
 load_dotenv()
 
-app = Application()
+# Configuration
+AWS_ACCESS_KEY_ID = os.getenv("S3_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("S3_SECRET")
+S3_BUCKET_NAME = os.environ["S3_BUCKET"]
+S3_FOLDER_PREFIX = os.getenv("S3_FOLDER_PREFIX", "")
+AWS_REGION = os.getenv("S3_REGION", "us-east-1")
+AWS_ENDPOINT_URL = os.getenv("AWS_ENDPOINT_URL")  # For MinIO or custom S3-compatible endpoints
+TOPIC_NAME = os.environ["output"]
+POLL_INTERVAL = int(os.getenv("POLL_INTERVAL_SECONDS", "30"))
 
-# create an output topic
-output_topic = app.topic(os.environ['output'])
+# Logging setup
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-# Custom setters for S3 file records (must be regular functions for pickling)
-def key_setter(row):
-    """Use record ID as the message key, or None if not present."""
-    return str(row.get('id', '')) if 'id' in row else None
+# Create Quix Application
+app = Application(consumer_group="s3_file_watcher_v1.2", auto_create_topics=True)
 
-def value_setter(row):
-    """Use the whole record as the message value."""
-    return row
+# Create S3 File Watcher Source
+s3_file_watcher = S3FileWatcher(
+    name="s3_file_watcher",
+    bucket_name=S3_BUCKET_NAME,
+    folder_prefix=S3_FOLDER_PREFIX,
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION,
+    endpoint_url=AWS_ENDPOINT_URL,
+    poll_interval=POLL_INTERVAL
+)
 
-def timestamp_setter(row):
-    """Use current time as message timestamp."""
-    return int(time.time() * 1000)
+# Define the topic using the "output" environment variable
+topic = app.topic(TOPIC_NAME)
 
-# Build S3FileSource kwargs
-source_kwargs = {
-    'filepath': os.environ['S3_FOLDER_PATH'],
-    'bucket': os.environ['S3_BUCKET'],
-    'aws_access_key_id': os.environ['S3_ACCESS_KEY_ID'],
-    'aws_secret_access_key': os.environ['S3_SECRET'],
-    'region_name': os.environ['S3_REGION'],
-    'file_format': os.environ['S3_FILE_FORMAT'],
-    'compression': os.environ.get('S3_FILE_COMPRESSION'),
-    'key_setter': key_setter,
-    'value_setter': value_setter,
-    'timestamp_setter': timestamp_setter,
-}
-
-# Support custom endpoint for MinIO or other S3-compatible services
-if 'S3_ENDPOINT_URL' in os.environ:
-    source_kwargs['endpoint_url'] = os.environ['S3_ENDPOINT_URL']
-
-# create the S3 file source
-source = S3FileSource(**source_kwargs)
-
-app.add_source(source, topic=output_topic)
+# Add source to application
+app.add_source(s3_file_watcher, topic)
 
 if __name__ == "__main__":
-    app.run()
+    try:
+        logging.basicConfig(level=logging.INFO)
+        app.run()
+    except KeyboardInterrupt:
+        print("\nProgram interrupted by user. Exiting gracefully.")

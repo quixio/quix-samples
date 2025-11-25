@@ -55,42 +55,42 @@
       "Required": true
   },
   {
-      "Name": "S3_FOLDER_PATH",
+      "Name": "S3_FOLDER_PREFIX",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The path to the S3 folder to consume",
+      "Description": "The folder prefix within the S3 bucket to monitor (optional)",
       "DefaultValue": "",
-      "Required": true
+      "Required": false
   },
   {
-      "Name": "S3_FILE_FORMAT",
+      "Name": "POLL_INTERVAL_SECONDS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The file format of the files",
-      "DefaultValue": "json",
-      "Required": true
+      "Description": "How often to check S3 for new files (in seconds)",
+      "DefaultValue": "30",
+      "Required": false
   },
   {
-      "Name": "S3_FILE_COMPRESSION",
+      "Name": "MAX_MB_PER_MESSAGE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The type of file compression used for the files",
-      "DefaultValue": "gzip",
-      "Required": true
+      "Description": "Max size of the message in MB",
+      "DefaultValue": "1",
+      "Required": false
   },
   {
-      "Name": "S3_ENDPOINT_URL",
+      "Name": "DOWNLOAD_CONTENT",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Custom S3 endpoint URL for MinIO or other S3-compatible services (optional)",
-      "DefaultValue": "",
+      "Description": "Whether to publish the content of the file to Kafka or just the metadata",
+      "DefaultValue": "True",
       "Required": false
   }
   ],
   "DeploySettings": {
-    "DeploymentType": "Job",
-    "CpuMillicores": 100,
-    "MemoryInMb": 100,
+    "DeploymentType": "Service",
+    "CpuMillicores": 250,
+    "MemoryInMb": 250,
     "Replicas": 1,
     "PublicAccess": false,
     "ValidateConnection": false

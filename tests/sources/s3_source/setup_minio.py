@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import boto3
-import gzip
 import json
 from botocore.client import Config
 
@@ -22,24 +21,24 @@ except Exception as e:
     print(f"Bucket might already exist: {e}")
 
 # Upload test data
-# Note: Each file contains one JSON object per line (JSONL format)
+# Note: Upload plain text files for testing
 test_data = [
-    [{"id": 1, "name": "test1", "value": 100}],
-    [{"id": 2, "name": "test2", "value": 200}],
-    [{"id": 3, "name": "test3", "value": 300}],
+    {"id": 1, "name": "test1", "value": 100},
+    {"id": 2, "name": "test2", "value": 200},
+    {"id": 3, "name": "test3", "value": 300},
 ]
 
-for i, records in enumerate(test_data, 1):
-    # Create JSONL content (one JSON per line)
-    jsonl_content = '\n'.join(json.dumps(record) for record in records).encode('utf-8')
-    gzipped_content = gzip.compress(jsonl_content)
+for i, record in enumerate(test_data, 1):
+    # Create JSON content
+    json_content = json.dumps(record).encode('utf-8')
 
     # Upload to S3
     s3_client.put_object(
         Bucket='test-bucket',
-        Key=f'data/data{i}.json.gz',
-        Body=gzipped_content
+        Key=f'data/data{i}.json',
+        Body=json_content,
+        ContentType='application/json'
     )
-    print(f"Uploaded data{i}.json.gz")
+    print(f"Uploaded data{i}.json")
 
 print("MinIO setup complete")
