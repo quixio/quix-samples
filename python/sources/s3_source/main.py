@@ -13,6 +13,7 @@ AWS_SECRET_ACCESS_KEY = os.getenv("S3_SECRET")
 S3_BUCKET_NAME = os.environ["S3_BUCKET"]
 S3_FOLDER_PREFIX = os.getenv("S3_FOLDER_PREFIX", "")
 AWS_REGION = os.getenv("S3_REGION", "us-east-1")
+AWS_ENDPOINT_URL = os.getenv("AWS_ENDPOINT_URL")  # For MinIO or custom S3-compatible endpoints
 TOPIC_NAME = os.environ["output"]
 POLL_INTERVAL = int(os.getenv("POLL_INTERVAL_SECONDS", "30"))
 
@@ -31,6 +32,7 @@ s3_file_watcher = S3FileWatcher(
     aws_access_key_id=AWS_ACCESS_KEY_ID,
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=AWS_REGION,
+    endpoint_url=AWS_ENDPOINT_URL,
     poll_interval=POLL_INTERVAL
 )
 

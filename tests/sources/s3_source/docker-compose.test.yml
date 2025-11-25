@@ -1,4 +1,4 @@
-# timeout: 80
+# timeout: 60
 services:
   minio:
     image: minio/minio:latest
@@ -13,6 +13,7 @@ services:
       retries: 10
     networks:
       - test-network
+    stop_grace_period: 3s
   minio-setup:
     image: python:3.11-slim
     depends_on:
@@ -34,6 +35,7 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
+    stop_grace_period: 3s
   kafka:
     image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
     command:
@@ -50,6 +52,7 @@ services:
       retries: 10
     networks:
       - test-network
+    stop_grace_period: 3s
   s3-source:
     build:
       context: ../../../python/sources/s3_source
@@ -63,10 +66,10 @@ services:
       - S3_REGION=us-east-1
       - S3_SECRET=minioadmin
       - S3_ACCESS_KEY_ID=minioadmin
-      - S3_FOLDER_PATH=data/
-      - S3_FILE_FORMAT=json
-      - S3_FILE_COMPRESSION=gzip
-      - S3_ENDPOINT_URL=http://minio:9000
+      - S3_FOLDER_PREFIX=data/
+      - POLL_INTERVAL_SECONDS=2
+      - DOWNLOAD_CONTENT=True
+      - AWS_ENDPOINT_URL=http://minio:9000
     networks:
       - test-network
     depends_on:
@@ -74,6 +77,7 @@ services:
         condition: service_healthy
       minio-setup:
         condition: service_healthy
+    stop_grace_period: 3s
   test-verifier:
     build:
       context: ../../framework
@@ -88,8 +92,8 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - TEST_OUTPUT_TOPIC=test-s3-output
-      - TEST_TIMEOUT=60
-      - TEST_EXPECTED_COUNT=1
+      - TEST_TIMEOUT=30
+      - TEST_EXPECTED_COUNT=3
     volumes:
       - ./verify_output.py:/tests/verify_output.py:ro
     working_dir: /
@@ -100,6 +104,7 @@ services:
         condition: service_healthy
       s3-source:
         condition: service_started
+    stop_grace_period: 3s
 networks:
   test-network:
     driver: bridge

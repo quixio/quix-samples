@@ -21,6 +21,7 @@ class S3FileWatcher(StatefulSource):
         aws_access_key_id: str = None,
         aws_secret_access_key: str = None,
         region_name: str = 'us-east-1',
+        endpoint_url: str = None,
         poll_interval: int = 30
     ) -> None:
         # Clean bucket name - remove s3:// prefix if present
@@ -40,6 +41,7 @@ class S3FileWatcher(StatefulSource):
         self.aws_access_key_id = aws_access_key_id
         self.aws_secret_access_key = aws_secret_access_key
         self.region_name = region_name
+        self.endpoint_url = endpoint_url
 
         # Read DOWNLOAD_CONTENT from environment (optional)
         download_content_env = os.getenv("DOWNLOAD_CONTENT", "True")
@@ -82,15 +84,16 @@ class S3FileWatcher(StatefulSource):
         super().__init__(name=name, shutdown_timeout=10)
 
     def setup(self):
+        client_kwargs = {'region_name': self.region_name}
+
         if self.aws_access_key_id and self.aws_secret_access_key:
-            self.s3_client = boto3.client(
-                's3',
-                aws_access_key_id=self.aws_access_key_id,
-                aws_secret_access_key=self.aws_secret_access_key,
-                region_name=self.region_name
-            )
-        else:
-            self.s3_client = boto3.client('s3', region_name=self.region_name)
+            client_kwargs['aws_access_key_id'] = self.aws_access_key_id
+            client_kwargs['aws_secret_access_key'] = self.aws_secret_access_key
+
+        if self.endpoint_url:
+            client_kwargs['endpoint_url'] = self.endpoint_url
+
+        self.s3_client = boto3.client('s3', **client_kwargs)
 
         self.last_check = datetime.min
 
@@ -139,7 +142,11 @@ class S3FileWatcher(StatefulSource):
         """Download file content and metadata"""
         try:
             head_response = self.s3_client.head_object(Bucket=self.bucket_name, Key=file_key)
-            s3_url = f"https://{self.bucket_name}.s3.amazonaws.com/{file_key}"
+            # Generate appropriate URL based on endpoint
+            if self.endpoint_url:
+                s3_url = f"{self.endpoint_url}/{self.bucket_name}/{file_key}"
+            else:
+                s3_url = f"https://{self.bucket_name}.s3.amazonaws.com/{file_key}"
 
             file_data = {
                 "file_name": file_key,
