@@ -13,7 +13,7 @@ This connector consumes time-series data from a Kafka topic and writes it to S3 
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log in and visit the `Connectors` tab to use this connector.
+Create a [Quix](https://portal.cloud.quix.io/signup?xlink=github) account or log in and visit the `Connectors` tab to use this connector.
 
 Clicking `Set up connector` allows you to enter your connection details and runtime parameters.
 
@@ -44,8 +44,13 @@ Then either:
 - **`AWS_REGION`**: AWS region for S3 bucket
   *Default*: `us-east-1`
 
-- **`AWS_ENDPOINT_URL`**: S3 endpoint URL (for non-AWS S3-compatible storage like MinIO)
-  *Default*: None
+- **`AWS_ENDPOINT_URL`**: Custom S3 endpoint URL for non-AWS S3-compatible storage
+  *Examples*:
+  - MinIO: `http://minio.example.com:9000`
+  - Wasabi: `https://s3.wasabisys.com`
+  - DigitalOcean Spaces: `https://nyc3.digitaloceanspaces.com`
+  - Backblaze B2: `https://s3.us-west-004.backblazeb2.com`
+  *Default*: None (uses AWS S3)
 
 ### Data Organization
 
@@ -126,6 +131,46 @@ HIVE_COLUMNS=
 ```
 Creates: `s3://bucket/prefix/table/data_*.parquet`
 
+## Using Non-AWS S3-Compatible Storage
+
+This connector supports any S3-compatible storage service by setting the `AWS_ENDPOINT_URL` environment variable.
+
+### MinIO Example
+```bash
+AWS_ENDPOINT_URL=http://minio.example.com:9000
+AWS_ACCESS_KEY_ID=minioadmin
+AWS_SECRET_ACCESS_KEY=minioadmin
+AWS_REGION=us-east-1
+S3_BUCKET=my-data-lake
+```
+
+### Wasabi Example
+```bash
+AWS_ENDPOINT_URL=https://s3.wasabisys.com
+AWS_ACCESS_KEY_ID=your-wasabi-access-key
+AWS_SECRET_ACCESS_KEY=your-wasabi-secret-key
+AWS_REGION=us-east-1
+S3_BUCKET=my-data-lake
+```
+
+### DigitalOcean Spaces Example
+```bash
+AWS_ENDPOINT_URL=https://nyc3.digitaloceanspaces.com
+AWS_ACCESS_KEY_ID=your-spaces-access-key
+AWS_SECRET_ACCESS_KEY=your-spaces-secret-key
+AWS_REGION=nyc3
+S3_BUCKET=my-data-lake
+```
+
+### Backblaze B2 Example
+```bash
+AWS_ENDPOINT_URL=https://s3.us-west-004.backblazeb2.com
+AWS_ACCESS_KEY_ID=your-b2-key-id
+AWS_SECRET_ACCESS_KEY=your-b2-application-key
+AWS_REGION=us-west-004
+S3_BUCKET=my-data-lake
+```
+
 ## Architecture
 
 The sink uses a batching architecture for high throughput:
@@ -138,7 +183,9 @@ The sink uses a batching architecture for high throughput:
 
 ## Requirements
 
-- S3 bucket access (AWS S3 or S3-compatible storage)
+- S3 bucket access:
+  - AWS S3, or
+  - Any S3-compatible storage (MinIO, Wasabi, DigitalOcean Spaces, Backblaze B2, etc.)
 - Optional: Quix REST Catalog endpoint for data catalog integration
 
 ## Contribute

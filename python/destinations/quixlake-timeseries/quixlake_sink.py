@@ -8,7 +8,6 @@ import pyarrow.parquet as pq
 import time
 import logging
 import uuid
-import os
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timezone
 from io import BytesIO
@@ -36,6 +35,10 @@ class QuixLakeSink(BatchingSink):
         s3_bucket: str,
         s3_prefix: str,
         table_name: str,
+        aws_access_key_id: Optional[str] = None,
+        aws_secret_access_key: Optional[str] = None,
+        aws_region: str = "us-east-1",
+        s3_endpoint_url: Optional[str] = None,
         hive_columns: List[str] = None,
         timestamp_column: str = "ts_ms",
         catalog_url: Optional[str] = None,
@@ -52,6 +55,11 @@ class QuixLakeSink(BatchingSink):
             s3_bucket: S3 bucket name
             s3_prefix: S3 prefix/path for data files
             table_name: Table name for registration
+            aws_access_key_id: AWS access key ID
+            aws_secret_access_key: AWS secret access key
+            aws_region: AWS region (default: "us-east-1")
+            s3_endpoint_url: Custom S3 endpoint URL for non-AWS S3-compatible storage
+                           (e.g., MinIO, Wasabi, DigitalOcean Spaces)
             hive_columns: List of columns to use for Hive partitioning. Include 'year', 'month',
                          'day', 'hour' to extract these from timestamp_column
             timestamp_column: Column containing timestamp to extract time partitions from
@@ -62,10 +70,10 @@ class QuixLakeSink(BatchingSink):
             auto_create_bucket: if True, create bucket in S3 if missing.
             max_workers: Maximum number of parallel upload threads (default: 10)
         """
-        self._aws_region = os.getenv('AWS_REGION', 'us-east-1')
-        self._aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
-        self._aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
-        self._aws_endpoint_url = os.getenv("AWS_ENDPOINT_URL", None)
+        self._aws_region = aws_region
+        self._aws_access_key_id = aws_access_key_id
+        self._aws_secret_access_key = aws_secret_access_key
+        self._aws_endpoint_url = s3_endpoint_url
         self._credentials = {
             "region_name": self._aws_region,
             "aws_access_key_id": self._aws_access_key_id,
@@ -99,6 +107,9 @@ class QuixLakeSink(BatchingSink):
         logger.info("Starting S3 Direct Sink...")
         logger.info(f"S3 Target: s3://{self.s3_bucket}/{self.s3_prefix}/{self.table_name}")
         logger.info(f"Partitioning: hive_columns={self.hive_columns}")
+
+        if self._aws_endpoint_url:
+            logger.info(f"Using custom S3 endpoint: {self._aws_endpoint_url}")
 
         if self._catalog and self.auto_discover:
             logger.info(f"Table will be auto-registered in REST Catalog on first write")
