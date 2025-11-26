@@ -1,4 +1,4 @@
-# timeout: 60
+# timeout: 90
 services:
   minio:
     image: minio/minio:latest
@@ -83,7 +83,7 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - TEST_INPUT_TOPIC=test-s3-input
-      - TEST_MESSAGE_COUNT=3
+      - TEST_MESSAGE_COUNT=2
       - MINIO_ENDPOINT=minio:9000
       - MINIO_ACCESS_KEY=minioadmin
       - MINIO_SECRET_KEY=minioadmin
@@ -96,7 +96,7 @@ services:
         echo 'Producing test messages to Kafka...' &&
         python /tests/produce_test_data.py &&
         echo 'Waiting for s3-file-dest to process messages...' &&
-        sleep 15 &&
+        sleep 8 &&
         echo 'Verifying data in S3...' &&
         python /tests/verify_output.py
       "

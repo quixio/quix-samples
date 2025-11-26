@@ -89,7 +89,7 @@ def main():
                 print(f"\nTotal records found: {len(all_records)}")
 
                 # Verify we have the expected number of records
-                expected_message_count = 3
+                expected_message_count = int(os.getenv("TEST_MESSAGE_COUNT", "3"))
                 if len(all_records) < expected_message_count:
                     print(f"ERROR: Expected {expected_message_count} records, found {len(all_records)}")
                     sys.exit(1)
