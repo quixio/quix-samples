@@ -1,0 +1,48 @@
+{
+    "libraryItemId": "big-query-source",
+    "name": "BigQuery Source",
+    "language": "Python",
+    "tags": {
+      "Type": ["Connectors"],
+      "Pipeline Stage": ["Source"],
+      "Category": ["Data warehouse"]
+    },
+    "shortDescription": "Persist data from BigQuery to Quix",
+    "EntryPoint": "dockerfile",
+    "RunEntryPoint": "main.py",
+    "DefaultFile": "main.py",
+    "Variables": [
+        {
+          "Name": "query",
+          "Type": "EnvironmentVariable",
+          "InputType": "InputTopic",
+          "Description": "Topic to store the Query that is Executed in BigQuery",
+          "DefaultValue": "",
+          "Required": true
+        },
+        {
+            "Name": "output",
+            "Type": "EnvironmentVariable",
+            "InputType": "InputTopic",
+            "Description": "Topic to store the result of BigQuery query",
+            "DefaultValue": "",
+            "Required": true
+          },
+        {
+          "Name": "SERVICE_ACCOUNT_JSON",
+          "Type": "EnvironmentVariable",
+          "InputType": "Secret",
+          "Description": "JSON string of the service account file for the BigQuery GCP project",
+          "DefaultValue": "",
+          "Required": true
+        }
+      ],
+    "DeploySettings": {
+        "DeploymentType": "Job",
+        "CpuMillicores": 200,
+        "MemoryInMb": 200,
+        "Replicas": 1,
+        "PublicAccess": false,
+        "ValidateConnection": true
+    }
+}
