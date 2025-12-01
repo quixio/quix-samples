@@ -17,16 +17,8 @@
       "Name": "output",
       "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
-      "Description": "This is the Kafka topic that will receive the query results",
-      "DefaultValue": "influxdbv3-data",
-      "Required": true
-    },
-    {
-      "Name": "task_interval",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1y",
-      "DefaultValue": "5m",
+      "Description": "The Kafka topic that will receive the query results",
+      "DefaultValue": "influxdbv3-data-source",
       "Required": true
     },
     {
@@ -34,13 +26,13 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Host address for the InfluxDB instance.",
-      "DefaultValue": "eu-central-1-1.aws.cloud2.influxdata.com",
+      "DefaultValue": "http://influxdb3:80",
       "Required": true
     },
     {
       "Name": "INFLUXDB_TOKEN",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "Authentication token to access InfluxDB.",
       "DefaultValue": "<TOKEN>",
       "Required": true
@@ -62,11 +54,97 @@
       "Required": true
     },
     {
-      "Name": "INFLUXDB_MEASUREMENT_NAME",
+      "Name": "INFLUXDB_QUERY_MEASUREMENTS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used",
-      "DefaultValue": "<INSERT MEASUREMENT>",
+      "Description": "The measurements to query. If left None, all measurements will be processed.",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_RECORD_KEY_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The InfluxDB record column used for the Kafka message key, else uses the measurement's name.",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_RECORD_TIMESTAMP_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The InfluxDB record column used for the Kafka timestamp, else uses Kafka default (produce time).",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_RECORD_MEASUREMENT_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The column name used for inserting the measurement name, else uses '_measurement'.",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_QUERY_SQL",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "A custom SQL query to use for retrieving data from InfluxDB, else uses default.",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_QUERY_START_DATE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The RFC3339-formatted start time for querying InfluxDB, else uses current runtime.",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_QUERY_END_DATE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The RFC3339-formatted end time for querying InfluxDB, else runs indefinitely for 1 measurement only.",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_QUERY_TIME_DELTA",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Time interval for batching queries, e.g., '5m' for 5 minutes.",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_QUERY_MAX_RETRIES",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Maximum number of retries for querying or producing (with multiplicative backoff).",
+      "Required": false
+    },
+    {
+      "Name": "INFLUXDB_QUERY_DELAY_SECONDS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Add an optional delay (in seconds) between producing batches.",
+      "Required": false
+    },
+    {
+      "Name": "CONSUMER_GROUP_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The name of the consumer group to use when consuming from Kafka.",
+      "DefaultValue": "influxdb-sink",
+      "Required": true
+    },
+    {
+      "Name": "BUFFER_SIZE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of records that sink holds before flush data to InfluxDb.",
+      "DefaultValue": "1000",
+      "Required": false
+    },
+    {
+      "Name": "BUFFER_DELAY",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The number of seconds that sink holds before flush data to the InfluxDb.",
+      "DefaultValue": "1",
       "Required": false
     }
   ],
