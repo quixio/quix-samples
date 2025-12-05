@@ -42,4 +42,5 @@ if [ "$ACTUAL_DIR_GID" -ne "$TARGET_USER_GID" ] && [ "$ACTUAL_DIR_GID" -ne 0 ]; 
   }
 fi
 
-exec su -s /bin/sh $TARGET_USER -c "docker-entrypoint.sh postgres -c listen_addresses=*"
+# wal_level = logical to accept CDC
+exec su -s /bin/sh $TARGET_USER -c "docker-entrypoint.sh postgres -c listen_addresses=* -c wal_level=logical" 
