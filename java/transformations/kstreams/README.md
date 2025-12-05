@@ -9,7 +9,7 @@ This template is a foundation to build real-time data processing applications in
 ## How to Run
 
 1. **Set up a Kafka Environment**:
-   - Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account, log in, and set up your Kafka broker details if using Quix as your Kafka provider.
+   - Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account, log in, and set up your Kafka broker details if using Quix as your Kafka provider.
    - Alternatively, ensure you have access to any Kafka environment for this application to connect.
 
 2. **Clone or Fork the Project**:

@@ -1,7 +1,7 @@
 import os
 import traceback
 from quixstreams import Application
-from quixstreams.sources.kafka import QuixEnvironmentSource
+from quixstreams.sources.core.kafka import QuixEnvironmentSource
 from dotenv import load_dotenv
 
 def main():
@@ -16,21 +16,14 @@ def main():
     # Get necessary environment variables for Quix input topic
     source_workspace_id = os.environ["source_workspace_id"]
     source_sdk_token = os.environ["source_sdk_token"]
-    
-    # Optional environment variables
-    consumer_group = os.environ.get("consumer_group", "quix_environment_source")
-    auto_offset_reset = os.environ.get("auto_offset_reset",    "earliest")
 
     # Setup input topic
     input_topic = QuixEnvironmentSource(
-        os.environ["topic"],
-        app.config,
-        os.environ["topic"],
-        quix_workspace_id=source_workspace_id, 
+        name="quix-environment-source",
+        app_config=app.config,
+        topic=os.environ["topic"],
         quix_sdk_token=source_sdk_token,
-        consumer_group=consumer_group,
-        auto_offset_reset=auto_offset_reset,
-        shutdown_timeout=30
+        quix_workspace_id=source_workspace_id
     )
 
     app.add_source(input_topic, output_topic)

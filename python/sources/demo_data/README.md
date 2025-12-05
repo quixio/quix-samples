@@ -6,7 +6,7 @@ You'll have access to the speed, acceleration, braking and other detailed data f
 
 ## How to run
 
-Create a [Quix](https://portal.platform.quix.io/signup?xlink=github) account or log-in and visit the Samples to use this project.
+Create a [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account or log-in and visit the Samples to use this project.
 
 Clicking `Deploy` on the Sample, deploys a pre-built container in Quix. Complete the environment variables to configure the container.
 
@@ -40,7 +40,7 @@ The columns included in this CSV sample are:
 | Brake                 | Amount of brake being applied                                                                                                                               |
 | DriverStatus          | Information about the drivers status, e.g. Flying_lap or In_garage                                                                                          |
 | LapNumber             | The current lap number                                                                                                                                      |
-| LapValidity           | Is the lap valid? If the driver comitted an office the lap may not be valid                                                                                 |
+| LapValidity           | Is the lap valid? If the driver committed an offense the lap may not be valid                                                                              |
 | PitStatus             | Is the vehicle in the pit                                                                                                                                   |
 | Sector                | Which sector the vehicle is currently completing                                                                                                            |
 | SessionID             | The session ID associated with this stream                                                                                                                  |

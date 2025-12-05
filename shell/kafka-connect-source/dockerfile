@@ -1,9 +1,12 @@
 FROM alpine:3.19 as builder
 
+ARG CONNECTOR_NAME=""
+
 ENV KAFKA_VERSION=3.6.1
 ENV SCALA_VERSION=2.13
 
 COPY src/scripts/install-kafka.sh /bin/
+COPY src/scripts/download-connector.sh /bin/
 
 RUN apk update \
   && apk add --no-cache bash curl jq \
@@ -13,7 +16,16 @@ RUN apk update \
   && apk add --no-cache bash openjdk17-jre \
   && wget https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz \
   && mkdir confluent-hub \
-  && tar -xvzf confluent-hub-client-latest.tar.gz -C confluent-hub 
+  && tar -xzf confluent-hub-client-latest.tar.gz -C confluent-hub
+
+# Install connector at build time if CONNECTOR_NAME is provided
+RUN if [ -n "$CONNECTOR_NAME" ] && [ "$CONNECTOR_NAME" != "connector-name" ]; then \
+      echo "Installing connector at build time using download-connector.sh"; \
+      chmod a+x /bin/download-connector.sh; \
+      CONNECTOR_NAME="$CONNECTOR_NAME" /bin/download-connector.sh; \
+    else \
+      echo "No connector specified for build-time installation"; \
+    fi 
 
 FROM alpine:3.19
 

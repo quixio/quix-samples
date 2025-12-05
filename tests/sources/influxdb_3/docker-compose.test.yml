@@ -1,0 +1,12 @@
+services:
+  influxdb-3-source:
+    build:
+      context: ../../../python/sources/influxdb_3
+      dockerfile: dockerfile
+    entrypoint: ["timeout", "5", "sh", "-c", "python -m py_compile main.py && echo 'Syntax validation passed'"]
+    networks:
+      - test-network
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

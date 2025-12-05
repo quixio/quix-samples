@@ -1,0 +1,13 @@
+services:
+  confluent-kafka-destination:
+    build:
+      context: ../../../python/destinations/confluent_kafka
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for confluent_kafka destination'
+      "
+
+    stop_grace_period: 3s

@@ -4,7 +4,7 @@ This sample demonstrates how to deploy and use the Prometheus Pushgateway in you
 
 ## How to Run
 
-1. Log in or sign up at [Quix](https://portal.platform.quix.io/signup?xlink=github) and navigate to the Code Samples section.
+1. Log in or sign up at [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
 3. Fill in the required environment variables for your Prometheus Pushgateway instance.
 4. Ensure container state is enabled; otherwise, any pushed metrics or configuration may be lost on restart.

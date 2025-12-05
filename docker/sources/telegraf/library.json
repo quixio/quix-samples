@@ -17,7 +17,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
       "Description": "This is the Quix Topic that will receive the stream",
-      "DefaultValue": "coin-data",
+      "DefaultValue": "telegraf",
       "Required": true
     }
   ],

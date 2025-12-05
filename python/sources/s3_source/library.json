@@ -77,6 +77,14 @@
       "Description": "The type of file compression used for the files",
       "DefaultValue": "gzip",
       "Required": true
+  },
+  {
+      "Name": "S3_ENDPOINT_URL",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Custom S3 endpoint URL for MinIO or other S3-compatible services (optional)",
+      "DefaultValue": "",
+      "Required": false
   }
   ],
   "DeploySettings": {

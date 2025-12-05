@@ -1,0 +1,5 @@
+{
+  "excluded_from_testing": {
+    "matlab_runner": "Requires MATLAB license and has gigantic Docker image (>5GB)"
+  }
+}

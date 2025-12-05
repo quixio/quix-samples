@@ -59,6 +59,14 @@
             "Description": "The table to publish data to",
             "DefaultValue": "",
             "Required": true
+        },
+        {
+            "Name": "AWS_SESSION_TOKEN",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "AWS session token (optional, for temporary credentials)",
+            "DefaultValue": "",
+            "Required": false
         }
     ],
     "DeploySettings": {

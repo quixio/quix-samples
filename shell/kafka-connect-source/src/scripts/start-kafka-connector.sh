@@ -1,6 +1,13 @@
 #!/bin/bash -e
 
-sh /usr/bin/download-connector.sh
+# Check if connector already installed (from build time), skip if so
+if [ -d "/opt/kafka/plugins" ] && [ "$(ls -A /opt/kafka/plugins 2>/dev/null)" ]; then
+    echo "Connector already installed, skipping download"
+    echo "Installed plugins:"
+    ls -la /opt/kafka/plugins/
+else
+    sh /usr/bin/download-connector.sh
+fi
 
 # Start by updating the bootstrap servers in the configuration file
 sh /usr/bin/update-bootstrapservers.sh

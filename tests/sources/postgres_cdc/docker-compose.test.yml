@@ -1,0 +1,146 @@
+# timeout: 80
+services:
+  postgres:
+    # Custom build with wal2json plugin for CDC support
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_DB=testdb
+    command:
+      - postgres
+      - -c
+      - wal_level=logical
+      - -c
+      - max_wal_senders=10
+      - -c
+      - max_replication_slots=10
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser -d testdb"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 3s
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  setup-db:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+        echo 'Installing psycopg2...' &&
+        pip install psycopg2-binary > /dev/null 2>&1 &&
+        echo 'Creating database schema and table...' &&
+        python /tests/setup_postgres.py &&
+        echo 'Database setup complete!' &&
+        touch /tmp/setup-complete &&
+        tail -f /dev/null
+      "
+    environment:
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=testuser
+      - PG_PASSWORD=testpass
+      - PG_DATABASE=testdb
+      - PG_SCHEMA=public
+      - PG_TABLE=test_table
+    volumes:
+      - ./setup_postgres.py:/tests/setup_postgres.py:ro
+    networks:
+      - test-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/setup-complete"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 3s
+  postgres-cdc-source:
+    build:
+      context: ../../../python/sources/postgres_cdc
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - output=test-postgres-cdc-output
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=testuser
+      - PG_PASSWORD=testpass
+      - PG_DATABASE=testdb
+      - PG_SCHEMA=public
+      - PG_TABLE=test_table
+    networks:
+      - test-network
+    depends_on:
+      setup-db:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-postgres-cdc-output
+      - PG_HOST=postgres
+      - PG_PORT=5432
+      - PG_USER=testuser
+      - PG_PASSWORD=testpass
+      - PG_DATABASE=testdb
+      - PG_SCHEMA=public
+      - PG_TABLE=test_table
+      - TEST_MESSAGE_COUNT=3
+    command: >
+      sh -c "
+        echo 'Installing psycopg2...' &&
+        pip install psycopg2-binary > /dev/null 2>&1 &&
+        echo 'Waiting for CDC source to initialize...' &&
+        sleep 5 &&
+        echo 'Performing database operations...' &&
+        python /tests/modify_data.py &&
+        echo 'Waiting for CDC messages...' &&
+        sleep 3 &&
+        echo 'Verifying CDC output from Kafka...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./modify_data.py:/tests/modify_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      setup-db:
+        condition: service_healthy
+      postgres-cdc-source:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

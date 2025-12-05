@@ -1,0 +1,96 @@
+# timeout: 40
+services:
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    networks:
+      - test-network
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub -t '$$SYS/#' -C 1 -i healthcheck -W 3 || exit 1"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+  test-publisher:
+    image: eclipse-mosquitto:latest
+    networks:
+      - test-network
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo 'Waiting for MQTT source to connect and subscribe...' &&
+        sleep 8 &&
+        for i in 0 1 2; do
+          mosquitto_pub -h mqtt-broker -t test/data -m '{\"id\":$$i,\"value\":\"test_message_$$i\"}' &&
+          echo \"Published message $$i\" &&
+          sleep 1;
+        done &&
+        echo 'All test messages published'
+      "
+  mqtt-source:
+    build:
+      context: ../../../python/sources/MQTT
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - Quix__Consumer__Group=mqtt-source-test
+      - Quix__Deployment__Id=test-mqtt-source
+      - output=test-mqtt-output
+      - mqtt_server=mqtt-broker
+      - mqtt_port=1883
+      - mqtt_topic=test/data
+      - mqtt_version=3.1.1
+    networks:
+      - test-network
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+  test-verifier:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-mqtt-output
+      - TEST_TIMEOUT=40
+      - TEST_MIN_EXPECTED_COUNT=1
+    command: >
+      sh -c "
+        echo 'Waiting for source to produce...' &&
+        sleep 20 &&
+        echo 'Verifying output...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      mqtt-broker:
+        condition: service_healthy
+networks:
+  test-network:
+    driver: bridge

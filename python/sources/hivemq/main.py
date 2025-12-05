@@ -52,7 +52,14 @@ if not mqtt_port.isnumeric():
 client_id = os.getenv("Quix__Deployment__Id", "default")
 mqtt_client = paho.Client(callback_api_version=paho.CallbackAPIVersion.VERSION2,
                           client_id = client_id, userdata = None, protocol = mqtt_protocol_version())
-mqtt_client.tls_set(tls_version = mqtt.client.ssl.PROTOCOL_TLS)  # we'll be using tls
+
+# Configure TLS
+mqtt_ca_cert = os.getenv("mqtt_ca_cert", "")
+if mqtt_ca_cert:
+    mqtt_client.tls_set(ca_certs=mqtt_ca_cert, tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+else:
+    mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+
 mqtt_client.reconnect_delay_set(5, 60)
 configure_authentication(mqtt_client)
 

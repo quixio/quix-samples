@@ -1,10 +1,9 @@
 {
     "libraryItemId": "kafka-connect-sink",
     "name": "Kafka Connect Sink",
-    "language": "Python",
+    "language": "Java",
     "tags": {
         "Pipeline Stage": ["Destination"],
-        "Type": ["Connectors"],
         "Category": ["Data streaming"]
     },
     "IconFile": "icon.png",
@@ -47,18 +46,9 @@
             "Name" : "CONNECTOR_NAME",
             "Type" : "EnvironmentVariable",
             "InputType" : "FreeText",
-            "Description" : "The Confluent Hub (https://www.confluent.io/hub) Kafka connector to use (Free licence connectors only for now)",
+            "Description" : "The Confluent Hub (https://www.confluent.io/hub) Kafka connector to use (Free licence connectors only)",
             "DefaultValue" : "",
             "Required": true
         }
-    ],
-    "DeploySettings":
-    {
-        "DeploymentType": "Service",
-        "CpuMillicores": 200,
-        "MemoryInMb": 500,
-        "Replicas": 1,
-        "PublicAccess": false,
-        "ValidateConnection": false
-    } 
+    ]
 }

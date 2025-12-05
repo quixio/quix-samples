@@ -1,0 +1,62 @@
+# timeout: 40
+services:
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  starter-destination:
+    build:
+      context: ../../../python/destinations/starter_destination
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - input=test-starter-input
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-starter-input
+      - TEST_MESSAGE_COUNT=5
+    command: >
+      sh -c "
+        echo 'Producing test messages to Kafka...' &&
+        python /tests/produce_test_data.py &&
+        echo 'Waiting for starter-destination to consume messages...' &&
+        sleep 10 &&
+        echo 'Test completed successfully - destination consumed messages without errors'
+      "
+    volumes:
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      starter-destination:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

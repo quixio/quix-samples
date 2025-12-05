@@ -1,0 +1,13 @@
+services:
+  hugging-face-model-transformation:
+    build:
+      context: ../../../python/transformations/hugging_face_model
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for hugging_face_model transformation'
+      "
+
+    stop_grace_period: 3s
