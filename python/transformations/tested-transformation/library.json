@@ -1,0 +1,34 @@
+{
+  "libraryItemId": "tested-transformation",
+  "name": "Tested transformation template",
+  "language": "Python",
+  "IsHighlighted": false,
+  "DisplayOrder": 3,
+  "tags": {
+    "Complexity": ["Easy"],
+    "Technology": ["Quix Streams"],
+    "Pipeline Stage": ["Transformation"],
+    "Popular Subjects": ["Quick Start"],
+    "Type": ["Basic templates"]
+  },
+  "shortDescription": "A testing template that applies a simple transformation and publishes the result to an output topic",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "Name of the input topic to listen to.",
+      "DefaultValue": "csv-data"
+    },
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Name of the output topic to write to.",
+      "DefaultValue": "transform"
+    }
+  ]
+}
