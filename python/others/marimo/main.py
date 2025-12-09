@@ -30,23 +30,27 @@ def _(mo):
 
 @app.cell
 def _(QuixLakeClient, os):
+    # TODO: Replace with your QuixLake URL
+    QUIXLAKE_URL = "https://your-quixlake-instance.quix.io"
+
     client = QuixLakeClient(
-        base_url=os.environ["QUIXLAKE_URL"],
+        base_url=QUIXLAKE_URL,
         token=os.environ["Quix__Sdk__Token"]
     )
     return (client,)
 
 
 @app.cell
-def _(mo, os):
-    default_query = os.environ.get("DEFAULT_SQL_QUERY", """
+def _(mo):
+    # TODO: Modify the SQL query for your data
+    default_query = """
 SELECT
     Timestamp as time,
     value
 FROM your_table
 ORDER BY Timestamp
 LIMIT 1000
-""").strip()
+""".strip()
 
     sql_form = mo.ui.code_editor(
         value=default_query,

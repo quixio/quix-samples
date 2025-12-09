@@ -27,26 +27,12 @@
       [
         {
           "Port": 80,
-          "TargetPort": 2718
+          "TargetPort": 8080
         }
       ]
     }
   },
   "Variables": [
-    {
-      "Name": "QUIXLAKE_URL",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The QuixLake API base URL",
-      "Required": true
-    },
-    {
-      "Name": "DEFAULT_SQL_QUERY",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Default SQL query to pre-populate in the editor (optional)",
-      "Required": false
-    },
     {
       "Name": "MARIMO_PASSWORD",
       "Type": "EnvironmentVariable",
