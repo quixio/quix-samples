@@ -1,0 +1,58 @@
+{
+  "libraryItemId": "marimo",
+  "name": "Marimo",
+  "language": "docker",
+  "tags": {
+    "Category": ["Data Exploration"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run Marimo reactive notebooks in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 500,
+    "MemoryInMb": 2000,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "UrlPrefix": "marimo",
+    "State": {
+      "Enabled": true,
+      "Size": 1
+    },
+    "Network": {
+      "ServiceName": "marimo",
+      "Ports":
+      [
+        {
+          "Port": 80,
+          "TargetPort": 2718
+        }
+      ]
+    }
+  },
+  "Variables": [
+    {
+      "Name": "QUIXLAKE_URL",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The QuixLake API base URL",
+      "Required": true
+    },
+    {
+      "Name": "DEFAULT_SQL_QUERY",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Default SQL query to pre-populate in the editor (optional)",
+      "Required": false
+    },
+    {
+      "Name": "MARIMO_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "The password for connecting to Marimo (leave empty for no authentication)",
+      "Required": false
+    }
+  ]
+}

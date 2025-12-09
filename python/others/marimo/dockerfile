@@ -1,0 +1,41 @@
+FROM ghcr.io/marimo-team/marimo:latest
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=UTF-8 \
+    MARIMO_USER_CONFIG_PATH=/app/state \
+    MARIMO_PASSWORD="" \
+    MARIMO_MODE="run"
+
+# Set working directory
+WORKDIR /app
+
+# Create state directory
+RUN mkdir -p /app/state
+
+# Copy requirements first to leverage Docker layer caching
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the application files
+COPY main.py .
+COPY quixlake_sdk-0.1.0-py3-none-any.whl .
+
+# Install local wheel if needed
+RUN pip install --no-cache-dir quixlake_sdk-0.1.0-py3-none-any.whl
+
+# Expose port
+EXPOSE 8080
+
+# Create default marimo config with dark theme
+RUN mkdir -p /app/state && \
+    printf '[display]\ntheme = "dark"\ncode_editor_font_size = 14\n\n[completion]\nactivate_on_typing = true\ncopilot = false\n\n[formatting]\nline_length = 79\n\n[runtime]\nauto_instantiate = true\n\n[save]\nautosave = "after_delay"\nautosave_delay = 1000\nformat_on_save = false\n\n[keymap]\npreset = "default"\n' > /app/state/marimo.toml
+
+# Run marimo (MARIMO_MODE: "run" for production, "edit" for development)
+CMD if [ -n "$MARIMO_PASSWORD" ]; then \
+      marimo "$MARIMO_MODE" main.py --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"; \
+    else \
+      marimo "$MARIMO_MODE" main.py --host 0.0.0.0 -p 8080; \
+    fi

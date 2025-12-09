@@ -1,0 +1,16 @@
+name: notebook
+language: docker
+variables:
+  - name: MARIMO_PASSWORD
+    inputType: Secret
+    multiline: false
+    description: The allowed password for connecting to JupyterLab
+    defaultValue: postgres_password
+    required: true
+  - name: MARIMO_MODE
+    inputType: FreeText
+    multiline: false
+    defaultValue: edit
+dockerfile: dockerfile
+defaultFile: dockerfile
+libraryItemId: jupyterlab
