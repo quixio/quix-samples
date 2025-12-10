@@ -1,8 +1,5 @@
 FROM ghcr.io/marimo-team/marimo:latest
 
-WORKDIR /app
-ARG MAINAPPPATH=.
-
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONIOENCODING=UTF-8 \
@@ -10,21 +7,24 @@ ENV PYTHONUNBUFFERED=1 \
     MARIMO_PASSWORD="" \
     MARIMO_MODE="run"
 
+# Set working directory
+WORKDIR /app
+
 # Create state directory
 RUN mkdir -p /app/state
 
 # Copy requirements first to leverage Docker layer caching
-COPY "${MAINAPPPATH}/requirements.txt" .
+COPY requirements.txt .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application files
-COPY "${MAINAPPPATH}/main.py" .
-COPY "${MAINAPPPATH}/quixlake_sdk-0.1.0-py3-none-any.whl" .
+COPY main.py .
+COPY quixlake_sdk-0.2.0-py3-none-any.whl .
 
 # Install local wheel if needed
-RUN pip install --no-cache-dir quixlake_sdk-0.1.0-py3-none-any.whl
+RUN pip install --no-cache-dir quixlake_sdk-0.2.0-py3-none-any.whl
 
 # Expose port
 EXPOSE 8080
