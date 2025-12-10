@@ -42,6 +42,14 @@
       "Required": false
     },
     {
+      "Name": "MARIMO_NOTEBOOK",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The notebook file to open (e.g., main.py)",
+      "DefaultValue": "main.py",
+      "Required": false
+    },
+    {
       "Name": "MARIMO_PASSWORD",
       "Type": "EnvironmentVariable",
       "InputType": "Secret",

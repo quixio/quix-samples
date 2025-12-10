@@ -5,7 +5,8 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONIOENCODING=UTF-8 \
     MARIMO_USER_CONFIG_PATH=/app/state \
     MARIMO_PASSWORD="" \
-    MARIMO_MODE="run"
+    MARIMO_MODE="run" \
+    MARIMO_NOTEBOOK="main.py"
 
 # Set working directory
 WORKDIR /app
@@ -35,7 +36,7 @@ RUN mkdir -p /app/state && \
 
 # Run marimo (MARIMO_MODE: "run" for production, "edit" for development)
 CMD if [ -n "$MARIMO_PASSWORD" ]; then \
-      marimo "$MARIMO_MODE" main.py --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"; \
+      marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"; \
     else \
-      marimo "$MARIMO_MODE" main.py --host 0.0.0.0 -p 8080; \
+      marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080; \
     fi
