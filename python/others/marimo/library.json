@@ -34,6 +34,14 @@
   },
   "Variables": [
     {
+      "Name": "MARIMO_MODE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Mode to run Marimo in: 'run' for production (read-only), 'edit' for development (editable)",
+      "DefaultValue": "edit",
+      "Required": false
+    },
+    {
       "Name": "MARIMO_PASSWORD",
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
