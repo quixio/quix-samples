@@ -23,11 +23,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application files
 COPY main.py .
 
-# Download and install quixlake SDK from GitHub (raw file URL)
-RUN curl -L -o quixlake_sdk-0.2.0-py3-none-any.whl \
-    "https://github.com/quixio/quix-samples/raw/task/marimo-template/python/others/marimo/quixlake_sdk-0.2.0-py3-none-any.whl" && \
-    pip install --no-cache-dir quixlake_sdk-0.2.0-py3-none-any.whl && \
-    rm quixlake_sdk-0.2.0-py3-none-any.whl
+# Install quixlake SDK directly from GitHub URL
+RUN pip install --no-cache-dir \
+    "https://github.com/quixio/quix-samples/raw/task/marimo-template/python/others/marimo/quixlake_sdk-0.2.0-py3-none-any.whl"
 
 # Expose port
 EXPOSE 8080
