@@ -34,9 +34,17 @@ EXPOSE 8080
 RUN mkdir -p /app/state && \
     printf '[display]\ntheme = "dark"\ncode_editor_font_size = 14\n\n[completion]\nactivate_on_typing = true\ncopilot = false\n\n[formatting]\nline_length = 79\n\n[runtime]\nauto_instantiate = true\n\n[save]\nautosave = "after_delay"\nautosave_delay = 1000\nformat_on_save = false\n\n[keymap]\npreset = "default"\n' > /app/state/marimo.toml
 
-# Run marimo (MARIMO_MODE: "run" for production, "edit" for development)
-CMD if [ -n "$MARIMO_PASSWORD" ]; then \
-      marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"; \
+# Run marimo (MARIMO_MODE: "run" for single notebook, "edit" for single notebook editable, "browser" for file browser)
+CMD if [ "$MARIMO_MODE" = "browser" ]; then \
+      if [ -n "$MARIMO_PASSWORD" ]; then \
+        marimo edit --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"; \
+      else \
+        marimo edit --host 0.0.0.0 -p 8080; \
+      fi; \
     else \
-      marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080; \
+      if [ -n "$MARIMO_PASSWORD" ]; then \
+        marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"; \
+      else \
+        marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080; \
+      fi; \
     fi

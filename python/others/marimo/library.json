@@ -37,7 +37,7 @@
       "Name": "MARIMO_MODE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Mode to run Marimo in: 'run' for production (read-only), 'edit' for development (editable)",
+      "Description": "Mode to run Marimo in: 'run' (read-only notebook), 'edit' (editable notebook), 'browser' (file browser)",
       "DefaultValue": "edit",
       "Required": false
     },
