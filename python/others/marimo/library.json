@@ -45,8 +45,8 @@
       "Name": "MARIMO_NOTEBOOK",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The notebook file to open (e.g., main.py)",
-      "DefaultValue": "main.py",
+      "Description": "The notebook file to open (e.g., notebook.py)",
+      "DefaultValue": "notebook.py",
       "Required": false
     },
     {
@@ -62,6 +62,14 @@
       "InputType": "FreeText",
       "Description": "Enable Quix plugin mode for integration with Quix streams",
       "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "COPY_SAMPLE_NOTEBOOK",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Copy sample main.py to state folder: 'if_missing' (only if not exists), 'always' (overwrite), or empty to skip",
+      "DefaultValue": "if_missing",
       "Required": false
     }
   ]

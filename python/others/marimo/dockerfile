@@ -5,8 +5,9 @@ ENV PYTHONUNBUFFERED=1 \
     PYTHONIOENCODING=UTF-8 \
     MARIMO_USER_CONFIG_PATH=/app/state \
     MARIMO_MODE="browser" \
-    MARIMO_NOTEBOOK="main.py" \
-    QUIX_PLUGIN_MODE="false"
+    MARIMO_NOTEBOOK="notebook.py" \
+    QUIX_PLUGIN_MODE="false" \
+    COPY_SAMPLE_NOTEBOOK="if_missing"
 
 # Set working directory
 WORKDIR /app
@@ -15,8 +16,8 @@ WORKDIR /app
 USER root
 RUN apt-get update && apt-get install -y nginx supervisor && rm -rf /var/lib/apt/lists/*
 
-# Create state directory
-RUN mkdir -p /app/state
+# Create state and templates directories
+RUN mkdir -p /app/state /app/templates
 
 # Copy requirements first to leverage Docker layer caching
 COPY requirements.txt .
@@ -30,9 +31,8 @@ RUN pip install --no-cache-dir fsspec>=2024.6.0 && \
     -i https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/ \
     quixportal
 
-# Copy the application files (main.py won't overwrite if exists)
-COPY main.py /tmp/main.py
-RUN cp -n /tmp/main.py ./main.py || true
+# Copy the application files
+COPY notebooks/notebook.py /app/templates/notebook.py
 COPY auth_proxy.py .
 COPY nginx.conf /etc/nginx/nginx.conf
 
@@ -86,12 +86,21 @@ RUN printf '#!/bin/bash\n\
 if [ "$MARIMO_MODE" = "browser" ]; then\n\
     exec marimo edit --host 127.0.0.1 -p 8081 --no-token\n\
 else\n\
-    exec marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 127.0.0.1 -p 8081 --no-token\n\
+    exec marimo "$MARIMO_MODE" "state/$MARIMO_NOTEBOOK" --host 127.0.0.1 -p 8081 --no-token\n\
 fi\n\
 ' > /app/start_marimo.sh && chmod +x /app/start_marimo.sh
 
 # Create startup script that checks QUIX_PLUGIN_MODE
 RUN printf '#!/bin/bash\n\
+# Copy sample notebook to state folder based on COPY_SAMPLE_NOTEBOOK setting\n\
+if [ "$COPY_SAMPLE_NOTEBOOK" = "always" ]; then\n\
+    echo "Copying sample notebook to state folder (overwrite)..."\n\
+    cp /app/templates/notebook.py /app/state/notebook.py\n\
+elif [ "$COPY_SAMPLE_NOTEBOOK" = "if_missing" ] && [ ! -f "/app/state/notebook.py" ]; then\n\
+    echo "Copying sample notebook to state folder (first run)..."\n\
+    cp /app/templates/notebook.py /app/state/notebook.py\n\
+fi\n\
+\n\
 if [ "$QUIX_PLUGIN_MODE" = "true" ]; then\n\
     # Plugin mode: use nginx + auth proxy\n\
     exec supervisord -c /etc/supervisor/conf.d/supervisord.conf\n\
@@ -105,9 +114,9 @@ else\n\
         fi\n\
     else\n\
         if [ -n "$MARIMO_PASSWORD" ]; then\n\
-            exec marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"\n\
+            exec marimo "$MARIMO_MODE" "state/$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"\n\
         else\n\
-            exec marimo "$MARIMO_MODE" "$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080\n\
+            exec marimo "$MARIMO_MODE" "state/$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080\n\
         fi\n\
     fi\n\
 fi\n\
