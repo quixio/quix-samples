@@ -1,17 +1,34 @@
-# JupyterLab
+# Marimo
 
-This sample demonstrates how to deploy a JupyterLab instance so you can run
-Jupyter notebooks from the platform.
+This sample demonstrates how to deploy a [Marimo](https://marimo.io/) notebook instance, a reactive Python notebook environment, on the Quix platform.
 
 ## How to Run
 
 1. Log in or sign up at [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
-3. Fill in the required environment variables for your JupyterLab instance.
-4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
+3. Fill in the required environment variables for your Marimo instance.
+4. Enable state management to persist your notebooks across restarts.
 
-For more configuration options and details, refer to [Mongo Docker Hub](https://hub.docker.com/_/mongo).
+## Environment Variables
 
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MARIMO_MODE` | Notebook mode: `browser` (file browser), `edit` (edit specific notebook), or `run` (run specific notebook) | `browser` |
+| `MARIMO_NOTEBOOK` | Notebook file to open (used with `edit` or `run` modes) | `main.py` |
+| `MARIMO_PASSWORD` | Optional password protection for standalone mode | (none) |
+| `QUIX_PLUGIN_MODE` | Set to `true` to enable Quix plugin mode with nginx auth proxy | `false` |
+
+## Modes
+
+- **Standalone mode** (`QUIX_PLUGIN_MODE=false`): Direct access to Marimo on port 8080. Supports optional password protection via `MARIMO_PASSWORD`.
+- **Plugin mode** (`QUIX_PLUGIN_MODE=true`): Runs behind nginx with Quix authentication proxy for secure access within the Quix platform.
+
+## Features
+
+- Dark theme enabled by default
+- Auto-save with 1 second delay
+- Code completion on typing
+- Persistent state directory at `/app/state`
 
 ## Contribute
 
@@ -19,4 +36,4 @@ Feel free to fork this project on the [GitHub](https://github.com/quixio/quix-sa
 
 ## License & Support
 
-This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo. Remember, this image is provided by the [docker community](https://github.com/docker-library/mongo) and is offered as-is, with no MongoDB specific support from Quix.
+This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo. For more information about Marimo, visit [marimo.io](https://marimo.io/).
