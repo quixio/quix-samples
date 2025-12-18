@@ -11,3 +11,5 @@ marimo
 python-lsp-server
 ipython
 plotly
+fastapi
+uvicorn
