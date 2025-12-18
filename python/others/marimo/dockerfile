@@ -41,7 +41,7 @@ RUN pip install --no-cache-dir \
     "https://github.com/quixio/quix-samples/raw/task/marimo-template/python/others/marimo/quixlake_sdk-0.2.1-py3-none-any.whl"
 
 # Expose port
-EXPOSE 8080
+EXPOSE 80
 
 # Create default marimo config with dark theme
 RUN mkdir -p /app/state && \
@@ -108,15 +108,15 @@ else\n\
     # Standalone mode: direct marimo access (with optional password)\n\
     if [ "$MARIMO_MODE" = "browser" ]; then\n\
         if [ -n "$MARIMO_PASSWORD" ]; then\n\
-            exec marimo edit --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"\n\
+            exec marimo edit --host 0.0.0.0 -p 80 --token-password "$MARIMO_PASSWORD"\n\
         else\n\
-            exec marimo edit --host 0.0.0.0 -p 8080\n\
+            exec marimo edit --host 0.0.0.0 -p 80\n\
         fi\n\
     else\n\
         if [ -n "$MARIMO_PASSWORD" ]; then\n\
-            exec marimo "$MARIMO_MODE" "state/$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080 --token-password "$MARIMO_PASSWORD"\n\
+            exec marimo "$MARIMO_MODE" "state/$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 80 --token-password "$MARIMO_PASSWORD"\n\
         else\n\
-            exec marimo "$MARIMO_MODE" "state/$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 8080\n\
+            exec marimo "$MARIMO_MODE" "state/$MARIMO_NOTEBOOK" --host 0.0.0.0 -p 80\n\
         fi\n\
     fi\n\
 fi\n\

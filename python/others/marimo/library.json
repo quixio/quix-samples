@@ -20,16 +20,6 @@
     "State": {
       "Enabled": true,
       "Size": 1
-    },
-    "Network": {
-      "ServiceName": "marimo",
-      "Ports":
-      [
-        {
-          "Port": 80,
-          "TargetPort": 8080
-        }
-      ]
     }
   },
   "Variables": [
