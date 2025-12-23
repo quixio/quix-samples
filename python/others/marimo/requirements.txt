@@ -1,4 +1,5 @@
 quixstreams
+blablabla-fails-ok?
 python-dotenv
 numpy
 pandas
