@@ -1,5 +1,4 @@
 quixstreams
-this-package-does-not-exist-xyz-12345
 python-dotenv
 numpy
 pandas
