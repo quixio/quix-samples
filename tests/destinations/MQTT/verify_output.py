@@ -1,4 +1,4 @@
-import paho.mqtt.client as mqtt
+import paho.mqtt.client as paho
 import os
 import time
 import sys
@@ -8,20 +8,26 @@ expected_count = int(os.getenv("TEST_MESSAGE_COUNT", "1"))
 mqtt_broker = os.getenv("MQTT_BROKER", "mqtt-broker")
 mqtt_port = int(os.getenv("MQTT_PORT", "1883"))
 mqtt_topic = os.getenv("MQTT_TOPIC", "test/output/#")
+mqtt_username = os.environ["MQTT_USERNAME"]
+mqtt_password = os.environ["MQTT_PASSWORD"]
+
 
 def on_connect(client, userdata, flags, reason_code, properties):
     print(f"Connected to MQTT broker with result code {reason_code}")
     client.subscribe(mqtt_topic)
     print(f"Subscribed to topic: {mqtt_topic}")
 
+
 def on_message(client, userdata, msg):
     print(f"Received message on topic {msg.topic}: {msg.payload.decode()}")
     messages_received.append(msg.payload)
 
+
 def main():
-    client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
+    client = paho.Client(callback_api_version=paho.CallbackAPIVersion.VERSION2)
     client.on_connect = on_connect
     client.on_message = on_message
+    client.username_pw_set(mqtt_username, mqtt_password)
 
     print(f"Connecting to MQTT broker at {mqtt_broker}:{mqtt_port}...")
     client.connect(mqtt_broker, mqtt_port, 60)
