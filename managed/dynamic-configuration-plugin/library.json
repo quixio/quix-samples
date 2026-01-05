@@ -1,38 +1,38 @@
 {
-  "libraryItemId": "dynamic-configuration-plugin",
-  "name": "Dynamic Configuration Manager Plugin",
-  "language": "Managed",
-  "tags": {
+  "LibraryItemId": "dynamic-configuration-plugin",
+  "Name": "Dynamic Configuration Manager Plugin",
+  "Language": "Managed",
+  "Tags": {
     "Category": ["Database"],
     "Type": ["Auxiliary Services"]
   },
-  "iconFile": "icon.png",
-  "shortDescription": "RESTful service for versioned JSON configuration management with high-throughput reads and update notifications.",
-  "deploySettings": {
-    "deploymentType": "Managed",
-    "cpuMillicores": 500,
-    "memoryInMb": 1000,
-    "replicas": 1,
-    "publicAccess": false,
-    "validateConnection": false,
-    "plugin": {
-      "embeddedView": {
-        "enabled": true,
-        "hideHeader": false,
-        "default": true
+  "IconFile": "icon.png",
+  "ShortDescription": "RESTful service for versioned JSON configuration management with high-throughput reads and update notifications.",
+  "DeploySettings": {
+    "DeploymentType": "Managed",
+    "CpuMillicores": 500,
+    "MemoryInMb": 1000,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": false,
+    "Plugin": {
+      "EmbeddedView": {
+        "Enabled": true,
+        "HideHeader": false,
+        "Default": true
       },
-      "sidebarItem": {
-        "show": true,
-        "label": "Dynamic Config Plugin",
-        "icon": "settings",
-        "order": 10,
-        "badge": "New"
+      "SidebarItem": {
+        "Show": true,
+        "Label": "Dynamic Config Plugin",
+        "Icon": "settings",
+        "Order": 10,
+        "Badge": "New"
       },
-      "globalItem": {
-        "show": true,
-        "label": "Configuration Manager Global Plugin",
-        "order": 5,
-        "badge": "Beta"
+      "GlobalItem": {
+        "Show": true,
+        "Label": "Configuration Manager Global Plugin",
+        "Order": 5,
+        "Badge": "Beta"
       }
     }
   }
