@@ -1,13 +1,13 @@
 {
-  "LibraryItemId": "dynamic-configuration",
-  "Name": "Dynamic Configuration Manager Plugin",
-  "Language": "Managed",
-  "Tags": {
+  "libraryItemId": "dynamic-configuration",
+  "name": "Dynamic Configuration Manager",
+  "language": "Managed",
+  "tags": {
     "Category": ["Database"],
     "Type": ["Auxiliary Services"]
   },
   "IconFile": "icon.png",
-  "ShortDescription": "RESTful service for versioned JSON configuration management with high-throughput reads and update notifications.",
+  "shortDescription": "RESTful service for versioned JSON configuration management with high-throughput reads and update notifications.",
   "DeploySettings": {
     "DeploymentType": "Managed",
     "CpuMillicores": 500,
