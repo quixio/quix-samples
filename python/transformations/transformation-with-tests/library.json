@@ -1,6 +1,6 @@
 {
-  "libraryItemId": "tested-transformation",
-  "name": "Tested transformation template",
+  "libraryItemId": "transformation-with-tests",
+  "name": "Transformation with tests template",
   "language": "Python",
   "IsHighlighted": false,
   "DisplayOrder": 3,
