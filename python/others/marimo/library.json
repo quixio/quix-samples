@@ -48,21 +48,6 @@
       "Description": "The notebook file to open (e.g., main.py)",
       "DefaultValue": "main.py",
       "Required": false
-    },
-    {
-      "Name": "MARIMO_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "The password for connecting to Marimo (leave empty for no authentication)",
-      "Required": false
-    },
-    {
-      "Name": "QUIX_PLUGIN_MODE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Enable Quix plugin mode for integration with Quix streams",
-      "DefaultValue": "",
-      "Required": false
     }
   ]
 }
