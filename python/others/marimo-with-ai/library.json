@@ -62,11 +62,11 @@
       "Required": false
     },
     {
-      "Name": "JUPYTER_PASSWORD",
+      "Name": "ANTHROPIC_API_KEY",
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
-      "Description": "The allowed password for connecting to JupyterLab",
-      "Required": true
+      "Description": "Token generated from https://platform.claude.com/settings/keys.",
+      "Required": false
     }
   ]
 }
