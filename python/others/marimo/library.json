@@ -32,6 +32,18 @@
       ]
     }
   },
+  "plugin": {
+    "embeddedView": {
+      "enabled": true,
+      "hideHeader": true,
+      "default": true
+    },
+    "sidebarItem": {
+      "show": true,
+      "label": "Notebook",
+      "icon": "note_alt"
+    }
+  },
   "Variables": [
     {
       "Name": "MARIMO_MODE",

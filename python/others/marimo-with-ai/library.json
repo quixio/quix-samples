@@ -1,6 +1,6 @@
 {
-  "libraryItemId": "marimo",
-  "name": "Marimo",
+  "libraryItemId": "marimo-with-ai",
+  "name": "Marimo with AI",
   "language": "docker",
   "tags": {
     "Category": ["Data Exploration"],
@@ -32,6 +32,18 @@
       ]
     }
   },
+  "plugin": {
+    "embeddedView": {
+      "enabled": true,
+      "hideHeader": true,
+      "default": true
+    },
+    "sidebarItem": {
+      "show": true,
+      "label": "Notebook",
+      "icon": "note_alt"
+    }
+  },
   "Variables": [
     {
       "Name": "MARIMO_MODE",
@@ -48,6 +60,13 @@
       "Description": "The notebook file to open (e.g., main.py)",
       "DefaultValue": "main.py",
       "Required": false
+    },
+    {
+      "Name": "JUPYTER_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "The allowed password for connecting to JupyterLab",
+      "Required": true
     }
   ]
 }
