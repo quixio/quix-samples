@@ -2,6 +2,7 @@ FROM ghcr.io/quixio/marimo-base:e6f3041
 
 # Copy your notebook
 COPY main.py /app/main.py
+COPY icon.png /app/icon.png
 
 # Optional: Copy additional requirements
 COPY requirements.txt /app/
