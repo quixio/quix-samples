@@ -30,18 +30,18 @@
           "TargetPort": 8080
         }
       ]
-    }
-  },
-  "plugin": {
-    "embeddedView": {
-      "enabled": true,
-      "hideHeader": true,
-      "default": true
     },
-    "sidebarItem": {
-      "show": true,
-      "label": "Notebook",
-      "icon": "note_alt"
+    "plugin": {
+      "embeddedView": {
+        "enabled": true,
+        "hideHeader": true,
+        "default": true
+      },
+      "sidebarItem": {
+        "show": true,
+        "label": "Notebook",
+        "icon": "note_alt"
+      }
     }
   },
   "Variables": [
