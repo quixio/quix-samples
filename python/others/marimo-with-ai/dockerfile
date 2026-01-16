@@ -1,9 +1,0 @@
-FROM ghcr.io/quixio/marimo-base:e6f3041
-
-# Copy your notebook
-COPY main.py /app/main.py
-COPY icon.png /app/icon.gif
-
-# Optional: Copy additional requirements
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r /app/requirements.txt

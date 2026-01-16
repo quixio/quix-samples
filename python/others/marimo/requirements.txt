@@ -13,3 +13,5 @@ ipython
 plotly
 fastapi
 uvicorn
+pydantic_ai
+anthropic

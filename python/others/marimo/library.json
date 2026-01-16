@@ -38,11 +38,12 @@
       },
       "sidebarItem": {
         "show": true,
-        "icon": "note_alt",
-        "badge": "BETA"
+        "badge": "BETA",
+        "icon": "note_alt"
       }
     }
   },
+ 
   "Variables": [
     {
       "Name": "MARIMO_MODE",
@@ -58,6 +59,13 @@
       "InputType": "FreeText",
       "Description": "The notebook file to open (e.g., main.py)",
       "DefaultValue": "main.py",
+      "Required": false
+    },
+    {
+      "Name": "ANTHROPIC_API_KEY",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Token generated from https://platform.claude.com/settings/keys.",
       "Required": false
     }
   ]
