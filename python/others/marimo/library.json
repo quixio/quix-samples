@@ -16,7 +16,6 @@
     "MemoryInMb": 2000,
     "Replicas": 1,
     "PublicAccess": true,
-    "UrlPrefix": "marimo",
     "State": {
       "Enabled": true,
       "Size": 1
@@ -39,8 +38,8 @@
       },
       "sidebarItem": {
         "show": true,
-        "label": "Notebook",
-        "icon": "note_alt"
+        "icon": "note_alt",
+        "badge": "BETA"
       }
     }
   },
