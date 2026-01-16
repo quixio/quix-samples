@@ -21,7 +21,6 @@
       "Size": 1
     },
     "Network": {
-      "ServiceName": "marimo",
       "Ports":
       [
         {
