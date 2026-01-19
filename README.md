@@ -241,89 +241,50 @@ If the settings are null, a Docker Image for this project will not be generated 
 
 	Optional object that enables the plugin system for this library item. Plugins allow services to expose an embedded UI inside Deployment Details (rendered as an iframe), and optionally add shortcuts in the environment's left sidebar or globally in the top header.
 
-	See the [Plugin Configuration](#plugin-configuration) section below for detailed documentation.
+	- **"EmbeddedView"** — Object or boolean configuring the embedded view behavior:
+		- **"Enabled"** — Boolean. Enables the embedded view. Default = `false`.
+		- **"HideHeader"** — Boolean. If `true`, hides the header (deployment name + menu). Default = `false`.
+		- **"Default"** — Boolean. When `true`, displays the embedded view by default when clicking on a deployment. Default = `false`.
 
----
+	- **"SidebarItem"** — Optional object configuring the environment's left sidebar shortcut:
+		- **"Show"** — Boolean. Whether to display a shortcut in the sidebar.
+		- **"Label"** — String. Display name shown in navigation (e.g., `"Configuration"`, `"Data Visualizer"`).
+		- **"Icon"** — String. [Google Material Icon](https://fonts.google.com/icons) name (e.g., `tune`, `settings`, `play_arrow`).
+		- **"Order"** — Integer. Display order — lower numbers appear higher in the sidebar.
+		- **"Badge"** — String. Optional short label (max 15 chars) displayed next to the item (e.g., `"Alpha"`, `"Beta"`, `"New"`).
 
-### Plugin Configuration
+	- **"GlobalItem"** — Optional object configuring a global shortcut in the Quix Cloud top header (organization-wide):
+		- **"Show"** — Boolean. Whether to display a shortcut in the global header.
+		- **"Label"** — String. Display name shown in the global header.
+		- **"Icon"** — String. [Google Material Icon](https://fonts.google.com/icons) name.
+		- **"Order"** — Integer. Display order — lower numbers appear first (left to right).
+		- **"Badge"** — String. Optional short label (max 15 chars) displayed next to the item.
 
-The plugin system enables library items to expose an embedded UI and navigation shortcuts in Quix Cloud. This is configured within the `deploySettings.plugin` object in your `library.json`.
+	Example:
+	```json
+	"Plugin": {
+	  "EmbeddedView": {
+	    "Enabled": true,
+	    "HideHeader": false,
+	    "Default": true
+	  },
+	  "SidebarItem": {
+	    "Show": true,
+	    "Label": "Dynamic Config Plugin",
+	    "Icon": "settings",
+	    "Order": 10,
+	    "Badge": "New"
+	  },
+	  "GlobalItem": {
+	    "Show": true,
+	    "Label": "Configuration Manager",
+	    "Icon": "settings",
+	    "Order": 5,
+	    "Badge": "Beta"
+	  }
+	}
+	```
 
-#### What Plugins Do
+	Use `GlobalItem` for plugins that provide organization-wide services or dashboards, need to be accessible regardless of environment context, or serve multiple workspaces.
 
-- **Embed a UI in Deployment Details** — When enabled, the deployment displays an embedded view (iframe) in the portal
-- **Sidebar shortcuts** — Optionally show a shortcut in the environment's left sidebar (environment-scoped)
-- **Global shortcuts** — Optionally show a shortcut in the Quix Cloud top header (organization-wide access)
-- **Authentication integration** — Provide basic authentication with Quix Cloud so publicly exposed services don't require a separate login
-
-#### Plugin Fields Reference
-
-**"plugin.embeddedView"** — Object or boolean configuring the embedded view behavior
-
-| Field | Required | Type | Description |
-|-------|----------|------|-------------|
-| `enabled` | No | boolean | Enables the embedded view. Default = `false`. |
-| `hideHeader` | No | boolean | If `true`, hides the header (deployment name + menu). Default = `false`. |
-| `default` | No | boolean | When `true`, displays the embedded view by default when clicking on a deployment. Default = `false`. |
-
-**"plugin.sidebarItem"** — Optional object configuring the environment's left sidebar shortcut
-
-| Field | Required | Type | Description |
-|-------|----------|------|-------------|
-| `show` | No | boolean | Whether to display a shortcut in the sidebar. |
-| `label` | No | string | Display name shown in navigation (e.g., "Configuration", "Data Visualizer"). |
-| `icon` | No | string | [Google Material Icon](https://fonts.google.com/icons) name (e.g., `tune`, `settings`, `play_arrow`, `chart-line`, `database`). |
-| `order` | No | integer | Display order — lower numbers appear higher in the sidebar. |
-| `badge` | No | string | Optional short label (max 15 chars) displayed next to the sidebar item (e.g., "Alpha", "Beta", "New", "Experimental"). |
-
-**"plugin.globalItem"** — Optional object configuring a global shortcut in the Quix Cloud top header (organization-wide)
-
-| Field | Required | Type | Description |
-|-------|----------|------|-------------|
-| `show` | No | boolean | Whether to display a shortcut in the global header. |
-| `label` | No | string | Display name shown in the global header (e.g., "Configuration Manager", "Test Manager"). |
-| `icon` | No | string | [Google Material Icon](https://fonts.google.com/icons) name (e.g., `tune`, `settings`, `play_arrow`, `chart-line`, `database`). |
-| `order` | No | integer | Display order — lower numbers appear first (left to right). |
-| `badge` | No | string | Optional short label (max 15 chars) displayed next to the item (e.g., "Beta", "Preview"). |
-
-#### Plugin Example
-
-```json
-"plugin": {
-  "embeddedView": {
-    "enabled": true,
-    "hideHeader": false,
-    "default": true
-  },
-  "sidebarItem": {
-    "show": true,
-    "label": "Dynamic Config Plugin",
-    "icon": "settings",
-    "order": 10,
-    "badge": "New"
-  },
-  "globalItem": {
-    "show": true,
-    "label": "Configuration Manager",
-    "icon": "settings",
-    "order": 5,
-    "badge": "Beta"
-  }
-}
-```
-
-#### When to Use Global Plugins
-
-Use `globalItem` for plugins that:
-
-- Provide organization-wide services or dashboards (e.g., test managers, monitoring tools, admin panels)
-- Need to be accessible regardless of the current environment context
-- Serve multiple workspaces or projects
-
-#### Plugin Permissions
-
-- Users need the `plugins:read` permission on the deployment to see and access global plugins
-- The Operator role automatically grants full plugin access.
-- Users can access a global plugin even without `workspace:read` permissions, as long as they have `plugins:read` on that specific deployment
-
-For more details, see the [Plugin System Documentation](https://quix.io/docs/quix-cloud/plugin.html).
+	For more details, see the [Plugin System Documentation](https://quix.io/docs/quix-cloud/plugin.html).
