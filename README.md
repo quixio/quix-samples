@@ -201,3 +201,90 @@ If the settings are null, a Docker Image for this project will not be generated 
 	Whether the Deployment process should validate the connection of the project.
 
 	Specific logic is needed in the code of the project to allow the UI to validate the connection.
+
+ - **"Network"**
+
+	Optional object that configures internal networking for the deployment. Useful for services that need to be accessed by other deployments within the same environment.
+
+	- **"ServiceName"** — Custom service name for internal networking (e.g., `"redis"`, `"mongodb"`, `"influxdb"`)
+	
+	- **"Ports"** — Array of port mapping objects:
+		- **"Port"** — The external port number that will be exposed (e.g., `80`, `6379`)
+		- **"TargetPort"** — The container's internal port (e.g., `8086`, `5432`). Defaults to `Port` when omitted.
+
+	Example:
+	```json
+	"Network": {
+	  "ServiceName": "redis",
+	  "Ports": [
+	    { "Port": 6379, "TargetPort": 6379 }
+	  ]
+	}
+	```
+
+ - **"State"**
+
+	Optional object that configures persistent storage for stateful services.
+
+	- **"Enabled"** — Boolean. When `true`, allocates a persistent storage volume.
+	- **"Size"** — Integer. The size of the persistent state storage in gigabytes.
+
+	Example:
+	```json
+	"State": {
+	  "Enabled": true,
+	  "Size": 1
+	}
+	```
+
+ - **"Plugin"**
+
+	Optional object that enables the plugin system for this library item. Plugins allow services to expose an embedded UI inside Deployment Details (rendered as an iframe), and optionally add shortcuts in the environment's left sidebar or globally in the top header.
+
+	- **"EmbeddedView"** — Object or boolean configuring the embedded view behavior:
+		- **"Enabled"** — Boolean. Enables the embedded view. Default = `false`.
+		- **"HideHeader"** — Boolean. If `true`, hides the header (deployment name + menu). Default = `false`.
+		- **"Default"** — Boolean. When `true`, displays the embedded view by default when clicking on a deployment. Default = `false`.
+
+	- **"SidebarItem"** — Optional object configuring the environment's left sidebar shortcut:
+		- **"Show"** — Boolean. Whether to display a shortcut in the sidebar.
+		- **"Label"** — String. Display name shown in navigation (e.g., `"Configuration"`, `"Data Visualizer"`).
+		- **"Icon"** — String. [Google Material Icon](https://fonts.google.com/icons) name (e.g., `tune`, `settings`, `play_arrow`).
+		- **"Order"** — Integer. Display order — lower numbers appear higher in the sidebar.
+		- **"Badge"** — String. Optional short label (max 15 chars) displayed next to the item (e.g., `"Alpha"`, `"Beta"`, `"New"`).
+
+	- **"GlobalItem"** — Optional object configuring a global shortcut in the Quix Cloud top header (organization-wide):
+		- **"Show"** — Boolean. Whether to display a shortcut in the global header.
+		- **"Label"** — String. Display name shown in the global header.
+		- **"Icon"** — String. [Google Material Icon](https://fonts.google.com/icons) name.
+		- **"Order"** — Integer. Display order — lower numbers appear first (left to right).
+		- **"Badge"** — String. Optional short label (max 15 chars) displayed next to the item.
+
+	Example:
+	```json
+	"Plugin": {
+	  "EmbeddedView": {
+	    "Enabled": true,
+	    "HideHeader": false,
+	    "Default": true
+	  },
+	  "SidebarItem": {
+	    "Show": true,
+	    "Label": "Dynamic Config Plugin",
+	    "Icon": "settings",
+	    "Order": 10,
+	    "Badge": "New"
+	  },
+	  "GlobalItem": {
+	    "Show": true,
+	    "Label": "Configuration Manager",
+	    "Icon": "settings",
+	    "Order": 5,
+	    "Badge": "Beta"
+	  }
+	}
+	```
+
+	Use `GlobalItem` for plugins that provide organization-wide services or dashboards, need to be accessible regardless of environment context, or serve multiple workspaces.
+
+	For more details, see the [Plugin System Documentation](https://quix.io/docs/quix-cloud/plugin.html).
