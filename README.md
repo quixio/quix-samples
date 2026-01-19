@@ -237,11 +237,13 @@ If the settings are null, a Docker Image for this project will not be generated 
 	}
 	```
 
- - **"plugin"**
+ - **"Plugin"**
 
 	Optional object that enables the plugin system for this library item. Plugins allow services to expose an embedded UI inside Deployment Details (rendered as an iframe), and optionally add shortcuts in the environment's left sidebar or globally in the top header.
 
 	See the [Plugin Configuration](#plugin-configuration) section below for detailed documentation.
+
+---
 
 ### Plugin Configuration
 
