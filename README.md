@@ -202,6 +202,41 @@ If the settings are null, a Docker Image for this project will not be generated 
 
 	Specific logic is needed in the code of the project to allow the UI to validate the connection.
 
+ - **"Network"**
+
+	Optional object that configures internal networking for the deployment. Useful for services that need to be accessed by other deployments within the same environment.
+
+	- **"ServiceName"** — Custom service name for internal networking (e.g., `"redis"`, `"mongodb"`, `"influxdb"`)
+	
+	- **"Ports"** — Array of port mapping objects:
+		- **"Port"** — The external port number that will be exposed (e.g., `80`, `6379`)
+		- **"TargetPort"** — The container's internal port (e.g., `8086`, `5432`). Defaults to `Port` when omitted.
+
+	Example:
+	```json
+	"Network": {
+	  "ServiceName": "redis",
+	  "Ports": [
+	    { "Port": 6379, "TargetPort": 6379 }
+	  ]
+	}
+	```
+
+ - **"State"**
+
+	Optional object that configures persistent storage for stateful services.
+
+	- **"Enabled"** — Boolean. When `true`, allocates a persistent storage volume.
+	- **"Size"** — Integer. The size of the persistent state storage in gigabytes.
+
+	Example:
+	```json
+	"State": {
+	  "Enabled": true,
+	  "Size": 1
+	}
+	```
+
  - **"plugin"**
 
 	Optional object that enables the plugin system for this library item. Plugins allow services to expose an embedded UI inside Deployment Details (rendered as an iframe), and optionally add shortcuts in the environment's left sidebar or globally in the top header.
