@@ -16,13 +16,11 @@
     "MemoryInMb": 2000,
     "Replicas": 1,
     "PublicAccess": true,
-    "UrlPrefix": "marimo",
     "State": {
       "Enabled": true,
       "Size": 1
     },
     "Network": {
-      "ServiceName": "marimo",
       "Ports":
       [
         {
@@ -30,8 +28,21 @@
           "TargetPort": 8080
         }
       ]
+    },
+    "plugin": {
+      "embeddedView": {
+        "enabled": true,
+        "hideHeader": true,
+        "default": true
+      },
+      "sidebarItem": {
+        "show": true,
+        "badge": "BETA",
+        "icon": "note_alt"
+      }
     }
   },
+ 
   "Variables": [
     {
       "Name": "MARIMO_MODE",
@@ -47,6 +58,13 @@
       "InputType": "FreeText",
       "Description": "The notebook file to open (e.g., main.py)",
       "DefaultValue": "main.py",
+      "Required": false
+    },
+    {
+      "Name": "ANTHROPIC_API_KEY",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Token generated from https://platform.claude.com/settings/keys.",
       "Required": false
     }
   ]
