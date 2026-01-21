@@ -1,0 +1,3 @@
+# TODO: remove "@ git+" version of install before merging PR
+quixstreams[mysql] @ git+https://github.com/quixio/quix-streams.git@source/mysql-cdc
+python-dotenv
