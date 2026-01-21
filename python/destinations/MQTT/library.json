@@ -18,25 +18,32 @@
       "Type": "EnvironmentVariable",
       "InputType": "InputTopic",
       "Description": "Name of the input topic to listen to.",
-      "DefaultValue": "",
       "Required": true
     },
     {
-      "Name": "mqtt_topic_root",
+      "Name": "MQTT_CLIENT_ID",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "A client ID for the sink",
+      "DefaultValue": "mqtt-sink",
+      "Required": true
+    },
+    {
+      "Name": "MQTT_TOPIC_ROOT",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The root for messages in MQTT, this can be anything",
       "Required": true
     },
     {
-      "Name": "mqtt_server",
+      "Name": "MQTT_SERVER",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The address of your MQTT server",
       "Required": true
     },
     {
-      "Name": "mqtt_port",
+      "Name": "MQTT_PORT",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The port of your MQTT server",
@@ -44,37 +51,44 @@
       "Required": true
     },
     {
-      "Name": "mqtt_username",
+      "Name": "MQTT_USERNAME",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Username of your MQTT user",
-      "Required": false
-    },
-    {
-      "Name": "mqtt_password",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Password for the MQTT user",
-      "Required": false
-    },
-    {
-      "Name": "mqtt_version",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "MQTT protocol version: 3.1, 3.1.1, 5",
-      "DefaultValue": "3.1.1",
       "Required": true
     },
     {
-      "Name": "mqtt_tls_enabled",
+      "Name": "MQTT_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Password for the MQTT user",
+      "Required": true
+    },
+    {
+      "Name": "MQTT_VERSION",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Enable TLS for MQTT connection (true/false)",
+      "Description": "MQTT protocol version; choose 3.1, 3.1.1, or 5",
+      "Required": true
+    },
+    {
+      "Name": "MQTT_USE_TLS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Set to true if the server uses TLS",
       "DefaultValue": "true",
+      "Required": true
+    },
+    {
+      "Name": "MQTT_RETAIN_MESSAGES",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Whether to retain/persist the latest message (per key) on the MQTT topic.",
+      "DefaultValue": "false",
       "Required": false
     },
     {
-      "Name": "consumer_group_name",
+      "Name": "CONSUMER_GROUP",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Kafka consumer group name for the MQTT destination",
