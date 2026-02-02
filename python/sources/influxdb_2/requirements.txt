@@ -1,4 +1,3 @@
-quixstreams==3.23.1
-influxdb-client==1.39.0
+quixstreams==3.23.2influxdb-client==1.39.0
 pandas
 python-dotenv

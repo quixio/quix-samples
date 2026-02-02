@@ -1,3 +1,2 @@
-quixstreams==3.23.1
-pyodbc==5.2.0
+quixstreams==3.23.2pyodbc==5.2.0
 python-dotenv==1.1.1

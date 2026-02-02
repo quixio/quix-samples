@@ -1,4 +1,3 @@
-quixstreams==3.23.1
-transformers
+quixstreams==3.23.2transformers
 tensorflow
 python-dotenv

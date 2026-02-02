@@ -1,5 +1,4 @@
-quixstreams==3.23.1
-pandas
+quixstreams==3.23.2pandas
 redis
 python-dotenv
 
