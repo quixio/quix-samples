@@ -73,7 +73,7 @@ def main():
     # Build the full table prefix
     table_prefix = f"{s3_prefix}/{table_name}/"
 
-    max_attempts = 30
+    max_attempts = 45  # 45 attempts * 2s = 90s max wait for CI environments
     found_files = []
 
     print(f"\nLooking for Parquet files in s3://{bucket_name}/{table_prefix}")
