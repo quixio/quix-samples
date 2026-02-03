@@ -1,4 +1,5 @@
-quixstreams==3.23.2flask
+quixstreams==3.23.2
+flask
 flask_cors
 flasgger==0.9.7b2
 waitress

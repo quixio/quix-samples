@@ -1,2 +1,3 @@
-quixstreams==3.23.2psycopg2-binary
+quixstreams==3.23.2
+psycopg2-binary
 python-dotenv

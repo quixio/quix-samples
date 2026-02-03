@@ -1,2 +1,3 @@
-quixstreams==3.23.2requests
+quixstreams==3.23.2
+requests
 python-dotenv
