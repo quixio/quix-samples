@@ -165,7 +165,7 @@ services:
         python /tests/produce_test_data.py &&
         echo '' &&
         echo '=== Waiting for quixlake-timeseries to process messages ===' &&
-        sleep 10 &&
+        sleep 20 &&
         echo '' &&
         echo '=== Verifying Parquet data in S3 ===' &&
         python /tests/verify_output.py &&
