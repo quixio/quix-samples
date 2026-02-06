@@ -1,4 +1,4 @@
-FROM ghcr.io/quixio/marimo-base:e6f3041
+FROM ghcr.io/quixio/marimo-base:1618f6b
 
 # Copy your notebook
 COPY main.py /app/main.py
