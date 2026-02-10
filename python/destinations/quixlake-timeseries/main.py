@@ -1,8 +1,15 @@
 """
 Quix TS Datalake Sink - Main Entry Point
 
-This application consumes data from a Kafka topic and writes it to S3 as
+This application consumes data from a Kafka topic and writes it to blob storage as
 Hive-partitioned Parquet files with optional Iceberg catalog registration.
+
+Blob storage is configured via the Quix__BlobStorage__Connection__Json environment variable,
+which is automatically handled by the quixportal library. The bucket name is extracted
+automatically from this configuration.
+
+File paths follow the workspace-aware structure:
+    {workspaceId}/data-lake/time-series/{table_name}/...
 """
 import os
 import logging
@@ -16,6 +23,9 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Constant for time-series data lake path structure
+TIMESERIES_PREFIX = "data-lake/time-series"
 
 
 def parse_hive_columns(columns_str: str) -> list:
@@ -45,19 +55,21 @@ hive_columns = parse_hive_columns(os.getenv("HIVE_COLUMNS", ""))
 auto_discover = os.getenv("AUTO_DISCOVER", "true").lower() == "true"
 table_name = os.getenv("TABLE_NAME") or os.environ["input"]
 
+# Workspace ID (automatically injected by Quix platform)
+workspace_id = os.getenv("Quix__Workspace__Id", "")
+
 # Initialize QuixLakeSink
-s3_sink = QuixLakeSink(
-    s3_bucket=os.environ["S3_BUCKET"],
-    s3_prefix=os.getenv("S3_PREFIX", "data"),
+# Note: Blob storage credentials are configured via Quix__BlobStorage__Connection__Json
+# environment variable, which is automatically read by quixportal.
+# The bucket name is extracted automatically from the quixportal configuration.
+blob_sink = QuixLakeSink(
+    s3_prefix=TIMESERIES_PREFIX,
     table_name=table_name,
-    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    aws_region=os.getenv("AWS_REGION", "us-east-1"),
-    s3_endpoint_url=os.getenv("AWS_ENDPOINT_URL"),
+    workspace_id=workspace_id,
     hive_columns=hive_columns,
     timestamp_column=os.getenv("TIMESTAMP_COLUMN", "ts_ms"),
     catalog_url=os.getenv("CATALOG_URL"),
-    catalog_auth_token=os.getenv("CATALOG_AUTH_TOKEN"),
+    catalog_auth_token=os.getenv("CATALOG_AUTH_TOKEN", os.getenv("Quix__Sdk__Token", "")),
     auto_discover=auto_discover,
     namespace=os.getenv("CATALOG_NAMESPACE", "default"),
     auto_create_bucket=True,
@@ -68,11 +80,13 @@ s3_sink = QuixLakeSink(
 sdf = app.dataframe(topic=app.topic(os.environ["input"]))
 
 # Attach sink (batching is handled by BatchingSink)
-sdf.sink(s3_sink)
+sdf.sink(blob_sink)
 
+# Log startup configuration
+storage_path = f"{workspace_id}/{TIMESERIES_PREFIX}" if workspace_id else TIMESERIES_PREFIX
 logger.info("Starting Quix TS Datalake Sink")
 logger.info(f"  Input topic: {os.environ['input']}")
-logger.info(f"  S3 destination: s3://{os.environ['S3_BUCKET']}/{os.getenv('S3_PREFIX', 'data')}/{table_name}")
+logger.info(f"  Storage path: {storage_path}/{table_name}")
 logger.info(f"  Partitioning: {hive_columns if hive_columns else 'none'}")
 
 if __name__ == "__main__":
