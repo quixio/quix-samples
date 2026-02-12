@@ -1,0 +1,10 @@
+quixstreams==3.23.2
+fmpy>=0.3.0
+numpy
+pandas
+python-dotenv
+boto3
+
+# Testing
+pytest>=7.0.0
+pytest-cov

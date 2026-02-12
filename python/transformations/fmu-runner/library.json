@@ -1,0 +1,73 @@
+{
+  "libraryItemId": "fmu-runner",
+  "name": "FMU Runner",
+  "language": "Python",
+  "tags": {
+    "Complexity": ["Medium"],
+    "Technology": ["Quix Streams"],
+    "Pipeline Stage": ["Transformation"],
+    "Popular Subjects": ["Simulation", "Digital Twin"]
+  },
+  "shortDescription": "Execute FMU (Functional Mock-up Unit) simulations from Kafka messages and publish results to an output topic.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "Name of the input topic to listen to for simulation requests.",
+      "DefaultValue": "simulation",
+      "Required": true
+    },
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Name of the output topic to write simulation results to.",
+      "DefaultValue": "simulation-results",
+      "Required": true
+    },
+    {
+      "Name": "S3_ENDPOINT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "S3/MinIO endpoint URL for fetching FMU model binaries.",
+      "DefaultValue": "http://minio:80",
+      "Required": true
+    },
+    {
+      "Name": "S3_ACCESS_KEY",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "S3 access key ID.",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "S3_SECRET_KEY",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "S3 secret access key.",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "S3_BUCKET",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "S3 bucket name where FMU models are stored.",
+      "DefaultValue": "fmu-models",
+      "Required": true
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 500,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": false
+  }
+}
