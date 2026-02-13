@@ -1,17 +1,16 @@
 from quixstreams.sinks import BatchingSink, SinkBatch
-import boto3
-from botocore.exceptions import ClientError
-from s3transfer.manager import TransferManager, TransferConfig
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 import time
 import logging
 import uuid
+import os
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timezone
 from io import BytesIO
 from catalog_client import CatalogClient
+from blob_storage import BlobStorageClient, get_bucket_name
 
 
 TIMESTAMP_COL_MAPPER = {
@@ -26,19 +25,15 @@ logger = logging.getLogger('quixstreams')
 
 class QuixLakeSink(BatchingSink):
     """
-    Writes Kafka batches directly to S3 as Hive-partitioned Parquet files,
+    Writes Kafka batches directly to blob storage as Hive-partitioned Parquet files,
     then optionally registers the table using the discover endpoint.
     """
-    
+
     def __init__(
         self,
-        s3_bucket: str,
         s3_prefix: str,
         table_name: str,
-        aws_access_key_id: Optional[str] = None,
-        aws_secret_access_key: Optional[str] = None,
-        aws_region: str = "us-east-1",
-        s3_endpoint_url: Optional[str] = None,
+        workspace_id: str = "",
         hive_columns: List[str] = None,
         timestamp_column: str = "ts_ms",
         catalog_url: Optional[str] = None,
@@ -49,17 +44,12 @@ class QuixLakeSink(BatchingSink):
         max_workers: int = 10
     ):
         """
-        Initialize S3 Direct Sink
+        Initialize Blob Storage Sink
 
         Args:
-            s3_bucket: S3 bucket name
-            s3_prefix: S3 prefix/path for data files
+            s3_prefix: Path prefix for data files (e.g., "data-lake/time-series")
             table_name: Table name for registration
-            aws_access_key_id: AWS access key ID
-            aws_secret_access_key: AWS secret access key
-            aws_region: AWS region (default: "us-east-1")
-            s3_endpoint_url: Custom S3 endpoint URL for non-AWS S3-compatible storage
-                           (e.g., MinIO, Wasabi, DigitalOcean Spaces)
+            workspace_id: Workspace ID for workspace-scoped storage paths (auto-injected by platform)
             hive_columns: List of columns to use for Hive partitioning. Include 'year', 'month',
                          'day', 'hour' to extract these from timestamp_column
             timestamp_column: Column containing timestamp to extract time partitions from
@@ -67,22 +57,12 @@ class QuixLakeSink(BatchingSink):
             catalog_auth_token: If using REST Catalog, the respective auth token for it
             auto_discover: Whether to auto-register table on first write
             namespace: Catalog namespace (default: "default")
-            auto_create_bucket: if True, create bucket in S3 if missing.
+            auto_create_bucket: if True, attempt to create bucket/path in storage if missing.
             max_workers: Maximum number of parallel upload threads (default: 10)
         """
-        self._aws_region = aws_region
-        self._aws_access_key_id = aws_access_key_id
-        self._aws_secret_access_key = aws_secret_access_key
-        self._aws_endpoint_url = s3_endpoint_url
-        self._credentials = {
-            "region_name": self._aws_region,
-            "aws_access_key_id": self._aws_access_key_id,
-            "aws_secret_access_key": self._aws_secret_access_key,
-            "endpoint_url": self._aws_endpoint_url,
-        }
-        self.s3_bucket = s3_bucket
         self.s3_prefix = s3_prefix
         self.table_name = table_name
+        self.workspace_id = workspace_id
         self.hive_columns = hive_columns or []
         self.timestamp_column = timestamp_column
         self._catalog = CatalogClient(catalog_url, catalog_auth_token) if catalog_url else None
@@ -90,42 +70,49 @@ class QuixLakeSink(BatchingSink):
         self.namespace = namespace
         self.table_registered = False
 
-        # S3 client will be initialized in setup()
-        self.s3_client = None
+        # Blob storage client and bucket name will be initialized in setup()
+        self._blob_client: Optional[BlobStorageClient] = None
+        self._s3_bucket: Optional[str] = None  # Extracted from quixportal config in setup()
         self._ts_hive_columns = {'year', 'month', 'day', 'hour'} & set(self.hive_columns)
         self._auto_create_bucket = auto_create_bucket
         self._max_workers = max_workers
 
-        # Batch upload tracking with TransferManager
+        # Batch upload tracking
         self._pending_futures = []
-        self._transfer_manager = None
 
         super().__init__()
-    
-    def setup(self):
-        """Initialize S3 client and test connection"""
-        logger.info("Starting S3 Direct Sink...")
-        logger.info(f"S3 Target: s3://{self.s3_bucket}/{self.s3_prefix}/{self.table_name}")
-        logger.info(f"Partitioning: hive_columns={self.hive_columns}")
 
-        if self._aws_endpoint_url:
-            logger.info(f"Using custom S3 endpoint: {self._aws_endpoint_url}")
+    @property
+    def s3_bucket(self) -> str:
+        """Get the S3 bucket name (extracted from quixportal config)."""
+        if self._s3_bucket is None:
+            raise RuntimeError("s3_bucket not initialized. Call setup() first.")
+        return self._s3_bucket
+
+    def setup(self):
+        """Initialize blob storage client and test connection"""
+        logger.info("Starting Blob Storage Sink...")
+
+        # Extract bucket name from quixportal configuration
+        self._s3_bucket = get_bucket_name()
+
+        # Log storage target with workspace path if set
+        storage_path = f"{self.workspace_id}/{self.s3_prefix}" if self.workspace_id else self.s3_prefix
+        logger.info(f"Storage Target: s3://{self._s3_bucket}/{storage_path}/{self.table_name}")
+        logger.info(f"Partitioning: hive_columns={self.hive_columns}")
 
         if self._catalog and self.auto_discover:
             logger.info(f"Table will be auto-registered in REST Catalog on first write")
 
         try:
-            # Initialize S3 client
-            self.s3_client = boto3.client(
-                's3',
-                **self._credentials
+            # Initialize BlobStorageClient via quixportal
+            # workspace_id is passed as base_path to scope all operations to the workspace
+            self._blob_client = BlobStorageClient(
+                base_path=self.workspace_id,
+                max_workers=self._max_workers
             )
 
-            # Initialize TransferManager for concurrent uploads
-            transfer_config = TransferConfig(max_request_concurrency=self._max_workers)
-            self._transfer_manager = TransferManager(self.s3_client, config=transfer_config)
-
-            # Confirm bucket connection
+            # Confirm storage connection
             self._ensure_bucket()
 
             # Test Catalog connection if configured
@@ -138,51 +125,42 @@ class QuixLakeSink(BatchingSink):
                     logger.warning("Could not connect to REST Catalog: %s. Table registration disabled.", e)
                     self.auto_discover = False
 
-            # Check if table already exists in S3 and validate partition strategy
+            # Check if table already exists and validate partition strategy
             self._validate_existing_table_structure()
 
         except Exception as e:
-            logger.error("Failed to setup S3 connection: %s", e)
+            logger.error("Failed to setup blob storage connection: %s", e)
             raise
 
     def _ensure_bucket(self):
-        bucket = self.s3_bucket
-        try:
-            self.s3_client.head_bucket(Bucket=bucket)
-        except ClientError as e:
-            error_code = int(e.response["Error"]["Code"])
-            if error_code == 404 and self._auto_create_bucket:
-                # Bucket does not exist, create it
-                logger.debug(f"⚠️ Bucket '{bucket}' not found. Creating it...")
-                self.s3_client.create_bucket(Bucket=self.s3_bucket)
-                logger.info(f"✅ Bucket '{bucket}' created.")
-            else:
-                raise
-        logger.info("Successfully connected to S3 bucket: %s", bucket)
+        """Ensure the blob storage path is accessible."""
+        if not self._blob_client.ensure_path_exists(auto_create=self._auto_create_bucket):
+            raise RuntimeError("Failed to access blob storage")
+        logger.info("Successfully connected to blob storage")
 
     def write(self, batch: SinkBatch):
-        """Write batch directly to S3"""
+        """Write batch directly to blob storage"""
         # Register table before first write if auto-discover is enabled
         if self.auto_discover and not self.table_registered and self._catalog:
             self._register_table()
-            
+
         attempts = 3
         while attempts:
             start = time.perf_counter()
             try:
                 self._write_batch(batch)
                 elapsed_ms = (time.perf_counter() - start) * 1000
-                logger.info("✔ wrote %d rows to S3 in %.1f ms", batch.size, elapsed_ms)
+                logger.info("Wrote %d rows to blob storage in %.1f ms", batch.size, elapsed_ms)
                 return
             except Exception as exc:
                 attempts -= 1
                 if attempts == 0:
                     raise
-                logger.warning("Write failed (%s) – retrying …", exc)
+                logger.warning("Write failed (%s) - retrying...", exc)
                 time.sleep(3)
-    
+
     def _write_batch(self, batch: SinkBatch):
-        """Convert batch to Parquet and write to S3 with Hive partitioning"""
+        """Convert batch to Parquet and write to blob storage with Hive partitioning"""
         if not batch:
             return
 
@@ -214,28 +192,27 @@ class QuixLakeSink(BatchingSink):
                 if not isinstance(group_values, tuple):
                     group_values = (group_values,)
 
-                # Build S3 key with Hive partitioning (col=value format)
-                # Example: s3://bucket/prefix/table/year=2024/month=01/day=15/data_abc123.parquet
+                # Build storage key with Hive partitioning (col=value format)
                 partition_parts = [f"{col}={val}" for col, val in zip(partition_columns, group_values)]
-                s3_key = f"{self.s3_prefix}/{self.table_name}/" + "/".join(partition_parts) + f"/data_{uuid.uuid4().hex}.parquet"
+                storage_key = f"{self.s3_prefix}/{self.table_name}/" + "/".join(partition_parts) + f"/data_{uuid.uuid4().hex}.parquet"
 
                 # Remove partition columns from data (Hive style - partition values are in the path, not the data)
                 data_df = group_df.drop(columns=partition_columns, errors='ignore')
 
-                # Write to S3
-                self._write_parquet_to_s3(data_df, s3_key, partition_columns, group_values)
+                # Write to blob storage
+                self._write_parquet_to_storage(data_df, storage_key, partition_columns, group_values)
         else:
             # No partitioning - write as single file directly under table directory
-            s3_key = f"{self.s3_prefix}/{self.table_name}/data_{uuid.uuid4().hex}.parquet"
-            self._write_parquet_to_s3(df, s3_key, [], ())
+            storage_key = f"{self.s3_prefix}/{self.table_name}/data_{uuid.uuid4().hex}.parquet"
+            self._write_parquet_to_storage(df, storage_key, [], ())
 
         # Wait for all uploads to complete and register files in catalog
         self._finalize_writes()
 
-    def _write_parquet_to_s3(
+    def _write_parquet_to_storage(
         self,
         df: pd.DataFrame,
-        s3_key: str,
+        storage_key: str,
         partition_columns: List[str],
         partition_values: tuple
     ):
@@ -247,16 +224,12 @@ class QuixLakeSink(BatchingSink):
         pq.write_table(table, buf)
         parquet_bytes = buf.getvalue().to_pybytes()
 
-        # Submit upload to TransferManager
-        future = self._transfer_manager.upload(
-            BytesIO(parquet_bytes),
-            self.s3_bucket,
-            s3_key
-        )
+        # Submit async upload
+        future = self._blob_client.put_object_async(storage_key, parquet_bytes)
 
         self._pending_futures.append({
             'future': future,
-            'key': s3_key,
+            'key': storage_key,
             'row_count': len(df),
             'file_size': len(parquet_bytes),
             'partition_columns': partition_columns,
@@ -275,14 +248,13 @@ class QuixLakeSink(BatchingSink):
         for item in self._pending_futures:
             try:
                 item['future'].result()  # Wait and raise on error
-                logger.debug("✓ Uploaded %d rows to s3://%s/%s",
-                           item['row_count'], self.s3_bucket, item['key'])
+                logger.debug("Uploaded %d rows to %s",
+                           item['row_count'], item['key'])
             except Exception as e:
-                logger.error("✗ Failed to upload s3://%s/%s: %s",
-                           self.s3_bucket, item['key'], e)
+                logger.error("Failed to upload %s: %s", item['key'], e)
                 raise
 
-        logger.info(f"✓ Successfully uploaded {count} file(s)")
+        logger.info(f"Successfully uploaded {count} file(s)")
 
         # Register all files in catalog manifest if configured
         if self._catalog and self.table_registered:
@@ -311,44 +283,49 @@ class QuixLakeSink(BatchingSink):
         """Register the table in REST Catalog"""
         if not self._catalog:
             return
-            
+
         try:
             # First check if table already exists
             check_response = self._catalog.get(
                 f"/namespaces/{self.namespace}/tables/{self.table_name}",
                 timeout=5
             )
-            
+
             if check_response.status_code == 200:
                 logger.info("Table '%s' already exists in catalog", self.table_name)
                 self.table_registered = True
                 # Validate partition strategy matches
                 self._validate_partition_strategy(check_response.json())
                 return
-            
+
             # Table doesn't exist, create it
-            s3_path = f"s3://{self.s3_bucket}/{self.s3_prefix}/{self.table_name}"
-            
+            # Note: Location must be full S3 URI for catalog (API uses this with DuckDB)
+            # Include workspace_id in the path if set (for workspace-scoped storage)
+            if self.workspace_id:
+                location = f"s3://{self.s3_bucket}/{self.workspace_id}/{self.s3_prefix}/{self.table_name}"
+            else:
+                location = f"s3://{self.s3_bucket}/{self.s3_prefix}/{self.table_name}"
+
             # Define partition spec based on configuration
             # For dynamic partition discovery, create table without partition spec
             # The partition spec will be set when first files are added
             partition_spec = []  # Empty spec for dynamic discovery
-            
+
             # Create table with minimal schema (will be inferred from data)
             create_response = self._catalog.put(
                 f"/namespaces/{self.namespace}/tables/{self.table_name}",
                 json={
-                    "location": s3_path,
+                    "location": location,
                     "partition_spec": partition_spec,  # Empty for dynamic discovery
                     "properties": {
-                        "created_by": "quix-lake-sink",
+                        "created_by": "quix-ts-datalake-sink",
                         "auto_discovered": "false",
                         "expected_partitions": self.hive_columns.copy()  # Store expected partitions in properties
                     }
                 },
                 timeout=30
             )
-            
+
             if create_response.status_code in [200, 201]:
                 logger.info(
                     "Successfully created table '%s' in REST Catalog. Partitions will be set dynamically to: %s",
@@ -358,14 +335,14 @@ class QuixLakeSink(BatchingSink):
                 self.table_registered = True
             else:
                 logger.warning(
-                    "Failed to create table '%s': %s", 
-                    self.table_name, 
+                    "Failed to create table '%s': %s",
+                    self.table_name,
                     create_response.text
                 )
-                
+
         except Exception as e:
             logger.warning("Failed to register table '%s': %s", self.table_name, e)
-    
+
     def _add_timestamp_columns(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Add timestamp-based columns (year/month/day/hour) for time-based partitioning.
@@ -405,15 +382,15 @@ class QuixLakeSink(BatchingSink):
             df[col] = TIMESTAMP_COL_MAPPER[col](timestamp_col)
 
         return df
-    
+
     def _validate_partition_strategy(self, table_metadata: Dict[str, Any]):
         """Validate that the sink's partition strategy matches the existing table"""
         existing_partition_spec = table_metadata.get("partition_spec", [])
-        
+
         # Build expected partition spec from sink configuration
         expected_partition_spec = self.hive_columns.copy()
-        
-        # Special case: If table has no partition spec yet (empty list), 
+
+        # Special case: If table has no partition spec yet (empty list),
         # it will be set when first files are added
         if not existing_partition_spec:
             logger.info(
@@ -422,7 +399,7 @@ class QuixLakeSink(BatchingSink):
                 expected_partition_spec
             )
             return
-        
+
         # Check if partition strategies match
         if set(existing_partition_spec) != set(expected_partition_spec):
             error_msg = (
@@ -434,7 +411,7 @@ class QuixLakeSink(BatchingSink):
             )
             logger.error(error_msg)
             raise ValueError(error_msg)
-        
+
         # Also check the order of partitions
         if existing_partition_spec != expected_partition_spec:
             warning_msg = (
@@ -443,12 +420,12 @@ class QuixLakeSink(BatchingSink):
                 "While this won't corrupt data, it may lead to suboptimal query performance."
             )
             logger.warning(warning_msg)
-    
+
     def _validate_existing_table_structure(self):
         """
-        Check if table already exists in S3 and validate partition structure.
+        Check if table already exists in storage and validate partition structure.
 
-        This prevents data corruption by ensuring that if a table already exists in S3,
+        This prevents data corruption by ensuring that if a table already exists,
         the sink's partition configuration matches what's already on disk. Mismatched
         partition strategies would result in a corrupted folder structure that would
         make the data unqueryable.
@@ -457,24 +434,20 @@ class QuixLakeSink(BatchingSink):
 
         try:
             # List objects to see if table exists (sample first 100 files)
-            response = self.s3_client.list_objects_v2(
-                Bucket=self.s3_bucket,
-                Prefix=table_prefix,
-                MaxKeys=100
-            )
+            objects = self._blob_client.list_objects(prefix=table_prefix, max_keys=100)
 
-            if 'Contents' not in response:
+            if not objects:
                 # Table doesn't exist yet, no validation needed
                 return
 
-            # Detect existing partition columns from S3 directory structure
-            # We parse the S3 paths to extract partition columns from Hive-style paths
+            # Detect existing partition columns from directory structure
+            # We parse the paths to extract partition columns from Hive-style paths
             detected_partition_columns = []
-            for obj in response['Contents']:
-                if obj['Key'].endswith('.parquet'):
+            for obj in objects:
+                key = obj['Key']
+                if key.endswith('.parquet'):
                     # Extract path after table prefix
-                    # Example: "year=2024/month=01/day=15/data.parquet" -> ["year=2024", "month=01", "day=15", "data.parquet"]
-                    relative_path = obj['Key'][len(table_prefix):]
+                    relative_path = key[len(table_prefix):] if key.startswith(table_prefix) else key
                     path_parts = relative_path.split('/')
 
                     # Look for Hive-style partitions (col=value format)
@@ -495,7 +468,7 @@ class QuixLakeSink(BatchingSink):
                 if set(detected_partition_columns) != set(expected_partition_spec):
                     error_msg = (
                         f"Partition strategy mismatch for table '{self.table_name}'. "
-                        f"Existing table in S3 has partitions: {detected_partition_columns}, "
+                        f"Existing table in storage has partitions: {detected_partition_columns}, "
                         f"but sink is configured with: {expected_partition_spec}. "
                         "This would corrupt the folder structure. Please ensure the sink partition "
                         "configuration matches the existing table."
@@ -509,15 +482,13 @@ class QuixLakeSink(BatchingSink):
                     detected_partition_columns
                 )
 
-        except self.s3_client.exceptions.NoSuchBucket:
-            raise
         except ValueError:
             raise
         except Exception as e:
             logger.warning(
                 "Could not validate existing table structure: %s. Proceeding with caution.", e
             )
-    
+
     def _register_files_in_manifest(self):
         """Register multiple newly written files in the catalog manifest"""
         if not (file_items := self._pending_futures):
@@ -527,14 +498,18 @@ class QuixLakeSink(BatchingSink):
             # Build file entries for all files
             file_entries = []
             for item in file_items:
-                s3_key = item['key']
+                storage_key = item['key']
                 row_count = item['row_count']
                 file_size = item['file_size']
                 partition_columns = item['partition_columns']
                 partition_values = item['partition_values']
 
-                # Build S3 URL
-                file_path = f"s3://{self.s3_bucket}/{s3_key}"
+                # Build file path as full S3 URI for catalog (API uses this with DuckDB)
+                # Include workspace_id if set (for workspace-scoped storage)
+                if self.workspace_id:
+                    file_path = f"s3://{self.s3_bucket}/{self.workspace_id}/{storage_key}"
+                else:
+                    file_path = f"s3://{self.s3_bucket}/{storage_key}"
 
                 # Build partition values dict
                 partition_dict = {}
@@ -566,3 +541,8 @@ class QuixLakeSink(BatchingSink):
         except Exception as e:
             # Don't fail the write if manifest registration fails
             logger.warning("Failed to register files in manifest: %s", e)
+
+    def cleanup(self):
+        """Cleanup resources when sink is stopped."""
+        if self._blob_client:
+            self._blob_client.shutdown()

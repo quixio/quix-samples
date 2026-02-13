@@ -29,7 +29,7 @@ services:
       /bin/sh -c "
       mc alias set myminio http://minio:9000 minioadmin minioadmin;
       mc mb myminio/test-bucket --ignore-existing;
-      mc rm --recursive --force myminio/test-bucket/data/ || true;
+      mc rm --recursive --force myminio/test-bucket/data-lake/ || true;
       echo 'MinIO bucket created and cleaned';
       echo 'Keeping minio-init alive...';
       tail -f /dev/null
@@ -84,13 +84,8 @@ services:
       # Input topic
       - input=test-quixlake-input
 
-      # S3 configuration
-      - S3_BUCKET=test-bucket
-      - S3_PREFIX=data
-      - AWS_ACCESS_KEY_ID=minioadmin
-      - AWS_SECRET_ACCESS_KEY=minioadmin
-      - AWS_REGION=us-east-1
-      - AWS_ENDPOINT_URL=http://minio:9000
+      # Blob storage configuration (quixportal format)
+      - Quix__BlobStorage__Connection__Json={"Provider":"Minio","S3Compatible":{"BucketName":"test-bucket","AccessKeyId":"minioadmin","SecretAccessKey":"minioadmin","Region":"us-east-1","ServiceUrl":"http://minio:9000"}}
 
       # Table configuration
       - TABLE_NAME=test-quixlake-input
@@ -147,7 +142,7 @@ services:
       - AWS_ACCESS_KEY_ID=minioadmin
       - AWS_SECRET_ACCESS_KEY=minioadmin
       - S3_BUCKET=test-bucket
-      - S3_PREFIX=data
+      - S3_PREFIX=data-lake/time-series
 
       # Expected table configuration
       - TABLE_NAME=test-quixlake-input

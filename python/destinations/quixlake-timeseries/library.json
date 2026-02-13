@@ -1,6 +1,6 @@
 {
     "libraryItemId": "quixlake-timeseries-destination",
-    "name": "Quix DataLake Timeseries Sink",
+    "name": "quix-ts-datalake-sink",
     "language": "Python",
     "tags": {
         "Pipeline Stage": ["Destination"],
@@ -12,160 +12,104 @@
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "IconFile": "icon.png",
+  
     "Variables": [
         {
             "Name": "input",
             "Type": "EnvironmentVariable",
             "InputType": "InputTopic",
             "Description": "Name of the Kafka input topic to consume from",
-            "DefaultValue": "sensor-data",
+            "DefaultValue": "tsbs_data_transformed",
             "Required": true
-        },
-        {
-            "Name": "S3_BUCKET",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "S3 bucket name for storing Parquet files",
-            "Required": true
-        },
-        {
-            "Name": "S3_PREFIX",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "S3 prefix/path for data files",
-            "DefaultValue": "data",
-            "Required": false
         },
         {
             "Name": "TABLE_NAME",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Table name for data organization and registration, else defaults to topic name",
-            "Required": false
+            "DefaultValue": "sensordata"
         },
         {
             "Name": "HIVE_COLUMNS",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Comma-separated list of columns for Hive partitioning. Include year/month/day/hour to extract from TIMESTAMP_COLUMN (e.g., location,year,month,day,sensor_type)",
-            "DefaultValue": "",
-            "Required": false
+            "DefaultValue": "region,datacenter,hostname"
         },
         {
             "Name": "TIMESTAMP_COLUMN",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Column containing timestamp values to extract year/month/day/hour from",
-            "DefaultValue": "ts_ms",
-            "Required": false
+            "DefaultValue": "ts_ms"
         },
         {
             "Name": "CATALOG_URL",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
-            "Description": "REST Catalog URL for optional table registration (leave empty to skip)",
-            "Required": false
+            "Description": "REST Catalog URL for optional table registration (leave empty to skip)"
         },
         {
             "Name": "CATALOG_AUTH_TOKEN",
             "Type": "EnvironmentVariable",
             "InputType": "Secret",
-            "Description": "If using a catalog, the respective auth token to access it",
-            "Required": false
+            "Description": "If using a catalog, the respective auth token to access it"
         },
         {
             "Name": "AUTO_DISCOVER",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Automatically register table in REST Catalog on first write",
-            "DefaultValue": "true",
-            "Required": false
+            "DefaultValue": "true"
         },
         {
             "Name": "CATALOG_NAMESPACE",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Catalog namespace for table registration",
-            "DefaultValue": "default",
-            "Required": false
+            "DefaultValue": "default"
         },
         {
             "Name": "BATCH_SIZE",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
-            "Description": "Number of messages to batch before writing to S3",
-            "DefaultValue": "1000",
-            "Required": false
+            "Description": "Number of messages to batch before writing to storage",
+            "DefaultValue": "1000"
         },
         {
             "Name": "COMMIT_INTERVAL",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Kafka commit interval in seconds",
-            "DefaultValue": "30",
-            "Required": false
+            "DefaultValue": "30"
         },
         {
             "Name": "KAFKA_KEY_DESERIALIZER",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "The key deserializer to use",
-            "DefaultValue": "str",
-            "Required": false
+            "DefaultValue": "str"
         },
         {
             "Name": "KAFKA_VALUE_DESERIALIZER",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "the value deserializer to use",
-            "DefaultValue": "json",
-            "Required": false
+            "DefaultValue": "json"
         },
         {
             "Name": "CONSUMER_GROUP",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Kafka consumer group name",
-            "DefaultValue": "s3_direct_sink_v1.0",
-            "Required": false
+            "DefaultValue": "s3_direct_sink_v1.0"
         },
         {
             "Name": "AUTO_OFFSET_RESET",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Where to start consuming if no offset exists",
-            "DefaultValue": "latest",
-            "Required": false
-        },
-        {
-            "Name": "AWS_ACCESS_KEY_ID",
-            "Type": "EnvironmentVariable",
-            "InputType": "Secret",
-            "Description": "AWS Access Key ID for S3 access",
-            "DefaultValue": "",
-            "Required": false
-        },
-        {
-            "Name": "AWS_SECRET_ACCESS_KEY",
-            "Type": "EnvironmentVariable",
-            "InputType": "Secret",
-            "Description": "AWS Secret Access Key for S3 access",
-            "Required": false
-        },
-        {
-            "Name": "AWS_REGION",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "AWS region for S3 bucket",
-            "DefaultValue": "us-east-1",
-            "Required": false
-        },
-        {
-            "Name": "AWS_ENDPOINT_URL",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "S3 endpoint url (for non-AWS endpoints)",
-            "Required": false
+            "DefaultValue": "earliest"
         },
         {
             "Name": "LOGLEVEL",
@@ -178,12 +122,14 @@
             "Name": "MAX_WRITE_WORKERS",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
-            "Description": "How many files can be written in parallel to S3 at once (based on partitioning + batch size)",
-            "DefaultValue": "10",
-            "Required": false
+            "Description": "How many files can be written in parallel to storage at once (based on partitioning + batch size)",
+            "DefaultValue": "10"
         }
     ],
     "DeploySettings": {
+        "blobStorage": {
+            "bind": true
+        },
         "DeploymentType": "Service",
         "CpuMillicores": 200,
         "MemoryInMb": 500,
