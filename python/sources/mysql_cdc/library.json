@@ -1,0 +1,115 @@
+{
+  "libraryItemId": "mysql-cdc-source",
+  "name": "MySQL CDC Source",
+  "language": "Python",
+  "IconFile": "icon.png",
+  "tags": {
+    "Type": ["Connectors"],
+    "Pipeline Stage": ["Source"],
+    "Category": ["SQL DB"]
+  },
+  "shortDescription": "Capture changes to a MySQL database table and publish the change events to a Kafka topic using binary log replication.",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "DefaultFile": "main.py",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "This is the output topic",
+      "DefaultValue": "mysql-cdc-source",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Host name of MySQL",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_PORT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Port of MySQL",
+      "DefaultValue": "3306",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_USER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Username of MySQL",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "HiddenText",
+      "Description": "Password of MySQL",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_DATABASE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Database name of MySQL",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_TABLE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Name of table for CDC",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_INITIAL_SNAPSHOT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Set to 'true' to perform initial snapshot of existing data",
+      "DefaultValue": "false",
+      "Required": false
+    },
+    {
+      "Name": "MYSQL_FORCE_SNAPSHOT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Name of table for CDC",
+      "DefaultValue": "false",
+      "Required": false
+    },
+    {
+      "Name": "MYSQL_SNAPSHOT_BATCH_SIZE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Number of rows to process in each snapshot batch.",
+      "DefaultValue": "1000",
+      "Required": false
+    },
+    {
+      "Name": "MYSQL_SNAPSHOT_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "MySQL host for initial snapshot (defaults to MYSQL_HOST if not set). Use this if you want to perform initial snapshot from a different MySQL instance (e.g., read replica).",
+      "Required": false
+    },
+    {
+      "Name": "CONSUMER_GROUP",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Desired consumer group",
+      "Required": false
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
+} 
