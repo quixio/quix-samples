@@ -1,6 +1,6 @@
 {
     "libraryItemId": "quixlake-timeseries-destination",
-    "name": "quix-ts-datalake-sink",
+    "name": "Quix DataLake Sink",
     "language": "Python",
     "tags": {
         "Pipeline Stage": ["Destination"],
