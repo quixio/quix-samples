@@ -1,13 +1,14 @@
-# Quix TS Datalake Sink
+# Quix DataLake Sink
 
-This connector consumes time-series data from a Kafka topic and writes it to S3 as Hive-partitioned Parquet files, with optional Quix catalog registration for data lake query API.
+This connector consumes time-series data from a Kafka topic and writes it to blob storage as Hive-partitioned Parquet files, with optional Quix catalog registration for data lake query API.
 
 ## Features
 
+- **Multi-Cloud Storage**: Supports AWS S3, Azure Blob Storage, GCP, MinIO via Quix platform blob storage binding
 - **Hive Partitioning**: Automatically partition data by any columns (e.g., location, sensor type, year/month/day/hour)
 - **Time-based Partitioning**: Extract year/month/day/hour from timestamp columns for efficient time-based queries
 - **Quix Catalog Integration**: Optional table registration in a REST Catalog for seamless integration with analytics tools
-- **Efficient Batching**: Configurable batch sizes and parallel S3 uploads for high throughput
+- **Efficient Batching**: Configurable batch sizes and parallel uploads for high throughput
 - **Schema Evolution**: Automatic schema detection from data
 - **Partition Validation**: Prevents data corruption by validating partition strategies against existing tables
 
@@ -26,31 +27,6 @@ Then either:
 ### Required
 
 - **`input`**: Name of the Kafka input topic to consume from
-  *Default*: `sensor-data`
-
-- **`S3_BUCKET`**: S3 bucket name for storing Parquet files
-
-### S3 Configuration
-
-- **`S3_PREFIX`**: S3 prefix/path for data files
-  *Default*: `data`
-
-- **`AWS_ACCESS_KEY_ID`**: AWS Access Key ID for S3 access
-  *Default*: `""` (uses IAM role if empty)
-
-- **`AWS_SECRET_ACCESS_KEY`**: AWS Secret Access Key for S3 access
-  *Default*: `""` (uses IAM role if empty)
-
-- **`AWS_REGION`**: AWS region for S3 bucket
-  *Default*: `us-east-1`
-
-- **`AWS_ENDPOINT_URL`**: Custom S3 endpoint URL for non-AWS S3-compatible storage
-  *Examples*:
-  - MinIO: `http://minio.example.com:9000`
-  - Wasabi: `https://s3.wasabisys.com`
-  - DigitalOcean Spaces: `https://nyc3.digitaloceanspaces.com`
-  - Backblaze B2: `https://s3.us-west-004.backblazeb2.com`
-  *Default*: None (uses AWS S3)
 
 ### Data Organization
 
@@ -83,7 +59,7 @@ Then either:
   *Default*: `s3_direct_sink_v1.0`
 
 - **`AUTO_OFFSET_RESET`**: Where to start consuming if no offset exists
-  *Default*: `latest`
+  *Default*: `earliest`
   *Options*: `earliest`, `latest`
 
 - **`KAFKA_KEY_DESERIALIZER`**: The key deserializer to use
@@ -94,13 +70,13 @@ Then either:
 
 ### Performance Tuning
 
-- **`BATCH_SIZE`**: Number of messages to batch before writing to S3
+- **`BATCH_SIZE`**: Number of messages to batch before writing to storage
   *Default*: `1000`
 
 - **`COMMIT_INTERVAL`**: Kafka commit interval in seconds
   *Default*: `30`
 
-- **`MAX_WRITE_WORKERS`**: How many files can be written in parallel to S3 at once
+- **`MAX_WRITE_WORKERS`**: How many files can be written in parallel to storage at once
   *Default*: `10`
 
 ### Application Settings
@@ -109,6 +85,17 @@ Then either:
   *Default*: `INFO`
   *Options*: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
 
+## Blob Storage Configuration
+
+Blob storage is configured through the Quix platform's blob storage binding. When deploying this connector, the platform automatically injects the `Quix__BlobStorage__Connection__Json` environment variable with your storage credentials.
+
+Supported storage providers:
+- AWS S3
+- Azure Blob Storage
+- Google Cloud Storage
+- MinIO
+- Other S3-compatible storage
+
 ## Partitioning Strategy Examples
 
 ### Example 1: Time-based partitioning
@@ -116,60 +103,20 @@ Then either:
 HIVE_COLUMNS=year,month,day
 TIMESTAMP_COLUMN=ts_ms
 ```
-Creates: `s3://bucket/prefix/table/year=2024/month=01/day=15/data_*.parquet`
+Creates: `{workspace}/data-lake/time-series/{table}/year=2024/month=01/day=15/data_*.parquet`
 
 ### Example 2: Multi-dimensional partitioning
 ```bash
 HIVE_COLUMNS=location,sensor_type,year,month
 TIMESTAMP_COLUMN=timestamp
 ```
-Creates: `s3://bucket/prefix/table/location=NYC/sensor_type=temp/year=2024/month=01/data_*.parquet`
+Creates: `{workspace}/data-lake/time-series/{table}/location=NYC/sensor_type=temp/year=2024/month=01/data_*.parquet`
 
 ### Example 3: No partitioning
 ```bash
 HIVE_COLUMNS=
 ```
-Creates: `s3://bucket/prefix/table/data_*.parquet`
-
-## Using Non-AWS S3-Compatible Storage
-
-This connector supports any S3-compatible storage service by setting the `AWS_ENDPOINT_URL` environment variable.
-
-### MinIO Example
-```bash
-AWS_ENDPOINT_URL=http://minio.example.com:9000
-AWS_ACCESS_KEY_ID=minioadmin
-AWS_SECRET_ACCESS_KEY=minioadmin
-AWS_REGION=us-east-1
-S3_BUCKET=my-data-lake
-```
-
-### Wasabi Example
-```bash
-AWS_ENDPOINT_URL=https://s3.wasabisys.com
-AWS_ACCESS_KEY_ID=your-wasabi-access-key
-AWS_SECRET_ACCESS_KEY=your-wasabi-secret-key
-AWS_REGION=us-east-1
-S3_BUCKET=my-data-lake
-```
-
-### DigitalOcean Spaces Example
-```bash
-AWS_ENDPOINT_URL=https://nyc3.digitaloceanspaces.com
-AWS_ACCESS_KEY_ID=your-spaces-access-key
-AWS_SECRET_ACCESS_KEY=your-spaces-secret-key
-AWS_REGION=nyc3
-S3_BUCKET=my-data-lake
-```
-
-### Backblaze B2 Example
-```bash
-AWS_ENDPOINT_URL=https://s3.us-west-004.backblazeb2.com
-AWS_ACCESS_KEY_ID=your-b2-key-id
-AWS_SECRET_ACCESS_KEY=your-b2-application-key
-AWS_REGION=us-west-004
-S3_BUCKET=my-data-lake
-```
+Creates: `{workspace}/data-lake/time-series/{table}/data_*.parquet`
 
 ## Architecture
 
@@ -178,15 +125,8 @@ The sink uses a batching architecture for high throughput:
 1. **Consume**: Messages are consumed from Kafka in batches
 2. **Transform**: Time-based columns are extracted if needed
 3. **Partition**: Data is grouped by partition columns
-4. **Upload**: Multiple files are uploaded to S3 in parallel
+4. **Upload**: Multiple files are uploaded to storage in parallel
 5. **Register**: Files are registered in the catalog (if configured)
-
-## Requirements
-
-- S3 bucket access:
-  - AWS S3, or
-  - Any S3-compatible storage (MinIO, Wasabi, DigitalOcean Spaces, Backblaze B2, etc.)
-- Optional: Quix REST Catalog endpoint for data catalog integration
 
 ## Contribute
 
