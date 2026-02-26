@@ -49,7 +49,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Mode to run Marimo in: 'run' (read-only notebook), 'edit' (editable notebook), 'browser' (file browser)",
-      "DefaultValue": "edit",
+      "DefaultValue": "run",
       "Required": false
     },
     {
