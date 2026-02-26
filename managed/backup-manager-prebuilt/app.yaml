@@ -1,0 +1,43 @@
+name: backup-manager-prebuilt
+language: docker
+variables:
+  - name: METADATA_BACKEND
+    inputType: Options
+    description: "Metadata storage backend: 'mongo' or 'json'"
+    defaultValue: json
+    options:
+      - label: mongo
+        value: mongo
+      - label: json
+        value: json
+  - name: METADATA_MONGO_HOST
+    inputType: FreeText
+    description: Metadata MongoDB hostname (only when METADATA_BACKEND=mongo)
+    defaultValue: metadata-mongodb
+  - name: METADATA_MONGO_PORT
+    inputType: FreeText
+    description: Metadata MongoDB port (only when METADATA_BACKEND=mongo)
+    defaultValue: 80
+  - name: METADATA_MONGO_USERNAME
+    inputType: FreeText
+    description: Metadata MongoDB username (only when METADATA_BACKEND=mongo)
+    defaultValue: admin
+  - name: METADATA_MONGO_PASSWORD
+    inputType: Secret
+    description: Metadata MongoDB password (only when METADATA_BACKEND=mongo)
+  - name: SECRET_KEY
+    inputType: Secret
+    description: Encryption key for stored server passwords
+    required: true
+  - name: BLOB_BASE_PATH
+    inputType: FreeText
+    description: Base path in Quix blob storage
+    defaultValue: backups/mongodb
+    required: true
+  - name: BACKUP_RETENTION_DAYS
+    inputType: FreeText
+    description: Default retention days
+    defaultValue: 30
+    required: true
+dockerfile: dockerfile
+defaultFile: dockerfile
