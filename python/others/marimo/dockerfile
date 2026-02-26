@@ -1,4 +1,4 @@
-FROM FROM quixpublic.azurecr.io/devsessions-marimo:latest
+FROM quixpublic.azurecr.io/devsessions-marimo:latest
 
 # Copy your notebook
 COPY main.py /app/main.py
