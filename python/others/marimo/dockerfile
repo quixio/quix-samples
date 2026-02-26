@@ -1,4 +1,4 @@
-FROM ghcr.io/quixio/marimo-base:f262116
+FROM FROM quixpublic.azurecr.io/devsessions-marimo:latest
 
 # Copy your notebook
 COPY main.py /app/main.py
