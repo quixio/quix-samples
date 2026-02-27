@@ -1,1 +1,1 @@
-FROM ghcr.io/quixio/mongodb-backup-manager:latest
+FROM ghcr.io/quixio/mongodb-backup-manager:1.0.5

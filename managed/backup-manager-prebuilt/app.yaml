@@ -17,7 +17,7 @@ variables:
   - name: METADATA_MONGO_PORT
     inputType: FreeText
     description: Metadata MongoDB port (only when METADATA_BACKEND=mongo)
-    defaultValue: 80
+    defaultValue: 27017
   - name: METADATA_MONGO_USERNAME
     inputType: FreeText
     description: Metadata MongoDB username (only when METADATA_BACKEND=mongo)
