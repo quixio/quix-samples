@@ -1,4 +1,4 @@
-FROM quixpublic.azurecr.io/devsessions-marimo:latest
+FROM quixpublic.azurecr.io/devsessions-marimo:20260227.2-entrypoint-cleanup
 
 # Copy your notebook
 COPY main.py /app/main.py
