@@ -76,7 +76,7 @@
     }
   ],
   "DeploySettings": {
-    "DeploymentType": "Managed",
+    "DeploymentType": "Service",
     "CpuMillicores": 500,
     "MemoryInMb": 1000,
     "Replicas": 1,
