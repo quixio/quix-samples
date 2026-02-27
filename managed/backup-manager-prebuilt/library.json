@@ -15,9 +15,13 @@
     {
       "Name": "METADATA_BACKEND",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Options",
       "Description": "Metadata storage backend: 'mongo' or 'json'",
       "DefaultValue": "json",
+      "options": [
+        { "label": "json", "value": "json" },
+        { "label": "mongo", "value": "mongo" }
+      ],
       "Required": true
     },
     {
