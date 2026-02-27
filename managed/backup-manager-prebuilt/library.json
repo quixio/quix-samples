@@ -37,7 +37,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Metadata MongoDB port (only when METADATA_BACKEND=mongo)",
-      "DefaultValue": "80",
+      "DefaultValue": "27017",
       "Required": false
     },
     {
@@ -87,6 +87,10 @@
     "PublicAccess": true,
     "UrlPrefix": "backup-manager",
     "ValidateConnection": false,
+    "State": {
+      "Enabled": true,
+      "Size": 1
+    },
     "Network": {
       "ServiceName": "backup-manager",
       "Ports": [
