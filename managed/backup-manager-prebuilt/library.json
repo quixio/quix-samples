@@ -1,0 +1,113 @@
+{
+  "libraryItemId": "mongodb-backup-manager",
+  "name": "MongoDB Backup Manager",
+  "language": "docker",
+  "tags": {
+    "Type": ["Auxiliary Services"],
+    "Category": ["NoSQL DB"],
+    "Complexity": ["Medium"]
+  },
+  "shortDescription": "Web-based tool for managing MongoDB backups across multiple servers with scheduling, restore, and encrypted credential storage.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "Variables": [
+    {
+      "Name": "METADATA_BACKEND",
+      "Type": "EnvironmentVariable",
+      "InputType": "Options",
+      "Description": "Metadata storage backend: 'mongo' or 'json'",
+      "DefaultValue": "json",
+      "options": [
+        { "label": "json", "value": "json" },
+        { "label": "mongo", "value": "mongo" }
+      ],
+      "Required": true
+    },
+    {
+      "Name": "METADATA_MONGO_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Metadata MongoDB hostname (only when METADATA_BACKEND=mongo)",
+      "DefaultValue": "metadata-mongodb",
+      "Required": false
+    },
+    {
+      "Name": "METADATA_MONGO_PORT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Metadata MongoDB port (only when METADATA_BACKEND=mongo)",
+      "DefaultValue": "80",
+      "Required": false
+    },
+    {
+      "Name": "METADATA_MONGO_USERNAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Metadata MongoDB username (only when METADATA_BACKEND=mongo)",
+      "DefaultValue": "admin",
+      "Required": false
+    },
+    {
+      "Name": "METADATA_MONGO_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Metadata MongoDB password (only when METADATA_BACKEND=mongo)",
+      "Required": false
+    },
+    {
+      "Name": "SECRET_KEY",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Encryption key for stored server passwords (Fernet)",
+      "Required": true
+    },
+    {
+      "Name": "BLOB_BASE_PATH",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Base path in Quix blob storage for backup archives",
+      "DefaultValue": "backups/mongodb",
+      "Required": true
+    },
+    {
+      "Name": "BACKUP_RETENTION_DAYS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Default retention period for backups in days",
+      "DefaultValue": "30",
+      "Required": true
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 500,
+    "MemoryInMb": 1000,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "UrlPrefix": "backup-manager",
+    "ValidateConnection": false,
+    "Network": {
+      "ServiceName": "backup-manager",
+      "Ports": [
+        { "Port": 80, "TargetPort": 80 }
+      ]
+    },
+    "blobStorage": {
+      "bind": true
+    },
+    "plugin": {
+      "embeddedView": {
+        "enabled": true,
+        "hideHeader": true,
+        "default": true
+      },
+      "sidebarItem": {
+        "show": true,
+        "label": "Backup Manager",
+        "icon": "save",
+        "order": 0
+      }
+    }
+  }
+}
