@@ -96,6 +96,18 @@ elif username and password:
 else:
     raise ValueError("Either TDENGINE_TOKEN (for Cloud) or TDENGINE_USERNAME and TDENGINE_PASSWORD (for On-Premise) must be provided")
 
+def on_connect_success():
+    print("CONNECTED!")
+
+
+def on_connect_failure(err):
+    print(f"ERROR! Failed to connect to TDengine: {err}")
+    raise err
+
+
+sink_kwargs["on_client_connect_success"] = on_connect_success
+sink_kwargs["on_client_connect_failure"] = on_connect_failure
+
 tdengine_sink = TDengineSink(**sink_kwargs)
 
 
