@@ -96,7 +96,12 @@ def main():
     mqtt_client.on_subscribe = on_subscribe
     mqtt_client.on_disconnect = on_disconnect
 
-    mqtt_client.connect(os.environ["mqtt_server"], int(mqtt_port))
+    try:
+        mqtt_client.connect(os.environ["mqtt_server"], int(mqtt_port))
+    except Exception as e:
+        print(f"ERROR! Failed to connect to MQTT broker at {os.environ['mqtt_server']}:{mqtt_port}: {e}")
+        raise
+
     mqtt_client.loop_start()
 
     def handle_sigterm(signum, frame):
