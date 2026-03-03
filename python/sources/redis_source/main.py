@@ -76,6 +76,12 @@ def get_data():
 
 
 def main():
+    try:
+        r.ping()
+        print("CONNECTED!")
+    except Exception as e:
+        print(f"Failed to connect to Redis at {os.environ['redis_host']}:{os.environ['redis_port']}: {e}")
+
     keys = r.keys()
 
     for key in keys:
