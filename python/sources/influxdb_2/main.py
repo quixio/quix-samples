@@ -118,6 +118,15 @@ def main():
     Read data from the Query and publish it to Kafka
     """
 
+    try:
+        health = influxdb2_client.health()
+        if health.status == "pass":
+            logger.info("CONNECTED!")
+        else:
+            logger.error(f"InfluxDB health check failed: status={health.status}, message={health.message}")
+    except Exception as e:
+        logger.error(f"Failed to connect to InfluxDB at {os.environ['INFLUXDB_HOST']}: {e}")
+
     # Create a pre-configured Producer object.
     # Producer is already setup to use Quix brokers.
     # It will also ensure that the topics exist before producing to them if
