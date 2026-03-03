@@ -128,8 +128,10 @@ class QuixLakeSink(BatchingSink):
             # Check if table already exists and validate partition strategy
             self._validate_existing_table_structure()
 
+            print("CONNECTED!")
+
         except Exception as e:
-            logger.error("Failed to setup blob storage connection: %s", e)
+            print(f"ERROR! Failed to setup blob storage connection: {e}")
             raise
 
     def _ensure_bucket(self):
