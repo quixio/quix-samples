@@ -94,6 +94,7 @@ elif username and password:
     sink_kwargs["username"] = username
     sink_kwargs["password"] = password
 else:
+    print("ERROR! Either TDENGINE_TOKEN (for Cloud) or TDENGINE_USERNAME and TDENGINE_PASSWORD (for On-Premise) must be provided")
     raise ValueError("Either TDENGINE_TOKEN (for Cloud) or TDENGINE_USERNAME and TDENGINE_PASSWORD (for On-Premise) must be provided")
 
 def on_connect_success():

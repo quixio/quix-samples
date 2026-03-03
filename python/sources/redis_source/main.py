@@ -26,6 +26,7 @@ producer = app.get_producer()
 # Check the output topic is configured
 output_topic_name = os.getenv("output", "")
 if output_topic_name == "":
+    print("ERROR! output_topic environment variable is required")
     raise ValueError("output_topic environment variable is required")
 output_topic = app.topic(output_topic_name)
 

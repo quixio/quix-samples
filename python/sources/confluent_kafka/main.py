@@ -21,15 +21,15 @@ input_topic_name = os.getenv("kafka_topic", "")
 output_topic_name = os.getenv("output", "")
 
 if sasl_config["sasl.username"] == "" or sasl_config["sasl.password"] == "":
-    print("Please provide kafka_key and kafka_secret")
+    print("ERROR! Please provide kafka_key and kafka_secret")
     exit(1)
 
 if broker_address == "":
-    print("Please provide kafka_broker_address")
+    print("ERROR! Please provide kafka_broker_address")
     exit(1)
 
 if input_topic_name == "" or output_topic_name == "":
-    print("Please provide input and output topics")
+    print("ERROR! Please provide input and output topics")
     exit(1)
 
 # this 'application' will consume data from Confluent Kafka

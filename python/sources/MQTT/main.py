@@ -32,6 +32,7 @@ def configure_authentication(mqtt_client):
     if mqtt_username:
         mqtt_password = os.getenv("mqtt_password")
         if not mqtt_password:
+            print("ERROR! mqtt_password must be set when mqtt_username is set")
             raise ValueError("mqtt_password must be set when mqtt_username is set")
         print("Using username & password authentication")
         mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
@@ -46,10 +47,13 @@ def main():
     output_topic_name = os.getenv("output")
 
     if not output_topic_name:
+        print("ERROR! output (topic) environment variable is required")
         raise ValueError("output (topic) environment variable is required")
     if not mqtt_topic:
+        print("ERROR! mqtt_topic must be supplied")
         raise ValueError("mqtt_topic must be supplied")
     if not mqtt_port.isnumeric():
+        print("ERROR! mqtt_port must be a numeric value")
         raise ValueError("mqtt_port must be a numeric value")
 
     client_id = os.getenv("Quix__Deployment__Id", "default")

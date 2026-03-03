@@ -30,6 +30,7 @@ def configure_authentication(mqtt_client):
     if mqtt_username:
         mqtt_password = os.getenv("mqtt_password")
         if not mqtt_password:
+            print("ERROR! mqtt_password must be set when mqtt_username is set")
             raise ValueError("mqtt_password must be set when mqtt_username is set")
         print("Using username & password authentication")
         mqtt_client.username_pw_set(mqtt_username, mqtt_password)
@@ -42,6 +43,7 @@ def main():
     mqtt_tls_enabled = os.getenv("mqtt_tls_enabled", "true").lower() == "true"
 
     if not mqtt_port.isnumeric():
+        print("ERROR! mqtt_port must be a numeric value")
         raise ValueError("mqtt_port must be a numeric value")
 
     client_id = os.getenv("Quix__Deployment__Id", "default")
