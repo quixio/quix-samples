@@ -123,9 +123,9 @@ def main():
         if health.status == "pass":
             logger.info("CONNECTED!")
         else:
-            logger.error(f"InfluxDB health check failed: status={health.status}, message={health.message}")
+            print(f"ERROR! InfluxDB health check failed: status={health.status}, message={health.message}")
     except Exception as e:
-        logger.error(f"Failed to connect to InfluxDB at {os.environ['INFLUXDB_HOST']}: {e}")
+        print(f"ERROR! Failed to connect to InfluxDB at {os.environ['INFLUXDB_HOST']}: {e}")
 
     # Create a pre-configured Producer object.
     # Producer is already setup to use Quix brokers.

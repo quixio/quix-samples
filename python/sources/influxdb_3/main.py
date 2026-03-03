@@ -108,7 +108,7 @@ def main():
         influxdb3_client.query("SELECT 1", language="influxql")
         logger.info("CONNECTED!")
     except Exception as e:
-        logger.error(f"Failed to connect to InfluxDB at {os.environ['INFLUXDB_HOST']}: {e}")
+        print(f"ERROR! Failed to connect to InfluxDB at {os.environ['INFLUXDB_HOST']}: {e}")
 
     # Create a pre-configured Producer object.
     # Producer is already setup to use Quix brokers.

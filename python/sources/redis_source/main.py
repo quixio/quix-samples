@@ -80,7 +80,7 @@ def main():
         r.ping()
         print("CONNECTED!")
     except Exception as e:
-        print(f"Failed to connect to Redis at {os.environ['redis_host']}:{os.environ['redis_port']}: {e}")
+        print(f"ERROR! Failed to connect to Redis at {os.environ['redis_host']}:{os.environ['redis_port']}: {e}")
 
     keys = r.keys()
 
