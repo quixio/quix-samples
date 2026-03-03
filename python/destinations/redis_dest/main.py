@@ -16,6 +16,12 @@ r = redis.Redis(
     username=os.environ['redis_username'] if 'redis_username' in os.environ else None,
     decode_responses=True)
 
+try:
+    r.ping()
+    print("CONNECTED!")
+except Exception as e:
+    print(f"ERROR! Failed to connect to Redis at {os.environ['redis_host']}:{os.environ['redis_port']}: {e}")
+
 redis_key_prefix = os.environ['redis_key_prefix']
 
 consumer_group = os.getenv("consumer_group_name", "redis-destination")
