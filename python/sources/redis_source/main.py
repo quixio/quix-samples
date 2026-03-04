@@ -14,7 +14,7 @@ run = True # a flag to stop the main loop
 r = redis.Redis(
     host=os.environ['redis_host'],
     port=int(int(os.environ['redis_port'])),
-    password=os.environ['redis_password'],
+    password=os.environ.get('redis_password'),
     username=os.environ['redis_username'] if 'redis_username' in os.environ else None,
     decode_responses=True)
 

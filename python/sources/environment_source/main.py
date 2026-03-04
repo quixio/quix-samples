@@ -11,7 +11,8 @@ def main():
     load_dotenv()
     
     # Setup output topic
-    output_topic = app.topic(os.environ["topic"])
+    topic_name = os.environ.get("topic", "")
+    output_topic = app.topic(topic_name)
 
     # Get necessary environment variables for Quix input topic
     source_workspace_id = os.environ["source_workspace_id"]
@@ -21,7 +22,7 @@ def main():
     input_topic = QuixEnvironmentSource(
         name="quix-environment-source",
         app_config=app.config,
-        topic=os.environ["topic"],
+        topic=topic_name,
         quix_sdk_token=source_sdk_token,
         quix_workspace_id=source_workspace_id
     )

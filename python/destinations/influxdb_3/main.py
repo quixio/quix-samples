@@ -27,7 +27,7 @@ def on_connect_failure(err):
 influxdb_v3_sink = InfluxDB3Sink(
     token=os.environ["INFLUXDB_TOKEN"],
     host=os.environ["INFLUXDB_HOST"],
-    organization_id=os.environ["INFLUXDB_ORG"],
+    organization_id=os.environ.get("INFLUXDB_ORG", ""),
     tags_keys=tag_keys,
     fields_keys=field_keys,
     time_setter=time_setter,
