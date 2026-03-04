@@ -27,14 +27,11 @@ def mqtt_protocol_version():
 
 
 class HiveMqSource(Source):
-    def __init__(self, mqtt_server, mqtt_port, mqtt_topic,
-                 on_client_connect_success=None, on_client_connect_failure=None):
-        super().__init__(name="hivemq-source", shutdown_timeout=10)
+    def __init__(self, mqtt_server, mqtt_port, mqtt_topic, **kwargs):
+        super().__init__(name="hivemq-source", shutdown_timeout=10, **kwargs)
         self.mqtt_server = mqtt_server
         self.mqtt_port = int(mqtt_port)
         self.mqtt_topic = mqtt_topic
-        self.on_client_connect_success = on_client_connect_success
-        self.on_client_connect_failure = on_client_connect_failure
 
     def setup(self):
         client_id = os.getenv("Quix__Deployment__Id", "default")
@@ -70,12 +67,8 @@ class HiveMqSource(Source):
         def on_connect(client, userdata, connect_flags, reason_code, properties):
             if reason_code == 0:
                 self.mqtt_client.subscribe(self.mqtt_topic, qos=1)
-                if self.on_client_connect_success:
-                    self.on_client_connect_success()
             else:
-                err = Exception(f"({reason_code.value}). {reason_code.getName()}")
-                if self.on_client_connect_failure:
-                    self.on_client_connect_failure(err)
+                print(f"DISCONNECTED! Reason code ({reason_code.value}) {reason_code.getName()}!")
                 self.stop()
 
         def on_message(client, userdata, msg):
@@ -96,12 +89,7 @@ class HiveMqSource(Source):
         self.mqtt_client.on_subscribe = on_subscribe
         self.mqtt_client.on_disconnect = on_disconnect
 
-        try:
-            self.mqtt_client.connect(self.mqtt_server, self.mqtt_port)
-        except Exception as e:
-            if self.on_client_connect_failure:
-                self.on_client_connect_failure(e)
-            raise
+        self.mqtt_client.connect(self.mqtt_server, self.mqtt_port)
 
     def run(self):
         self.mqtt_client.loop_start()
@@ -111,6 +99,15 @@ class HiveMqSource(Source):
 
         self.mqtt_client.loop_stop()
         print("Exiting")
+
+
+def on_connect_success():
+    print("CONNECTED!")
+
+
+def on_connect_failure(err):
+    print(f"ERROR! Failed to connect to MQTT broker: {err}")
+    raise err
 
 
 def main():
@@ -127,13 +124,6 @@ def main():
     if not mqtt_port.isnumeric():
         print("ERROR! mqtt_port must be a numeric value")
         raise ValueError("mqtt_port must be a numeric value")
-
-    def on_connect_success():
-        print("CONNECTED!")
-
-    def on_connect_failure(err):
-        print(f"ERROR! Failed to connect to MQTT broker: {err}")
-        raise err
 
     app = Application()
     output_topic = app.topic(output_topic_name, value_serializer="bytes")
