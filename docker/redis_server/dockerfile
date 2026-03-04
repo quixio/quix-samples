@@ -1,5 +1,5 @@
 # Use the official Redis image from the Docker Hub
-FROM redis:7.4.2
+FROM redis/redis-stack-server:7.4.0-v3
 
 # Copy the custom redis.conf file
 COPY redis.conf /usr/local/etc/redis/redis.conf
