@@ -15,7 +15,7 @@ import os
 import logging
 
 from quixstreams import Application
-from quixlake_sink import QuixLakeSink
+from quixstreams.sinks.core.quix_ts_datalake_sink import QuixTSDataLakeSink
 
 # Configure logging
 logging.basicConfig(
@@ -62,7 +62,7 @@ workspace_id = os.getenv("Quix__Workspace__Id", "")
 # Note: Blob storage credentials are configured via Quix__BlobStorage__Connection__Json
 # environment variable, which is automatically read by quixportal.
 # The bucket name is extracted automatically from the quixportal configuration.
-blob_sink = QuixLakeSink(
+blob_sink = QuixTSDataLakeSink(
     s3_prefix=TIMESERIES_PREFIX,
     table_name=table_name,
     workspace_id=workspace_id,
