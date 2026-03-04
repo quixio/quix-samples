@@ -73,7 +73,9 @@ blob_sink = QuixTSDataLakeSink(
     auto_discover=auto_discover,
     namespace=os.getenv("CATALOG_NAMESPACE", "default"),
     auto_create_bucket=True,
-    max_workers=int(os.getenv("MAX_WRITE_WORKERS", "10"))
+    max_workers=int(os.getenv("MAX_WRITE_WORKERS", "10")),
+    on_client_connect_success=lambda: print("CONNECTED!"),
+    on_client_connect_failure=lambda e: print(f"ERROR! {e}"),
 )
 
 # Create streaming dataframe and attach sink
