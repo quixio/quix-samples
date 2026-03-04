@@ -24,7 +24,7 @@
     {
       "Name": "shared_secret",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "The secret you configured in Segment",
       "DefaultValue": "",
       "Required": true
