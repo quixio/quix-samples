@@ -15,7 +15,7 @@ import os
 import logging
 
 from quixstreams import Application
-from quixlake_sink import QuixLakeSink
+from quixlakesink import S3DirectSink
 
 # Configure logging
 logging.basicConfig(
@@ -58,11 +58,11 @@ table_name = os.getenv("TABLE_NAME") or os.environ["input"]
 # Workspace ID (automatically injected by Quix platform)
 workspace_id = os.getenv("Quix__Workspace__Id", "")
 
-# Initialize QuixLakeSink
+# Initialize S3DirectSink
 # Note: Blob storage credentials are configured via Quix__BlobStorage__Connection__Json
 # environment variable, which is automatically read by quixportal.
 # The bucket name is extracted automatically from the quixportal configuration.
-blob_sink = QuixLakeSink(
+blob_sink = S3DirectSink(
     s3_prefix=TIMESERIES_PREFIX,
     table_name=table_name,
     workspace_id=workspace_id,

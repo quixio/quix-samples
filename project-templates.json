@@ -33,6 +33,6 @@
   },
   {
     "httpUrl": "https://github.com/quixio/template-quixlake.git",
-    "branch": "main"
+    "branch": "task/use-sdk"
   }
 ]
