@@ -12,7 +12,6 @@
     "EntryPoint": "dockerfile",
     "RunEntryPoint": "main.py",
     "IconFile": "icon.png",
-  
     "Variables": [
         {
             "Name": "input",
@@ -21,6 +20,13 @@
             "Description": "Name of the Kafka input topic to consume from",
             "DefaultValue": "tsbs_data_transformed",
             "Required": true
+        },
+        {
+            "Name": "S3_PREFIX",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "S3 prefix/path for data files",
+            "DefaultValue": "data-lake/time-series"
         },
         {
             "Name": "TABLE_NAME",
@@ -50,52 +56,11 @@
             "Description": "REST Catalog URL for optional table registration (leave empty to skip)"
         },
         {
-            "Name": "CATALOG_AUTH_TOKEN",
-            "Type": "EnvironmentVariable",
-            "InputType": "Secret",
-            "Description": "If using a catalog, the respective auth token to access it"
-        },
-        {
-            "Name": "AUTO_DISCOVER",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "Automatically register table in REST Catalog on first write",
-            "DefaultValue": "true"
-        },
-        {
-            "Name": "CATALOG_NAMESPACE",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "Catalog namespace for table registration",
-            "DefaultValue": "default"
-        },
-        {
-            "Name": "BATCH_SIZE",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "Number of messages to batch before writing to storage",
-            "DefaultValue": "1000"
-        },
-        {
             "Name": "COMMIT_INTERVAL",
             "Type": "EnvironmentVariable",
             "InputType": "FreeText",
             "Description": "Kafka commit interval in seconds",
             "DefaultValue": "30"
-        },
-        {
-            "Name": "KAFKA_KEY_DESERIALIZER",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "The key deserializer to use",
-            "DefaultValue": "str"
-        },
-        {
-            "Name": "KAFKA_VALUE_DESERIALIZER",
-            "Type": "EnvironmentVariable",
-            "InputType": "FreeText",
-            "Description": "the value deserializer to use",
-            "DefaultValue": "json"
         },
         {
             "Name": "CONSUMER_GROUP",
@@ -110,6 +75,32 @@
             "InputType": "FreeText",
             "Description": "Where to start consuming if no offset exists",
             "DefaultValue": "earliest"
+        },
+        {
+            "Name": "AWS_ACCESS_KEY_ID",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "AWS Access Key ID for S3 access",
+            "DefaultValue": ""
+        },
+        {
+            "Name": "AWS_SECRET_ACCESS_KEY",
+            "Type": "EnvironmentVariable",
+            "InputType": "Secret",
+            "Description": "AWS Secret Access Key for S3 access"
+        },
+        {
+            "Name": "AWS_REGION",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "AWS region for S3 bucket",
+            "DefaultValue": "us-east-1"
+        },
+        {
+            "Name": "AWS_ENDPOINT_URL",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "S3 endpoint url (for non-AWS endpoints)"
         },
         {
             "Name": "LOGLEVEL",
@@ -127,9 +118,6 @@
         }
     ],
     "DeploySettings": {
-        "blobStorage": {
-            "bind": true
-        },
         "DeploymentType": "Service",
         "CpuMillicores": 200,
         "MemoryInMb": 500,
