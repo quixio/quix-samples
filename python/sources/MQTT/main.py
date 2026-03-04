@@ -27,22 +27,25 @@ def mqtt_protocol_version():
 
 
 class MqttSource(Source):
-    def __init__(self, mqtt_server, mqtt_port, mqtt_topic):
+    def __init__(self, mqtt_server, mqtt_port, mqtt_topic,
+                 on_client_connect_success=None, on_client_connect_failure=None):
         super().__init__(name="mqtt-source", shutdown_timeout=10)
         self.mqtt_server = mqtt_server
         self.mqtt_port = int(mqtt_port)
         self.mqtt_topic = mqtt_topic
+        self.on_client_connect_success = on_client_connect_success
+        self.on_client_connect_failure = on_client_connect_failure
 
-    def run(self):
+    def setup(self):
         client_id = os.getenv("Quix__Deployment__Id", "default")
-        mqtt_client = paho.Client(
+        self.mqtt_client = paho.Client(
             callback_api_version=paho.CallbackAPIVersion.VERSION2,
             client_id=client_id,
             userdata=None,
             protocol=mqtt_protocol_version(),
         )
 
-        mqtt_client.reconnect_delay_set(5, 60)
+        self.mqtt_client.reconnect_delay_set(5, 60)
 
         # Configure authentication
         mqtt_username = os.getenv("mqtt_username")
@@ -52,18 +55,22 @@ class MqttSource(Source):
                 print("ERROR! mqtt_password must be set when mqtt_username is set")
                 raise ValueError("mqtt_password must be set when mqtt_username is set")
             print("Using username & password authentication")
-            mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-            mqtt_client.username_pw_set(mqtt_username, mqtt_password)
+            self.mqtt_client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+            self.mqtt_client.username_pw_set(mqtt_username, mqtt_password)
         else:
             print("Using anonymous authentication")
 
         # MQTT callbacks
         def on_connect(client, userdata, connect_flags, reason_code, properties):
             if reason_code == 0:
-                mqtt_client.subscribe(self.mqtt_topic, qos=1)
-                print("CONNECTED!")
+                self.mqtt_client.subscribe(self.mqtt_topic, qos=1)
+                if self.on_client_connect_success:
+                    self.on_client_connect_success()
             else:
-                print(f"ERROR! - ({reason_code.value}). {reason_code.getName()}")
+                err = Exception(f"({reason_code.value}). {reason_code.getName()}")
+                if self.on_client_connect_failure:
+                    self.on_client_connect_failure(err)
+                self.stop()
 
         def on_message(client, userdata, msg):
             self.produce(key=msg.topic, value=msg.payload)
@@ -76,23 +83,25 @@ class MqttSource(Source):
         def on_disconnect(client, userdata, disconnect_flags, reason_code, properties):
             print(f"DISCONNECTED! Reason code ({reason_code.value}) {reason_code.getName()}!")
 
-        mqtt_client.on_connect = on_connect
-        mqtt_client.on_message = on_message
-        mqtt_client.on_subscribe = on_subscribe
-        mqtt_client.on_disconnect = on_disconnect
+        self.mqtt_client.on_connect = on_connect
+        self.mqtt_client.on_message = on_message
+        self.mqtt_client.on_subscribe = on_subscribe
+        self.mqtt_client.on_disconnect = on_disconnect
 
         try:
-            mqtt_client.connect(self.mqtt_server, self.mqtt_port)
+            self.mqtt_client.connect(self.mqtt_server, self.mqtt_port)
         except Exception as e:
-            print(f"ERROR! Failed to connect to MQTT broker at {self.mqtt_server}:{self.mqtt_port}: {e}")
+            if self.on_client_connect_failure:
+                self.on_client_connect_failure(e)
             raise
 
-        mqtt_client.loop_start()
+    def run(self):
+        self.mqtt_client.loop_start()
 
         while self.running:
             time.sleep(1)
 
-        mqtt_client.loop_stop()
+        self.mqtt_client.loop_stop()
         print("Exiting")
 
 
@@ -111,12 +120,21 @@ def main():
         print("ERROR! mqtt_port must be a numeric value")
         raise ValueError("mqtt_port must be a numeric value")
 
+    def on_connect_success():
+        print("CONNECTED!")
+
+    def on_connect_failure(err):
+        print(f"ERROR! Failed to connect to MQTT broker: {err}")
+        raise err
+
     app = Application()
     output_topic = app.topic(output_topic_name, value_serializer="bytes")
     source = MqttSource(
         mqtt_server=os.environ["mqtt_server"],
         mqtt_port=mqtt_port,
         mqtt_topic=mqtt_topic,
+        on_client_connect_success=on_connect_success,
+        on_client_connect_failure=on_connect_failure,
     )
     app.add_source(source, output_topic)
     app.run()
