@@ -49,10 +49,24 @@
     {
       "Name": "MARIMO_MODE",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Mode to run Marimo in: 'run' (read-only notebook), 'edit' (editable notebook), 'browser' (file browser)",
+      "InputType": "Options",
+      "Description": "Mode to run Marimo in",
       "DefaultValue": "edit",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "run",
+          "value": "run"
+        },
+        {
+          "label": "edit",
+          "value": "edit"
+        },
+        {
+          "label": "browser",
+          "value": "browser"
+        }
+      ]
     },
     {
       "Name": "MARIMO_NOTEBOOK",

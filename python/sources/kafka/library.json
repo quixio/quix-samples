@@ -46,26 +46,80 @@
     {
       "Name": "AUTO_OFFSET_RESET",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "What to do when there is no initial offset in Kafka. Options: earliest, latest",
+      "InputType": "Options",
+      "Description": "What to do when there is no initial offset in Kafka",
       "DefaultValue": "latest",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "earliest",
+          "value": "earliest"
+        },
+        {
+          "label": "latest",
+          "value": "latest"
+        }
+      ]
     },
     {
       "Name": "VALUE_DESERIALIZER",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Deserializer to use for the message value. Options: json, bytes, string, double, integer",
+      "InputType": "Options",
+      "Description": "Deserializer to use for the message value",
       "DefaultValue": "json",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "json",
+          "value": "json"
+        },
+        {
+          "label": "bytes",
+          "value": "bytes"
+        },
+        {
+          "label": "string",
+          "value": "string"
+        },
+        {
+          "label": "double",
+          "value": "double"
+        },
+        {
+          "label": "integer",
+          "value": "integer"
+        }
+      ]
     },
     {
       "Name": "KEY_DESERIALIZER",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Deserializer to use for the message key. Options: json, bytes, string, double, integer",
+      "InputType": "Options",
+      "Description": "Deserializer to use for the message key",
       "DefaultValue": "bytes",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "json",
+          "value": "json"
+        },
+        {
+          "label": "bytes",
+          "value": "bytes"
+        },
+        {
+          "label": "string",
+          "value": "string"
+        },
+        {
+          "label": "double",
+          "value": "double"
+        },
+        {
+          "label": "integer",
+          "value": "integer"
+        }
+      ]
     },
     {
       "Name": "CONSUMER_POLL_TIMEOUT",
@@ -102,10 +156,36 @@
     {
       "Name": "SOURCE_KAFKA_SASL_MECHANISM",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "SASL mechanism for authentication. Options: PLAIN, SCRAM-SHA-256, SCRAM-SHA-512, GSSAPI, OAUTHBEARER, AWS_MSK_IAM",
+      "InputType": "Options",
+      "Description": "SASL mechanism for authentication",
       "DefaultValue": "SCRAM-SHA-256",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "PLAIN",
+          "value": "PLAIN"
+        },
+        {
+          "label": "SCRAM-SHA-256",
+          "value": "SCRAM-SHA-256"
+        },
+        {
+          "label": "SCRAM-SHA-512",
+          "value": "SCRAM-SHA-512"
+        },
+        {
+          "label": "GSSAPI",
+          "value": "GSSAPI"
+        },
+        {
+          "label": "OAUTHBEARER",
+          "value": "OAUTHBEARER"
+        },
+        {
+          "label": "AWS_MSK_IAM",
+          "value": "AWS_MSK_IAM"
+        }
+      ]
     },
     {
       "Name": "SOURCE_KAFKA_SSL_CA_LOCATION",

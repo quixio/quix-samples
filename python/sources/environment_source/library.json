@@ -54,10 +54,20 @@
     {
       "Name": "auto_offset_reset",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Options",
       "Description": "Auto offset reset policy",
       "DefaultValue": "earliest",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "earliest",
+          "value": "earliest"
+        },
+        {
+          "label": "latest",
+          "value": "latest"
+        }
+      ]
     }
   ],
   "DeploySettings": {

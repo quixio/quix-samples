@@ -83,34 +83,78 @@
     {
       "Name": "MONGODB_UPSERT",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Boolean to create documents if no matches with MONGODB_DOCUMENT_MATCHER",
+      "InputType": "Options",
+      "Description": "Create documents if no matches with MONGODB_DOCUMENT_MATCHER",
       "DefaultValue": "true",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "MONGODB_UPDATE_METHOD",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Options",
       "Description": "How documents found with MONGODB_DOCUMENT_MATCHER are updated",
       "DefaultValue": "UpdateOne",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "UpdateOne",
+          "value": "UpdateOne"
+        },
+        {
+          "label": "UpdateMany",
+          "value": "UpdateMany"
+        },
+        {
+          "label": "ReplaceOne",
+          "value": "ReplaceOne"
+        }
+      ]
     },
     {
       "Name": "MONGODB_ADD_MESSAGE_METADATA",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Boolean to include key, timestamp, and headers as '__{field}'",
+      "InputType": "Options",
+      "Description": "Include key, timestamp, and headers as '__{field}'",
       "DefaultValue": "false",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "MONGODB_ADD_TOPIC_METADATA",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Boolean to include topic, partition, and offset as '__{field}'",
+      "InputType": "Options",
+      "Description": "Include topic, partition, and offset as '__{field}'",
       "DefaultValue": "false",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "CONSUMER_GROUP_NAME",

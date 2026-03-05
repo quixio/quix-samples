@@ -54,10 +54,36 @@
     {
       "Name": "kafka_sasl_mechanism",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Obtained from the Confluent Kafka portal. Can be PLAIN, SCRAM-SHA-256, SCRAM-SHA-512, GSSAPI, OAUTHBEARER or AWS_MSK_IAM.",
+      "InputType": "Options",
+      "Description": "SASL mechanism for Confluent Kafka authentication",
       "DefaultValue": "SCRAM-SHA-256",
-      "Required": true
+      "Required": true,
+      "options": [
+        {
+          "label": "PLAIN",
+          "value": "PLAIN"
+        },
+        {
+          "label": "SCRAM-SHA-256",
+          "value": "SCRAM-SHA-256"
+        },
+        {
+          "label": "SCRAM-SHA-512",
+          "value": "SCRAM-SHA-512"
+        },
+        {
+          "label": "GSSAPI",
+          "value": "GSSAPI"
+        },
+        {
+          "label": "OAUTHBEARER",
+          "value": "OAUTHBEARER"
+        },
+        {
+          "label": "AWS_MSK_IAM",
+          "value": "AWS_MSK_IAM"
+        }
+      ]
     },
     {
       "Name": "kafka_topic",

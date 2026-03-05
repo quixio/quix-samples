@@ -63,9 +63,19 @@
     {
       "Name": "AUTO_DISCOVER",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Options",
       "Description": "Automatically register table in REST Catalog on first write",
-      "DefaultValue": "true"
+      "DefaultValue": "true",
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "CATALOG_NAMESPACE",
@@ -112,16 +122,48 @@
     {
       "Name": "AUTO_OFFSET_RESET",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Options",
       "Description": "Where to start consuming if no offset exists",
-      "DefaultValue": "earliest"
+      "DefaultValue": "earliest",
+      "options": [
+        {
+          "label": "earliest",
+          "value": "earliest"
+        },
+        {
+          "label": "latest",
+          "value": "latest"
+        }
+      ]
     },
     {
       "Name": "LOGLEVEL",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "set application logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
-      "DefaultValue": "INFO"
+      "InputType": "Options",
+      "Description": "Application logging level",
+      "DefaultValue": "INFO",
+      "options": [
+        {
+          "label": "DEBUG",
+          "value": "DEBUG"
+        },
+        {
+          "label": "INFO",
+          "value": "INFO"
+        },
+        {
+          "label": "WARNING",
+          "value": "WARNING"
+        },
+        {
+          "label": "ERROR",
+          "value": "ERROR"
+        },
+        {
+          "label": "CRITICAL",
+          "value": "CRITICAL"
+        }
+      ]
     },
     {
       "Name": "MAX_WRITE_WORKERS",

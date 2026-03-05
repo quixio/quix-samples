@@ -85,10 +85,20 @@
     {
       "Name": "DOWNLOAD_CONTENT",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Options",
       "Description": "Whether to publish the content of the file to Kafka or just the metadata",
-      "DefaultValue": "True",
-      "Required": false
+      "DefaultValue": "true",
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     }
   ],
   "DeploySettings": {

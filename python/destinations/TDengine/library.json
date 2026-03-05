@@ -80,50 +80,118 @@
     {
       "Name": "TDENGINE_TIME_PRECISION",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "time precision assumed when converting to InfluxDB line protocol. Possible values: 'ms', 'ns', 'us', 's'.",
+      "InputType": "Options",
+      "Description": "Time precision assumed when converting to InfluxDB line protocol",
       "DefaultValue": "ms",
-      "Required": true
+      "Required": true,
+      "options": [
+        {
+          "label": "ms",
+          "value": "ms"
+        },
+        {
+          "label": "ns",
+          "value": "ns"
+        },
+        {
+          "label": "us",
+          "value": "us"
+        },
+        {
+          "label": "s",
+          "value": "s"
+        }
+      ]
     },
     {
       "Name": "TDENGINE_NAME_SUBTABLES_FROM_TAGS",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "If `true`, name subtables using the tag values (joined on `__`), else use TDengine's auto-generated randomized values.",
+      "InputType": "Options",
+      "Description": "Name subtables using the tag values (joined on __), else use TDengine's auto-generated values.",
       "DefaultValue": "false",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "TDENGINE_ALLOW_MISSING_FIELDS",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "if `true`, skip the missing fields keys, else raise `KeyError`",
+      "InputType": "Options",
+      "Description": "If true, skip the missing fields keys, else raise KeyError",
       "DefaultValue": "false",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "TDENGINE_INCLUDE_METADATA_TAGS",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "if `true`, includes record's key, topic, and partition as tags.",
+      "InputType": "Options",
+      "Description": "Include record's key, topic, and partition as tags",
       "DefaultValue": "false",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "TDENGINE_CONVERT_INTS_TO_FLOATS",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "if `true`, converts all integer values to floats.",
+      "InputType": "Options",
+      "Description": "Convert all integer values to floats",
       "DefaultValue": "false",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "TDENGINE_ENABLE_GZIP",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "if `true`, enables gzip compression for writes.",
+      "InputType": "Options",
+      "Description": "Enable gzip compression for writes",
       "DefaultValue": "true",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "TDENGINE_MAX_RETRIES",

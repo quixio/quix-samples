@@ -66,10 +66,20 @@
     {
       "Name": "FILE_FORMAT",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The file format to publish data as; options: [parquet, json].",
+      "InputType": "Options",
+      "Description": "The file format to publish data as",
       "DefaultValue": "parquet",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "parquet",
+          "value": "parquet"
+        },
+        {
+          "label": "json",
+          "value": "json"
+        }
+      ]
     }
   ],
   "DeploySettings": {
