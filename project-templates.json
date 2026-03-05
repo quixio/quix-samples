@@ -4,10 +4,6 @@
     "branch": "main"
   },
   {
-    "httpUrl": "https://github.com/quixio/template-fmu-runner.git",
-    "branch": "main"
-  },
-  {
     "httpUrl": "https://github.com/quixio/template-mqtt-ingestion.git",
     "branch": "main"
   },
