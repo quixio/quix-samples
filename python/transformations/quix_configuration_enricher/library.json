@@ -3,9 +3,15 @@
   "name": "Quix Configuration Enricher",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Transformation"],
-    "Type": ["Code samples"],
-    "Category": ["Quix Configuration Service"]
+    "Pipeline Stage": [
+      "Transformation"
+    ],
+    "Type": [
+      "Code samples"
+    ],
+    "Category": [
+      "Quix Configuration Service"
+    ]
   },
   "shortDescription": "Consume data from a Kafka topic and enrich it using a Quix Configuration Service topic.",
   "DefaultFile": "main.py",

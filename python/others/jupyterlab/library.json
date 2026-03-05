@@ -3,8 +3,12 @@
   "name": "JupyterLab",
   "language": "docker",
   "tags": {
-    "Category": ["Data Exploration"],
-    "Type": ["Auxiliary Services"]
+    "Category": [
+      "Data Exploration"
+    ],
+    "Type": [
+      "Auxiliary Services"
+    ]
   },
   "shortDescription": "Run JupyterLab in your pipeline.",
   "DefaultFile": "dockerfile",
@@ -23,8 +27,7 @@
     },
     "Network": {
       "ServiceName": "jupyterlab",
-      "Ports":
-      [
+      "Ports": [
         {
           "Port": 80,
           "TargetPort": 8888
@@ -40,5 +43,5 @@
       "Description": "The allowed password for connecting to JupyterLab",
       "Required": true
     }
-  ]  
+  ]
 }

@@ -3,9 +3,15 @@
   "name": "PostgreSQL Sink",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Destination"],
-    "Type": ["Connectors"],
-    "Category": ["SQL DB"]
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "SQL DB"
+    ]
   },
   "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to a PostgreSQL database.",
   "DefaultFile": "main.py",
@@ -78,10 +84,20 @@
     {
       "Name": "POSTGRES_SCHEMA_AUTO_UPDATE",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Options",
       "Description": "Automatically update the schema by adding new columns when new fields are detected.",
       "DefaultValue": "true",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "POSTGRES_PRIMARY_KEY_COLUMNS",
@@ -93,10 +109,20 @@
     {
       "Name": "POSTGRES_UPSERT_ON_PRIMARY_KEY",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "If `true`, upsert based on the given `primary_keys`, else every message is treated as an independent entry, and any primary key collisions will consequently raise an exception.",
+      "InputType": "Options",
+      "Description": "If true, upsert based on the given primary_keys, else every message is treated as an independent entry.",
       "DefaultValue": "false",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
     },
     {
       "Name": "CONSUMER_GROUP_NAME",

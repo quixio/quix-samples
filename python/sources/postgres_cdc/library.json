@@ -4,9 +4,15 @@
   "language": "Python",
   "IconFile": "icon.png",
   "tags": {
-    "Type": ["Connectors"],
-    "Pipeline Stage": ["Source"],
-    "Category": ["SQL DB"]
+    "Type": [
+      "Connectors"
+    ],
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Category": [
+      "SQL DB"
+    ]
   },
   "shortDescription": "Capture changes to a Postgres database table and publish the change events to a Kafka topic.",
   "EntryPoint": "dockerfile",

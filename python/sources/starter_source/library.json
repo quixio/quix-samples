@@ -5,10 +5,18 @@
   "IsHighlighted": true,
   "DisplayOrder": 1,
   "tags": {
-    "Technology": ["Quix Streams"],
-    "Pipeline Stage": ["Source"],
-    "Popular Subjects": ["Quick Start"],
-    "Type": ["Demos"]
+    "Technology": [
+      "Quix Streams"
+    ],
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Popular Subjects": [
+      "Quick Start"
+    ],
+    "Type": [
+      "Demos"
+    ]
   },
   "shortDescription": "Publish hard-coded lines of JSON data to a Kafka topic.",
   "DefaultFile": "main.py",

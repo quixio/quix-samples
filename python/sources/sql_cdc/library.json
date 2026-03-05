@@ -3,9 +3,15 @@
   "name": "SQL Server CDC Source",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Source"],
-    "Type": ["Connectors"],
-    "Category": ["SQL DB"]
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "SQL DB"
+    ]
   },
   "shortDescription": "Stream change data from SQL Server using native Change Data Capture (CDC). Captures INSERT, UPDATE, and DELETE operations in near real-time.",
   "DefaultFile": "main.py",
@@ -88,10 +94,28 @@
     {
       "Name": "LOG_LEVEL",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Logging level (DEBUG, INFO, WARNING, ERROR)",
+      "InputType": "Options",
+      "Description": "Logging level",
       "DefaultValue": "INFO",
-      "Required": false
+      "Required": false,
+      "options": [
+        {
+          "label": "DEBUG",
+          "value": "DEBUG"
+        },
+        {
+          "label": "INFO",
+          "value": "INFO"
+        },
+        {
+          "label": "WARNING",
+          "value": "WARNING"
+        },
+        {
+          "label": "ERROR",
+          "value": "ERROR"
+        }
+      ]
     }
   ],
   "DeploySettings": {

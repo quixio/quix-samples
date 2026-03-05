@@ -5,11 +5,21 @@
   "IsHighlighted": true,
   "DisplayOrder": 5,
   "tags": {
-    "Complexity": ["Easy"],
-    "Technology": ["Quix Streams"],
-    "Pipeline Stage": ["Transformation"],
-    "Type": ["Code samples"],
-    "Popular Subjects": ["Quick Start"]
+    "Complexity": [
+      "Easy"
+    ],
+    "Technology": [
+      "Quix Streams"
+    ],
+    "Pipeline Stage": [
+      "Transformation"
+    ],
+    "Type": [
+      "Code samples"
+    ],
+    "Popular Subjects": [
+      "Quick Start"
+    ]
   },
   "shortDescription": "Consume data from a topic, filter it and publish the result to an output topic.",
   "DefaultFile": "quix_function.py",
