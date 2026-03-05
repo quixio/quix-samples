@@ -3,9 +3,15 @@
   "name": "Confluent Kafka Source",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Source"],
-    "Type": ["Connectors"],
-    "Category": ["Data streaming"]
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Data streaming"
+    ]
   },
   "shortDescription": "Consume data from a Kafka topic in Confluent Cloud and publish it to a topic in Quix",
   "DefaultFile": "main.py",

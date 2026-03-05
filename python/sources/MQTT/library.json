@@ -3,9 +3,15 @@
   "name": "MQTT Source",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Source"],
-    "Type": ["Connectors"],
-    "Category": ["Message queue"]
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Message queue"
+    ]
   },
   "shortDescription": "Consume data from an MQTT broker and publish it to a Kafka topic.",
   "DefaultFile": "mqtt_function.py",

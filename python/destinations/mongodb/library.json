@@ -3,9 +3,15 @@
   "name": "MongoDB Sink",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Destination"],
-    "Type": ["Connectors"],
-    "Category": ["NoSQL DB"]
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "NoSQL DB"
+    ]
   },
   "shortDescription": "Consume data from a Kafka topic in Quix write it to a MongoDB database.",
   "DefaultFile": "main.py",
@@ -51,7 +57,7 @@
       "Description": "MongoDB database name",
       "Required": true
     },
-        {
+    {
       "Name": "MONGODB_COLLECTION",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",

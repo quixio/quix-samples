@@ -3,9 +3,15 @@
   "name": "Kafka Replicator Source",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Source"],
-    "Type": ["Connectors"],
-    "Category": ["Data streaming"]
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Data streaming"
+    ]
   },
   "shortDescription": "Replicate data from a Kafka topic to a Quix Cloud topic",
   "DefaultFile": "main.py",

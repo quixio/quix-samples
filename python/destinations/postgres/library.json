@@ -3,9 +3,15 @@
   "name": "PostgreSQL Sink",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Destination"],
-    "Type": ["Connectors"],
-    "Category": ["SQL DB"]
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "SQL DB"
+    ]
   },
   "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to a PostgreSQL database.",
   "DefaultFile": "main.py",

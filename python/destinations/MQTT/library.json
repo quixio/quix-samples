@@ -3,9 +3,15 @@
   "name": "MQTT Sink",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Destination"],
-    "Type": ["Connectors"],
-    "Category": ["Message queue"]
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Message queue"
+    ]
   },
   "shortDescription": "Consume data from a Kafka topic and publish it to an MQTT broker",
   "DefaultFile": "mqtt_function.py",

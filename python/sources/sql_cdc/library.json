@@ -3,9 +3,15 @@
   "name": "SQL Server CDC Source",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Source"],
-    "Type": ["Connectors"],
-    "Category": ["SQL DB"]
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "SQL DB"
+    ]
   },
   "shortDescription": "Stream change data from SQL Server using native Change Data Capture (CDC). Captures INSERT, UPDATE, and DELETE operations in near real-time.",
   "DefaultFile": "main.py",
