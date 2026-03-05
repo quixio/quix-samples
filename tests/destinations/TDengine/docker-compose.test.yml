@@ -36,6 +36,30 @@ services:
     networks:
       - test-network
     stop_grace_period: 3s
+  db-setup:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+        pip install taospy requests > /dev/null 2>&1 &&
+        python /tests/setup_tdengine.py &&
+        touch /tmp/setup-done &&
+        sleep 120
+      "
+    volumes:
+      - ./setup_tdengine.py:/tests/setup_tdengine.py:ro
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/setup-done"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    depends_on:
+      tdengine:
+        condition: service_healthy
+    stop_grace_period: 3s
   tdengine-dest:
     build:
       context: ../../../python/destinations/TDengine
@@ -66,7 +90,7 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
-      tdengine:
+      db-setup:
         condition: service_healthy
     stop_grace_period: 3s
   test-runner:
@@ -81,8 +105,6 @@ services:
       sh -c "
         echo 'Installing TDengine client...' &&
         pip install taospy requests > /dev/null 2>&1 &&
-        echo 'Setting up TDengine database...' &&
-        python /tests/setup_tdengine.py &&
         echo 'Producing test messages to Kafka...' &&
         python /tests/produce_test_data.py &&
         echo 'Waiting for TDengine destination to process messages...' &&
@@ -91,7 +113,6 @@ services:
         python /tests/verify_output.py
       "
     volumes:
-      - ./setup_tdengine.py:/tests/setup_tdengine.py:ro
       - ./produce_test_data.py:/tests/produce_test_data.py:ro
       - ./verify_output.py:/tests/verify_output.py:ro
     working_dir: /

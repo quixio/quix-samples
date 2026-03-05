@@ -1,4 +1,4 @@
-# timeout: 40
+# timeout: 60
 services:
   mqtt-broker:
     image: eclipse-mosquitto:latest
@@ -22,12 +22,16 @@ services:
       sh -c "
         echo 'Waiting for MQTT source to connect and subscribe...' &&
         sleep 8 &&
-        for i in 0 1 2; do
-          mosquitto_pub -h mqtt-broker -t test/data -m '{\"id\":$$i,\"value\":\"test_message_$$i\"}' &&
-          echo \"Published message $$i\" &&
-          sleep 1;
-        done &&
-        echo 'All test messages published'
+        mosquitto_pub -h mqtt-broker -t test/data -m '{\"id\":0,\"value\":\"test_message_0\"}' &&
+        echo 'Published message 0' &&
+        sleep 1 &&
+        mosquitto_pub -h mqtt-broker -t test/data -m '{\"id\":1,\"value\":\"test_message_1\"}' &&
+        echo 'Published message 1' &&
+        sleep 1 &&
+        mosquitto_pub -h mqtt-broker -t test/data -m '{\"id\":2,\"value\":\"test_message_2\"}' &&
+        echo 'Published message 2' &&
+        echo 'All test messages published' &&
+        sleep 120
       "
   mqtt-source:
     build:
@@ -72,12 +76,12 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - TEST_OUTPUT_TOPIC=test-mqtt-output
-      - TEST_TIMEOUT=40
+      - TEST_TIMEOUT=25
       - TEST_MIN_EXPECTED_COUNT=1
     command: >
       sh -c "
         echo 'Waiting for source to produce...' &&
-        sleep 20 &&
+        sleep 12 &&
         echo 'Verifying output...' &&
         python /tests/verify_output.py
       "
