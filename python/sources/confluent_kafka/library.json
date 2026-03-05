@@ -24,7 +24,7 @@
     {
       "Name": "kafka_key",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "Obtained from the Confluent Kafka portal",
       "DefaultValue": "",
       "Required": true

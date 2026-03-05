@@ -25,6 +25,15 @@ table_name: TableName = os.getenv("POSTGRES_TABLE", "default_table")
 primary_key_columns: PrimaryKeySetter = _as_iterable("POSTGRES_PRIMARY_KEY_COLUMNS")
 
 
+def on_connect_success():
+    print("CONNECTED!")
+
+
+def on_connect_failure(err):
+    print(f"ERROR! Failed to connect to PostgreSQL: {err}")
+    raise err
+
+
 # Initialize PostgreSQL Sink
 postgres_sink = PostgreSQLSink(
     host=os.environ["POSTGRES_HOST"],
@@ -37,6 +46,8 @@ postgres_sink = PostgreSQLSink(
     schema_auto_update=_as_bool("POSTGRES_SCHEMA_AUTO_UPDATE", "true"),
     primary_key_columns=primary_key_columns,
     upsert_on_primary_key=_as_bool("POSTGRES_UPSERT_ON_PRIMARY_KEY"),
+    on_client_connect_success=on_connect_success,
+    on_client_connect_failure=on_connect_failure,
 )
 
 # Initialize the application

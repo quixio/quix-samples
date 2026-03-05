@@ -21,31 +21,34 @@ input_topic_name = os.getenv("kafka_topic", "")
 output_topic_name = os.getenv("output", "")
 
 if sasl_config["sasl.username"] == "" or sasl_config["sasl.password"] == "":
-    print("Please provide kafka_key and kafka_secret")
+    print("ERROR! Please provide kafka_key and kafka_secret")
     exit(1)
 
 if broker_address == "":
-    print("Please provide kafka_broker_address")
+    print("ERROR! Please provide kafka_broker_address")
     exit(1)
 
 if input_topic_name == "" or output_topic_name == "":
-    print("Please provide input and output topics")
+    print("ERROR! Please provide input and output topics")
     exit(1)
 
 # this 'application' will consume data from Confluent Kafka
-app = Application(broker_address=broker_address, consumer_group="kafka-connector-consumer-group", 
-                    auto_offset_reset="earliest", consumer_extra_config=sasl_config)
-# this topic is the Confluent Kafka topic
-input_topic = app.topic(input_topic_name)
+try:
+    app = Application(broker_address=broker_address, consumer_group="kafka-connector-consumer-group",
+                        auto_offset_reset="earliest", consumer_extra_config=sasl_config)
+    # this topic is the Confluent Kafka topic
+    input_topic = app.topic(input_topic_name)
 
-# This 'application' and producer will publish data to a Quix topic
-producer_app = Application()
-producer = producer_app.get_producer()
-# this is the Quix topic
-output_topic = producer_app.topic(output_topic_name)
+    # This 'application' and producer will publish data to a Quix topic
+    producer_app = Application()
+    producer = producer_app.get_producer()
+    # this is the Quix topic
+    output_topic = producer_app.topic(output_topic_name)
 
-# let the platform know were connected. If deploying a connector from the library, it will nav to the home page.
-print("CONNECTED!")
+    print("CONNECTED!")
+except Exception as e:
+    print(f"ERROR! Failed to connect to Confluent Kafka at {broker_address}: {e}")
+    exit(1)
 
 # Create a StreamingDataFrame instance for consuming data from Confluent Kafka
 sdf = app.dataframe(input_topic)

@@ -40,9 +40,8 @@
     {
       "Name": "redis_password",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "Password for the Redis instance",
-      "DefaultValue": "",
       "Required": false
     },
     {
@@ -76,6 +75,6 @@
     "MemoryInMb": 500,
     "Replicas": 1,
     "PublicAccess": false,
-    "ValidateConnection": false
+    "ValidateConnection": true
   }
 }
