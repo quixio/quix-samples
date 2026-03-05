@@ -1,6 +1,6 @@
 {
-  "libraryItemId": "marimo-ABC123-TODOTODOTODOTODOTODO",
-  "name": "MarimoTODOTODOTODOTODOTODO",
+  "libraryItemId": "marimo",
+  "name": "Marimo",
   "language": "docker",
   "tags": {
     "Category": ["Data Exploration"],
