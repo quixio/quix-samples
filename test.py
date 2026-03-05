@@ -516,8 +516,9 @@ class ParallelTestRunner:
             # Find the test path
             test_path = Path(__file__).parent / "tests" / failed.name
 
-            # Run retry with non-verbose mode (same as first run)
-            result = self.executor.run_test(test_path)
+            # Run retry with verbose logging so we can see what's really going on
+            verbose_executor = TestExecutor(verbose=True, default_timeout=self.executor.default_timeout)
+            result = verbose_executor.run_test(test_path)
 
             # Mark as retried if it passed
             if result.status == TestStatus.PASSED:

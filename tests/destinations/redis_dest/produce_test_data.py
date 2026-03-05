@@ -22,10 +22,10 @@ def main():
     with app.get_producer() as producer:
         for i in range(message_count):
             message = {
-                "key": f"msg_{i}",
-                "id": i,
-                "value": f"test_message_{i}",
-                "timestamp": int(time.time() * 1000)
+                "key": f"sensor_{i}",
+                "m": "temperature",
+                "time": int(time.time() * 1000) + i,
+                "used_percent": 42.5 + i
             }
             print(f"Producing message {i}: {message}")
 
