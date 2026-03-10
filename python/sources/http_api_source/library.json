@@ -31,6 +31,30 @@
       "Description": "This is the output topic for hello world data",
       "DefaultValue": "http-source",
       "Required": true
+    },
+    {
+      "Name": "basic_auth_username",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Username for basic authentication. If set along with basic_auth_password, all POST endpoints will require basic auth.",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "basic_auth_password",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Password for basic authentication. If set along with basic_auth_username, all POST endpoints will require basic auth.",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "api_key",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "API key for header-based authentication. If set, requests can authenticate by sending 'X-API-Key: <key>'. Can be used alongside or instead of basic auth.",
+      "DefaultValue": "",
+      "Required": false
     }
   ],
   "DeploySettings": {
