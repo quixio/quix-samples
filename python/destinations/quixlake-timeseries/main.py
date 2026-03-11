@@ -47,7 +47,8 @@ def parse_hive_columns(columns_str: str) -> list:
 app = Application(
     consumer_group=os.getenv("CONSUMER_GROUP", "s3_direct_sink_v1.0"),
     auto_offset_reset=os.getenv("AUTO_OFFSET_RESET", "latest"),
-    commit_interval=int(os.getenv("COMMIT_INTERVAL", "30"))
+    commit_interval=int(os.getenv("COMMIT_INTERVAL", "30")),
+    commit_every=int(os.getenv("BATCH_SIZE", 1000))
 )
 
 # Parse configuration
