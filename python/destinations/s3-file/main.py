@@ -21,6 +21,15 @@ app = Application(
     commit_interval=5
 )
 
+def on_connect_success():
+    print("CONNECTED!")
+
+
+def on_connect_failure(err):
+    print(f"ERROR! Failed to connect to S3: {err}")
+    raise err
+
+
 s3_file_sink = S3FileSink(
     bucket=os.environ["S3_BUCKET"],
     directory=os.getenv("S3_BUCKET_DIRECTORY", ""),
@@ -28,6 +37,8 @@ s3_file_sink = S3FileSink(
     aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
     region_name=os.environ["AWS_REGION_NAME"],
     format=get_file_format(),
+    on_client_connect_success=on_connect_success,
+    on_client_connect_failure=on_connect_failure,
 )
 
 sdf = app.dataframe(topic=app.topic(os.environ["input"])).sink(s3_file_sink)

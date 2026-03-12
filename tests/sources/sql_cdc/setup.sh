@@ -41,8 +41,15 @@ if [ $elapsed -ge $timeout ]; then
     exit 1
 fi
 
-# Get the network name from running containers
-FULL_NETWORK=$(docker compose -f docker-compose.test.yml ps --format json | grep -o '"Networks":"[^"]*"' | head -1 | cut -d'"' -f4)
+# Get the network name from docker network ls (more robust across Docker Compose versions)
+FULL_NETWORK=$(docker network ls --filter "name=test-network" --format '{{.Name}}' | grep "sql_cdc" | head -1)
+if [ -z "$FULL_NETWORK" ]; then
+    FULL_NETWORK=$(docker network ls --format '{{.Name}}' | grep "test-network" | head -1)
+fi
+if [ -z "$FULL_NETWORK" ]; then
+    echo "ERROR: Could not find Docker network"
+    exit 1
+fi
 
 # Install pymssql and run setup
 echo "Enabling CDC on SQL Server (network: ${FULL_NETWORK})..."

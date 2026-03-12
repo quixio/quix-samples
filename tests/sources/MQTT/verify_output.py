@@ -39,11 +39,18 @@ def main():
         message = list_sink[i]
         print(f"Message {i}: {message}")
 
-        if b"id" not in message:
+        # ListSink returns dicts; the payload is in the 'value' key as bytes
+        payload = message.get("value", message) if isinstance(message, dict) else message
+        if isinstance(payload, bytes):
+            payload_str = payload
+        else:
+            payload_str = str(payload).encode()
+
+        if b"id" not in payload_str:
             print(f"FAILED: Message {i} should contain 'id' field")
             exit(1)
 
-        if b"value" not in message:
+        if b"value" not in payload_str:
             print(f"FAILED: Message {i} should contain 'value' field")
             exit(1)
 

@@ -3,9 +3,15 @@
   "name": "Redis Source",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Source"],
-    "Type": ["Connectors"],
-    "Category": ["Cache"]
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Cache"
+    ]
   },
   "shortDescription": "Periodically query a Redis database and publish the results to a Kafka topic.",
   "DefaultFile": "main.py",
@@ -40,7 +46,7 @@
     {
       "Name": "redis_password",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "Password for the Redis instance",
       "DefaultValue": "",
       "Required": false

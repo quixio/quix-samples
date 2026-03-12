@@ -3,9 +3,15 @@
   "name": "Segment Source",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Source"],
-    "Type": ["Connectors"],
-    "Category": ["External APIs"]
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "External APIs"
+    ]
   },
   "shortDescription": "Read event data from Segment and publish it to a Kafka topic.",
   "DefaultFile": "main.py",
@@ -24,7 +30,7 @@
     {
       "Name": "shared_secret",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "The secret you configured in Segment",
       "DefaultValue": "",
       "Required": true

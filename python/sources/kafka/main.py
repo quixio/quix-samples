@@ -39,7 +39,7 @@ if consumer_poll_timeout:
 
 # Create a Quix Application for the destination (Quix platform)
 app = Application(
-    consumer_group=os.environ["CONSUMER_GROUP"],
+    consumer_group=os.environ.get("CONSUMER_GROUP", "kafka-replicator-source"),
 )
 
 # Create the KafkaReplicatorSource

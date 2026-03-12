@@ -3,9 +3,15 @@
   "name": "Redis Sink",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Destination"],
-    "Type": ["Connectors"],
-    "Category": ["Cache"]
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Cache"
+    ]
   },
   "shortDescription": "Consume data from a Kafka topic and persist it to Redis.",
   "DefaultFile": "main.py",
@@ -40,9 +46,8 @@
     {
       "Name": "redis_password",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "Password for the Redis instance",
-      "DefaultValue": "",
       "Required": false
     },
     {
@@ -76,6 +81,6 @@
     "MemoryInMb": 500,
     "Replicas": 1,
     "PublicAccess": false,
-    "ValidateConnection": false
+    "ValidateConnection": true
   }
 }

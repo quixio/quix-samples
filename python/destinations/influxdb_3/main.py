@@ -15,15 +15,26 @@ field_keys = keys.split(",") if (keys := os.environ.get("INFLUXDB_FIELD_KEYS")) 
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
 time_setter = col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None
 
+def on_connect_success():
+    print("CONNECTED!")
+
+
+def on_connect_failure(err):
+    print(f"ERROR! Failed to connect to InfluxDB: {err}")
+    raise err
+
+
 influxdb_v3_sink = InfluxDB3Sink(
     token=os.environ["INFLUXDB_TOKEN"],
     host=os.environ["INFLUXDB_HOST"],
-    organization_id=os.environ["INFLUXDB_ORG"],
+    organization_id=os.environ.get("INFLUXDB_ORG", ""),
     tags_keys=tag_keys,
     fields_keys=field_keys,
     time_setter=time_setter,
     database=os.environ["INFLUXDB_DATABASE"],
     measurement=measurement_name,
+    on_client_connect_success=on_connect_success,
+    on_client_connect_failure=on_connect_failure,
 )
 
 

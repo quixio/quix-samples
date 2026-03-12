@@ -15,7 +15,7 @@ import os
 import logging
 
 from quixstreams import Application
-from quixlake_sink import QuixLakeSink
+from quixstreams.sinks.core.quix_ts_datalake_sink import QuixTSDataLakeSink
 
 # Configure logging
 logging.basicConfig(
@@ -47,7 +47,8 @@ def parse_hive_columns(columns_str: str) -> list:
 app = Application(
     consumer_group=os.getenv("CONSUMER_GROUP", "s3_direct_sink_v1.0"),
     auto_offset_reset=os.getenv("AUTO_OFFSET_RESET", "latest"),
-    commit_interval=int(os.getenv("COMMIT_INTERVAL", "30"))
+    commit_interval=int(os.getenv("COMMIT_INTERVAL", "30")),
+    commit_every=int(os.getenv("BATCH_SIZE", 1000))
 )
 
 # Parse configuration
@@ -62,7 +63,7 @@ workspace_id = os.getenv("Quix__Workspace__Id", "")
 # Note: Blob storage credentials are configured via Quix__BlobStorage__Connection__Json
 # environment variable, which is automatically read by quixportal.
 # The bucket name is extracted automatically from the quixportal configuration.
-blob_sink = QuixLakeSink(
+blob_sink = QuixTSDataLakeSink(
     s3_prefix=TIMESERIES_PREFIX,
     table_name=table_name,
     workspace_id=workspace_id,
@@ -73,7 +74,9 @@ blob_sink = QuixLakeSink(
     auto_discover=auto_discover,
     namespace=os.getenv("CATALOG_NAMESPACE", "default"),
     auto_create_bucket=True,
-    max_workers=int(os.getenv("MAX_WRITE_WORKERS", "10"))
+    max_workers=int(os.getenv("MAX_WRITE_WORKERS", "10")),
+    on_client_connect_success=lambda: print("CONNECTED!"),
+    on_client_connect_failure=lambda e: print(f"ERROR! {e}"),
 )
 
 # Create streaming dataframe and attach sink

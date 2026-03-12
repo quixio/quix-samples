@@ -3,8 +3,12 @@
   "name": "Marimo",
   "language": "docker",
   "tags": {
-    "Category": ["Data Exploration"],
-    "Type": ["Auxiliary Services"]
+    "Category": [
+      "Data Exploration"
+    ],
+    "Type": [
+      "Auxiliary Services"
+    ]
   },
   "shortDescription": "Run Marimo reactive notebooks in your pipeline.",
   "DefaultFile": "dockerfile",
@@ -21,8 +25,7 @@
       "Size": 1
     },
     "Network": {
-      "Ports":
-      [
+      "Ports": [
         {
           "Port": 80,
           "TargetPort": 8080
@@ -42,15 +45,28 @@
       }
     }
   },
- 
   "Variables": [
     {
       "Name": "MARIMO_MODE",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Mode to run Marimo in: 'run' (read-only notebook), 'edit' (editable notebook), 'browser' (file browser)",
-      "DefaultValue": "run",
-      "Required": false
+      "InputType": "Options",
+      "Description": "Mode to run Marimo in",
+      "DefaultValue": "edit",
+      "Required": false,
+      "options": [
+        {
+          "label": "run",
+          "value": "run"
+        },
+        {
+          "label": "edit",
+          "value": "edit"
+        },
+        {
+          "label": "browser",
+          "value": "browser"
+        }
+      ]
     },
     {
       "Name": "MARIMO_NOTEBOOK",

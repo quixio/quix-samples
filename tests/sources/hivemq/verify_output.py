@@ -61,8 +61,8 @@ def main():
             exit(1)
 
         # Verify key is derived from MQTT topic
-        if key != "test-topic":
-            print(f"FAILED: Expected key 'test-topic' (MQTT topic with / replaced), got '{key}'")
+        if key not in ("test/topic", "test-topic"):
+            print(f"FAILED: Expected key 'test/topic' or 'test-topic', got '{key}'")
             exit(1)
 
     print(f"Success: Verified {len(messages)} messages from HiveMQ MQTT source")

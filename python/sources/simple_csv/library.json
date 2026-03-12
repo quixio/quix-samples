@@ -3,10 +3,18 @@
   "name": "CSV Source",
   "language": "Python",
   "tags": {
-    "Technology": ["Quix Streams"],
-    "Pipeline Stage": ["Source"],
-    "Popular Subjects": ["Quick Start"],
-    "Type": ["Demos"]
+    "Technology": [
+      "Quix Streams"
+    ],
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Popular Subjects": [
+      "Quick Start"
+    ],
+    "Type": [
+      "Demos"
+    ]
   },
   "shortDescription": "Read data from a CSV file and publish it to a Kafka topic.",
   "DefaultFile": "main.py",

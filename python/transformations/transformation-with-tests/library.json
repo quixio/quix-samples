@@ -5,11 +5,21 @@
   "IsHighlighted": false,
   "DisplayOrder": 3,
   "tags": {
-    "Complexity": ["Easy"],
-    "Technology": ["Quix Streams"],
-    "Pipeline Stage": ["Transformation"],
-    "Popular Subjects": ["Quick Start"],
-    "Type": ["Basic templates"]
+    "Complexity": [
+      "Easy"
+    ],
+    "Technology": [
+      "Quix Streams"
+    ],
+    "Pipeline Stage": [
+      "Transformation"
+    ],
+    "Popular Subjects": [
+      "Quick Start"
+    ],
+    "Type": [
+      "Basic templates"
+    ]
   },
   "shortDescription": "A testing template that applies a simple transformation and publishes the result to an output topic",
   "DefaultFile": "main.py",

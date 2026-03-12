@@ -3,10 +3,19 @@
   "name": "FMU Runner",
   "language": "Python",
   "tags": {
-    "Complexity": ["Medium"],
-    "Technology": ["Quix Streams"],
-    "Pipeline Stage": ["Transformation"],
-    "Popular Subjects": ["Simulation", "Digital Twin"]
+    "Complexity": [
+      "Medium"
+    ],
+    "Technology": [
+      "Quix Streams"
+    ],
+    "Pipeline Stage": [
+      "Transformation"
+    ],
+    "Popular Subjects": [
+      "Simulation",
+      "Digital Twin"
+    ]
   },
   "shortDescription": "Execute FMU (Functional Mock-up Unit) simulations from Kafka messages and publish results to an output topic.",
   "DefaultFile": "main.py",
