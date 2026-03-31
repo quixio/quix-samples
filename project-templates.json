@@ -34,5 +34,9 @@
   {
     "httpUrl": "https://github.com/quixio/template-quixlake.git",
     "branch": "main"
+  },
+  {
+    "httpUrl": "https://github.com/quixio/template-minio.git",
+    "branch": "main"
   }
 ]
