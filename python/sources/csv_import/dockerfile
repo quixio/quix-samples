@@ -1,0 +1,21 @@
+FROM python:3.12.5-slim-bookworm
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=UTF-8 \
+    PYTHONPATH="/app"
+
+ARG MAINAPPPATH=.
+
+WORKDIR /app
+
+COPY "${MAINAPPPATH}/requirements.txt" "${MAINAPPPATH}/requirements.txt"
+RUN pip install --no-cache-dir -r "${MAINAPPPATH}/requirements.txt"
+
+COPY . .
+
+WORKDIR "/app/${MAINAPPPATH}"
+
+EXPOSE 80
+
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
