@@ -140,6 +140,23 @@ Each variable will create a unique setup field in the Quix Code Samples.
 
   - **"OutputTopic"** for producing data to topics. Multiple topics permitted.
 
+  - **"Options"** for selecting from a predefined list of values. Requires an **"options"** array where each entry has a **"label"** (display text) and **"value"** (actual value). Example:
+
+	```json
+	{
+	  "Name": "auto_offset_reset",
+	  "Type": "EnvironmentVariable",
+	  "InputType": "Options",
+	  "Description": "Auto offset reset policy",
+	  "DefaultValue": "earliest",
+	  "Required": false,
+	  "options": [
+	    { "label": "earliest", "value": "earliest" },
+	    { "label": "latest", "value": "latest" }
+	  ]
+	}
+	```
+
 **"Description"** The public description of the variable
 
 **"Required"** Boolean value
