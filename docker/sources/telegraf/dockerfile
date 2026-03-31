@@ -1,8 +1,0 @@
-# Use the official Telegraf image for the final container
-FROM telegraf:latest
-
-# Copy custom Telegraf configuration
-COPY telegraf.conf /etc/telegraf/telegraf.conf
-
-# Default command to run Telegraf
-CMD ["/usr/bin/telegraf", "--config", "/etc/telegraf/telegraf.conf"]

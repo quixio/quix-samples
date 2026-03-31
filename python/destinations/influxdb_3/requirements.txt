@@ -1,3 +1,0 @@
-quixstreams[influxdb3]==3.23.1
-influxdb3-python<0.17.0
-python-dotenv
