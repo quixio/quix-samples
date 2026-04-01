@@ -1,0 +1,59 @@
+{
+  "libraryItemId": "csv-import-source",
+  "name": "CSV Import",
+  "language": "Python",
+  "tags": {
+    "Technology": ["Quix Streams"],
+    "Pipeline Stage": ["Source"],
+    "Type": ["Connectors"]
+  },
+  "shortDescription": "Upload CSV files via a web UI and stream rows to a Kafka topic in real time.",
+  "IconFile": "icon.png",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Kafka topic to send CSV rows to",
+      "DefaultValue": "csv-data",
+      "Required": true
+    },
+    {
+      "Name": "batch_size",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Number of rows to send per batch",
+      "DefaultValue": "1000",
+      "Required": false
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "Network": {
+      "Ports": [
+        {
+          "Port": 80,
+          "TargetPort": 80
+        }
+      ]
+    },
+    "plugin": {
+      "embeddedView": {
+        "enabled": true,
+        "hideHeader": true,
+        "default": true
+      },
+      "sidebarItem": {
+        "show": true,
+        "order": 0
+      }
+    }
+  }
+}

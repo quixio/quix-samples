@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Import</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #1a2332;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #1f2b3a;
+            border: 1px solid #2d4a6f;
+            border-radius: 8px;
+            padding: 32px;
+            width: 480px;
+        }
+        h1 {
+            font-size: 1.4rem;
+            color: #e6edf3;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            color: #7d8590;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+        .drop-zone {
+            border: 2px dashed #2d4a6f;
+            border-radius: 6px;
+            padding: 36px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            margin-bottom: 16px;
+            background: #162030;
+        }
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #4a9eff;
+            background: rgba(74,158,255,0.06);
+        }
+        .drop-zone p {
+            color: #7d8590;
+            font-size: 0.9rem;
+        }
+        .drop-zone .filename {
+            color: #4a9eff;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        input[type="file"] { display: none; }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2d6abf;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover { background: #3a7bd5; }
+        button:disabled {
+            background: #253345;
+            color: #4a5568;
+            cursor: not-allowed;
+        }
+        .progress-container {
+            margin-top: 16px;
+            display: none;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #253345;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #00d4aa;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .progress-text {
+            color: #7d8590;
+            font-size: 0.8rem;
+        }
+        .result {
+            margin-top: 16px;
+            padding: 12px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: none;
+        }
+        .result.success {
+            background: rgba(0,212,170,0.1);
+            border: 1px solid rgba(0,212,170,0.3);
+            color: #00d4aa;
+        }
+        .result.error {
+            background: rgba(248,81,73,0.1);
+            border: 1px solid rgba(248,81,73,0.3);
+            color: #f85149;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CSV Import</h1>
+        <p class="subtitle">Import CSV data into a Kafka topic. Each row is sent as a separate message, streamed in real time as the file uploads.</p>
+
+        <div class="drop-zone" id="dropZone">
+            <p>Drag & drop a CSV file here or click to browse</p>
+            <div class="filename" id="fileName"></div>
+        </div>
+        <input type="file" id="fileInput" accept=".csv">
+
+        <button id="sendBtn" disabled>Send to Kafka</button>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Sending...</div>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const result = document.getElementById('result');
+        const fileName = document.getElementById('fileName');
+        let selectedFile = null;
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.csv')) {
+                selectFile(file);
+            }
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files[0]) selectFile(fileInput.files[0]);
+        });
+
+        function selectFile(file) {
+            selectedFile = file;
+            fileName.textContent = file.name;
+            sendBtn.disabled = false;
+            result.style.display = 'none';
+            progressContainer.style.display = 'none';
+        }
+
+        let done = false;
+
+        sendBtn.addEventListener('click', () => {
+            if (!selectedFile) return;
+
+            sendBtn.disabled = true;
+            done = false;
+            result.style.display = 'none';
+            progressContainer.style.display = 'block';
+            progressFill.style.width = '0%';
+            progressText.textContent = 'Sending... 0 rows';
+
+            const uploadId = crypto.randomUUID();
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.addEventListener('load', () => {
+                done = true;
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    progressFill.style.width = '100%';
+                    progressText.textContent = `Sent ${data.rows_sent.toLocaleString()} rows (100%)`;
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                        result.className = 'result success';
+                        result.style.display = 'block';
+                        result.textContent = `Done! Sent ${data.rows_sent.toLocaleString()} rows from "${data.filename}" to topic "${data.topic}"`;
+                    }, 500);
+                } catch (err) {
+                    progressContainer.style.display = 'none';
+                    result.className = 'result error';
+                    result.style.display = 'block';
+                    result.textContent = 'Error: ' + xhr.responseText;
+                }
+                sendBtn.disabled = false;
+            });
+
+            xhr.addEventListener('error', () => {
+                done = true;
+                progressContainer.style.display = 'none';
+                result.className = 'result error';
+                result.style.display = 'block';
+                result.textContent = 'Connection error';
+                sendBtn.disabled = false;
+            });
+
+            xhr.open('POST', '/upload?upload_id=' + uploadId);
+            xhr.send(formData);
+
+            pollProgress(uploadId);
+        });
+
+        function pollProgress(uploadId) {
+            const interval = setInterval(async () => {
+                if (done) { clearInterval(interval); return; }
+                try {
+                    const res = await fetch('/progress/' + uploadId);
+                    const data = await res.json();
+
+                    if (done) { clearInterval(interval); return; }
+
+                    if (data.rows_sent > 0) {
+                        progressFill.style.width = data.percent + '%';
+                        progressText.textContent = `Sent ${data.rows_sent.toLocaleString()} rows (${data.percent}%)`;
+                    }
+                } catch (err) {
+                    // Ignore, XHR load handler will show final result
+                }
+            }, 500);
+        }
+    </script>
+</body>
+</html>
