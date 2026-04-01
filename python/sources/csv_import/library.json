@@ -8,6 +8,7 @@
     "Type": ["Connectors"]
   },
   "shortDescription": "Upload CSV files via a web UI and stream rows to a Kafka topic in real time.",
+  "IconFile": "icon.png",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
