@@ -1059,7 +1059,7 @@ OPTIONS:
     -r, --repeat <N>          Run the test suite N times (default: 1)
 
 EXAMPLES:
-    ./test.py test sources/simple_csv
+    ./test.py test sources/csv_import
     ./test.py test sources/starter_source sources/demo_data -p 2
     ./test.py test sources/failing_source -v
     ./test.py test sources/MQTT --repeat 10
