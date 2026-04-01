@@ -146,15 +146,15 @@ Each variable will create a unique setup field in the Quix Code Samples.
 
 	```json
 	{
-	  "Name": "auto_offset_reset",
+	  "Name": "CONTENT_STORE",
 	  "Type": "EnvironmentVariable",
 	  "InputType": "Options",
-	  "Description": "Auto offset reset policy",
-	  "DefaultValue": "earliest",
+	  "Description": "Where to store the content",
+	  "DefaultValue": "mongo",
 	  "Required": false,
 	  "options": [
-	    { "label": "earliest", "value": "earliest" },
-	    { "label": "latest", "value": "latest" }
+	    { "label": "MongoDB", "value": "mongo" },
+	    { "label": "File System", "value": "file" }
 	  ]
 	}
 	```
