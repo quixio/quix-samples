@@ -140,6 +140,25 @@ Each variable will create a unique setup field in the Quix Code Samples.
 
   - **"OutputTopic"** for producing data to topics. Multiple topics permitted.
 
+  - **"HiddenText"** for sensitive values that should not be displayed in the UI
+
+  - **"Options"** for selecting from a predefined list of values. Requires an **"options"** array where each entry has a **"label"** (display text) and **"value"** (actual value). The **"DefaultValue"** should match one of the option values. Example:
+
+	```json
+	{
+	  "Name": "CONTENT_STORE",
+	  "Type": "EnvironmentVariable",
+	  "InputType": "Options",
+	  "Description": "Where to store the content",
+	  "DefaultValue": "mongo",
+	  "Required": false,
+	  "options": [
+	    { "label": "MongoDB", "value": "mongo" },
+	    { "label": "File System", "value": "file" }
+	  ]
+	}
+	```
+
 **"Description"** The public description of the variable
 
 **"Required"** Boolean value
