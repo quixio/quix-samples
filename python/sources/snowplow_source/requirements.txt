@@ -1,4 +1,0 @@
-quixstreams==3.23.2
-boto3
-snowplow_analytics_sdk
-python-dotenv

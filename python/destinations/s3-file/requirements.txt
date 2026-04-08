@@ -1,7 +1,0 @@
-quixstreams==3.23.2
-python-dotenv
-requests
-pandas
-boto3
-pyarrow
-mypy-boto3-s3
