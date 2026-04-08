@@ -51,7 +51,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "Options",
       "Description": "Mode to run Marimo in",
-      "DefaultValue": "edit",
+      "DefaultValue": "run",
       "Required": false,
       "options": [
         {
