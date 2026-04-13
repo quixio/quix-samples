@@ -1,4 +1,4 @@
-quixstreams==3.23.2
+quixstreams==3.23.6
 fmpy>=0.3.0
 numpy
 pandas

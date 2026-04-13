@@ -42,7 +42,7 @@ app = Application(
     consumer_group=os.environ.get("CONSUMER_GROUP_NAME", "influxdb-data-writer"),
     auto_offset_reset="earliest",
     commit_every=int(os.environ.get("BUFFER_SIZE", "1000")),
-    commit_interval=float(os.environ.get("BUFFER_DELAY", "1")),
+    commit_interval=float(os.environ.get("BUFFER_TIMEOUT", "1")),
 )
 input_topic = app.topic(os.environ["input"])
 
