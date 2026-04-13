@@ -1,4 +1,4 @@
-quixstreams[quixdatalake]>=3.23.3
+quixstreams[quixdatalake]>=3.23.6
 python-dotenv
 
 # Blob storage support via quixportal (AWS S3, Azure, GCP, MinIO)

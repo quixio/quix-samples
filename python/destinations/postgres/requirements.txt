@@ -1,2 +1,2 @@
-quixstreams[postgresql]==3.23.1
+quixstreams[postgresql]==3.23.6
 python-dotenv
