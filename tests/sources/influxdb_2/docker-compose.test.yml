@@ -1,4 +1,4 @@
-# timeout: 70
+# timeout: 110
 services:
   influxdb:
     image: influxdb:2.7
@@ -71,8 +71,8 @@ services:
         pip install influxdb-client > /dev/null 2>&1 &&
         echo 'Populating InfluxDB with test data...' &&
         python /tests/populate_influxdb.py &&
-        echo 'Waiting 18s for influxdb-2-source to query (interval=15s + buffer)...' &&
-        sleep 18 &&
+        echo 'Waiting 35s for influxdb-2-source to query (interval=15s x2 + buffer)...' &&
+        sleep 35 &&
         echo 'Verifying output from Kafka...' &&
         python /tests/verify_output.py
       "
