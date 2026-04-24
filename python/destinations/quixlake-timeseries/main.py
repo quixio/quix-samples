@@ -16,7 +16,7 @@ import os
 import re
 import time
 import logging
-from typing import Optional, Callable
+from typing import Any, Optional, Callable
 
 from quixstreams import Application
 from quixstreams.sinks.core.quix_ts_datalake_sink import QuixTSDataLakeSink
@@ -98,7 +98,7 @@ workspace_id = os.getenv("Quix__Workspace__Id", "")
 # ---------------------------------------------------------------------------
 stream_timeout_topic_name = os.environ.get("STREAM_TIMEOUT_TOPIC", "timeout-topic").strip()
 stream_timeout_ms: Optional[int]
-on_stream_timeout: Optional[Callable[[str], None]]
+on_stream_timeout: Optional[Callable[[Any], None]]
 side_producer = None
 
 if stream_timeout_topic_name:
@@ -123,15 +123,15 @@ if stream_timeout_topic_name:
         key_serializer="bytes",
         value_serializer="bytes",
     )
-    def on_stream_timeout(stream: str) -> None:
+    def on_stream_timeout(stream: Any) -> None:
         """Timeout handler for one silent Kafka message key.
 
-        The sink passes the decoded message key (a str) once that key has
-        been silent past the threshold. Logs INFO and produces one Kafka
-        message to STREAM_TIMEOUT_TOPIC with payload:
-            value = {"ts_ms": <wall-clock-ms>, "stream": <key>,
-                     "event": "stream_timeout"}
-        The Kafka record key is the UTF-8 bytes of ``stream``.
+        Record shape:
+        - ``key``: raw ``stream`` bytes from Kafka, pass-through (unchanged).
+        - ``value``: JSON object with event metadata and a decoded-for-
+          JSON copy of the stream identifier:
+            {"ts_ms": <wall-clock-ms>, "stream": <key-as-str>,
+             "event": "stream_timeout"}
 
         Fire-and-forget: this callback runs on the sink's flush thread
         (which is the Application processing thread). Calling a blocking
@@ -141,13 +141,17 @@ if stream_timeout_topic_name:
         underlying producer polls in the background, so the message is
         delivered asynchronously; we only need ``produce()``.
         """
-        logger.info("Stream %s timed out after inactivity", stream)
+        if isinstance(stream, bytes):
+            stream_str = stream.decode("utf-8", errors="replace")
+        else:
+            stream_str = str(stream)
+        logger.info("Stream %s timed out after inactivity", stream_str)
         side_producer.produce(
             topic=stream_timeout_topic.name,
-            key=stream.encode() if isinstance(stream, str) else stream,
+            key=stream,
             value=json.dumps({
                 "ts_ms": int(time.time() * 1000),
-                "stream": stream,
+                "stream": stream_str,
                 "event": "stream_timeout",
             }).encode(),
         )
