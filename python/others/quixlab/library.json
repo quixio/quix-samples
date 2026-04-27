@@ -1,0 +1,72 @@
+{
+  "libraryItemId": "quixlab",
+  "name": "QuixLab",
+  "language": "docker",
+  "tags": {
+    "Category": ["Data Exploration"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Reactive canvas notebook for realtime data — SQL on QuixLake, live Kafka streams, and blob storage as first-class variables.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 500,
+    "MemoryInMb": 2000,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "State": {
+      "Enabled": true,
+      "Size": 1
+    },
+    "Network": {
+      "Ports": [
+        {
+          "Port": 80,
+          "TargetPort": 80
+        }
+      ]
+    },
+    "blobStorage": {
+      "bind": true
+    },
+    "plugin": {
+      "embeddedView": {
+        "enabled": true,
+        "hideHeader": true,
+        "default": true
+      },
+      "sidebarItem": {
+        "show": true,
+        "label": "QuixLab",
+        "icon": "grid_view",
+        "order": 1
+      },
+      "globalItem": {
+        "show": true,
+        "label": "QuixLab",
+        "icon": "find_in_page",
+        "order": 1
+      }
+    }
+  },
+  "Variables": [
+    {
+      "Name": "QUIXLAB_NOTEBOOK",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Notebook file to open on startup (leave empty for the file picker)",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "QUIXLAB_MODE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Run mode: 'app' (view only) or 'edit' (full editor)",
+      "DefaultValue": "edit",
+      "Required": false
+    }
+  ]
+}
