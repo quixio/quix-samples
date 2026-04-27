@@ -1,10 +1,27 @@
 # QuixLab
 
-This sample deploys [QuixLab](https://github.com/quixio/quixlab) — a reactive
-canvas notebook for realtime data — onto the Quix platform. QuixLab combines
-the spatial freedom of an infinite canvas with reactive Python cells, and
-wires directly into the Quix data plane: SQL queries against the QuixLake,
-live Kafka topics via `quixstreams`, and blob storage as first-class variables.
+[QuixLab](https://github.com/quixio/quixlab) is a notebook-style data
+exploration environment fused with a Miro-style collaboration **canvas**.
+It takes the reactive cell model of [Marimo](https://marimo.io/) — where
+changing any input automatically re-runs everything downstream — and lays
+it out on an infinite spatial canvas, so you and your team can build,
+arrange, and share data workflows visually instead of in a linear file.
+
+Under the hood it's wired directly into the Quix data plane, with three
+first-class data sources you can drop onto the canvas as nodes:
+
+- **Lakehouse** — run SQL against the QuixLake with `ql.sql("…")` and get a DataFrame.
+- **Kafka topics** — subscribe to a live stream with `ql.topic("name")` and read from a rolling buffer in real time.
+- **Blob storage** — read and write files or folders as first-class variables via `StorageFile` / `StorageFolder`.
+
+Wire those into reactive Python cells, parameterize them with interactive
+widgets (text, dropdown, button), and visualize the results inline as
+tables, charts (line / bar / scatter / pie / heatmap), Plotly / Matplotlib
+figures, or rendered Markdown.
+
+Notebooks are saved as plain Python files — layout, viz config, and
+dependencies live as decorator keyword arguments — so the file stays
+diff-friendly, Git-trackable, and runnable standalone with `python notebook.py`.
 
 ## How to Run
 
