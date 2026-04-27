@@ -1,0 +1,73 @@
+{
+  "libraryItemId": "quixlab",
+  "name": "QuixLab",
+  "language": "docker",
+  "tags": {
+    "Category": ["Data Exploration"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Reactive notebook on a collaborative canvas — explore the lakehouse, live Kafka topics, and blob storage from Python cells with interactive widgets and rich visualizations.",
+  "longDescription": "QuixLab combines the reactive cell model of <b>Marimo</b> with a spatial, Miro-style collaboration <b>canvas</b>. Drop dataset, stream, cell, and widget nodes anywhere, wire them together by argument name, and the dependency graph re-executes automatically when any input changes.<br/><br/>Three first-class data sources are wired straight into the Quix data plane:<br/>• <b>Lakehouse</b> — run SQL against QuixLake with <code>ql.sql(\"…\")</code> and get a DataFrame back.<br/>• <b>Kafka topics</b> — subscribe to a live stream with <code>ql.topic(\"name\")</code> and read from a rolling buffer in real time.<br/>• <b>Blob storage</b> — read and write files or folders as first-class variables via <code>StorageFile</code> / <code>StorageFolder</code>.<br/><br/>Visualize results inline with one-line plots (table, line, bar, scatter, pie, heatmap), full-power Plotly and Matplotlib figures, or rendered Markdown. Add reactive widgets (text input, dropdown, button) that automatically re-run downstream cells when their values change — perfect for parameterized SQL queries and live dashboards.<br/><br/>Notebooks are stored as plain Python files that run standalone with <code>python notebook.py</code>; layout, viz config and dependencies are persisted as decorator keyword arguments, so the file stays diff-friendly and Git-trackable.<br/><br/>The deployment ships with a 1 GB persistent state volume for your notebooks, auto-binds the workspace's blob storage, and is embedded directly in the Quix UI as a top-level plugin so anyone in the workspace can land on the canvas from the sidebar.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 500,
+    "MemoryInMb": 2000,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "State": {
+      "Enabled": true,
+      "Size": 1
+    },
+    "Network": {
+      "Ports": [
+        {
+          "Port": 80,
+          "TargetPort": 80
+        }
+      ]
+    },
+    "blobStorage": {
+      "bind": true
+    },
+    "plugin": {
+      "embeddedView": {
+        "enabled": true,
+        "hideHeader": true,
+        "default": true
+      },
+      "sidebarItem": {
+        "show": true,
+        "label": "QuixLab",
+        "icon": "grid_view",
+        "order": 1
+      },
+      "globalItem": {
+        "show": true,
+        "label": "QuixLab",
+        "icon": "find_in_page",
+        "order": 1
+      }
+    }
+  },
+  "Variables": [
+    {
+      "Name": "QUIXLAB_NOTEBOOK",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Notebook file to open on startup (leave empty for the file picker)",
+      "DefaultValue": "",
+      "Required": false
+    },
+    {
+      "Name": "QUIXLAB_MODE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Run mode: 'app' (view only) or 'edit' (full editor)",
+      "DefaultValue": "edit",
+      "Required": false
+    }
+  ]
+}

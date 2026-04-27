@@ -1,0 +1,22 @@
+# Build-only test for QuixLab
+#
+# QuixLab ships as a prebuilt image (FROM ghcr.io/quixio/quixlab) and runs
+# as an auxiliary UI service — there is no Python source in this template
+# directory to syntax-check. Instead this test verifies that:
+#   1. The dockerfile builds (the upstream image is reachable + pullable)
+#   2. The expected entrypoint module is present in the image
+#   3. `import quixlab` succeeds inside the image's Python environment
+
+services:
+  quixlab:
+    build:
+      context: ../../../python/others/quixlab
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating QuixLab image structure...' &&
+        test -f /app/quixlab/main.py &&
+        python3 -c 'import quixlab' &&
+        echo 'Success: QuixLab image build + smoke check passed'
+      "
+    stop_grace_period: 3s
