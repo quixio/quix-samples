@@ -1,0 +1,13 @@
+{
+  "name": "plugin-starter",
+  "version": "1.0.0",
+  "description": "Minimal Quix Portal plugin starter (Node.js).",
+  "main": "main.js",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "scripts": {
+    "start": "node main.js"
+  },
+  "license": "Apache-2.0"
+}

@@ -1,0 +1,44 @@
+{
+  "libraryItemId": "nodejs-plugin-starter",
+  "name": "Plugin Starter (Node.js)",
+  "language": "NodeJs",
+  "tags": {
+    "Complexity": ["Easy"],
+    "Type": ["Basic templates"],
+    "Category": ["Plugins"]
+  },
+  "shortDescription": "Minimal Node.js plugin showing the Quix Portal plugin SDK contract — embedded iframe, sidebar item, and auth token handshake.",
+  "longDescription": "A bare-bones starting point for building a Quix Portal plugin in Node.js. Demonstrates the full plugin SDK contract: detecting the iframe context, requesting an auth token from the parent Portal via postMessage, and using that token to call the Quix Portal API. Fork it and replace the demo UI with your own.",
+  "DefaultFile": "public/index.html",
+  "EntryPoint": "dockerfile",
+  "Variables": [],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "Network": {
+      "Ports": [
+        {
+          "Port": 80,
+          "TargetPort": 80
+        }
+      ]
+    },
+    "plugin": {
+      "embeddedView": {
+        "enabled": true,
+        "hideHeader": true,
+        "default": true
+      },
+      "sidebarItem": {
+        "show": true,
+        "label": "Plugin Starter",
+        "icon": "extension",
+        "order": 50,
+        "badge": "Demo"
+      }
+    }
+  }
+}

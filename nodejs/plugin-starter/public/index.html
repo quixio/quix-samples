@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quix Plugin Starter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--
+    Quix Plugin SDK — served by the Portal.
+    Drop this <script> in once and you get:
+      - QuixPlugin.init()              postMessage handshake + history sync
+      - QuixPlugin.onToken(fn)         fires when the auth token arrives (and on late registrations)
+  -->
+  <script src="/static/sdk/quix-plugin.js"></script>
+
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body { margin: 0; padding: 24px; line-height: 1.5; }
+    h1 { margin-top: 0; font-size: 1.5rem; }
+    .card {
+      border: 1px solid rgba(127, 127, 127, 0.3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      background: rgba(127, 127, 127, 0.05);
+    }
+    .label { font-size: 0.8rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; }
+    .value { font-family: ui-monospace, "SF Mono", Menlo, monospace; word-break: break-all; }
+    .status-pending { color: #b58b00; }
+    .status-ok { color: #1a7f37; }
+    .status-error { color: #cf222e; }
+    pre {
+      background: rgba(127, 127, 127, 0.1);
+      padding: 12px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+    }
+    button {
+      font: inherit;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(127, 127, 127, 0.4);
+      background: transparent;
+      cursor: pointer;
+    }
+    button:hover { background: rgba(127, 127, 127, 0.1); }
+  </style>
+</head>
+<body>
+  <h1>Quix Plugin Starter</h1>
+  <p>Minimal demo of the Quix Plugin SDK.</p>
+
+  <div class="card">
+    <div class="label">SDK</div>
+    <div class="value" id="sdk-status">loading…</div>
+  </div>
+
+  <div class="card">
+    <div class="label">Forwarded query parameters</div>
+    <pre id="query-params">{}</pre>
+  </div>
+
+  <div class="card">
+    <div class="label">Auth token</div>
+    <div class="value" id="token-status">waiting…</div>
+    <pre id="token-claims" style="display:none"></pre>
+  </div>
+
+  <div class="card">
+    <div class="label">Navigation sync</div>
+    <p style="margin: 0 0 8px;">
+      Every <code>history.pushState</code> is mirrored to the Portal URL by the SDK.
+      Click below and watch the Portal address bar change.
+    </p>
+    <button id="nav-btn">Navigate to /demo?ts=now</button>
+  </div>
+
+  <script>
+    // Show forwarded query params (workspace, environment, etc).
+    const paramsObj = {};
+    new URLSearchParams(window.location.search).forEach((v, k) => { paramsObj[k] = v; });
+    document.getElementById('query-params').textContent = JSON.stringify(paramsObj, null, 2);
+
+    const sdkStatus = document.getElementById('sdk-status');
+    const tokenStatus = document.getElementById('token-status');
+    const tokenClaims = document.getElementById('token-claims');
+
+    if (typeof window.QuixPlugin === 'undefined') {
+      sdkStatus.textContent = 'not loaded — open me from the Portal (the SDK is served at /static/sdk/quix-plugin.js)';
+      sdkStatus.className = 'value status-error';
+      tokenStatus.textContent = 'skipped — SDK unavailable';
+      tokenStatus.className = 'value status-pending';
+    } else {
+      sdkStatus.textContent = 'loaded';
+      sdkStatus.className = 'value status-ok';
+
+      // 1. init() — idempotent. Patches history.pushState/replaceState so
+      //    in-plugin navigation is mirrored into the Portal URL, and
+      //    posts REQUEST_AUTH_TOKEN to the parent Portal.
+      // 2. onToken(fn) — fires when the Portal replies with AUTH_TOKEN.
+      //    If a token has already arrived, the callback fires immediately.
+      QuixPlugin.init().onToken((token) => {
+        tokenStatus.textContent = `received (${token.length} chars)`;
+        tokenStatus.className = 'value status-ok';
+
+        const claims = decodeJwt(token);
+        if (claims) {
+          tokenClaims.style.display = 'block';
+          tokenClaims.textContent = JSON.stringify(claims, null, 2);
+        }
+
+        // The token is a Quix bearer token — use it for Portal API calls:
+        //
+        //   fetch('https://portal-api.platform.quix.io/...', {
+        //     headers: { Authorization: `Bearer ${token}` }
+        //   })
+      });
+    }
+
+    // Demo: any pushState fires a NAVIGATE postMessage and the Portal URL updates.
+    document.getElementById('nav-btn').addEventListener('click', () => {
+      history.pushState({}, '', '/demo?ts=' + Date.now());
+    });
+
+    function decodeJwt(token) {
+      try {
+        const payload = token.split('.')[1];
+        const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+        return JSON.parse(decodeURIComponent(escape(json)));
+      } catch {
+        return null;
+      }
+    }
+  </script>
+</body>
+</html>
