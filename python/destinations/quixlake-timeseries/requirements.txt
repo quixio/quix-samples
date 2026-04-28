@@ -1,4 +1,4 @@
-quixstreams[quixdatalake]>=3.23.6
+quixstreams[quixdatalake] @ git+https://github.com/quixio/quix-streams.git@91c1bbef120ab00080cde5aa5205f68e029fc131
 python-dotenv
 
 # Blob storage support via quixportal (AWS S3, Azure, GCP, MinIO)
