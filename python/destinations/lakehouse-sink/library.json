@@ -1,6 +1,6 @@
 {
-  "libraryItemId": "quixlake-timeseries-destination",
-  "name": "Quix DataLake Timeseries Sink",
+  "libraryItemId": "lakehouse-sink",
+  "name": "Quix Lakehouse Sink",
   "language": "Python",
   "tags": {
     "Pipeline Stage": [
@@ -13,7 +13,7 @@
       "File Store"
     ]
   },
-  "shortDescription": "Consume data from a Kafka topic and write it to an AWS S3 bucket path.",
+  "shortDescription": "Stream Kafka data into the Quix Lakehouse as Hive-partitioned Parquet files, with REST Catalog table registration. On Quix Cloud, the catalog connection is auto-injected when the workspace has a Lakehouse provisioned.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
@@ -52,13 +52,13 @@
       "Name": "CATALOG_URL",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "REST Catalog URL for optional table registration (leave empty to skip)"
+      "Description": "REST Catalog URL. Auto-populated by Portal when the workspace has a Lakehouse provisioned; set explicitly here to override or to use a self-hosted catalog. Leave empty to skip catalog registration."
     },
     {
       "Name": "CATALOG_AUTH_TOKEN",
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
-      "Description": "If using a catalog, the respective auth token to access it"
+      "Description": "Bearer token for the REST Catalog. Auto-populated by Portal when the workspace has a Lakehouse provisioned; set explicitly here to override."
     },
     {
       "Name": "AUTO_DISCOVER",
@@ -81,7 +81,7 @@
       "Name": "CATALOG_NAMESPACE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Catalog namespace for table registration",
+      "Description": "Catalog namespace for table registration. Auto-populated by Portal when the workspace has a Lakehouse provisioned; defaults to \"default\".",
       "DefaultValue": "default"
     },
     {

@@ -1,4 +1,4 @@
-# Test configuration for Quix Lake Timeseries destination
+# Test configuration for Quix Lakehouse Sink destination
 # Uses only public Docker images + mock catalog service
 # timeout: 120
 
@@ -71,24 +71,24 @@ services:
     stop_grace_period: 3s
 
   # Quix Lake Timeseries destination service
-  quixlake-timeseries:
+  lakehouse-sink:
     build:
-      context: ../../../python/destinations/quixlake-timeseries
+      context: ../../../python/destinations/lakehouse-sink
       dockerfile: dockerfile
     environment:
       # Quix/Kafka configuration
       - Quix__Broker__Address=kafka:9092
-      - Quix__Consumer__Group=quixlake-ts-test
-      - Quix__Deployment__Id=test-quixlake-ts
+      - Quix__Consumer__Group=lakehouse-sink-test
+      - Quix__Deployment__Id=test-lakehouse-sink
 
       # Input topic
-      - input=test-quixlake-input
+      - input=test-lakehouse-input
 
       # Blob storage configuration (quixportal format)
       - Quix__BlobStorage__Connection__Json={"Provider":"Minio","S3Compatible":{"BucketName":"test-bucket","AccessKeyId":"minioadmin","SecretAccessKey":"minioadmin","Region":"us-east-1","ServiceUrl":"http://minio:9000"}}
 
       # Table configuration
-      - TABLE_NAME=test-quixlake-input
+      - TABLE_NAME=test-lakehouse-input
       - HIVE_COLUMNS=location,year,month,day
       - TIMESTAMP_COLUMN=ts_ms
 
@@ -104,7 +104,7 @@ services:
       - MAX_WRITE_WORKERS=5
 
       # Kafka consumer settings
-      - CONSUMER_GROUP=quixlake-ts-test-consumer
+      - CONSUMER_GROUP=lakehouse-sink-test-consumer
       - AUTO_OFFSET_RESET=earliest
       - KAFKA_KEY_DESERIALIZER=str
       - KAFKA_VALUE_DESERIALIZER=json
@@ -134,7 +134,7 @@ services:
       - Quix__Broker__Address=kafka:9092
 
       # Test configuration
-      - TEST_INPUT_TOPIC=test-quixlake-input
+      - TEST_INPUT_TOPIC=test-lakehouse-input
       - TEST_MESSAGE_COUNT=6
 
       # S3 configuration for verification
@@ -145,7 +145,7 @@ services:
       - S3_PREFIX=data-lake/time-series
 
       # Expected table configuration
-      - TABLE_NAME=test-quixlake-input
+      - TABLE_NAME=test-lakehouse-input
       - HIVE_COLUMNS=location,year,month,day
 
       # Mock catalog URL for verification
@@ -159,7 +159,7 @@ services:
         echo '=== Producing test messages to Kafka ===' &&
         python /tests/produce_test_data.py &&
         echo '' &&
-        echo '=== Waiting for quixlake-timeseries to process messages ===' &&
+        echo '=== Waiting for lakehouse-sink to process messages ===' &&
         sleep 20 &&
         echo '' &&
         echo '=== Verifying Parquet data in S3 ===' &&
@@ -182,7 +182,7 @@ services:
         condition: service_healthy
       mock-catalog:
         condition: service_healthy
-      quixlake-timeseries:
+      lakehouse-sink:
         condition: service_started
     stop_grace_period: 3s
 

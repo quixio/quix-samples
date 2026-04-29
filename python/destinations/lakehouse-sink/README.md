@@ -1,13 +1,15 @@
-# Quix DataLake Sink
+# Quix Lakehouse Sink
 
-This connector consumes time-series data from a Kafka topic and writes it to blob storage as Hive-partitioned Parquet files, with optional Quix catalog registration for data lake query API.
+Stream Kafka data into the Quix Lakehouse as Hive-partitioned Parquet files, with REST Catalog table registration. On Quix Cloud, when the workspace has a Lakehouse provisioned, the catalog connection (`CATALOG_URL`, `CATALOG_AUTH_TOKEN`, `CATALOG_NAMESPACE`) is auto-injected by Portal as defaults — you only set them explicitly to override (for example, to point at a self-hosted catalog or skip registration). Outside Quix Cloud, set the catalog variables manually as you would any other deployment variable.
+
+> **⚠️ Breaking change — connector identifier rename.** The library identifier for this connector has changed from `quixlake-timeseries-destination` to `lakehouse-sink`. Existing deployments that resolve the connector by the old ID will need to be updated, and any external links / catalog index entries pointing at `quixlake-timeseries-destination` will stop resolving. Coordinate the Connector Library catalog update with this change.
 
 ## Features
 
 - **Multi-Cloud Storage**: Supports AWS S3, Azure Blob Storage, GCP, MinIO via Quix platform blob storage binding
 - **Hive Partitioning**: Automatically partition data by any columns (e.g., location, sensor type, year/month/day/hour)
 - **Time-based Partitioning**: Extract year/month/day/hour from timestamp columns for efficient time-based queries
-- **Quix Catalog Integration**: Optional table registration in a REST Catalog for seamless integration with analytics tools
+- **Lakehouse Catalog Integration**: Auto-injected on Quix Cloud, configurable for self-hosted catalogs
 - **Efficient Batching**: Configurable batch sizes and parallel uploads for high throughput
 - **Schema Evolution**: Automatic schema detection from data
 - **Partition Validation**: Prevents data corruption by validating partition strategies against existing tables
@@ -40,17 +42,19 @@ Then either:
 - **`TIMESTAMP_COLUMN`**: Column containing timestamp values to extract year/month/day/hour from
   *Default*: `ts_ms`
 
-### Catalog Integration (Optional)
+### Catalog Integration
 
-- **`CATALOG_URL`**: REST Catalog URL for optional table registration (leave empty to skip)
+On Quix Cloud, when the workspace has a Lakehouse provisioned, Portal auto-injects sensible defaults for `CATALOG_URL`, `CATALOG_AUTH_TOKEN`, and `CATALOG_NAMESPACE`. Set the variables explicitly on the deployment to override (for example, to point at a self-hosted catalog or skip registration entirely).
+
+- **`CATALOG_URL`**: REST Catalog URL. Auto-populated by Portal when a Lakehouse is provisioned; leave empty to skip catalog registration.
   *Example*: `https://catalog.example.com/api/v1`
 
-- **`CATALOG_AUTH_TOKEN`**: If using a catalog, the respective auth token to access it
+- **`CATALOG_AUTH_TOKEN`**: Bearer token for the REST Catalog. Auto-populated by Portal when a Lakehouse is provisioned.
 
 - **`AUTO_DISCOVER`**: Automatically register table in REST Catalog on first write
   *Default*: `true`
 
-- **`CATALOG_NAMESPACE`**: Catalog namespace for table registration
+- **`CATALOG_NAMESPACE`**: Catalog namespace for table registration. Auto-populated by Portal; defaults to `"default"`.
   *Default*: `default`
 
 ### Kafka Configuration

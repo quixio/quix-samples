@@ -45,7 +45,7 @@ def main():
     secret_key = os.getenv("AWS_SECRET_ACCESS_KEY", "minioadmin")
     bucket_name = os.getenv("S3_BUCKET", "test-bucket")
     s3_prefix = os.getenv("S3_PREFIX", "data")
-    table_name = os.getenv("TABLE_NAME", "test-quixlake-input")
+    table_name = os.getenv("TABLE_NAME", "test-lakehouse-input")
     hive_columns = os.getenv("HIVE_COLUMNS", "location,year,month,day")
     expected_message_count = int(os.getenv("TEST_MESSAGE_COUNT", "10"))
 

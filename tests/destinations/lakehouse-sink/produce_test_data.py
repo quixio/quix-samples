@@ -13,7 +13,7 @@ from quixstreams import Application
 
 def main():
     broker_address = os.getenv("Quix__Broker__Address", "kafka:9092")
-    topic_name = os.getenv("TEST_INPUT_TOPIC", "test-quixlake-input")
+    topic_name = os.getenv("TEST_INPUT_TOPIC", "test-lakehouse-input")
     message_count = int(os.getenv("TEST_MESSAGE_COUNT", "10"))
 
     print(f"Producing {message_count} test messages to topic: {topic_name}")
