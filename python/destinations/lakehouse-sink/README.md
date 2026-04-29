@@ -44,17 +44,14 @@ Then either:
 
 ### Catalog Integration
 
-On Quix Cloud, when the workspace has a Lakehouse provisioned, Portal auto-injects sensible defaults for `CATALOG_URL`, `CATALOG_AUTH_TOKEN`, and `CATALOG_NAMESPACE`. Set the variables explicitly on the deployment to override (for example, to point at a self-hosted catalog or skip registration entirely).
+On Quix Cloud, when the workspace has a Lakehouse provisioned, Portal auto-injects `CATALOG_URL` and `CATALOG_AUTH_TOKEN` at deployment time — they are NOT exposed as form fields when you set up the connector. To override (for example, to point at a self-hosted catalog or skip registration entirely), add them as deployment variables on the deployed sink after creation. To disable catalog registration, set `CATALOG_URL` to an empty value as a deployment variable.
 
-- **`CATALOG_URL`**: REST Catalog URL. Auto-populated by Portal when a Lakehouse is provisioned; leave empty to skip catalog registration.
-  *Example*: `https://catalog.example.com/api/v1`
-
-- **`CATALOG_AUTH_TOKEN`**: Bearer token for the REST Catalog. Auto-populated by Portal when a Lakehouse is provisioned.
+The following catalog variables remain configurable from the connector setup form:
 
 - **`AUTO_DISCOVER`**: Automatically register table in REST Catalog on first write
   *Default*: `true`
 
-- **`CATALOG_NAMESPACE`**: Catalog namespace for table registration. Auto-populated by Portal; defaults to `"default"`.
+- **`CATALOG_NAMESPACE`**: Catalog namespace for table registration
   *Default*: `default`
 
 ### Kafka Configuration

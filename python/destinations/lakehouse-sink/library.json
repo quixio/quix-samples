@@ -49,18 +49,6 @@
       "DefaultValue": "ts_ms"
     },
     {
-      "Name": "CATALOG_URL",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "REST Catalog URL. Auto-populated by Portal when the workspace has a Lakehouse provisioned; set explicitly here to override or to use a self-hosted catalog. Leave empty to skip catalog registration."
-    },
-    {
-      "Name": "CATALOG_AUTH_TOKEN",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Bearer token for the REST Catalog. Auto-populated by Portal when the workspace has a Lakehouse provisioned; set explicitly here to override."
-    },
-    {
       "Name": "AUTO_DISCOVER",
       "Type": "EnvironmentVariable",
       "InputType": "Options",
