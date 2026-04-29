@@ -218,7 +218,11 @@ def main():
     print(f"✓ Catalog received {verification['total_requests']} total request(s)")
     print()
 
-    sys.exit(0)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    # Bypass interpreter shutdown to avoid the pyarrow C++ thread-pool teardown race
+    # that surfaces as SIGABRT (exit 134) — same issue as in verify_output.py.
+    os._exit(0)
 
 
 if __name__ == "__main__":

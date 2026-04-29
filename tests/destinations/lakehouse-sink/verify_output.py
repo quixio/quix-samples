@@ -75,12 +75,18 @@ def main():
 
     max_attempts = 45  # 45 attempts * 2s = 90s max wait for CI environments
     found_files = []
+    total_rows = 0
 
-    print(f"\nLooking for Parquet files in s3://{bucket_name}/{table_prefix}")
+    print(f"\nLooking for Parquet files in s3://{bucket_name}/{table_prefix} with at least {expected_message_count} total rows")
 
-    # Retry logic with polling
+    # Retry logic with polling.
+    # We poll for total row count, not just file presence — the sink writes batches across
+    # multiple files (one per Hive partition), and listing the bucket can return a partial
+    # set if we read between batches. Breaking the poll on the first file found races with
+    # the sink and produces "found N records, expected M" verification failures.
     for attempt in range(max_attempts):
         found_files = []
+        total_rows = 0
 
         try:
             # List all objects under the table prefix
@@ -94,20 +100,34 @@ def main():
                         # Only include .parquet files (skip directory markers)
                         if key.endswith('.parquet'):
                             found_files.append(key)
-                            print(f"Found file: {key} (size: {obj['Size']} bytes)")
+
+            # Sum row counts across all parquet files to know if the sink has finished
+            # processing the expected number of messages.
+            for key in found_files:
+                try:
+                    obj_response = s3_client.get_object(Bucket=bucket_name, Key=key)
+                    parquet_bytes = obj_response['Body'].read()
+                    total_rows += pq.read_table(BytesIO(parquet_bytes)).num_rows
+                except Exception as e:
+                    # Treat read errors during polling as "not ready yet" — try again.
+                    print(f"  (warning: failed to read {key} during poll: {e})")
+                    total_rows = -1
+                    break
 
         except Exception as e:
             print(f"Error listing objects: {e}")
 
-        if len(found_files) > 0:
-            print(f"\n✓ Found {len(found_files)} Parquet file(s)")
+        if total_rows >= expected_message_count:
+            print(f"\n✓ Found {len(found_files)} Parquet file(s) with {total_rows} total rows (>= expected {expected_message_count})")
+            for key in found_files:
+                print(f"  {key}")
             break
 
-        print(f"Attempt {attempt + 1}/{max_attempts}: No files found yet, waiting...")
+        print(f"Attempt {attempt + 1}/{max_attempts}: have {len(found_files)} file(s) / {max(total_rows,0)} row(s), waiting for >= {expected_message_count} rows...")
         time.sleep(2)
 
-    if len(found_files) == 0:
-        print(f"\n✗ FAILED: No Parquet files found after {max_attempts} attempts")
+    if total_rows < expected_message_count:
+        print(f"\n✗ FAILED: After {max_attempts} attempts, found {len(found_files)} file(s) with {max(total_rows,0)} rows; expected >= {expected_message_count}.")
         sys.exit(1)
 
     # Validate partition structure
@@ -277,7 +297,13 @@ def main():
     print("\n" + "="*60)
     print("✓ ALL VALIDATIONS PASSED")
     print("="*60)
-    sys.exit(0)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    # os._exit bypasses Python interpreter shutdown so we don't race with pyarrow's
+    # C++ thread-pool destructors. They occasionally throw during teardown
+    # ("terminate called without an active exception") → SIGABRT (exit 134) → docker
+    # compose returns 134 → test.py reports FAILED even though all assertions passed.
+    os._exit(0)
 
 
 if __name__ == "__main__":
