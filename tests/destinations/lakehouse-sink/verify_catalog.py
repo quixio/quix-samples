@@ -1,5 +1,5 @@
 """
-Verify catalog integration for Quix Lake Timeseries destination tests.
+Verify catalog integration for Quix Lakehouse Sink integration tests.
 
 Tests that the sink correctly interacts with the REST Catalog:
 1. Tables are created/registered

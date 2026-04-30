@@ -65,7 +65,9 @@ def parse_hive_columns(columns_str: str) -> list:
 # Initialize Quix Streams Application
 app = Application(
     consumer_group=os.getenv("CONSUMER_GROUP", "s3_direct_sink_v1.0"),
-    auto_offset_reset=os.getenv("AUTO_OFFSET_RESET", "latest"),
+    # Default mirrors library.json + README, so running the sink outside Quix Cloud (without
+    # the deployment-variable layer) behaves the same as a Cloud deployment with the form default.
+    auto_offset_reset=os.getenv("AUTO_OFFSET_RESET", "earliest"),
     commit_interval=_positive_int("COMMIT_INTERVAL", "30"),
     commit_every=_positive_int("BATCH_SIZE", "1000")
 )
@@ -99,8 +101,10 @@ blob_sink = QuixTSDataLakeSink(
     namespace=os.getenv("CATALOG_NAMESPACE", "default"),
     auto_create_bucket=True,
     max_workers=_positive_int("MAX_WRITE_WORKERS", "10"),
-    on_client_connect_success=lambda: print("CONNECTED!"),
-    on_client_connect_failure=lambda e: print(f"ERROR! {e}"),
+    # Route connect callbacks through the configured logger so the messages get the same
+    # timestamp / level formatting as the rest of the sink output (instead of bare stdout writes).
+    on_client_connect_success=lambda: logger.info("Lakehouse Catalog connection established"),
+    on_client_connect_failure=lambda e: logger.error("Lakehouse Catalog connection failed: %s", e),
 )
 
 # Create streaming dataframe and attach sink

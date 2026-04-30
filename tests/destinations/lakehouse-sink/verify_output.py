@@ -1,5 +1,5 @@
 """
-Verify output for Quix Lake Timeseries destination tests.
+Verify output for Quix Lakehouse Sink integration tests.
 
 Validates that:
 1. Parquet files are written to S3 with correct Hive partitioning

@@ -1,5 +1,5 @@
 """
-Produce test data for Quix Lake Timeseries destination tests.
+Produce test data for Quix Lakehouse Sink integration tests.
 
 Generates test messages with timestamps and partitionable fields (location, sensor_type)
 to verify Hive partitioning and time-based partitioning functionality.

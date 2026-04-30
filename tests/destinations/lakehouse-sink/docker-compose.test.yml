@@ -70,7 +70,7 @@ services:
       retries: 10
     stop_grace_period: 3s
 
-  # Quix Lake Timeseries destination service
+  # Quix Lakehouse Sink destination under test
   lakehouse-sink:
     build:
       context: ../../../python/destinations/lakehouse-sink
