@@ -8,10 +8,6 @@ Blob storage is configured via the Quix__BlobStorage__Connection__Json environme
 which is automatically handled by the quixportal library. The bucket name is extracted
 automatically from this configuration.
 
-On Quix Cloud, when the workspace has a Lakehouse provisioned, Portal also auto-injects
-CATALOG_URL, CATALOG_AUTH_TOKEN, and CATALOG_NAMESPACE as defaults — set the deployment
-variables explicitly to override.
-
 File paths follow the workspace-aware structure:
     {workspaceId}/data-lake/time-series/{table_name}/...
 """

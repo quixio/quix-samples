@@ -13,7 +13,7 @@
       "File Store"
     ]
   },
-  "shortDescription": "Stream Kafka data into the Quix Lakehouse as Hive-partitioned Parquet files, with REST Catalog table registration. On Quix Cloud, the catalog connection is auto-injected when the workspace has a Lakehouse provisioned.",
+  "shortDescription": "Consume data from a Kafka topic and write it to blob storage as Hive-partitioned Parquet files, with optional Quix Lakehouse catalog registration.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
@@ -69,7 +69,7 @@
       "Name": "CATALOG_NAMESPACE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Catalog namespace for table registration. Auto-populated by Portal when the workspace has a Lakehouse provisioned; defaults to \"default\".",
+      "Description": "Catalog namespace for table registration",
       "DefaultValue": "default"
     },
     {
