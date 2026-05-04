@@ -1,13 +1,13 @@
-# Quix DataLake Sink
+# Quix Lakehouse Sink
 
-This connector consumes time-series data from a Kafka topic and writes it to blob storage as Hive-partitioned Parquet files, with optional Quix catalog registration for data lake query API.
+This connector consumes time-series data from a Kafka topic and writes it to blob storage as Hive-partitioned Parquet files, with optional Quix Lakehouse catalog registration for the lakehouse query API.
 
 ## Features
 
 - **Multi-Cloud Storage**: Supports AWS S3, Azure Blob Storage, GCP, MinIO via Quix platform blob storage binding
 - **Hive Partitioning**: Automatically partition data by any columns (e.g., location, sensor type, year/month/day/hour)
 - **Time-based Partitioning**: Extract year/month/day/hour from timestamp columns for efficient time-based queries
-- **Quix Catalog Integration**: Optional table registration in a REST Catalog for seamless integration with analytics tools
+- **Quix Lakehouse Catalog Integration**: Optional table registration in a REST Catalog for seamless integration with analytics tools
 - **Efficient Batching**: Configurable batch sizes and parallel uploads for high throughput
 - **Schema Evolution**: Automatic schema detection from data
 - **Partition Validation**: Prevents data corruption by validating partition strategies against existing tables
@@ -42,10 +42,7 @@ Then either:
 
 ### Catalog Integration (Optional)
 
-- **`CATALOG_URL`**: REST Catalog URL for optional table registration (leave empty to skip)
-  *Example*: `https://catalog.example.com/api/v1`
-
-- **`CATALOG_AUTH_TOKEN`**: If using a catalog, the respective auth token to access it
+On Quix Cloud, when the workspace has a Lakehouse provisioned, `CATALOG_URL` and `CATALOG_AUTH_TOKEN` are auto-injected by the platform at deployment time. To use a self-hosted catalog or to skip registration, set these as deployment variables on the deployed sink.
 
 - **`AUTO_DISCOVER`**: Automatically register table in REST Catalog on first write
   *Default*: `true`

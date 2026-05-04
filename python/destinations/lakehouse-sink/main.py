@@ -1,5 +1,5 @@
 """
-Quix TS Datalake Sink - Main Entry Point
+Quix Lakehouse Sink - Main Entry Point
 
 This application consumes data from a Kafka topic and writes it to blob storage as
 Hive-partitioned Parquet files with optional Iceberg catalog registration.
@@ -107,7 +107,7 @@ sdf.sink(blob_sink)
 
 # Log startup configuration
 storage_path = f"{workspace_id}/{TIMESERIES_PREFIX}" if workspace_id else TIMESERIES_PREFIX
-logger.info("Starting Quix TS Datalake Sink")
+logger.info("Starting Quix Lakehouse Sink")
 logger.info(f"  Input topic: {os.environ['input']}")
 logger.info(f"  Storage path: {storage_path}/{table_name}")
 logger.info(f"  Partitioning: {hive_columns if hive_columns else 'none'}")

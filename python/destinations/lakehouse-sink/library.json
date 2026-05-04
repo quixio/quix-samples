@@ -1,6 +1,6 @@
 {
-  "libraryItemId": "quixlake-timeseries-destination",
-  "name": "Quix DataLake Timeseries Sink",
+  "libraryItemId": "lakehouse-sink",
+  "name": "Quix Lakehouse Sink",
   "language": "Python",
   "tags": {
     "Pipeline Stage": [
@@ -13,7 +13,7 @@
       "File Store"
     ]
   },
-  "shortDescription": "Consume data from a Kafka topic and write it to an AWS S3 bucket path.",
+  "shortDescription": "Consume data from a Kafka topic and write it to blob storage as Hive-partitioned Parquet files, with optional Quix Lakehouse catalog registration.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",
@@ -47,18 +47,6 @@
       "InputType": "FreeText",
       "Description": "Column containing timestamp values to extract year/month/day/hour from",
       "DefaultValue": "ts_ms"
-    },
-    {
-      "Name": "CATALOG_URL",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "REST Catalog URL for optional table registration (leave empty to skip)"
-    },
-    {
-      "Name": "CATALOG_AUTH_TOKEN",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "If using a catalog, the respective auth token to access it"
     },
     {
       "Name": "AUTO_DISCOVER",
