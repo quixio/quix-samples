@@ -1,0 +1,28 @@
+# Upstream Debian 12 (bookworm) CVEs with no fix available as of 2026-05-05.
+# These affect the python:3.12-slim-bookworm base image used by Python samples.
+# Re-evaluate after expiry — Debian may have backported fixes by then.
+
+# zlib1g — buffer overflow in MiniZip (3rd-party, not used by Python core).
+CVE-2023-45853 exp:2026-06-04
+
+# libncursesw6 / libtinfo6 / ncurses-base / ncurses-bin — terminfo parser issue.
+CVE-2025-69720 exp:2026-06-04
+
+# libsqlite3-0 — heap corruption via malformed inputs to optional fts3 extension.
+CVE-2025-7458 exp:2026-06-04
+
+# libc-bin / libc6 — glibc parsing edge case.
+CVE-2026-0861 exp:2026-06-04
+
+# libsystemd0 / libudev1 — present only because installed; sample images do not run systemd.
+CVE-2026-29111 exp:2026-06-04
+
+# libgnutls30 — TLS library; Python uses OpenSSL by default, gnutls path not exercised.
+CVE-2026-33845 exp:2026-06-04
+CVE-2026-33846 exp:2026-06-04
+
+# libgcrypt20 — pulled in transitively; not used at runtime by samples.
+CVE-2026-41989 exp:2026-06-04
+
+# libcap2 — capability library; samples run as root in container, capabilities unused.
+CVE-2026-4878 exp:2026-06-04
