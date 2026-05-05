@@ -1,0 +1,88 @@
+{
+  "libraryItemId": "variable-groups-demo",
+  "name": "Variable Groups Demo",
+  "language": "Python",
+  "IsHighlighted": false,
+  "DisplayOrder": 99,
+  "tags": {
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Demos"
+    ],
+    "Complexity": [
+      "Easy"
+    ]
+  },
+  "shortDescription": "Demonstrates the new ProjectVariable and Variable Group input types end-to-end.",
+  "longDescription": "Reference example for the redesigned variable system. Shows how a single library item can declare a Variable Group schema (InputType: Group) with nested keys plus a Project Variable reference (InputType: ProjectVariable). On deployment, the group is expanded into per-key environment variables (with secret keys delivered via Kubernetes secrets) and the project variable is resolved to its value. The container logs the resolved values so the runtime injection can be verified directly.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Output topic to write a heartbeat message into.",
+      "DefaultValue": "vargroup-demo-out",
+      "Required": true
+    },
+    {
+      "Name": "LOG_LEVEL",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Logging level for the demo container.",
+      "DefaultValue": "INFO",
+      "Required": false
+    },
+    {
+      "Name": "API_KEY",
+      "Type": "EnvironmentVariable",
+      "InputType": "ProjectVariable",
+      "Description": "Reference to a Project Variable that holds an API key.",
+      "DefaultValue": "demo_api_key",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_CONNECTION",
+      "Type": "EnvironmentVariable",
+      "InputType": "Group",
+      "Description": "Variable Group describing an InfluxDB connection. The selected value set's keys are injected as individual environment variables at runtime.",
+      "DefaultValue": "influxdb-demo",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "INFLUXDB_HOST",
+          "Description": "InfluxDB hostname.",
+          "DefaultValue": "localhost",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB_PORT",
+          "Description": "InfluxDB port.",
+          "DefaultValue": "8086",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB_TOKEN",
+          "Description": "InfluxDB API token.",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Job",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": false
+  }
+}
