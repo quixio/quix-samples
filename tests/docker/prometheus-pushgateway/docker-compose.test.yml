@@ -1,0 +1,12 @@
+# Build-only test for docker/prometheus-pushgateway.
+# The upstream image is FROM scratch (no shell), so we invoke the
+# pushgateway binary itself with --version which prints and exits cleanly.
+
+services:
+  pushgateway:
+    build:
+      context: ../../../docker/prometheus-pushgateway
+      dockerfile: dockerfile
+    entrypoint: ["/bin/pushgateway"]
+    command: ["--version"]
+    stop_grace_period: 3s

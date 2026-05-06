@@ -1,0 +1,16 @@
+# Build-only test for python/others/streamlit.
+# Verifies the image builds, main.py is syntactically valid, and
+# streamlit is importable in the resulting environment.
+
+services:
+  streamlit:
+    build:
+      context: ../../../python/others/streamlit
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        python -m py_compile main.py &&
+        python -c 'import streamlit' &&
+        echo 'Success: build + py_compile + import check passed'
+      "
+    stop_grace_period: 3s

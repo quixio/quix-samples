@@ -1,0 +1,17 @@
+# Build-only test for python/others/marimo.
+# Pulls quixpublic.azurecr.io/devsessions-marimo:stable, layers in main.py
+# + requirements.txt, then verifies the notebook is loadable and marimo
+# is importable.
+
+services:
+  marimo:
+    build:
+      context: ../../../python/others/marimo
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        python -m py_compile /app/main.py &&
+        python -c 'import marimo' &&
+        echo 'Success: build + py_compile + import check passed'
+      "
+    stop_grace_period: 3s

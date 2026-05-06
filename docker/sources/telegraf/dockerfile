@@ -1,5 +1,5 @@
 # Use the official Telegraf image for the final container
-FROM telegraf:latest
+FROM telegraf:1.38.3
 
 # Copy custom Telegraf configuration
 COPY telegraf.conf /etc/telegraf/telegraf.conf

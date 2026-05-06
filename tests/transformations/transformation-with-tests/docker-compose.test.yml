@@ -1,0 +1,14 @@
+# Build-only test for transformation-with-tests.
+# Verifies the image builds and main.py is syntactically valid.
+
+services:
+  transformation-with-tests:
+    build:
+      context: ../../../python/transformations/transformation-with-tests
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        python -m py_compile main.py &&
+        echo 'Success: build + py_compile passed'
+      "
+    stop_grace_period: 3s

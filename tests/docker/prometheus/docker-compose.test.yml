@@ -1,0 +1,15 @@
+# Build-only test for docker/prometheus.
+# Verifies the image builds and prometheus.yml + init.sh are in place.
+
+services:
+  prometheus:
+    build:
+      context: ../../../docker/prometheus
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /init.sh &&
+        test -f /etc/prometheus/prometheus.yml &&
+        echo 'Success: build + layout check passed'
+      "
+    stop_grace_period: 3s

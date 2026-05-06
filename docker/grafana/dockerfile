@@ -1,5 +1,5 @@
 # Use the official Grafana image from the Docker Hub
-FROM grafana/grafana:11.5.2
+FROM grafana/grafana:11.5.10
 
 COPY provisioning/ /provisioning
 

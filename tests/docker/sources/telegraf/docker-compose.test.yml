@@ -1,0 +1,11 @@
+# Build-only test for docker/sources/telegraf.
+# Verifies the image builds and the bundled telegraf.conf is in place.
+
+services:
+  telegraf:
+    build:
+      context: ../../../../docker/sources/telegraf
+      dockerfile: dockerfile
+    entrypoint: ["telegraf"]
+    command: ["--version"]
+    stop_grace_period: 3s

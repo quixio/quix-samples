@@ -1,0 +1,15 @@
+# Build-only test for docker/grafana.
+# Verifies the image builds and the init script + provisioning are in place.
+
+services:
+  grafana:
+    build:
+      context: ../../../docker/grafana
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /init.sh &&
+        test -d /provisioning &&
+        echo 'Success: build + layout check passed'
+      "
+    stop_grace_period: 3s

@@ -161,6 +161,15 @@ def get_changes(
         cursor.execute("SELECT sys.fn_cdc_get_max_lsn()")
         to_lsn = cursor.fetchone()[0]
 
+    # fn_cdc_get_all_changes_<x> raises error 313 ("insufficient arguments")
+    # for two NULL/range scenarios:
+    #   * Either LSN is NULL — capture job hasn't published an LSN yet.
+    #   * from_lsn > to_lsn — happens after consuming a batch and
+    #     incrementing past the current max while no new changes exist.
+    if from_lsn is None or to_lsn is None or from_lsn > to_lsn:
+        cursor.close()
+        return []
+
     # Get changes using CDC function
     # fn_cdc_get_all_changes takes 3 parameters (from_lsn, to_lsn, row_filter_option)
     query = f"""
