@@ -180,3 +180,7 @@ CVE-2025-26646 exp:2026-06-04
 CVE-2025-55247 exp:2026-06-04
 CVE-2026-26171 exp:2026-06-04
 CVE-2026-33116 exp:2026-06-04
+
+# Bundled npm tooling in node:22-bookworm-slim (nodejs/* builder stages).
+# picomatch in npm's transitive deps — needs Node image rebuild.
+CVE-2026-33671 exp:2026-06-04
