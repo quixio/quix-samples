@@ -3,12 +3,18 @@
 # ghcr.io/quixio/mongodb-backup-manager image. This test verifies that
 # the upstream image is reachable and pullable, and that its bundled
 # Python entrypoint is present where expected.
+#
+# The upstream image is amd64-only; pin the platform so this builds on
+# arm64 hosts via qemu emulation.
 
 services:
   backup-manager-prebuilt:
+    platform: linux/amd64
     build:
       context: ../../../managed/backup-manager-prebuilt
       dockerfile: dockerfile
+      platforms:
+        - linux/amd64
     entrypoint: >
       sh -c "
         python3 -c 'import flask, apscheduler' &&
