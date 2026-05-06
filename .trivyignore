@@ -28,14 +28,18 @@ CVE-2026-41989 exp:2026-06-04
 CVE-2026-4878 exp:2026-06-04
 
 # ----------------------------------------------------------------------------
-# Additional Debian bookworm unfixables surfaced by docker/influxdb1 (1.12).
+# EOL-image CVEs — review only on yearly cadence.
+# Proper resolution is sample retirement, not an upstream patch. InfluxDB 1.x
+# went EOL in mid-2024; InfluxData will not publish new 1.x images even when
+# Debian backports the underlying fix. Re-evaluate annually whether to keep
+# docker/influxdb1 in the repo at all.
 # ----------------------------------------------------------------------------
 
 # libldap-2.5-0 — old buffer overflow; influxdb 1.x does not use LDAP auth.
-CVE-2023-2953 exp:2026-06-04
+CVE-2023-2953 exp:2027-05-06
 
 # libnghttp2-14 — HTTP/2 implementation; influxdb 1.x exposes HTTP/1.1 only.
-CVE-2026-27135 exp:2026-06-04
+CVE-2026-27135 exp:2027-05-06
 
 # ----------------------------------------------------------------------------
 # Vendor-binary CVEs in docker/ samples that require an upstream image rebuild.
@@ -77,13 +81,21 @@ CVE-2025-22868 exp:2026-06-04
 CVE-2025-47907 exp:2026-06-04
 CVE-2025-58183 exp:2026-06-04
 
-# runc CVEs vendored into influxdb 2.x — historic, container runtime not
-# exposed by the database itself.
-CVE-2023-27561 exp:2026-06-04
-CVE-2024-21626 exp:2026-06-04
-CVE-2025-31133 exp:2026-06-04
-CVE-2025-52565 exp:2026-06-04
-CVE-2025-52881 exp:2026-06-04
+# ----------------------------------------------------------------------------
+# Frozen-bundle CVEs in influxdb 2.x — review only on yearly cadence.
+# InfluxDB 2.x is in maintenance-only mode (3.x is the active development
+# line). The vendored runc 1.1.0 and pre-Go-1.20 stdlib below come from
+# bundled tools that InfluxData has not rebuilt in years and is unlikely to.
+# Proper resolution is migrating docker/influxdb2 to influxdb 3.x.
+# ----------------------------------------------------------------------------
+
+# runc 1.1.0 vendored into influxdb 2.x — container runtime not exposed by
+# the database itself.
+CVE-2023-27561 exp:2027-05-06
+CVE-2024-21626 exp:2027-05-06
+CVE-2025-31133 exp:2027-05-06
+CVE-2025-52565 exp:2027-05-06
+CVE-2025-52881 exp:2027-05-06
 
 # minio-specific vulnerabilities — track upstream releases at
 # https://github.com/minio/minio/releases for fixes.
@@ -95,43 +107,42 @@ CVE-2026-39414 exp:2026-06-04
 GHSA-9c4q-hq6p-c237 exp:2026-06-04
 GHSA-hv4r-mvr4-25vw exp:2026-06-04
 
-# Pre-1.20 Go stdlib CVEs in influxdb 2.7.x (built with Go 1.18.2 internally
-# for one or more bundled tools). Will only clear when InfluxData rebuilds
-# the entire 2.x line on a current Go.
-CVE-2023-24538 exp:2026-06-04
-CVE-2023-24540 exp:2026-06-04
-CVE-2024-24790 exp:2026-06-04
-CVE-2022-27664 exp:2026-06-04
-CVE-2022-28131 exp:2026-06-04
-CVE-2022-2879 exp:2026-06-04
-CVE-2022-2880 exp:2026-06-04
-CVE-2022-29804 exp:2026-06-04
-CVE-2022-30580 exp:2026-06-04
-CVE-2022-30630 exp:2026-06-04
-CVE-2022-30631 exp:2026-06-04
-CVE-2022-30632 exp:2026-06-04
-CVE-2022-30633 exp:2026-06-04
-CVE-2022-30634 exp:2026-06-04
-CVE-2022-30635 exp:2026-06-04
-CVE-2022-32189 exp:2026-06-04
-CVE-2022-41715 exp:2026-06-04
-CVE-2022-41716 exp:2026-06-04
-CVE-2022-41720 exp:2026-06-04
-CVE-2022-41722 exp:2026-06-04
-CVE-2022-41723 exp:2026-06-04
-CVE-2022-41724 exp:2026-06-04
-CVE-2022-41725 exp:2026-06-04
-CVE-2023-24534 exp:2026-06-04
-CVE-2023-24536 exp:2026-06-04
-CVE-2023-24537 exp:2026-06-04
-CVE-2023-24539 exp:2026-06-04
-CVE-2023-29400 exp:2026-06-04
-CVE-2023-29403 exp:2026-06-04
-CVE-2023-39325 exp:2026-06-04
-CVE-2023-45283 exp:2026-06-04
-CVE-2023-45287 exp:2026-06-04
-CVE-2023-45288 exp:2026-06-04
-CVE-2024-34156 exp:2026-06-04
+# Pre-Go-1.20 stdlib CVEs from a tool built with Go 1.18.2 and bundled into
+# influxdb 2.7.x. Same yearly cadence — InfluxData is unlikely to rebuild.
+CVE-2023-24538 exp:2027-05-06
+CVE-2023-24540 exp:2027-05-06
+CVE-2024-24790 exp:2027-05-06
+CVE-2022-27664 exp:2027-05-06
+CVE-2022-28131 exp:2027-05-06
+CVE-2022-2879 exp:2027-05-06
+CVE-2022-2880 exp:2027-05-06
+CVE-2022-29804 exp:2027-05-06
+CVE-2022-30580 exp:2027-05-06
+CVE-2022-30630 exp:2027-05-06
+CVE-2022-30631 exp:2027-05-06
+CVE-2022-30632 exp:2027-05-06
+CVE-2022-30633 exp:2027-05-06
+CVE-2022-30634 exp:2027-05-06
+CVE-2022-30635 exp:2027-05-06
+CVE-2022-32189 exp:2027-05-06
+CVE-2022-41715 exp:2027-05-06
+CVE-2022-41716 exp:2027-05-06
+CVE-2022-41720 exp:2027-05-06
+CVE-2022-41722 exp:2027-05-06
+CVE-2022-41723 exp:2027-05-06
+CVE-2022-41724 exp:2027-05-06
+CVE-2022-41725 exp:2027-05-06
+CVE-2023-24534 exp:2027-05-06
+CVE-2023-24536 exp:2027-05-06
+CVE-2023-24537 exp:2027-05-06
+CVE-2023-24539 exp:2027-05-06
+CVE-2023-29400 exp:2027-05-06
+CVE-2023-29403 exp:2027-05-06
+CVE-2023-39325 exp:2027-05-06
+CVE-2023-45283 exp:2027-05-06
+CVE-2023-45287 exp:2027-05-06
+CVE-2023-45288 exp:2027-05-06
+CVE-2024-34156 exp:2027-05-06
 
 # Alpine OS package CVEs in grafana 11.5.10 (image base is alpine:3.21+).
 # Grafana publishes a new image every patch, but only when releasing a new
