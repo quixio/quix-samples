@@ -28,11 +28,10 @@ CVE-2026-41989 exp:2026-06-04
 CVE-2026-4878 exp:2026-06-04
 
 # ----------------------------------------------------------------------------
-# EOL-image CVEs — review only on yearly cadence.
-# Proper resolution is sample retirement, not an upstream patch. InfluxDB 1.x
-# went EOL in mid-2024; InfluxData will not publish new 1.x images even when
-# Debian backports the underlying fix. Re-evaluate annually whether to keep
-# docker/influxdb1 in the repo at all.
+# EOL-image CVEs — yearly review cadence.
+# InfluxDB 1.x went EOL in mid-2024; InfluxData will not publish new 1.x
+# images even when Debian backports the underlying fix. Monthly re-scans
+# would never find a fix, so these are tracked annually instead.
 # ----------------------------------------------------------------------------
 
 # libldap-2.5-0 — old buffer overflow; influxdb 1.x does not use LDAP auth.
@@ -82,11 +81,11 @@ CVE-2025-47907 exp:2026-06-04
 CVE-2025-58183 exp:2026-06-04
 
 # ----------------------------------------------------------------------------
-# Frozen-bundle CVEs in influxdb 2.x — review only on yearly cadence.
+# Frozen-bundle CVEs in influxdb 2.x — yearly review cadence.
 # InfluxDB 2.x is in maintenance-only mode (3.x is the active development
 # line). The vendored runc 1.1.0 and pre-Go-1.20 stdlib below come from
-# bundled tools that InfluxData has not rebuilt in years and is unlikely to.
-# Proper resolution is migrating docker/influxdb2 to influxdb 3.x.
+# bundled tools InfluxData has not rebuilt in years; monthly re-scans
+# would never find a fix.
 # ----------------------------------------------------------------------------
 
 # runc 1.1.0 vendored into influxdb 2.x — container runtime not exposed by
