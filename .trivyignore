@@ -27,6 +27,9 @@ CVE-2026-41989 exp:2026-06-04
 # libcap2 — capability library; samples run as root in container, capabilities unused.
 CVE-2026-4878 exp:2026-06-04
 
+# libexpat1 — XML parser; surfaces in builder stages (.NET 8 SDK, marimo trixie).
+CVE-2026-25210 exp:2026-06-04
+
 # ----------------------------------------------------------------------------
 # EOL-image CVEs — yearly review cadence.
 # InfluxDB 1.x went EOL in mid-2024; InfluxData will not publish new 1.x
@@ -169,3 +172,11 @@ CVE-2025-68973 exp:2026-06-04
 CVE-2026-26007 exp:2026-06-04
 CVE-2026-30922 exp:2026-06-04
 CVE-2026-32597 exp:2026-06-04
+
+# Bundled .NET tooling in mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim
+# (csharp/starter builder stage). Build-time only — not in the runtime
+# image (aspnet:8.0). Needs a Microsoft SDK image rebuild.
+CVE-2025-26646 exp:2026-06-04
+CVE-2025-55247 exp:2026-06-04
+CVE-2026-26171 exp:2026-06-04
+CVE-2026-33116 exp:2026-06-04
