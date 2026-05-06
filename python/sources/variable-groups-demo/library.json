@@ -23,7 +23,6 @@
   "Variables": [
     {
       "Name": "output",
-      "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
       "Description": "Output topic to write a heartbeat message into.",
       "DefaultValue": "vargroup-demo-out",
@@ -31,7 +30,6 @@
     },
     {
       "Name": "LOG_LEVEL",
-      "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Logging level for the demo container.",
       "DefaultValue": "INFO",
@@ -39,7 +37,6 @@
     },
     {
       "Name": "API_KEY",
-      "Type": "EnvironmentVariable",
       "InputType": "ProjectVariable",
       "Description": "Reference to a Project Variable that holds an API key.",
       "DefaultValue": "demo_api_key",
@@ -47,7 +44,6 @@
     },
     {
       "Name": "INFLUXDB_CONNECTION",
-      "Type": "EnvironmentVariable",
       "InputType": "Group",
       "Description": "Variable Group describing an InfluxDB connection. The selected value set's keys are injected as individual environment variables at runtime.",
       "DefaultValue": "influxdb-demo",
