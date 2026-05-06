@@ -79,6 +79,23 @@ Then either:
 - **`MAX_WRITE_WORKERS`**: How many files can be written in parallel to storage at once
   *Default*: `10`
 
+### Stream Timeout
+
+Detects silent Kafka message keys and emits a one-shot event so downstream consumers know a stream has gone quiet.
+
+- **`STREAM_TIMEOUT_TOPIC`**: Topic where timeout events are produced. Set to an empty string to disable the feature entirely.
+  *Default*: `timeout-topic`
+
+- **`STREAM_TIMEOUT_SECONDS`**: Per-key inactivity threshold. If a key receives no messages for this many seconds, a single timeout event is emitted. Values below `COMMIT_INTERVAL + 1` are automatically saturated to that minimum.
+  *Default*: `60`
+
+Emitted record shape:
+- **Kafka record key** — raw pass-through of the silent input key (the exact bytes that arrived on the input topic).
+- **Kafka record value** — JSON envelope (the `stream` field is UTF-8-decoded from the key for JSON-serializability):
+  ```json
+  {"ts_ms": 1714000000000, "stream": "<kafka-key>", "event": "stream_timeout"}
+  ```
+
 ### Application Settings
 
 - **`LOGLEVEL`**: Set application logging level

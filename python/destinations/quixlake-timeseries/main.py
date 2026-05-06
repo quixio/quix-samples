@@ -11,9 +11,12 @@ automatically from this configuration.
 File paths follow the workspace-aware structure:
     {workspaceId}/data-lake/time-series/{table_name}/...
 """
+import json
 import os
 import re
+import time
 import logging
+from typing import Any, Optional, Callable
 
 from quixstreams import Application
 from quixstreams.sinks.core.quix_ts_datalake_sink import QuixTSDataLakeSink
@@ -59,10 +62,11 @@ def parse_hive_columns(columns_str: str) -> list:
 
 
 # Initialize Quix Streams Application
+commit_interval = _positive_int("COMMIT_INTERVAL", "30")
 app = Application(
     consumer_group=os.getenv("CONSUMER_GROUP", "s3_direct_sink_v1.0"),
     auto_offset_reset=os.getenv("AUTO_OFFSET_RESET", "latest"),
-    commit_interval=_positive_int("COMMIT_INTERVAL", "30"),
+    commit_interval=commit_interval,
     commit_every=_positive_int("BATCH_SIZE", "1000")
 )
 
@@ -78,6 +82,90 @@ if not _TABLE_NAME_PATTERN.match(table_name):
 
 # Workspace ID (automatically injected by Quix platform)
 workspace_id = os.getenv("Quix__Workspace__Id", "")
+
+# ---------------------------------------------------------------------------
+# Stream-timeout wiring
+#
+# A "stream" is one Kafka message key; silence is tracked per key inside
+# the sink and the callback is invoked once per silent key. This callback
+# runs on the sink thread during flush().
+#
+# Both env vars have defaults, so the feature is ON by default:
+#   STREAM_TIMEOUT_SECONDS = 60
+#   STREAM_TIMEOUT_TOPIC   = "timeout-topic"
+# Operators disable explicitly by setting STREAM_TIMEOUT_TOPIC="" (empty string);
+# unset falls through to the default.
+# ---------------------------------------------------------------------------
+stream_timeout_topic_name = os.environ.get("STREAM_TIMEOUT_TOPIC", "timeout-topic").strip()
+stream_timeout_ms: Optional[int]
+on_stream_timeout: Optional[Callable[[Any], None]]
+side_producer = None
+
+if stream_timeout_topic_name:
+    side_producer = app.get_producer()
+    _min_timeout_ms = (commit_interval + 1) * 1000
+    stream_timeout_ms = _positive_int("STREAM_TIMEOUT_SECONDS", "60") * 1000
+    if stream_timeout_ms < _min_timeout_ms:
+        logger.warning(
+            "STREAM_TIMEOUT_SECONDS too low (%d ms); saturating to commit_interval + 1 s (%d ms)",
+            stream_timeout_ms,
+            _min_timeout_ms,
+        )
+        stream_timeout_ms = _min_timeout_ms
+    # Register the topic with the Application's topic manager. Under
+    # QuixTopicManager this fetches-or-creates the topic via the Quix API
+    # and rewrites `.name` to the workspace-prefixed broker name
+    # (`<workspace_id>-<name>`), which is what we must pass to the
+    # Producer.produce(topic=...) call below. Raw bytes serializers keep
+    # the hand-encoded key/value bytes flowing through unchanged.
+    stream_timeout_topic = app.topic(
+        stream_timeout_topic_name,
+        key_serializer="bytes",
+        value_serializer="bytes",
+    )
+    def on_stream_timeout(stream: Any) -> None:
+        """Timeout handler for one silent Kafka message key.
+
+        Record shape:
+        - ``key``: raw ``stream`` bytes from Kafka, pass-through (unchanged).
+        - ``value``: JSON object with event metadata and a decoded-for-
+          JSON copy of the stream identifier:
+            {"ts_ms": <wall-clock-ms>, "stream": <key-as-str>,
+             "event": "stream_timeout"}
+
+        Fire-and-forget: this callback runs on the sink's flush thread
+        (which is the Application processing thread). Calling a blocking
+        ``side_producer.flush()`` here would stop the consumer from
+        polling for up to librdkafka's ``message.timeout.ms`` (~5 min
+        default), triggering a rebalance and offset-reset cascade. The
+        underlying producer polls in the background, so the message is
+        delivered asynchronously; we only need ``produce()``.
+        """
+        if isinstance(stream, bytes):
+            stream_str = stream.decode("utf-8", errors="replace")
+        else:
+            stream_str = str(stream)
+        logger.info("Stream %s timed out after inactivity", stream_str)
+        side_producer.produce(
+            topic=stream_timeout_topic.name,
+            key=stream,
+            value=json.dumps({
+                "ts_ms": int(time.time() * 1000),
+                "stream": stream_str,
+                "event": "stream_timeout",
+            }).encode(),
+        )
+        # DO NOT call side_producer.flush() here — see docstring above.
+else:
+    stream_timeout_ms = None
+    on_stream_timeout = None
+
+logger.info(
+    "Stream-timeout tracking: %s",
+    f"enabled ({stream_timeout_ms} ms → topic {stream_timeout_topic_name!r})"
+    if stream_timeout_ms is not None
+    else "disabled",
+)
 
 # Initialize QuixLakeSink
 # Note: Blob storage credentials are configured via Quix__BlobStorage__Connection__Json
@@ -95,6 +183,8 @@ blob_sink = QuixTSDataLakeSink(
     namespace=os.getenv("CATALOG_NAMESPACE", "default"),
     auto_create_bucket=True,
     max_workers=_positive_int("MAX_WRITE_WORKERS", "10"),
+    stream_timeout_ms=stream_timeout_ms,
+    on_stream_timeout=on_stream_timeout,
     on_client_connect_success=lambda: print("CONNECTED!"),
     on_client_connect_failure=lambda e: print(f"ERROR! {e}"),
 )
@@ -113,4 +203,10 @@ logger.info(f"  Storage path: {storage_path}/{table_name}")
 logger.info(f"  Partitioning: {hive_columns if hive_columns else 'none'}")
 
 if __name__ == "__main__":
-    app.run()
+    if side_producer is not None:
+        side_producer.__enter__()
+    try:
+        app.run()
+    finally:
+        if side_producer is not None:
+            side_producer.__exit__(None, None, None)
