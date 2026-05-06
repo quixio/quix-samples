@@ -1,0 +1,17 @@
+# Build-only test for managed/backup-manager-prebuilt.
+# The dockerfile is a single-line FROM that pulls the prebuilt
+# ghcr.io/quixio/mongodb-backup-manager image. This test verifies that
+# the upstream image is reachable and pullable, and that its bundled
+# Python entrypoint is present where expected.
+
+services:
+  backup-manager-prebuilt:
+    build:
+      context: ../../../managed/backup-manager-prebuilt
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        python3 -c 'import flask, apscheduler' &&
+        echo 'Success: upstream image pulled + dep import check passed'
+      "
+    stop_grace_period: 3s

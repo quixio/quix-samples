@@ -1,0 +1,18 @@
+# Build-only test for docker/sources/tsbs.
+# Multi-stage build (golang builder -> debian runtime). Verifies that the
+# build succeeds and the compiled binaries + entrypoint script ended up
+# in /app/bin/ as expected.
+
+services:
+  tsbs:
+    build:
+      context: ../../../../docker/sources/tsbs
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /app/bin/tsbs_generate_data &&
+        test -x /app/bin/tsbs_load_kafka_quix &&
+        test -x /app/main.sh &&
+        echo 'Success: multi-stage build + binary check passed'
+      "
+    stop_grace_period: 3s
