@@ -152,3 +152,10 @@ CVE-2026-24882 exp:2026-06-04
 
 # Ubuntu unfixable in redis-stack-server 7.4.0-v8 base (gpgv, fix in 2.5).
 CVE-2025-68973 exp:2026-06-04
+
+# Bundled Python packages in ghcr.io/quixio/mongodb-backup-manager:1.0.5
+# (managed/backup-manager-prebuilt). Need an upstream image rebuild with
+# `pip install --upgrade cryptography pyasn1 PyJWT`.
+CVE-2026-26007 exp:2026-06-04
+CVE-2026-30922 exp:2026-06-04
+CVE-2026-32597 exp:2026-06-04
