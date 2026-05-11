@@ -1,6 +1,1 @@
-FROM ghcr.io/quixio/quixlab:main-271f3a1
-
-# Base image's entrypoint runs `python /app/quixlab/main.py`, which puts
-# /app/quixlab/ on sys.path but not /app/, so `import quixlab._log` fails.
-# Expose /app/ so the package resolves.
-ENV PYTHONPATH=/app
+FROM ghcr.io/quixio/quixlab:main
