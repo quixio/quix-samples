@@ -1,1 +1,1 @@
-FROM ghcr.io/quixio/quixlab:main
+FROM quixpublic.azurecr.io/devsessions-quixlab:preview
