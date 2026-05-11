@@ -1,1 +1,1 @@
-FROM quixpublic.azurecr.io/devsessions-quixlab:preview
+FROM quixpublic.azurecr.io/devsessions-quixlab:latest
