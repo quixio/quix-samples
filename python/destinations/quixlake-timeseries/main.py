@@ -58,8 +58,11 @@ def parse_hive_columns(columns_str: str) -> list:
     return [col.strip() for col in columns_str.split(",") if col.strip()]
 
 
-# Initialize Quix Streams Application
+# Initialize Quix Streams Application. `broker_address` is read from KAFKA_BOOTSTRAP_SERVERS for
+# local-dev convenience; in Quix Cloud it stays None and the Application picks up Quix__Broker__*
+# from the platform.
 app = Application(
+    broker_address=os.getenv("KAFKA_BOOTSTRAP_SERVERS"),
     consumer_group=os.getenv("CONSUMER_GROUP", "s3_direct_sink_v1.0"),
     auto_offset_reset=os.getenv("AUTO_OFFSET_RESET", "latest"),
     commit_interval=_positive_int("COMMIT_INTERVAL", "30"),
@@ -83,14 +86,19 @@ workspace_id = os.getenv("Quix__Workspace__Id", "")
 # Note: Blob storage credentials are configured via Quix__BlobStorage__Connection__Json
 # environment variable, which is automatically read by quixportal.
 # The bucket name is extracted automatically from the quixportal configuration.
+# Quix Portal injects the Catalog URL under both the Quix naming convention
+# (`Quix__Lakehouse__Catalog__Url`) and the PyIceberg one (`CATALOG_URL`) when a Lakehouse Catalog
+# deployment exists in the workspace; prefer the Quix name, fall back to the PyIceberg one for
+# legacy compatibility. Same for the auth token. No Sdk-token fallback — the platform always
+# injects the catalog token when a catalog is bound.
 blob_sink = QuixTSDataLakeSink(
     s3_prefix=TIMESERIES_PREFIX,
     table_name=table_name,
     workspace_id=workspace_id,
     hive_columns=hive_columns,
     timestamp_column=os.getenv("TIMESTAMP_COLUMN", "ts_ms"),
-    catalog_url=os.getenv("CATALOG_URL"),
-    catalog_auth_token=os.getenv("CATALOG_AUTH_TOKEN", os.getenv("Quix__Sdk__Token", "")),
+    catalog_url=os.getenv("Quix__Lakehouse__Catalog__Url") or os.getenv("CATALOG_URL"),
+    catalog_auth_token=os.getenv("Quix__Lakehouse__Catalog__AuthToken") or os.getenv("CATALOG_AUTH_TOKEN"),
     auto_discover=auto_discover,
     namespace=os.getenv("CATALOG_NAMESPACE", "default"),
     auto_create_bucket=True,
