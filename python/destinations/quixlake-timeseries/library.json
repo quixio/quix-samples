@@ -49,18 +49,6 @@
       "DefaultValue": "ts_ms"
     },
     {
-      "Name": "CATALOG_URL",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "REST Catalog URL for optional table registration (leave empty to skip)"
-    },
-    {
-      "Name": "CATALOG_AUTH_TOKEN",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "If using a catalog, the respective auth token to access it"
-    },
-    {
       "Name": "AUTO_DISCOVER",
       "Type": "EnvironmentVariable",
       "InputType": "Options",
