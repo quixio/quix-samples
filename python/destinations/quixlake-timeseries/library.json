@@ -24,29 +24,26 @@
       "Type": "EnvironmentVariable",
       "InputType": "InputTopic",
       "Description": "Name of the Kafka input topic to consume from",
-      "DefaultValue": "tsbs_data_transformed",
       "Required": true
     },
     {
       "Name": "TABLE_NAME",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Table name for data organization and registration, else defaults to topic name",
-      "DefaultValue": "sensordata"
+      "Description": "Table name for data organization and registration. Leave empty to use the input topic name."
     },
     {
       "Name": "HIVE_COLUMNS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Comma-separated list of columns for Hive partitioning. Include year/month/day/hour to extract from TIMESTAMP_COLUMN (e.g., location,year,month,day,sensor_type)",
-      "DefaultValue": "region,datacenter,hostname"
+      "Description": "Comma-separated list of columns for Hive partitioning (e.g. region,datacenter,hostname OR year,month,day extracted from TIMESTAMP_COLUMN). Leave empty for no Hive partitioning — every column listed here must exist in the incoming message payload, otherwise writes will fail."
     },
     {
       "Name": "TIMESTAMP_COLUMN",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Column containing timestamp values to extract year/month/day/hour from",
-      "DefaultValue": "ts_ms"
+      "Description": "Column containing timestamp values to extract year/month/day/hour from (only used when HIVE_COLUMNS includes one of those time components).",
+      "DefaultValue": "timestamp"
     },
     {
       "Name": "AUTO_DISCOVER",
