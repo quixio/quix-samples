@@ -70,13 +70,6 @@
       "Required": false
     },
     {
-      "Name": "QUIX_LAKE_URL",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Base URL of the QuixLake instance to query against (e.g. https://quixlake-<workspace>.deployments.quix.io). Required for ql.sql() to work outside the default dev environment.",
-      "Required": true
-    },
-    {
       "Name": "QUIX_LAKE_TOKEN",
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
