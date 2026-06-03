@@ -1,2 +1,2 @@
-quixstreams[iceberg_aws]==3.23.6
+﻿quixstreams[iceberg_aws]==3.23.7
 python-dotenv
