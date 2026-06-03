@@ -32,6 +32,9 @@
         }
       ]
     },
+    "blobStorage": {
+      "bind": true
+    },
     "plugin": {
       "embeddedView": {
         "enabled": true,

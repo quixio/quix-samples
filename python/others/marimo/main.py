@@ -30,12 +30,9 @@ def _(mo):
 
 @app.cell
 def _(QuixLakeClient, os):
-    # TODO: Replace with your QuixLake URL
-    QUIXLAKE_URL = "https://your-quixlake-instance.quix.io"
-
     client = QuixLakeClient(
-        base_url=QUIXLAKE_URL,
-        token=os.environ["Quix__Sdk__Token"]
+        base_url=os.environ["Quix__Lakehouse__Query__Url"],
+        token=os.environ["Quix__Sdk__Token"],
     )
     return (client,)
 
