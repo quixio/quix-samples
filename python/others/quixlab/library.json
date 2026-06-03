@@ -57,23 +57,56 @@
       "Name": "QUIXLAB_NOTEBOOK",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Notebook file to open on startup (leave empty for the file picker)",
-      "DefaultValue": "",
+      "Description": "Notebook file to open on startup (leave empty for the file picker).",
+      "DefaultValue": "main.py",
       "Required": false
     },
     {
       "Name": "QUIXLAB_MODE",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Run mode: 'app' (view only) or 'edit' (full editor)",
+      "InputType": "Options",
+      "Description": "Run mode: 'edit' opens the full editor (canvas, cell editing, file picker); 'app' renders the notebook in read-only output-only mode for end-user consumption.",
       "DefaultValue": "edit",
+      "Required": false,
+      "options": [
+        { "label": "Edit (full editor)", "value": "edit" },
+        { "label": "App (view only)", "value": "app" }
+      ]
+    },
+    {
+      "Name": "QUIX_PAT_TOKEN",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Personal Access Token (Quix profile → Tokens). Only required when ql.topic() needs to read from Kafka topics in a different workspace than the one QuixLab is deployed in — the platform-injected token is scoped to the local workspace. Leave empty otherwise.",
       "Required": false
     },
     {
-      "Name": "QUIX_LAKE_TOKEN",
+      "Name": "QUIXLAB_LOG_LEVEL",
+      "Type": "EnvironmentVariable",
+      "InputType": "Options",
+      "Description": "Logging verbosity for the QuixLab process. DEBUG emits per-token-source and per-HTTP-call detail useful for diagnosing 403s and auth-chain issues.",
+      "DefaultValue": "INFO",
+      "Required": false,
+      "options": [
+        { "label": "DEBUG", "value": "DEBUG" },
+        { "label": "INFO", "value": "INFO" },
+        { "label": "WARNING", "value": "WARNING" },
+        { "label": "ERROR", "value": "ERROR" }
+      ]
+    },
+    {
+      "Name": "QUIXLAB_MCP_KEY",
       "Type": "EnvironmentVariable",
       "InputType": "Secret",
-      "Description": "Override token for QuixLake queries. Leave empty to use the platform-injected Quix__Sdk__Token.",
+      "Description": "Shared secret used by Quix AI MCP server registration. Must match the X-API-Key value configured for the org-level MCP entry that scopes the QuixLab Assistant agent. Leave empty if the QuixLab Assistant integration is not used.",
+      "Required": false
+    },
+    {
+      "Name": "QUIXLAB_AGENT_ID",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "UUID of the Quix AI cloud agent bound to this QuixLab deployment (per-deployment QuixLab Assistant). Injected into the iframe-config response so per-cell newMessage postMessages preselect the right agent. Leave empty if the QuixLab Assistant integration is not used.",
+      "DefaultValue": "",
       "Required": false
     }
   ]
