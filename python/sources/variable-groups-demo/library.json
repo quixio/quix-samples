@@ -44,7 +44,7 @@
     },
     {
       "Name": "INFLUXDB_CONNECTION",
-      "InputType": "Group",
+      "InputType": "VariableGroup",
       "Description": "Variable Group describing an InfluxDB connection. The selected value set's keys are injected as individual environment variables at runtime.",
       "DefaultValue": "influxdb-demo",
       "Required": true,
