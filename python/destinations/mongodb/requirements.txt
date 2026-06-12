@@ -1,2 +1,2 @@
-﻿quixstreams[mongodb]==3.23.7
+﻿quixstreams[mongodb]==3.24.0
 python-dotenv
