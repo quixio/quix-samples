@@ -28,20 +28,29 @@
   },
   "Variables": [
     {
-      "Name": "MONGO_INITDB_ROOT_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The root username to initialize MongoDB with",
-      "DefaultValue": "admin",
-      "Required": true
-    },
-    {
-      "Name": "MONGO_INITDB_ROOT_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "The root password to initialize MongoDB with",
-      "DefaultValue": "MONGO_ROOT_PASSWORD",
-      "Required": true
+      "Name": "MONGODB_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "MongoDB root credentials, sourced from a shared Variable Group so the same connection can be reused by connectors (e.g. the MongoDB sink). The selected value set's keys are injected as environment variables at runtime.",
+      "VariableGroupId": "mongodb-connection",
+      "VariableGroupName": "MongoDB Connection",
+      "VariableGroupDescription": "Shared MongoDB connection credentials.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "MONGO_INITDB_ROOT_USERNAME",
+          "Description": "The root username to initialize MongoDB with",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "MONGO_INITDB_ROOT_PASSWORD",
+          "Description": "The root password to initialize MongoDB with",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     }
-  ]  
+  ]
 }
