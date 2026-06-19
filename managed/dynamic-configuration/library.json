@@ -1,13 +1,13 @@
 {
-  "libraryItemId": "dynamic-configuration-v2",
-  "name": "Dynamic Configuration Manager V2",
+  "libraryItemId": "dynamic-configuration",
+  "name": "Dynamic Configuration Manager",
   "language": "Managed",
   "tags": {
     "Category": ["Database"],
     "Type": ["Auxiliary Services"]
   },
   "IconFile": "icon.png",
-  "shortDescription": "Versioned JSON configuration management with high-throughput reads and update notifications. Sources its MongoDB connection from a Variable Group instead of individual settings.",
+  "shortDescription": "RESTful service for versioned JSON configuration management with high-throughput reads and update notifications.",
   "DeploySettings": {
     "DeploymentType": "Managed",
     "CpuMillicores": 500,

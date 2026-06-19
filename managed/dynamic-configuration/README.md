@@ -1,10 +1,4 @@
-# Dynamic Configuration Manager V2
-
-> **Variable Group variant.** This is the same managed service as the
-> **Dynamic Configuration Manager**, but its MongoDB connection
-> (host, port, user, password) comes from a **Variable Group** instead of
-> individual settings. If you still configure each connection value
-> separately, use the original Dynamic Configuration Manager.
+# Dynamic Configuration Manager
 
 The **Dynamic Configuration Manager** is a managed service for handling
 **large, versioned configuration files** related to devices, sensors, or
@@ -51,7 +45,7 @@ real time without pushing them directly through Kafka.
 ## How to Run
 
 1. Create or log in to your Quix account.
-2. Navigate to **Connectors → Add connector → Dynamic Configuration Manager V2**.
+2. Navigate to **Connectors → Add connector → Dynamic Configuration Manager**.
 3. Click **Set up connector**, fill in the required parameters (see below), then click **Test connection & deploy**.
 
 > **Managed Service:**  
@@ -81,6 +75,11 @@ variables the service reads: `MONGO_HOST`, `MONGO_PORT`, `MONGO_USER`,
 `MONGO_PASSWORD`. The same group can be shared with other apps that use
 the same connection (e.g. the MongoDB sink). Assign the group to the
 workspace before deploying.
+
+> **Compatibility.** Earlier deployments that configured the MongoDB
+> connection with individual settings (host, port, user, password) instead
+> of a Variable Group continue to run unchanged — the platform still
+> supports that configuration for existing deployments.
 
 ### Blob Storage
 
