@@ -30,7 +30,7 @@
     {
       "Name": "MONGODB_CONNECTION",
       "InputType": "VariableGroup",
-      "Description": "MongoDB root credentials, sourced from a shared Variable Group so the same connection can be reused by connectors (e.g. the MongoDB sink). The selected value set's keys are injected as environment variables at runtime.",
+      "Description": "MongoDB root credentials sourced from a shared Variable Group, injected as env vars at deploy.",
       "VariableGroupId": "mongodb-connection",
       "VariableGroupName": "MongoDB Connection",
       "VariableGroupDescription": "Shared MongoDB connection credentials.",
