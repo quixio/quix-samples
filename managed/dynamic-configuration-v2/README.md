@@ -1,4 +1,10 @@
-# Dynamic Configuration Manager
+# Dynamic Configuration Manager V2
+
+> **Variable Group variant.** This is the same managed service as the
+> **Dynamic Configuration Manager**, but its MongoDB connection
+> (host, port, user, password) comes from a **Variable Group** instead of
+> individual settings. If you still configure each connection value
+> separately, use the original Dynamic Configuration Manager.
 
 The **Dynamic Configuration Manager** is a managed service for handling
 **large, versioned configuration files** related to devices, sensors, or
@@ -45,7 +51,7 @@ real time without pushing them directly through Kafka.
 ## How to Run
 
 1. Create or log in to your Quix account.
-2. Navigate to **Connectors → Add connector → Dynamic Configuration Manager**.
+2. Navigate to **Connectors → Add connector → Dynamic Configuration Manager V2**.
 3. Click **Set up connector**, fill in the required parameters (see below), then click **Test connection & deploy**.
 
 > **Managed Service:**  
@@ -56,10 +62,7 @@ real time without pushing them directly through Kafka.
 ### Required Configuration
 
 - **topic**: Kafka topic for configuration updates.
-- **mongoHost**: MongoDB host.
-- **mongoPort**: MongoDB port.
-- **mongoUser**: MongoDB user.
-- **mongoPasswordSecret**: MongoDB password secret.
+- **variableGroup**: Variable Group supplying the MongoDB connection (host, port, user, password). Defaults to `mongodb-connection`; the group must be assigned to the workspace.
 - **mongoDatabase**: MongoDB database name.
 - **mongoCollection**: MongoDB collection name.
 
@@ -69,6 +72,15 @@ real time without pushing them directly through Kafka.
 - **port**: Port of the API (default: `80`).
 - **workers**: Number of worker processes (default: `1`).
 - **contentStore**: Storage backend for configuration content (`mongo` or `file`, default: `mongo`).
+
+### Variable Group
+
+The MongoDB connection is provided by a Variable Group (default id
+`mongodb-connection`) whose members map to the connection environment
+variables the service reads: `MONGO_HOST`, `MONGO_PORT`, `MONGO_USER`,
+`MONGO_PASSWORD`. The same group can be shared with other apps that use
+the same connection (e.g. the MongoDB sink). Assign the group to the
+workspace before deploying.
 
 ### Blob Storage
 
