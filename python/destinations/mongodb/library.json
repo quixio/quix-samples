@@ -28,27 +28,43 @@
       "Required": true
     },
     {
-      "Name": "MONGODB_HOST",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "MongoDB host name",
-      "DefaultValue": "mongodb",
-      "Required": true
-    },
-    {
-      "Name": "MONGODB_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "MongoDB username",
-      "DefaultValue": "admin",
-      "Required": true
-    },
-    {
-      "Name": "MONGODB_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "MongoDB password",
-      "Required": true
+      "Name": "MONGODB_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "MongoDB connection (host, port, credentials) from a shared Variable Group.",
+      "VariableGroupId": "mongodb-connection",
+      "VariableGroupName": "MongoDB Connection",
+      "VariableGroupDescription": "Shared MongoDB connection details.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "MONGODB_HOST",
+          "Description": "MongoDB host name",
+          "DefaultValue": "mongodb",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "MONGODB_PORT",
+          "Description": "MongoDB host port",
+          "DefaultValue": "27017",
+          "Secret": false,
+          "Required": false
+        },
+        {
+          "Key": "MONGODB_USERNAME",
+          "Description": "MongoDB username",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "MONGODB_PASSWORD",
+          "Description": "MongoDB password",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "MONGODB_DB",
@@ -63,14 +79,6 @@
       "InputType": "FreeText",
       "Description": "MongoDB collection name",
       "Required": true
-    },
-    {
-      "Name": "MONGODB_PORT",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "MongoDB host port",
-      "DefaultValue": "27017",
-      "Required": false
     },
     {
       "Name": "MONGODB_DOCUMENT_MATCHER",
