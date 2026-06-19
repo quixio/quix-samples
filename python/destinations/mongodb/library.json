@@ -37,28 +37,28 @@
       "Required": true,
       "Variables": [
         {
-          "Key": "MONGODB_HOST",
+          "Key": "MONGO_HOST",
           "Description": "MongoDB host name",
           "DefaultValue": "mongodb",
           "Secret": false,
           "Required": true
         },
         {
-          "Key": "MONGODB_PORT",
+          "Key": "MONGO_PORT",
           "Description": "MongoDB host port",
           "DefaultValue": "27017",
           "Secret": false,
           "Required": false
         },
         {
-          "Key": "MONGODB_USERNAME",
+          "Key": "MONGO_USER",
           "Description": "MongoDB username",
           "DefaultValue": "admin",
           "Secret": false,
           "Required": true
         },
         {
-          "Key": "MONGODB_PASSWORD",
+          "Key": "MONGO_PASSWORD",
           "Description": "MongoDB password",
           "DefaultValue": "",
           "Secret": true,
@@ -67,14 +67,14 @@
       ]
     },
     {
-      "Name": "MONGODB_DB",
+      "Name": "MONGO_DATABASE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "MongoDB database name",
       "Required": true
     },
     {
-      "Name": "MONGODB_COLLECTION",
+      "Name": "MONGO_COLLECTION",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "MongoDB collection name",
