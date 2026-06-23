@@ -1,6 +1,6 @@
 {
   "libraryItemId": "data-lake-sink",
-  "name": "Quix DataLake Raw Sink",
+  "name": "Quix DataLake Sink",
   "language": "Managed",
   "tags": {
       "Pipeline Stage": ["Destination"],
