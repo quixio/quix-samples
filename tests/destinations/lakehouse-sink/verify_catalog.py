@@ -1,5 +1,5 @@
 """
-Verify catalog integration for Quix Lake Timeseries destination tests.
+Verify catalog integration for Quix Lakehouse Sink integration tests.
 
 Tests that the sink correctly interacts with the REST Catalog:
 1. Tables are created/registered
@@ -75,7 +75,7 @@ def verify_catalog(catalog_url: str):
 def main():
     # Configuration from environment
     catalog_url = os.getenv("CATALOG_URL", "http://mock-catalog:5001")
-    table_name = os.getenv("TABLE_NAME", "test-quixlake-input")
+    table_name = os.getenv("TABLE_NAME", "test-lakehouse-input")
     expected_message_count = int(os.getenv("TEST_MESSAGE_COUNT", "10"))
 
     print("="*60)
