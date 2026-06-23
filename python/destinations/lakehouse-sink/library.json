@@ -10,7 +10,7 @@
       "Connectors"
     ],
     "Category": [
-      "File Store"
+      "Quix Lake"
     ]
   },
   "shortDescription": "Consume data from a Kafka topic and write it to blob storage as Hive-partitioned Parquet files, with optional Quix Lakehouse catalog registration.",

@@ -5,7 +5,7 @@
   "tags": {
       "Pipeline Stage": ["Destination"],
       "Type": ["Connectors"],
-      "Category": ["Quix DataLake"]
+      "Category": ["Quix Lake"]
   },
   "IconFile": "icon.png",
   "shortDescription": "Consume data from a Kafka topic and write it to Quix DataLake.",
