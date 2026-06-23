@@ -1,0 +1,16 @@
+# Build-only test for csharp/starter.
+# Multi-stage build (sdk:8.0 builder -> aspnet:8.0 runtime). Verifies
+# that dotnet build succeeded and the compiled assembly was copied into
+# the runtime image.
+
+services:
+  starter:
+    build:
+      context: ../../../csharp/starter
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -f /app/Service.dll &&
+        echo 'Success: dotnet build + COPY check passed'
+      "
+    stop_grace_period: 3s

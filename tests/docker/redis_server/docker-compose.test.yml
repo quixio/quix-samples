@@ -1,0 +1,17 @@
+# Build-only test for docker/redis_server.
+# Verifies the image builds, the redis user was created, and the
+# config + init script are in place.
+
+services:
+  redis-server:
+    build:
+      context: ../../../docker/redis_server
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /init.sh &&
+        test -f /usr/local/etc/redis/redis.conf &&
+        id redis &&
+        echo 'Success: build + layout check passed'
+      "
+    stop_grace_period: 3s

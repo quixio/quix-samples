@@ -1,0 +1,16 @@
+# Build-only test for jupyterlab.
+# Verifies the image builds, the jupyterlab package imports, and the
+# launcher script ended up in /jupyter_start.sh.
+
+services:
+  jupyterlab:
+    build:
+      context: ../../../python/others/jupyterlab
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /jupyter_start.sh &&
+        python -c 'import jupyterlab; print(jupyterlab.__version__)' &&
+        echo 'Success: build + import check passed'
+      "
+    stop_grace_period: 3s

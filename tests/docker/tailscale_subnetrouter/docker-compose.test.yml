@@ -1,0 +1,18 @@
+# Build-only test for docker/tailscale_subnetrouter.
+# Builds the debian:bookworm-slim base, runs apt to install tailscale
+# from the official repository, and verifies both the tailscale binary
+# and the start.sh launcher are present.
+
+services:
+  tailscale-subnetrouter:
+    build:
+      context: ../../../docker/tailscale_subnetrouter
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /app/start.sh &&
+        command -v tailscale &&
+        command -v tailscaled &&
+        echo 'Success: build + apt install + binary check passed'
+      "
+    stop_grace_period: 3s

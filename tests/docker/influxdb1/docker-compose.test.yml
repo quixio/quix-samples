@@ -1,0 +1,16 @@
+# Build-only test for docker/influxdb1.
+# Verifies the image builds, the init script is in place, and the
+# embedded influx.conf was copied to /etc/influxdb/.
+
+services:
+  influxdb1:
+    build:
+      context: ../../../docker/influxdb1
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /init.sh &&
+        test -f /etc/influxdb/influx.conf &&
+        echo 'Success: build + layout check passed'
+      "
+    stop_grace_period: 3s
