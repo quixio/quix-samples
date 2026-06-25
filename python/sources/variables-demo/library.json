@@ -61,10 +61,10 @@
     {
       "Name": "INFLUXDB_CONNECTION",
       "InputType": "VariableGroup",
-      "Description": "InfluxDB connection details from a shared Variable Group. The selected value set's keys are injected as individual environment variables at runtime.",
+      "Description": "InfluxDB connection details, injected from a shared Variable Group's selected value set.",
       "VariableGroupId": "influxdb-connection",
       "VariableGroupName": "InfluxDB Connection",
-      "VariableGroupDescription": "Shared, non-secret InfluxDB connection details (host, port, organization).",
+      "VariableGroupDescription": "InfluxDB connection details (host, port, organization).",
       "Required": true,
       "Variables": [
         {

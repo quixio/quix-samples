@@ -39,7 +39,7 @@ The code sample uses the following environment variables:
 After deployment, open the container logs and look for the line:
 
 ```
-Resolved variables from backend: {"API_REGION": "...", "API_SECRET": "ab***yz", "INFLUXDB_HOST": "...", "INFLUXDB_PORT": "...", "INFLUXDB_ORG": "..."}
+Resolved variables from backend: {"API_REGION": "...", "API_SECRET": "***", "INFLUXDB_HOST": "...", "INFLUXDB_PORT": "...", "INFLUXDB_ORG": "..."}
 ```
 
 `API_SECRET` is masked; every other value should show the resolved value. A `Missing required variables...` warning means a prerequisite above was not created or not linked. A `Published heartbeat to topic '<output>'` line confirms the single heartbeat reached the output topic.

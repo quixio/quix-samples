@@ -20,12 +20,8 @@ log = logging.getLogger("variables-demo")
 
 
 def mask(value: str) -> str:
-    """Mask a secret value for logging, keeping just enough to spot-check it resolved."""
-    if not value:
-        return "<empty>"
-    if len(value) <= 4:
-        return "***"
-    return f"{value[:2]}***{value[-2:]}"
+    """Fully mask a secret value for logging: reveal whether it resolved, never its contents."""
+    return "<empty>" if not value else "***"
 
 
 # --- Project Variables ---------------------------------------------------------
