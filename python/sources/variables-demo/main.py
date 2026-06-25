@@ -20,8 +20,13 @@ log = logging.getLogger("variables-demo")
 
 
 def mask(value: str) -> str:
-    """Fully mask a secret value for logging: reveal whether it resolved, never its contents."""
-    return "<empty>" if not value else "***"
+    """Partially mask a secret for logging: reveal the first and last couple of chars so the
+    *expected* value can be confirmed, without ever printing the whole secret."""
+    if not value:
+        return "<empty>"
+    if len(value) <= 4:
+        return value[0] + "***"
+    return f"{value[:2]}***{value[-2:]}"
 
 
 # --- Project Variables ---------------------------------------------------------
@@ -65,22 +70,33 @@ topic_name = os.getenv("output")
 if not topic_name:
     raise ValueError("The 'output' environment variable is required.")
 
-# Emit a single heartbeat so successful resolution is visible on the output topic too.
+# Keep resolution observable for a while instead of exiting after one message: emit a
+# heartbeat every HEARTBEAT_INTERVAL_SECONDS until HEARTBEAT_COUNT have been sent, then
+# finish cleanly. Both are configurable (default: a beat every 5s, 12 times = ~1 minute).
+heartbeat_interval = float(os.getenv("HEARTBEAT_INTERVAL_SECONDS", "5"))
+heartbeat_count = int(os.getenv("HEARTBEAT_COUNT", "12"))
+
 app = Application(consumer_group="variables-demo", auto_create_topics=True)
 output_topic = app.topic(topic_name)
 
 with app.get_producer() as producer:
-    payload = {
-        "ts": int(time.time() * 1000),
-        "api_region": api_region,
-        "api_secret_masked": api_secret_masked,
-        "influxdb_host": influx_host,
-        "influxdb_port": influx_port,
-        "influxdb_org": influx_org,
-    }
-    producer.produce(
-        topic=output_topic.name,
-        key="variables-demo",
-        value=json.dumps(payload).encode("utf-8"),
-    )
-    log.info("Published heartbeat to topic '%s'", topic_name)
+    for beat in range(1, heartbeat_count + 1):
+        payload = {
+            "ts": int(time.time() * 1000),
+            "heartbeat": beat,
+            "api_region": api_region,
+            "api_secret_masked": api_secret_masked,
+            "influxdb_host": influx_host,
+            "influxdb_port": influx_port,
+            "influxdb_org": influx_org,
+        }
+        producer.produce(
+            topic=output_topic.name,
+            key="variables-demo",
+            value=json.dumps(payload).encode("utf-8"),
+        )
+        log.info("Published heartbeat %d/%d to topic '%s'", beat, heartbeat_count, topic_name)
+        if beat < heartbeat_count:
+            time.sleep(heartbeat_interval)
+
+log.info("Variables demo complete - emitted %d heartbeats.", heartbeat_count)

@@ -28,7 +28,7 @@
       "Name": "output",
       "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
-      "Description": "Output topic to write a heartbeat message into.",
+      "Description": "Output topic to write the heartbeat messages into.",
       "DefaultValue": "variables-demo-out",
       "Required": true
     },
@@ -38,6 +38,22 @@
       "InputType": "FreeText",
       "Description": "Logging level for the demo container.",
       "DefaultValue": "INFO",
+      "Required": false
+    },
+    {
+      "Name": "HEARTBEAT_INTERVAL_SECONDS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Seconds between heartbeat messages (demo runtime knob).",
+      "DefaultValue": "5",
+      "Required": false
+    },
+    {
+      "Name": "HEARTBEAT_COUNT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "How many heartbeats to emit before the job completes (demo runtime knob).",
+      "DefaultValue": "12",
       "Required": false
     },
     {

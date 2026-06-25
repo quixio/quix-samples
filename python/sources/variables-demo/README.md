@@ -1,11 +1,11 @@
 # Variables Demo
 
-[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/variables-demo) demonstrates the Quix variable system end-to-end. A single library item declares three resolution mechanisms; on deployment the backend resolves each one into environment variables before the container starts, and the container logs the resolved values (the secret masked) plus emits one heartbeat to the output topic so resolution can be verified from the deployment logs.
+[This code sample](https://github.com/quixio/quix-samples/tree/main/python/sources/variables-demo) demonstrates the Quix variable system end-to-end. A single library item declares three resolution mechanisms; on deployment the backend resolves each one into environment variables before the container starts, and the container logs the resolved values (the secret partially masked) plus emits periodic heartbeats to the output topic so resolution can be verified from the deployment logs.
 
 ## The three mechanisms
 
 - **`InputType: ProjectVariable` (non-secret)** — `API_REGION` references a Project Variable. The `DefaultValue` (`demo_api_region`) is the *key* of the project variable to resolve, not a literal value. The backend resolves it to the variable's value before the container starts.
-- **`InputType: ProjectVariable` with `"Secret": true`** — `API_SECRET` references a *secret* Project Variable (`demo_api_secret`). It is resolved from a Kubernetes secret and injected the same way as `API_REGION`, but is masked in the logs. The committed `library.json` never holds a real secret value — only the key to resolve.
+- **`InputType: ProjectVariable` with `"Secret": true`** — `API_SECRET` references a *secret* Project Variable (`demo_api_secret`). It is resolved from a Kubernetes secret and injected the same way as `API_REGION`, but is **partially masked** in the logs (first and last couple of characters shown) so you can confirm it resolved to the expected value without exposing the whole secret. The committed `library.json` never holds a real secret value — only the key to resolve.
 - **`InputType: VariableGroup`** — `INFLUXDB_CONNECTION` references a shared Variable Group by its `VariableGroupId` (`influxdb-connection`). At deployment the selected value set is bulk-expanded into the individual environment variables declared under `Variables[]` (`INFLUXDB_HOST`, `INFLUXDB_PORT`, `INFLUXDB_ORG`) — all non-secret here.
 
 ## How to run
@@ -28,10 +28,12 @@ Before deploying, create the references this sample resolves:
 
 The code sample uses the following environment variables:
 
-- **output**: Output topic to write the heartbeat message into.
+- **output**: Output topic to write the heartbeat messages into.
 - **LOG_LEVEL**: Logging level for the container (optional, defaults to `INFO`).
+- **HEARTBEAT_INTERVAL_SECONDS**: Seconds between heartbeats (optional, defaults to `5`).
+- **HEARTBEAT_COUNT**: Number of heartbeats to emit before the job completes (optional, defaults to `12`).
 - **API_REGION**: Reference to the non-secret Project Variable `demo_api_region`.
-- **API_SECRET**: Reference to the secret Project Variable `demo_api_secret` (masked in logs).
+- **API_SECRET**: Reference to the secret Project Variable `demo_api_secret` (partially masked in logs).
 - **INFLUXDB_HOST**, **INFLUXDB_PORT**, **INFLUXDB_ORG**: Injected from the `influxdb-connection` Variable Group.
 
 ## Verifying resolution
@@ -39,10 +41,10 @@ The code sample uses the following environment variables:
 After deployment, open the container logs and look for the line:
 
 ```
-Resolved variables from backend: {"API_REGION": "...", "API_SECRET": "***", "INFLUXDB_HOST": "...", "INFLUXDB_PORT": "...", "INFLUXDB_ORG": "..."}
+Resolved variables from backend: {"API_REGION": "...", "API_SECRET": "se***et", "INFLUXDB_HOST": "...", "INFLUXDB_PORT": "...", "INFLUXDB_ORG": "..."}
 ```
 
-`API_SECRET` is masked; every other value should show the resolved value. A `Missing required variables...` warning means a prerequisite above was not created or not linked. A `Published heartbeat to topic '<output>'` line confirms the single heartbeat reached the output topic.
+`API_SECRET` is partially masked (first/last couple of chars) so you can confirm it resolved to the expected value; every other value shows in full. A `Missing required variables...` warning means a prerequisite above was not created or not linked. The job then emits `HEARTBEAT_COUNT` heartbeats — look for `Published heartbeat N/M to topic '<output>'` lines, then a final `Variables demo complete` once it finishes.
 
 ## Contribute
 
