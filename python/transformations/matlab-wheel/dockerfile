@@ -1,0 +1,45 @@
+FROM containers.mathworks.com/matlab-runtime:r2024b
+
+USER root
+# Add MATLAB Runtime
+ENV LD_LIBRARY_PATH=/opt/matlabruntime/R2024b/runtime/glnxa64/:$LD_LIBRARY_PATH
+ENV AGREE_TO_MATLAB_RUNTIME_LICENSE=yes
+
+# Install python3.12, venv, and pip
+RUN apt-get update && apt-get install -y python3.12 python3.12-venv python3-pip
+
+# Create virtual environment
+ENV VENV_PATH=/opt/venv
+RUN python3.12 -m venv $VENV_PATH
+
+# Add venv to PATH
+ENV PATH="$VENV_PATH/bin:$PATH"
+
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=UTF-8 \
+    PYTHONPATH="/app"
+
+ARG MAINAPPPATH=.
+
+
+# Set working directory
+WORKDIR /app
+
+# === COPY THE REST OF THE APP ===
+COPY . .
+
+# ⚠️ Do NOT include matlabengine in requirements.txt
+#RUN grep -v "matlabengine" /app/requirements.txt > /app/clean-requirements.txt
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+
+
+# Set final working directory
+WORKDIR "/app/${MAINAPPPATH}"
+
+# Launch app with virtualenv Python
+ENTRYPOINT ["python", "/app/main.py"]
