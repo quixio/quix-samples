@@ -35,8 +35,9 @@ diff-friendly, Git-trackable, and runnable standalone with `python notebook.py`.
 
 | Variable           | Description                                                                  | Default |
 | ------------------ | ---------------------------------------------------------------------------- | ------- |
-| `QUIXLAB_NOTEBOOK` | Notebook file to open on startup. Leave empty to land on the file picker.   | (empty) |
+| `QUIXLAB_NOTEBOOK` | Notebook file to open on startup. Leave empty to land on the file picker.   | `main.py` |
 | `QUIXLAB_MODE`     | `edit` (full editor) or `app` (read-only output view).                       | `edit`  |
+| `QUIXLAB_LOG_LEVEL` | Logging verbosity: `DEBUG`, `INFO`, `WARNING`, or `ERROR`.                  | `INFO`  |
 
 The Quix-managed token (`Quix__Sdk__Token`) and workspace
 (`Quix__Workspace__Id`) are injected automatically by the platform, so
