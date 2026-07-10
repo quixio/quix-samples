@@ -17,7 +17,13 @@ first-class data sources you can drop onto the canvas as nodes:
 Wire those into reactive Python cells, parameterize them with interactive
 widgets (text, dropdown, button), and visualize the results inline as
 tables, charts (line / bar / scatter / pie / heatmap), Plotly / Matplotlib
-figures, or rendered Markdown.
+figures, or rendered Markdown. Beyond cells, the canvas also hosts
+**Notebook** nodes (multi-cell sub-notebooks), **File** nodes, and
+**Plugin** nodes.
+
+An **AI assistant** provisions itself for every deployment: chat with it
+alongside the canvas, trigger it per cell, and let it propose cell edits
+that appear as reviewable diff overlays before you accept them.
 
 Notebooks are saved as plain Python files — layout, viz config, and
 dependencies live as decorator keyword arguments — so the file stays
@@ -31,12 +37,16 @@ diff-friendly, Git-trackable, and runnable standalone with `python notebook.py`.
 4. Open the deployment — QuixLab is embedded directly in the Quix UI via the sidebar item.
 5. Use the file picker inside QuixLab to create your first notebook. Notebooks are stored on the persistent state volume and survive restarts.
 
+QuixLab is also available as a **Dev Session** type (alongside VS Code and
+Marimo) for ephemeral, per-user sessions — no deployment needed.
+
 ## Environment Variables
 
 | Variable           | Description                                                                  | Default |
 | ------------------ | ---------------------------------------------------------------------------- | ------- |
-| `QUIXLAB_NOTEBOOK` | Notebook file to open on startup. Leave empty to land on the file picker.   | (empty) |
+| `QUIXLAB_NOTEBOOK` | Notebook file to open on startup. Leave empty to land on the file picker.   | `main.py` |
 | `QUIXLAB_MODE`     | `edit` (full editor) or `app` (read-only output view).                       | `edit`  |
+| `QUIXLAB_LOG_LEVEL` | Logging verbosity: `DEBUG`, `INFO`, `WARNING`, or `ERROR`.                  | `INFO`  |
 
 The Quix-managed token (`Quix__Sdk__Token`) and workspace
 (`Quix__Workspace__Id`) are injected automatically by the platform, so
