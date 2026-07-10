@@ -30,9 +30,28 @@ def _(mo):
 
 @app.cell
 def _(QuixLakeClient, os):
+    import json
+    import urllib.request
+
+    def _get_live_token():
+        # Fetch the live owner token from the in-pod auth proxy so every API
+        # call uses a fresh token (the injected env token can go stale).
+        # Falls back to the static SDK token when the proxy is unavailable
+        # (e.g. running standalone or before first login).
+        try:
+            with urllib.request.urlopen(
+                "http://127.0.0.1:8082/internal-token", timeout=2
+            ) as response:
+                token = json.loads(response.read().decode("utf-8")).get("token")
+                if token:
+                    return token
+        except Exception:
+            pass
+        return os.environ.get("Quix__Sdk__Token", "")
+
     client = QuixLakeClient(
         base_url=os.environ["Quix__Lakehouse__Query__Url"],
-        token=os.environ["Quix__Sdk__Token"],
+        token_provider=_get_live_token,
     )
     return (client,)
 
