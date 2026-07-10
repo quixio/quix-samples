@@ -74,13 +74,6 @@
       ]
     },
     {
-      "Name": "QUIX_PAT_TOKEN",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Personal Access Token (Quix profile → Tokens). Only required when ql.topic() needs to read from Kafka topics in a different workspace than the one QuixLab is deployed in — the platform-injected token is scoped to the local workspace. Leave empty otherwise.",
-      "Required": false
-    },
-    {
       "Name": "QUIXLAB_LOG_LEVEL",
       "Type": "EnvironmentVariable",
       "InputType": "Options",
@@ -93,21 +86,6 @@
         { "label": "WARNING", "value": "WARNING" },
         { "label": "ERROR", "value": "ERROR" }
       ]
-    },
-    {
-      "Name": "QUIXLAB_MCP_KEY",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Shared secret used by Quix AI MCP server registration. Must match the X-API-Key value configured for the org-level MCP entry that scopes the QuixLab Assistant agent. Leave empty if the QuixLab Assistant integration is not used.",
-      "Required": false
-    },
-    {
-      "Name": "QUIXLAB_AGENT_ID",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "UUID of the Quix AI cloud agent bound to this QuixLab deployment (per-deployment QuixLab Assistant). Injected into the iframe-config response so per-cell newMessage postMessages preselect the right agent. Leave empty if the QuixLab Assistant integration is not used.",
-      "DefaultValue": "",
-      "Required": false
     }
   ]
 }
