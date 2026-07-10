@@ -45,9 +45,16 @@ def _(QuixLakeClient, os):
                 token = json.loads(response.read().decode("utf-8")).get("token")
                 if token:
                     return token
-        except Exception:
-            pass
-        return os.environ.get("Quix__Sdk__Token", "")
+        except Exception as e:
+            print(f"live-token fetch failed, falling back to env token: {e}")
+        # Fallback: injected SDK token (standalone / before first login).
+        token = os.environ.get("Quix__Sdk__Token")
+        if not token:
+            raise RuntimeError(
+                "No Quix token available: the auth proxy is unreachable and "
+                "Quix__Sdk__Token is not set."
+            )
+        return token
 
     client = QuixLakeClient(
         base_url=os.environ["Quix__Lakehouse__Query__Url"],
