@@ -33,7 +33,7 @@ def _(QuixLakeClient, os):
     import json
     import urllib.request
 
-    def _get_live_token():
+    def get_live_token():
         # Fetch the live owner token from the in-pod auth proxy so every API
         # call uses a fresh token (the injected env token can go stale).
         # Falls back to the static SDK token when the proxy is unavailable
@@ -58,9 +58,9 @@ def _(QuixLakeClient, os):
 
     client = QuixLakeClient(
         base_url=os.environ["Quix__Lakehouse__Query__Url"],
-        token_provider=_get_live_token,
+        token_provider=get_live_token,
     )
-    return (client,)
+    return client, get_live_token
 
 
 @app.cell
@@ -104,6 +104,41 @@ def _(df, mo):
     )
     mo.ui.plotly(fig)
     return
+
+
+@app.cell
+def _(mo):
+    mo.md(r"""## Live-user blob storage""")
+    return
+
+
+@app.cell
+def _(get_live_token, os):
+    from quix_blob import scope_connection_to_live_user
+    from quixportal import get_filesystem
+
+    def _blob_filesystem():
+        # The platform injects the bound blob connection here; the gateway scopes
+        # blob access to the live user when the access key is their user id and
+        # the secret is their token.
+        connection_json = os.environ.get("Quix__BlobStorage__Connection__Json")
+        user_id = os.environ.get("Quix__DevSession__UserId")
+        if not connection_json or not user_id:
+            print(
+                "blob storage: bound connection or Quix__DevSession__UserId "
+                "missing; skipping live-user filesystem."
+            )
+            return None
+        os.environ["Quix__BlobStorage__Connection__Json"] = (
+            scope_connection_to_live_user(
+                connection_json, user_id, get_live_token()
+            )
+        )
+        return get_filesystem()
+
+    fs = _blob_filesystem()
+    fs.ls("/") if fs is not None else "blob storage unavailable"
+    return (fs,)
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ FROM quixpublic.azurecr.io/devsessions-marimo:stable
 
 # Copy your notebook
 COPY main.py /app/main.py
+COPY quix_blob.py /app/quix_blob.py
 COPY icon.png /app/icon.gif
 
 # Optional: Copy additional requirements
