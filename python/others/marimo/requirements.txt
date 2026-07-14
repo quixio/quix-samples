@@ -1,5 +1,6 @@
 quixstreams
 quixlake-sdk>=0.2.4
+quixportal==2.0.4
 python-dotenv
 numpy
 pandas
