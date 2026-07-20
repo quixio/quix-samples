@@ -36,36 +36,42 @@
       "Required": true
     },
     {
-      "Name": "INFLUXDB_HOST",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Host address for the InfluxDB instance.",
-      "DefaultValue": "eu-central-1-1.aws.cloud2.influxdata.com",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_TOKEN",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Authentication token to access InfluxDB.",
-      "DefaultValue": "<TOKEN>",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_ORG",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Organization name in InfluxDB.",
-      "DefaultValue": "<ORG>",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_DATABASE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Database name in InfluxDB where data is stored.",
-      "DefaultValue": "<DATABASE>",
-      "Required": true
+      "Name": "influxdb3",
+      "InputType": "VariableGroup",
+      "Description": "Shared InfluxDB v3 connection details and admin token (used by this server and by every client that reads/writes it)",
+      "VariableGroupId": "influxdb3-config",
+      "VariableGroupName": "InfluxDB v3 config",
+      "VariableGroupDescription": "Shared InfluxDB v3 connection details and admin token (used by this server and by every client that reads/writes it)",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "INFLUXDB3_HOST",
+          "Description": "Base URL clients use to reach InfluxDB v3 over the internal Quix network",
+          "DefaultValue": "http://influxdb3",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB3_TOKEN",
+          "Description": "InfluxDB v3 admin token (must start with apiv3_). Optional: if set, seeds server auth on first boot and authenticates clients; if left blank, the server runs without authentication.",
+          "Secret": true,
+          "Required": false
+        },
+        {
+          "Key": "INFLUXDB3_DATABASE",
+          "Description": "Default database clients read from and write to",
+          "DefaultValue": "quix",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB3_ORG",
+          "Description": "Organization id. Required by some clients (e.g. Quix Streams) but not used by InfluxDB 3 Core.",
+          "DefaultValue": "quix",
+          "Secret": false,
+          "Required": false
+        }
+      ]
     },
     {
       "Name": "INFLUXDB_MEASUREMENT_NAME",

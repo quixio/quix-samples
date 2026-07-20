@@ -52,6 +52,10 @@ def timestamp_setter(record: dict) -> int | None:
 # InfluxDB3Source uses the modern QuixStreams source API: it queries InfluxDB in
 # tumbling "time_delta"-sized windows and produces each row to the topic for you.
 #
+# Connection config comes from the shared "influxdb3-config" variable group, which
+# injects INFLUXDB3_* env vars. Assign the same group to this deployment as to the
+# InfluxDB v3 server so host, token, database and org all match automatically.
+#
 # Note on the host scheme: an "https://" (or bare) host queries over TLS gRPC,
 # while an "http://" host uses plaintext gRPC — useful for an internal, non-TLS
 # InfluxDB 3 instance.
@@ -59,10 +63,13 @@ def timestamp_setter(record: dict) -> int | None:
 # With no start_date/end_date set, the source tails forward from "now" in
 # time_delta windows, so it only sees data written with current timestamps.
 source = InfluxDB3Source(
-    host=os.environ["INFLUXDB_HOST"],
-    token=os.environ["INFLUXDB_TOKEN"],
-    organization_id=os.environ.get("INFLUXDB_ORG", ""),
-    database=os.environ["INFLUXDB_DATABASE"],
+    host=os.environ["INFLUXDB3_HOST"],
+    # Token is optional: when the server runs without auth it ignores whatever is
+    # sent, so a placeholder keeps the client happy. When auth is on, the real
+    # apiv3_ token must be supplied via the variable group.
+    token=os.environ.get("INFLUXDB3_TOKEN") or "no-auth",
+    organization_id=os.environ.get("INFLUXDB3_ORG", ""),
+    database=os.environ["INFLUXDB3_DATABASE"],
     measurements=os.environ.get("INFLUXDB_MEASUREMENT_NAME"),
     timestamp_setter=timestamp_setter,
     time_delta=os.environ.get("task_interval", "5m"),

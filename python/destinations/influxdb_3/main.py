@@ -14,6 +14,8 @@ tag_keys = keys.split(",") if (keys := os.environ.get("INFLUXDB_TAG_KEYS")) else
 field_keys = keys.split(",") if (keys := os.environ.get("INFLUXDB_FIELD_KEYS")) else []
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
 time_setter = col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None
+# Precision of the TIMESTAMP_COLUMN values (ns, us, ms, s). Defaults to nanoseconds.
+time_precision = os.environ.get("INFLUXDB_TIME_PRECISION", "ns")
 
 def on_connect_success():
     print("CONNECTED!")
@@ -24,14 +26,22 @@ def on_connect_failure(err):
     raise err
 
 
+# Connection config comes from the shared "influxdb3-config" variable group, which
+# injects INFLUXDB3_* env vars. Assign the same group to this deployment as to the
+# InfluxDB v3 server so host, token, database and org all match automatically.
 influxdb_v3_sink = InfluxDB3Sink(
-    token=os.environ["INFLUXDB_TOKEN"],
-    host=os.environ["INFLUXDB_HOST"],
-    organization_id=os.environ.get("INFLUXDB_ORG", ""),
+    # Token is optional: when the server runs without auth it ignores whatever is
+    # sent, so a placeholder keeps the client happy. When auth is on, the real
+    # apiv3_ token must be supplied via the variable group.
+    token=os.environ.get("INFLUXDB3_TOKEN") or "no-auth",
+    host=os.environ["INFLUXDB3_HOST"],
+    organization_id=os.environ.get("INFLUXDB3_ORG", ""),
     tags_keys=tag_keys,
     fields_keys=field_keys,
     time_setter=time_setter,
-    database=os.environ["INFLUXDB_DATABASE"],
+    # time_setter values are interpreted at this precision (default nanoseconds).
+    time_precision=time_precision,
+    database=os.environ["INFLUXDB3_DATABASE"],
     measurement=measurement_name,
     on_client_connect_success=on_connect_success,
     on_client_connect_failure=on_connect_failure,
