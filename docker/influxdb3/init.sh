@@ -9,12 +9,12 @@ TOKEN_FILE="/app/state/influxdb3-admin-token.json"
 # ---------------------------------------------------------------------------
 # Configuration (injected by the "influxdb3-config" Quix global variable group)
 #
-#   INFLUXDB3_TOKEN     optional, secret  - admin token (must start with apiv3_).
-#                                           If set, auth is enabled and this token
-#                                           seeds it. If left blank, the server
-#                                           runs WITHOUT authentication.
-#   INFLUXDB3_NODE_ID   optional          - server node id       (default: node0)
-#   INFLUXDB3_OBJECT_STORE optional       - object store backend (default: file)
+#   INFLUXDB3_USE_TOKEN  'true' enables authentication; anything else runs the
+#                        server WITHOUT auth (default: false).
+#   INFLUXDB3_TOKEN      admin token, secret. Only used when USE_TOKEN is true,
+#                        in which case it must start with 'apiv3_'.
+#   INFLUXDB3_NODE_ID    optional - server node id       (default: node0)
+#   INFLUXDB3_OBJECT_STORE optional - object store backend (default: file)
 #
 # INFLUXDB3_HOST / INFLUXDB3_DATABASE / INFLUXDB3_ORG are also injected by the
 # same group but are only consumed by clients, so they are ignored here.
@@ -22,11 +22,17 @@ TOKEN_FILE="/app/state/influxdb3-admin-token.json"
 NODE_ID="${INFLUXDB3_NODE_ID:-node0}"
 OBJECT_STORE="${INFLUXDB3_OBJECT_STORE:-file}"
 
-# If a token is supplied it must be a valid InfluxDB v3 token.
-if [ -n "$INFLUXDB3_TOKEN" ]; then
+# Normalise the boolean flag to 1 (on) / 0 (off).
+case "${INFLUXDB3_USE_TOKEN:-false}" in
+  true|True|TRUE|1|yes|Yes|YES) USE_TOKEN=1 ;;
+  *) USE_TOKEN=0 ;;
+esac
+
+# When auth is requested the token must be a valid InfluxDB v3 token.
+if [ "$USE_TOKEN" -eq 1 ]; then
   case "$INFLUXDB3_TOKEN" in
     apiv3_*) ;;
-    *) echo "❌ INFLUXDB3_TOKEN must be an InfluxDB v3 token and start with 'apiv3_'."; exit 1 ;;
+    *) echo "❌ INFLUXDB3_USE_TOKEN is true but INFLUXDB3_TOKEN is not a valid token (must start with 'apiv3_')."; exit 1 ;;
   esac
 fi
 
@@ -47,7 +53,7 @@ fi
 
 SERVE="influxdb3 serve --node-id '$NODE_ID' --object-store '$OBJECT_STORE' --data-dir '$TARGET_DIR'"
 
-if [ -n "$INFLUXDB3_TOKEN" ]; then
+if [ "$USE_TOKEN" -eq 1 ]; then
   # Write an "offline" admin-token file so the first startup bootstraps auth
   # non-interactively with our predetermined token. The same token value is
   # shared with clients via the global variable group, so they can authenticate.
@@ -66,7 +72,7 @@ EOF
   chmod 600 "$TOKEN_FILE"
   SERVE="$SERVE --admin-token-file '$TOKEN_FILE'"
 else
-  echo "⚠️  No INFLUXDB3_TOKEN set — starting InfluxDB v3 WITHOUT authentication."
+  echo "⚠️  INFLUXDB3_USE_TOKEN is not 'true' — starting InfluxDB v3 WITHOUT authentication."
   SERVE="$SERVE --without-auth"
 fi
 

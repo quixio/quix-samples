@@ -27,7 +27,8 @@ Connection details come from the shared **`influxdb3-config`** variable group. A
 group to this connector as to the InfluxDB v3 server so the values always match:
 
 - **INFLUXDB3_HOST**: Base URL clients use to reach InfluxDB v3. (Default: `http://influxdb3`, Required: `True`)
-- **INFLUXDB3_TOKEN**: InfluxDB v3 admin token, secret. Optional — required only if the server has auth enabled (must start with `apiv3_`); leave blank when the server runs without auth. (Required: `False`)
+- **INFLUXDB3_USE_TOKEN**: Whether the InfluxDB v3 server has authentication enabled. (Default: `false`, Required: `True`)
+- **INFLUXDB3_TOKEN**: InfluxDB v3 admin token, secret. Used only when `INFLUXDB3_USE_TOKEN` is `true` (must start with `apiv3_`). (Default: `CHANGE_ME`, Required: `True`)
 - **INFLUXDB3_DATABASE**: Default database to read from. (Default: `quix`, Required: `True`)
 - **INFLUXDB3_ORG**: Organization id; required by Quix Streams but not used by InfluxDB 3 Core. (Default: `quix`, Required: `False`)
 

@@ -44,10 +44,18 @@
           "Required": true
         },
         {
+          "Key": "INFLUXDB3_USE_TOKEN",
+          "Description": "Whether to enable InfluxDB v3 authentication. Set to 'true' to require INFLUXDB3_TOKEN; leave 'false' to run without auth.",
+          "DefaultValue": "false",
+          "Secret": false,
+          "Required": true
+        },
+        {
           "Key": "INFLUXDB3_TOKEN",
-          "Description": "InfluxDB v3 admin token (must start with apiv3_). Optional: if set, seeds server auth on first boot and authenticates clients; if left blank, the server runs without authentication.",
+          "Description": "InfluxDB v3 admin token. Only used when INFLUXDB3_USE_TOKEN is 'true', in which case it must start with 'apiv3_'. Seeds server auth on first boot and authenticates clients.",
+          "DefaultValue": "CHANGE_ME",
           "Secret": true,
-          "Required": false
+          "Required": true
         },
         {
           "Key": "INFLUXDB3_DATABASE",

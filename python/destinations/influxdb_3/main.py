@@ -30,10 +30,9 @@ def on_connect_failure(err):
 # injects INFLUXDB3_* env vars. Assign the same group to this deployment as to the
 # InfluxDB v3 server so host, token, database and org all match automatically.
 influxdb_v3_sink = InfluxDB3Sink(
-    # Token is optional: when the server runs without auth it ignores whatever is
-    # sent, so a placeholder keeps the client happy. When auth is on, the real
-    # apiv3_ token must be supplied via the variable group.
-    token=os.environ.get("INFLUXDB3_TOKEN") or "no-auth",
+    # The token always has a value (from the shared group). A no-auth server
+    # ignores it; an auth-enabled server matches it against its admin token.
+    token=os.environ["INFLUXDB3_TOKEN"],
     host=os.environ["INFLUXDB3_HOST"],
     organization_id=os.environ.get("INFLUXDB3_ORG", ""),
     tags_keys=tag_keys,

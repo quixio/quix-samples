@@ -17,7 +17,8 @@ every client (source/sink) read the same connection details and token. Assign th
 to this deployment (or your project/environment) with:
 
 - **INFLUXDB3_HOST** — base URL clients use to reach the server (default `http://influxdb3`)
-- **INFLUXDB3_TOKEN** — admin token, secret, **optional**. If set it must start with `apiv3_`; it seeds server auth on first boot and authenticates clients. **Leave it blank to run the server without authentication** (the original alpha behaviour).
+- **INFLUXDB3_USE_TOKEN** — set to `true` to enable authentication; leave `false` to run without auth (default `false`).
+- **INFLUXDB3_TOKEN** — admin token, secret (default `CHANGE_ME`). Only used when `INFLUXDB3_USE_TOKEN` is `true`, in which case it must start with `apiv3_`; it seeds server auth on first boot and authenticates clients.
 - **INFLUXDB3_DATABASE** — default database clients read/write (default `quix`)
 - **INFLUXDB3_ORG** — organization id; required by some clients (e.g. Quix Streams) but not used by InfluxDB 3 Core (default `quix`)
 
@@ -27,7 +28,7 @@ and `INFLUXDB3_OBJECT_STORE` (default `file`).
 ## How to Run
 
 1. Create an account or log in to your [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account and navigate to the Code Samples section.
-2. Assign the `influxdb3-config` variable group. Optionally set `INFLUXDB3_TOKEN` (a value starting with `apiv3_`) to enable authentication; leave it blank to run without auth.
+2. Assign the `influxdb3-config` variable group. To enable authentication, set `INFLUXDB3_USE_TOKEN` to `true` and provide an `INFLUXDB3_TOKEN` starting with `apiv3_`; otherwise leave `INFLUXDB3_USE_TOKEN` as `false` to run without auth.
 3. Click `Deploy` to launch a pre-built container in Quix.
 4. Enable state, otherwise changes (including the seeded admin token) will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
 

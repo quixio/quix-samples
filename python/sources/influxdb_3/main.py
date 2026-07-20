@@ -64,10 +64,9 @@ def timestamp_setter(record: dict) -> int | None:
 # time_delta windows, so it only sees data written with current timestamps.
 source = InfluxDB3Source(
     host=os.environ["INFLUXDB3_HOST"],
-    # Token is optional: when the server runs without auth it ignores whatever is
-    # sent, so a placeholder keeps the client happy. When auth is on, the real
-    # apiv3_ token must be supplied via the variable group.
-    token=os.environ.get("INFLUXDB3_TOKEN") or "no-auth",
+    # The token always has a value (from the shared group). A no-auth server
+    # ignores it; an auth-enabled server matches it against its admin token.
+    token=os.environ["INFLUXDB3_TOKEN"],
     organization_id=os.environ.get("INFLUXDB3_ORG", ""),
     database=os.environ["INFLUXDB3_DATABASE"],
     measurements=os.environ.get("INFLUXDB_MEASUREMENT_NAME"),
