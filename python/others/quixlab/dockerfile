@@ -1,1 +1,1 @@
-FROM ghcr.io/quixio/quixlab:v-stable
+FROM ghcr.io/quixio/quixlab:v-main
