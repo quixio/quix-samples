@@ -46,8 +46,8 @@
       "Variables": [
         {
           "Key": "INFLUXDB3_HOST",
-          "Description": "Base URL clients use to reach InfluxDB v3 over the internal Quix network",
-          "DefaultValue": "http://influxdb3",
+          "Description": "Base URL clients use to reach InfluxDB v3 over the internal Quix network. Include the http:// scheme and the port so the gRPC/Flight client uses plaintext on the right port (not TLS on 443).",
+          "DefaultValue": "http://influxdb3:80",
           "Secret": false,
           "Required": true
         },

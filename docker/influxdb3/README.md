@@ -16,7 +16,7 @@ This sample uses the shared **`influxdb3-config`** variable group, so the server
 every client (source/sink) read the same connection details and token. Assign the group
 to this deployment (or your project/environment) with:
 
-- **INFLUXDB3_HOST** — base URL clients use to reach the server (default `http://influxdb3`)
+- **INFLUXDB3_HOST** — base URL clients use to reach the server, including the `http://` scheme and port so the gRPC/Flight client stays on plaintext (default `http://influxdb3:80`)
 - **INFLUXDB3_USE_TOKEN** — set to `true` to enable authentication; leave `false` to run without auth (default `false`).
 - **INFLUXDB3_TOKEN** — admin token, secret (default `CHANGE_ME`). Only used when `INFLUXDB3_USE_TOKEN` is `true`, in which case it must start with `apiv3_`; it seeds server auth on first boot and authenticates clients.
 - **INFLUXDB3_DATABASE** — default database clients read/write (default `quix`)
