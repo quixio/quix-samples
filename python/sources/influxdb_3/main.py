@@ -49,6 +49,18 @@ def timestamp_setter(record: dict) -> int | None:
         return None
 
 
+# InfluxDB3Source drops the measurement name verbatim into its default query
+# ("SELECT * FROM {measurement_name} WHERE ..."). Unquoted InfluxQL identifiers only
+# allow letters, digits and underscores, so a measurement with a hyphen, dot or space
+# (e.g. "test-data") fails to parse. Double-quoting the identifier in the FROM clause
+# makes any name valid — and quoting a plain name is harmless — while the `measurements`
+# value stays unquoted so it is still used cleanly as the message key and
+# _measurement_name column. $start_time/$end_time are bound by the source as before.
+INFLUXQL_QUERY = (
+    'SELECT * FROM "{measurement_name}" '
+    "WHERE time >= $start_time AND time < $end_time"
+)
+
 # InfluxDB3Source uses the modern QuixStreams source API: it queries InfluxDB in
 # tumbling "time_delta"-sized windows and produces each row to the topic for you.
 #
@@ -70,6 +82,7 @@ source = InfluxDB3Source(
     organization_id=os.environ.get("INFLUXDB3_ORG", ""),
     database=os.environ["INFLUXDB3_DATABASE"],
     measurements=os.environ.get("INFLUXDB_MEASUREMENT_NAME"),
+    sql_query=INFLUXQL_QUERY,
     timestamp_setter=timestamp_setter,
     time_delta=os.environ.get("task_interval", "5m"),
 )

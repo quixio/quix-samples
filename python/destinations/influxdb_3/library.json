@@ -78,7 +78,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used",
-      "DefaultValue": "measurement1",
+      "DefaultValue": "test_measurement",
       "Required": false
     },
     {
