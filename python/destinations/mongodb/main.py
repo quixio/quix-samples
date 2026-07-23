@@ -40,6 +40,17 @@ def _as_bool(value: Union[str, bool]) -> bool:
     return value.lower() == "true"
 
 
+def conn_var(new_name: str, legacy_name: str, required: bool = True) -> Optional[str]:
+    """
+    Read a Mongo connection env var by its aligned MONGO_* name, falling back to the
+    legacy MONGODB_* name so deployments created before the rename keep working.
+    """
+    value = os.getenv(new_name) or os.getenv(legacy_name)
+    if required and not value:
+        raise KeyError(f"{new_name} (or legacy {legacy_name})")
+    return value
+
+
 def replace_query_refs(data):
     """
     Replaces query values like "__value.x.y.z" with a corresponding callable on a BatchItem.
@@ -100,13 +111,13 @@ input_topic = app.topic(os.environ["input"])
 kwargs_defaults = get_kwargs_defaults()
 mongodb_sink = MongoDBSink(
     # required settings
-    host=os.environ["MONGODB_HOST"],
-    username=os.environ["MONGODB_USERNAME"],
-    password=os.environ["MONGODB_PASSWORD"],
-    db=os.environ["MONGODB_DB"],
-    collection=os.environ["MONGODB_COLLECTION"],
+    host=conn_var("MONGO_HOST", "MONGODB_HOST"),
+    username=conn_var("MONGO_USER", "MONGODB_USERNAME"),
+    password=conn_var("MONGO_PASSWORD", "MONGODB_PASSWORD"),
+    db=conn_var("MONGO_DATABASE", "MONGODB_DB"),
+    collection=conn_var("MONGO_COLLECTION", "MONGODB_COLLECTION"),
     # optional settings (have defaults)
-    port=int(port) if (port := os.getenv("MONGODB_PORT")) else kwargs_defaults["port"],
+    port=int(port) if (port := conn_var("MONGO_PORT", "MONGODB_PORT", required=False)) else kwargs_defaults["port"],
     update_method=os.getenv("MONGODB_UPDATE_METHOD", kwargs_defaults["update_method"]),
     upsert=_as_bool(os.getenv("MONGODB_UPSERT", kwargs_defaults["upsert"])),
     document_matcher=document_matcher_env_parser() or kwargs_defaults["document_matcher"],
