@@ -13,9 +13,21 @@ load_dotenv()
 tag_keys = keys.split(",") if (keys := os.environ.get("INFLUXDB_TAG_KEYS")) else []
 field_keys = keys.split(",") if (keys := os.environ.get("INFLUXDB_FIELD_KEYS")) else []
 measurement_name = os.environ.get("INFLUXDB_MEASUREMENT_NAME", "measurement1")
-time_setter = col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None
-# Precision of the TIMESTAMP_COLUMN values (ns, us, ms, s). Defaults to nanoseconds.
-time_precision = os.environ.get("INFLUXDB_TIME_PRECISION", "ns")
+
+# Decide where the point's timestamp comes from, and its precision:
+#   - No TIMESTAMP_COLUMN (default): use the Kafka message timestamp. Quix Streams
+#     always provides this as a 13-digit millisecond epoch, so the precision is
+#     fixed at "ms". This is the out-of-the-box behaviour and always works.
+#   - TIMESTAMP_COLUMN set: read the timestamp from that column and interpret it
+#     using INFLUXDB_TIME_PRECISION (ns, us, ms, s) — only you know the unit of the
+#     values stored in that column.
+time_column = os.environ.get("TIMESTAMP_COLUMN") or None
+if time_column:
+    time_setter = time_column
+    time_precision = os.environ.get("INFLUXDB_TIME_PRECISION", "ms")
+else:
+    time_setter = None
+    time_precision = "ms"
 
 def on_connect_success():
     print("CONNECTED!")
@@ -38,7 +50,6 @@ influxdb_v3_sink = InfluxDB3Sink(
     tags_keys=tag_keys,
     fields_keys=field_keys,
     time_setter=time_setter,
-    # time_setter values are interpreted at this precision (default nanoseconds).
     time_precision=time_precision,
     database=os.environ["INFLUXDB3_DATABASE"],
     measurement=measurement_name,

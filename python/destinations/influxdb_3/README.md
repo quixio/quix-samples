@@ -21,8 +21,8 @@ Then either:
 The connector uses the following environment variables:
 
 - **input**: This is the input topic (Default: `detection-result`, Required: `True`)
-- **TIMESTAMP_COLUMN**: This is the column in your data that represents the timestamp. Interpreted using `INFLUXDB_TIME_PRECISION`. Defaults to use the message timestamp received from the broker if not supplied. Case sensitive. (Default: ``, Required: `False`)
-- **INFLUXDB_TIME_PRECISION**: Precision of the `TIMESTAMP_COLUMN` values. One of `ns`, `us`, `ms`, `s`. (Default: `ns`, Required: `False`)
+- **TIMESTAMP_COLUMN**: The column in your data to read the point timestamp from, interpreted using `INFLUXDB_TIME_PRECISION`. If left empty (the default), the Kafka message timestamp is used (millisecond precision). Case sensitive. (Default: ``, Required: `False`)
+- **INFLUXDB_TIME_PRECISION**: Precision of the `TIMESTAMP_COLUMN` values. One of `ns`, `us`, `ms`, `s`. Only applies when `TIMESTAMP_COLUMN` is set; the Kafka-timestamp default is always `ms`. (Default: `ms`, Required: `False`)
 - **INFLUXDB_TAG_KEYS**: Keys to be used as tags when writing data to InfluxDB. These are columns that are available in the input topic. (Default: ``, Required: `False`)
 - **INFLUXDB_FIELD_KEYS**: Keys to be used as fields when writing data to InfluxDB. These are columns that are available in the input topic. (Default: ``, Required: `True`)
 - **INFLUXDB_MEASUREMENT_NAME**: The InfluxDB measurement to write data to. If not specified, the name of the input topic will be used. (Default: `measurement1`, Required: `False`)

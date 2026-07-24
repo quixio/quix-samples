@@ -109,7 +109,7 @@
       "Name": "TIMESTAMP_COLUMN",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "The column containing the timestamp column. Interpreted using INFLUXDB_TIME_PRECISION (default nanoseconds)",
+      "Description": "Column to read the point timestamp from, interpreted using INFLUXDB_TIME_PRECISION. If left empty (default), the Kafka message timestamp is used (millisecond precision).",
       "DefaultValue": "",
       "Required": false
     },
@@ -117,8 +117,8 @@
       "Name": "INFLUXDB_TIME_PRECISION",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Precision of the TIMESTAMP_COLUMN values written to InfluxDB. One of: ns, us, ms, s",
-      "DefaultValue": "ns",
+      "Description": "Precision of the TIMESTAMP_COLUMN values. One of: ns, us, ms, s. Only used when TIMESTAMP_COLUMN is set; the Kafka-timestamp default is always ms.",
+      "DefaultValue": "ms",
       "Required": false
     },
     {
