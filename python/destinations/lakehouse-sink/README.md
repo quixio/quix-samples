@@ -40,6 +40,9 @@ Then either:
 - **`TIMESTAMP_COLUMN`**: Column containing timestamp values to extract year/month/day/hour from
   *Default*: `ts_ms`
 
+- **`SORT_COLUMN`**: Optional column to order data by during lakehouse compaction, enabling `ORDER BY` streaming and file skipping. Leave empty to fall back to `TIMESTAMP_COLUMN` automatically. (Requires a QuixStreams build whose `QuixTSDataLakeSink` supports `sort_column`.)
+  *Default*: `""` (auto = timestamp column)
+
 ### Catalog Integration (Optional)
 
 On Quix Cloud, when the workspace has a Lakehouse provisioned, `CATALOG_URL` and `CATALOG_AUTH_TOKEN` are auto-injected by the platform at deployment time. To use a self-hosted catalog or to skip registration, set these as deployment variables on the deployed sink.

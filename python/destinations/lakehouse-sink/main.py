@@ -91,12 +91,25 @@ workspace_id = os.getenv("Quix__Workspace__Id", "")
 # deployment exists in the workspace; prefer the Quix name, fall back to the PyIceberg one for
 # legacy compatibility. The auth token is only injected under the Quix name — it routes via the
 # secrets-bag / secretKeyRef path that the platform uses for the Catalog's own credentials.
+# Optional preferred ordering column recorded on the table (properties.sort_column).
+# Compaction orders files by it so ORDER BY / time-range queries can skip files and
+# stream. Forwarded only if the installed QuixStreams supports the kwarg; otherwise
+# it is ignored and the lakehouse falls back to the timestamp column automatically.
+import inspect
+_sort_column = os.getenv("SORT_COLUMN") or None
+_sort_kwargs = (
+    {"sort_column": _sort_column}
+    if _sort_column and "sort_column" in inspect.signature(QuixTSDataLakeSink.__init__).parameters
+    else {}
+)
+
 blob_sink = QuixTSDataLakeSink(
     s3_prefix=TIMESERIES_PREFIX,
     table_name=table_name,
     workspace_id=workspace_id,
     hive_columns=hive_columns,
     timestamp_column=os.getenv("TIMESTAMP_COLUMN", "ts_ms"),
+    **_sort_kwargs,
     catalog_url=os.getenv("Quix__Lakehouse__Catalog__Url") or os.getenv("CATALOG_URL"),
     catalog_auth_token=os.getenv("Quix__Lakehouse__Catalog__AuthToken"),
     auto_discover=auto_discover,

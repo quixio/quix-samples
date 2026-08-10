@@ -47,6 +47,13 @@
       "DefaultValue": "ts_ms"
     },
     {
+      "Name": "SORT_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Optional column to order data by during lakehouse compaction, enabling ORDER BY streaming and file skipping. Leave empty to fall back to TIMESTAMP_COLUMN automatically.",
+      "DefaultValue": ""
+    },
+    {
       "Name": "AUTO_DISCOVER",
       "Type": "EnvironmentVariable",
       "InputType": "Options",
