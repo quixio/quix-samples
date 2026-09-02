@@ -1,9 +1,8 @@
 # timeout: 240
 # Runtime test for docker/mqtt.
 #
-# Boots the broker with ONLY the mqtt-connection Variable Group key names set
-# (mqtt_username / mqtt_password) and no MQTT_USERNAME / MQTT_PASSWORD anywhere, then
-# publishes using those credentials. mosquitto.conf sets allow_anonymous false, so a
+# Boots the broker with only the mqtt-connection Variable Group keys set
+# (mqtt_username / mqtt_password), then publishes using those credentials. mosquitto.conf sets allow_anonymous false, so a
 # successful publish proves init.sh built the password file from the group keys.
 
 services:

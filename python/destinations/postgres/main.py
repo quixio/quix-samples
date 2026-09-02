@@ -18,18 +18,6 @@ def _as_iterable(env_var) -> list[str]:
     return keys.split(",") if (keys := os.environ.get(env_var)) else []
 
 
-def conn_var(new_name: str, legacy_name: str) -> str:
-    """
-    Read a connection env var by the name the shared postgres-connection Variable Group
-    injects, falling back to the legacy name so deployments created before the rename
-    keep working.
-    """
-    value = os.getenv(new_name) or os.getenv(legacy_name)
-    if not value:
-        raise KeyError(f"{new_name} (or legacy {legacy_name})")
-    return value
-
-
 # Potential Callables - can manually edit these to instead use your own callables.
 # --Required--
 table_name: TableName = os.getenv("POSTGRES_TABLE", "default_table")
@@ -50,7 +38,7 @@ def on_connect_failure(err):
 postgres_sink = PostgreSQLSink(
     host=os.environ["POSTGRES_HOST"],
     port=int(os.environ["POSTGRES_PORT"]),
-    dbname=conn_var("POSTGRES_DB", "POSTGRES_DBNAME"),
+    dbname=os.environ["POSTGRES_DB"],
     user=os.environ["POSTGRES_USER"],
     password=os.environ["POSTGRES_PASSWORD"],
     table_name=table_name,

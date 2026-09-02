@@ -32,8 +32,7 @@ source and the HiveMQ Sink connect to the same broker with the same credentials:
   Cloud requires TLS on 8883)
 
 This source previously hard-coded TLS on; it now honours `mqtt_tls_enabled` so it and the
-HiveMQ Sink cannot disagree. When the variable is absent the old behaviour (TLS on) still
-applies.
+HiveMQ Sink cannot disagree.
 
 `mqtt_version` and `mqtt_tls_enabled` are free text inside the group rather than
 dropdowns - the group schema has no options list. Valid values are given above.

@@ -18,13 +18,11 @@ Then either:
 The connector uses the following environment variables:
 
 - **output**: Name of the output topic to write into.
-- **PG_SCHEMA**: The name of the schema for CDC.
-- **PG_TABLE**: The name of the table for CDC.
+- **POSTGRES_SCHEMA**: The name of the schema for CDC.
+- **POSTGRES_TABLE**: The name of the table for CDC.
 
 The connection comes from the shared **`postgres-connection`** Variable Group, so this
-source, the PostgreSQL Sink and the bundled PostgreSQL server all agree. These were
-renamed from `PG_HOST` / `PG_PORT` / `PG_USER` / `PG_PASSWORD` / `PG_DATABASE`, which
-still work for existing deployments:
+source, the PostgreSQL Sink and the bundled PostgreSQL server all agree:
 
 - **POSTGRES_HOST**: Host address of the PostgreSQL instance (Default: `postgresql`)
 - **POSTGRES_PORT**: Port of the PostgreSQL instance (Default: `80`)

@@ -44,14 +44,13 @@ fi
 
 # The mongo image initialises its root user from MONGO_INITDB_ROOT_USERNAME /
 # MONGO_INITDB_ROOT_PASSWORD, but the connection is defined once in the shared
-# mongodb-connection Variable Group as MONGO_USER / MONGO_PASSWORD. Map one onto the
-# other, keeping the legacy names as a fallback so deployments created before the
-# rename keep working.
-export MONGO_INITDB_ROOT_USERNAME="${MONGO_USER:-$MONGO_INITDB_ROOT_USERNAME}"
-export MONGO_INITDB_ROOT_PASSWORD="${MONGO_PASSWORD:-$MONGO_INITDB_ROOT_PASSWORD}"
+# mongodb-connection Variable Group as MONGO_USER / MONGO_PASSWORD, so that the sink and
+# other clients read the same values. Map one onto the other.
+export MONGO_INITDB_ROOT_USERNAME="$MONGO_USER"
+export MONGO_INITDB_ROOT_PASSWORD="$MONGO_PASSWORD"
 
 if [ -z "$MONGO_INITDB_ROOT_USERNAME" ] || [ -z "$MONGO_INITDB_ROOT_PASSWORD" ]; then
-  echo "❌ ERROR: MONGO_USER and MONGO_PASSWORD are required to initialise MongoDB"
+  echo "❌ ERROR: MONGO_USER and MONGO_PASSWORD are required - is the mongodb-connection variable group assigned?"
   exit 1
 fi
 

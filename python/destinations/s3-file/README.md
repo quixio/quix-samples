@@ -28,7 +28,6 @@ AWS connector in the pipeline uses one set of credentials:
 - `AWS_ACCESS_KEY_ID`: Your AWS access key ID.
 - `AWS_SECRET_ACCESS_KEY`: Your AWS secret access key.
 - `AWS_REGION`: The region of your S3 bucket (Default: `us-east-1`).
-  Renamed from `AWS_REGION_NAME`, which still works for existing deployments.
 
 ### Optional
 Unless explicitly defined, these are optional, or generally set to the [`S3FileSink`](https://quix.io/docs/quix-streams/connectors/sinks/amazon-s3-sink.html) defaults.

@@ -23,9 +23,7 @@ The connector uses the following environment variables:
 - **aws_stream_name**: The name of the AWS stream you want to use.
 
 Credentials and region come from the shared **`aws-connection`** Variable Group, so every
-AWS connector in the pipeline uses one set of credentials. These were renamed from
-`aws_access_key_id` / `aws_secret_access_key` / `aws_region_name`, which still work for
-existing deployments:
+AWS connector in the pipeline uses one set of credentials:
 
 - **AWS_ACCESS_KEY_ID**: AWS access key ID.
 - **AWS_SECRET_ACCESS_KEY**: AWS secret access key.

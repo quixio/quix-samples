@@ -28,9 +28,7 @@ deployment (or your project/environment) with:
 - **mqtt_password** — password for that user, secret
 
 `mosquitto.conf` sets `allow_anonymous false`, so both a username and a password are
-required and the container exits with an error if either is empty. The legacy
-`MQTT_USERNAME` / `MQTT_PASSWORD` variables still work for deployments created before the
-group was introduced.
+required and the container exits with an error if either is empty.
 
 ## How to Run
 

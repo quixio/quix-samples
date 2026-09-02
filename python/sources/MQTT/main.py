@@ -32,12 +32,9 @@ def main():
     mqtt_password = os.getenv("mqtt_password")
 
     # mqtt_tls_enabled comes from the shared mqtt-connection Variable Group, so this
-    # source and the MQTT Sink agree on TLS. When it is absent, fall back to the previous
-    # behaviour of enabling TLS whenever a username was supplied.
-    tls_setting = os.getenv("mqtt_tls_enabled")
-    mqtt_tls_enabled = (
-        tls_setting.lower() == "true" if tls_setting is not None else bool(mqtt_username)
-    )
+    # source and the MQTT Sink agree on TLS. The bundled Mosquitto broker listens
+    # plaintext on 1883, hence the default.
+    mqtt_tls_enabled = os.getenv("mqtt_tls_enabled", "false").lower() == "true"
 
     app = Application()
     output_topic = app.topic(output_topic_name, value_serializer="bytes")

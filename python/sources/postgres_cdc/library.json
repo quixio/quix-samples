@@ -74,7 +74,7 @@
       ]
     },
     {
-      "Name": "PG_SCHEMA",
+      "Name": "POSTGRES_SCHEMA",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Name of schema for CDC",
@@ -82,7 +82,7 @@
       "Required": true
     },
     {
-      "Name": "PG_TABLE",
+      "Name": "POSTGRES_TABLE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Name of table for CDC",

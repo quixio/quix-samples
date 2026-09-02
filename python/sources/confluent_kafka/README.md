@@ -34,10 +34,9 @@ so this source and the Confluent Kafka Sink talk to the same cluster with the sa
 - **kafka_ca_location**: Path to the SSL CA certificate file. Leave empty for the system
   defaults
 
-Note that the group default for `kafka_sasl_mechanism` is `PLAIN`, whereas this source used
-to default to `SCRAM-SHA-256`. Existing deployments carry their own value and are
-unaffected; a fresh deployment using the group will authenticate with `PLAIN` unless you
-change it.
+Note that the group default for `kafka_sasl_mechanism` is `PLAIN`, whereas this source
+used to default to `SCRAM-SHA-256`. Confluent Cloud API keys use `PLAIN`; change it in the
+group if your cluster expects SCRAM.
 
 `kafka_sasl_mechanism` is free text inside the group rather than a dropdown - the
 group schema has no options list. Valid values are given above.

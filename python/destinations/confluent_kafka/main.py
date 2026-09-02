@@ -11,7 +11,7 @@ load_dotenv()
 # SASL configuration
 # sasl.mechanism and ssl.ca.location come from the shared confluent-kafka-connection
 # Variable Group, so this sink and the Confluent Kafka Source authenticate the same way.
-# The PLAIN default preserves the behaviour of deployments made before the group existed.
+# PLAIN is the default because that is what Confluent Cloud API keys use.
 sasl_config = {
     'sasl.mechanism': os.getenv("kafka_sasl_mechanism", "PLAIN"),
     'security.protocol': 'SASL_SSL',

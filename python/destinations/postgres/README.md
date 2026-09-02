@@ -27,8 +27,7 @@ this sink, the Postgres CDC Source and the bundled PostgreSQL server all agree:
 
 - **POSTGRES_HOST**: Host address of the PostgreSQL instance (Default: `postgresql`)
 - **POSTGRES_PORT**: Port of the PostgreSQL instance (Default: `80`)
-- **POSTGRES_DB**: Database name where data should be stored (Default: `quix`).
-  Renamed from `POSTGRES_DBNAME`, which still works for existing deployments.
+- **POSTGRES_DB**: Database name where data should be stored (Default: `quix`)
 - **POSTGRES_USER**: Username for the PostgreSQL database (Default: `admin`)
 - **POSTGRES_PASSWORD**: Password for the PostgreSQL database
 

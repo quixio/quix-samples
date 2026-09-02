@@ -28,32 +28,19 @@ serializer = JSONSerializer()
 topic_name = os.environ["output"]
 topic = app.topic(topic_name)
 
-
-def conn_var(new_name: str, legacy_name: str, default: str = None) -> str:
-    """
-    Read a connection env var by the name the shared influxdb2-config Variable Group injects,
-    falling back to the legacy INFLUXDB_* name so deployments created before the rename
-    keep working.
-    """
-    value = os.getenv(new_name) or os.getenv(legacy_name) or default
-    if value is None:
-        raise KeyError(f"{new_name} (or legacy {legacy_name})")
-    return value
-
-
 # The connection comes from the shared influxdb2-config Variable Group, so this source,
 # the bundled InfluxDB v2 server and Grafana all read the same host, token and org.
-influxdb_host = conn_var("INFLUXDB2_HOST", "INFLUXDB_HOST")
-influxdb_org = conn_var("INFLUXDB2_ORG", "INFLUXDB_ORG")
+influxdb_host = os.environ["INFLUXDB2_HOST"]
+influxdb_org = os.environ["INFLUXDB2_ORG"]
 
-influxdb2_client = influxdb_client.InfluxDBClient(token=conn_var("INFLUXDB2_TOKEN", "INFLUXDB_TOKEN"),
+influxdb2_client = influxdb_client.InfluxDBClient(token=os.environ["INFLUXDB2_TOKEN"],
                         org=influxdb_org,
                         url=influxdb_host)
 
 query_api = influxdb2_client.query_api()
 
 interval = os.environ.get("task_interval", "5m")
-bucket = conn_var("INFLUXDB2_BUCKET", "INFLUXDB_BUCKET", "placeholder-bucket")
+bucket = os.getenv("INFLUXDB2_BUCKET", "placeholder-bucket")
 
 # Global variable to control the main loop's execution
 run = True

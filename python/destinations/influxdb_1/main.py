@@ -22,18 +22,6 @@ def _as_iterable(env_var) -> list[str]:
     return keys.split(",") if (keys := os.environ.get(env_var)) else []
 
 
-def conn_var(new_name: str, legacy_name: str, default: str = None) -> str:
-    """
-    Read a connection env var by the name the shared influxdb1-config Variable Group injects,
-    falling back to the legacy INFLUXDB_* name so deployments created before the rename
-    keep working.
-    """
-    value = os.getenv(new_name) or os.getenv(legacy_name) or default
-    if value is None:
-        raise KeyError(f"{new_name} (or legacy {legacy_name})")
-    return value
-
-
 # Potential Callables - can manually edit these to instead use your own callables.
 # --Required--
 measurement_name: MeasurementSetter = os.getenv("INFLUXDB_MEASUREMENT_NAME", "default")
@@ -53,14 +41,14 @@ def on_connect_failure(err):
 
 
 influxdb_v1_sink = InfluxDB1Sink(
-    host=conn_var("INFLUXDB1_HOST", "INFLUXDB_HOST"),
-    port=int(conn_var("INFLUXDB1_PORT", "INFLUXDB_PORT")),
-    username=conn_var("INFLUXDB1_USERNAME", "INFLUXDB_USERNAME"),
-    password=conn_var("INFLUXDB1_PASSWORD", "INFLUXDB_PASSWORD"),
+    host=os.environ["INFLUXDB1_HOST"],
+    port=int(os.environ["INFLUXDB1_PORT"]),
+    username=os.environ["INFLUXDB1_USERNAME"],
+    password=os.environ["INFLUXDB1_PASSWORD"],
     tags_keys=tag_keys,
     fields_keys=field_keys,
     time_setter=time_setter,
-    database=conn_var("INFLUXDB1_DATABASE", "INFLUXDB_DATABASE", "quix"),
+    database=os.getenv("INFLUXDB1_DATABASE", "quix"),
     measurement=measurement_name,
     on_client_connect_success=on_connect_success,
     on_client_connect_failure=on_connect_failure,

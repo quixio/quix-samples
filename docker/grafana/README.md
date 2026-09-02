@@ -10,8 +10,6 @@ The provisioned InfluxDB datasource takes its token from the shared
 **`influxdb2-config`** variable group, so Grafana, the bundled InfluxDB v2 server and the
 InfluxDB v2 Source all authenticate with the same token. Assign that group to this
 deployment (or your project/environment); the datasource reads **INFLUXDB2_TOKEN** from it.
-The legacy `INFLUXDB_TOKEN` variable still works for deployments created before the group
-was introduced.
 
 Note that `provisioning/datasources/influxdb.yaml` still hard-codes the datasource URL
 (`http://influxdb:80`), organization and database, which match the group defaults. Edit

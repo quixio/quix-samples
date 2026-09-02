@@ -25,9 +25,7 @@ The connector uses the following environment variables:
 - **input**: Quix input topic
 
 The connection comes from the shared **`influxdb1-config`** Variable Group, so this sink
-and the bundled InfluxDB v1 server agree. These were renamed from `INFLUXDB_HOST` /
-`INFLUXDB_PORT` / `INFLUXDB_USERNAME` / `INFLUXDB_PASSWORD` / `INFLUXDB_DATABASE`, which
-still work for existing deployments:
+and the bundled InfluxDB v1 server agree:
 
 - **INFLUXDB1_HOST**: Host address of the InfluxDB v1 instance, including the scheme (Default: `http://influxdb`)
 - **INFLUXDB1_PORT**: Port of the InfluxDB v1 instance (Default: `80`)

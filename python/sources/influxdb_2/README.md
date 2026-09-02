@@ -23,8 +23,7 @@ The connector uses the following environment variables:
 
 The connection comes from the shared **`influxdb2-config`** Variable Group, so this
 source, the bundled InfluxDB v2 server and Grafana all read the same host, token and org.
-These were renamed from `INFLUXDB_HOST` / `INFLUXDB_TOKEN` / `INFLUXDB_ORG` /
-`INFLUXDB_BUCKET`, which still work for existing deployments:
+
 
 - **INFLUXDB2_HOST**: Base URL of the InfluxDB v2 instance, including scheme and port (Default: `http://influxdb:80`)
 - **INFLUXDB2_TOKEN**: Authentication token to access InfluxDB

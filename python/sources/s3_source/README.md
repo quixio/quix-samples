@@ -34,9 +34,7 @@ This service continuously monitors a specified S3 bucket and folder path for new
 - **POLL_INTERVAL_SECONDS**: Polling interval in seconds (default: 30)
 
 Credentials, region and endpoint come from the shared **`aws-connection`** Variable Group,
-so every AWS connector in the pipeline uses one set of credentials. These were renamed
-from `S3_ACCESS_KEY_ID` / `S3_SECRET` / `S3_REGION`, which still work for existing
-deployments:
+so every AWS connector in the pipeline uses one set of credentials:
 
 - **AWS_ACCESS_KEY_ID**: AWS access key ID (optional - omit both keys to use an IAM role or anonymous access)
 - **AWS_SECRET_ACCESS_KEY**: AWS secret access key (optional, as above)

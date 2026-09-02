@@ -2,11 +2,10 @@
 # Runtime test for docker/grafana.
 #
 # Boots Grafana with ONLY the influxdb2-config Variable Group key name set
-# (INFLUXDB2_TOKEN) and no INFLUXDB_TOKEN anywhere, then asks Grafana's API whether the
-# provisioned InfluxDB datasource has its token set. Grafana reports secure fields via
-# `secureJsonFields`, so token=true proves ${INFLUXDB2_TOKEN} in
-# provisioning/datasources/influxdb.yaml was substituted with a non-empty value - which
-# only happens if init.sh exported it.
+# (INFLUXDB2_TOKEN), then asks Grafana's API whether the provisioned InfluxDB datasource
+# has its token set. Grafana reports secure fields via `secureJsonFields`, so token=true
+# proves ${INFLUXDB2_TOKEN} in provisioning/datasources/influxdb.yaml was substituted with
+# a non-empty value - i.e. the group key reached Grafana through to provisioning.
 
 services:
   grafana:
