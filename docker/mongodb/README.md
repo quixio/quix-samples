@@ -6,15 +6,14 @@ This sample demonstrates how to deploy and use MongoDB in your pipeline. Please 
 
 This deployment will work seamlessly with the [Quix Cloud MongoDB sink connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/mongodb).
 
-Simply provide the following arguments to the connector, 
-where `username` and `password` are the credentials used when 
-creating this service: 
+Assign the same `mongodb-connection` variable group to the connector and it picks up
+this service's connection automatically - no need to copy the values by hand:
 
 ```shell
-MONGODB_USERNAME="<YOUR USERNAME>"  # (default: "admin")
-MONGODB_PASSWORD="<YOUR PASSWORD>"
-MONGODB_HOST="mongodb"
-MONGODB_PORT="27017"
+MONGO_HOST="mongodb"      # the internal service name
+MONGO_PORT="27017"
+MONGO_USER="admin"
+MONGO_PASSWORD="<YOUR PASSWORD>"
 ```
 
 ## Configuration
