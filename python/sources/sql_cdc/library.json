@@ -28,36 +28,50 @@
       "Required": true
     },
     {
-      "Name": "SQL_SERVER",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "SQL Server hostname or IP address",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "SQL_DATABASE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Database name",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "SQL_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "SQL Server username",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "SQL_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "SQL Server password",
-      "DefaultValue": "",
-      "Required": true
+      "Name": "SQLSERVER_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "SQL Server host, database and credentials from a shared Variable Group.",
+      "VariableGroupId": "sqlserver-connection",
+      "VariableGroupName": "SQL Server Connection",
+      "VariableGroupDescription": "Shared SQL Server host, database, credentials and ODBC driver.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "SQL_SERVER",
+          "Description": "Host address of your SQL Server instance",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "SQL_DATABASE",
+          "Description": "Database to read from",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "SQL_USERNAME",
+          "Description": "Username to connect with",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "SQL_PASSWORD",
+          "Description": "Password for that user",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "SQL_DRIVER",
+          "Description": "ODBC driver name, as installed in the container",
+          "DefaultValue": "{ODBC Driver 18 for SQL Server}",
+          "Secret": false,
+          "Required": false
+        }
+      ]
     },
     {
       "Name": "SQL_SCHEMA",
@@ -74,14 +88,6 @@
       "Description": "Table name to capture changes from. CDC must be enabled on this table.",
       "DefaultValue": "",
       "Required": true
-    },
-    {
-      "Name": "SQL_DRIVER",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "ODBC driver name",
-      "DefaultValue": "{ODBC Driver 18 for SQL Server}",
-      "Required": false
     },
     {
       "Name": "POLL_INTERVAL_SECONDS",

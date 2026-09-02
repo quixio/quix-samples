@@ -1,13 +1,26 @@
 import psycopg2
 import os
 
+def conn_var(new_name: str, legacy_name: str) -> str:
+    """
+    Read a connection env var by the name the shared postgres-connection Variable Group
+    injects, falling back to the legacy PG_* name so deployments created before the
+    rename keep working.
+    """
+    value = os.getenv(new_name) or os.getenv(legacy_name)
+    if not value:
+        raise KeyError(f"{new_name} (or legacy {legacy_name})")
+    return value
+
+
 def connect_postgres():
-    # Postgres Constants
-    PG_HOST = os.environ["PG_HOST"]
-    PG_PORT = os.environ["PG_PORT"]
-    PG_USER = os.environ["PG_USER"]
-    PG_PASSWORD = os.environ["PG_PASSWORD"]
-    PG_DATABASE = os.environ["PG_DATABASE"]
+    # Postgres Constants - the connection comes from the shared postgres-connection
+    # Variable Group, so the CDC source, the sink and the bundled server all agree.
+    PG_HOST = conn_var("POSTGRES_HOST", "PG_HOST")
+    PG_PORT = conn_var("POSTGRES_PORT", "PG_PORT")
+    PG_USER = conn_var("POSTGRES_USER", "PG_USER")
+    PG_PASSWORD = conn_var("POSTGRES_PASSWORD", "PG_PASSWORD")
+    PG_DATABASE = conn_var("POSTGRES_DB", "PG_DATABASE")
 
     conn = psycopg2.connect(
         database = PG_DATABASE, user = PG_USER, password = PG_PASSWORD, host = PG_HOST, port = PG_PORT

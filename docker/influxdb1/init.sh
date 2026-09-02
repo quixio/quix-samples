@@ -23,13 +23,21 @@ export INFLUXDB_DATA_DIR="$TARGET_DIR/data"
 export INFLUXDB_META_DIR="$TARGET_DIR/meta"
 export INFLUXDB_DATA_WAL_DIR="$TARGET_DIR/wal"
 
+# The v1 image initialises itself from INFLUXDB_ADMIN_USER / INFLUXDB_ADMIN_PASSWORD /
+# INFLUXDB_DB, but the connection is defined once in the shared influxdb1-config Variable
+# Group as INFLUXDB1_*. Map one onto the other, keeping the legacy names as a fallback so
+# deployments created before the rename keep working.
+export INFLUXDB_ADMIN_USER="${INFLUXDB1_USERNAME:-$INFLUXDB_ADMIN_USER}"
+export INFLUXDB_ADMIN_PASSWORD="${INFLUXDB1_PASSWORD:-$INFLUXDB_ADMIN_PASSWORD}"
+export INFLUXDB_DB="${INFLUXDB1_DATABASE:-$INFLUXDB_DB}"
+
 # Fail if admin user or password is not set or empty
 if [ -z "$INFLUXDB_ADMIN_USER" ]; then
-  echo "❌ ERROR: INFLUXDB_ADMIN_USER is required but not set or empty"
+  echo "❌ ERROR: INFLUXDB1_USERNAME is required but not set or empty"
   exit 1
 fi
 if [ -z "$INFLUXDB_ADMIN_PASSWORD" ]; then
-  echo "❌ ERROR: INFLUXDB_ADMIN_PASSWORD is required but not set or empty"
+  echo "❌ ERROR: INFLUXDB1_PASSWORD is required but not set or empty"
   exit 1
 fi
 

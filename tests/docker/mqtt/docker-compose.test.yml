@@ -1,16 +1,55 @@
-# Build-only test for docker/mqtt.
-# Verifies the image builds and both the init script and the bundled
-# mosquitto.conf landed in the expected locations.
+# timeout: 240
+# Runtime test for docker/mqtt.
+#
+# Boots the broker with ONLY the mqtt-connection Variable Group key names set
+# (mqtt_username / mqtt_password) and no MQTT_USERNAME / MQTT_PASSWORD anywhere, then
+# publishes using those credentials. mosquitto.conf sets allow_anonymous false, so a
+# successful publish proves init.sh built the password file from the group keys.
 
 services:
   mqtt:
     build:
       context: ../../../docker/mqtt
       dockerfile: dockerfile
-    entrypoint: >
-      sh -c "
-        test -x /init.sh &&
-        test -f /mosquitto/config/mosquitto.conf &&
-        echo 'Success: build + layout check passed'
-      "
+    environment:
+      - mqtt_username=groupuser
+      - mqtt_password=grouppass
+    networks:
+      - test-network
     stop_grace_period: 3s
+
+  test-runner:
+    image: eclipse-mosquitto:2.0.22
+    depends_on:
+      mqtt:
+        condition: service_started
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "Waiting for the broker to accept the group credentials..."
+        for i in $$(seq 1 40); do
+          if mosquitto_pub -h mqtt -p 1883 -u groupuser -P grouppass \
+               -t test/mapping -m ok >/dev/null 2>&1; then
+            echo "Authenticated publish succeeded."
+            # An anonymous publish must still be refused, otherwise the password file
+            # was never applied and the success above proves nothing.
+            if mosquitto_pub -h mqtt -p 1883 -t test/mapping -m nope >/dev/null 2>&1; then
+              echo "FAILED: anonymous publish was accepted - auth is not being enforced"
+              exit 1
+            fi
+            echo "Success: init.sh built the password file from mqtt_username/mqtt_password"
+            exit 0
+          fi
+          sleep 2
+        done
+        echo "FAILED: could not publish as the mqtt_username/mqtt_password from the group"
+        mosquitto_pub -h mqtt -p 1883 -u groupuser -P grouppass -t test/mapping -m ok
+        exit 1
+    networks:
+      - test-network
+    stop_grace_period: 3s
+
+networks:
+  test-network:
+    driver: bridge

@@ -1,14 +1,49 @@
-# Build-only test for docker/mongodb.
-# Verifies the image builds and the init script is in place.
+# timeout: 240
+# Runtime test for docker/mongodb.
+#
+# Boots the image with ONLY the mongodb-connection Variable Group key names set
+# (MONGO_USER / MONGO_PASSWORD) and no MONGO_INITDB_ROOT_* anywhere, then authenticates
+# with those credentials. This proves init.sh maps the group keys onto the names the mongo
+# image initialises its root user from - the mapping is otherwise untested, since the
+# entrypoint never runs under a build-only test.
 
 services:
   mongodb:
     build:
       context: ../../../docker/mongodb
       dockerfile: dockerfile
-    entrypoint: >
-      sh -c "
-        test -x /init.sh &&
-        echo 'Success: build + layout check passed'
-      "
+    environment:
+      - MONGO_USER=groupuser
+      - MONGO_PASSWORD=grouppass
+    networks:
+      - test-network
     stop_grace_period: 3s
+
+  test-runner:
+    image: mongo:8.0.21
+    depends_on:
+      mongodb:
+        condition: service_started
+    entrypoint:
+      - sh
+      - -c
+      - |
+        URI="mongodb://groupuser:grouppass@mongodb:27017/?authSource=admin"
+        echo "Waiting for MongoDB to accept the group credentials..."
+        for i in $$(seq 1 60); do
+          if mongosh "$$URI" --quiet --eval 'db.adminCommand({ping:1})' >/dev/null 2>&1; then
+            echo "Success: init.sh mapped MONGO_USER/MONGO_PASSWORD onto MONGO_INITDB_ROOT_*"
+            exit 0
+          fi
+          sleep 2
+        done
+        echo "FAILED: could not authenticate as the MONGO_USER/MONGO_PASSWORD from the group"
+        mongosh "$$URI" --quiet --eval 'db.adminCommand({ping:1})'
+        exit 1
+    networks:
+      - test-network
+    stop_grace_period: 3s
+
+networks:
+  test-network:
+    driver: bridge

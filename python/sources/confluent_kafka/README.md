@@ -18,12 +18,29 @@ Then either:
 The connector uses the following environment variables:
 
 - **output**: This is the Quix Topic that will receive the stream.
-- **kafka_key**: Obtained from the Confluent Kafka portal.
-- **kafka_secret**: Obtained from the Confluent Kafka portal.
-- **kafka_broker_address**: Obtained from the Confluent Kafka portal.
 - **kafka_topic**: The Confluent Kafka Topic you wish to read from.
 - **kafka_ca_location**: (Optional) Path to the SSL CA certificate file for secure connections. If not provided, the system's default CA certificates will be used.
 - **kafka_sasl_mechanism**: (Optional) SASL mechanism for authentication. Defaults to "SCRAM-SHA-256".
+
+The cluster connection comes from the shared **`confluent-kafka-connection`** Variable Group,
+so this source and the Confluent Kafka Sink talk to the same cluster with the same API key:
+
+- **kafka_broker_address**: Bootstrap server address, obtained from the Confluent Kafka portal (Required: `True`)
+- **kafka_key**: API key, obtained from the Confluent Kafka portal (Required: `True`)
+- **kafka_secret**: API secret, obtained from the Confluent Kafka portal (Required: `True`)
+- **kafka_sasl_mechanism**: SASL mechanism. One of `PLAIN`, `SCRAM-SHA-256`,
+  `SCRAM-SHA-512`, `GSSAPI`, `OAUTHBEARER`, `AWS_MSK_IAM` (Default: `PLAIN`, which is what
+  Confluent Cloud API keys use)
+- **kafka_ca_location**: Path to the SSL CA certificate file. Leave empty for the system
+  defaults
+
+Note that the group default for `kafka_sasl_mechanism` is `PLAIN`, whereas this source used
+to default to `SCRAM-SHA-256`. Existing deployments carry their own value and are
+unaffected; a fresh deployment using the group will authenticate with `PLAIN` unless you
+change it.
+
+`kafka_sasl_mechanism` is free text inside the group rather than a dropdown - the
+group schema has no options list. Valid values are given above.
 
 ## Contribute
 

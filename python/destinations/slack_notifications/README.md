@@ -20,6 +20,12 @@ The connector uses the following environment variables:
 - **input**: Name of the input topic to listen to.
 - **webhook_url**: The webhook url to send notifications to
 
+These come from the shared **`slack-webhook`** Variable Group (Slack Webhook), so the connection is defined once per environment rather than per deployment:
+
+- `webhook_url`
+
+`webhook_url` is now marked secret inside the group - a Slack incoming webhook URL is a credential, and it used to be stored in plain text.
+
 ## Requirements / Prerequisites
 
 You'll need to have access to Slack and be able to set up a webhook here: https://api.slack.com/apps

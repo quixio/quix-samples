@@ -1,15 +1,58 @@
-# Build-only test for docker/grafana.
-# Verifies the image builds and the init script + provisioning are in place.
+# timeout: 240
+# Runtime test for docker/grafana.
+#
+# Boots Grafana with ONLY the influxdb2-config Variable Group key name set
+# (INFLUXDB2_TOKEN) and no INFLUXDB_TOKEN anywhere, then asks Grafana's API whether the
+# provisioned InfluxDB datasource has its token set. Grafana reports secure fields via
+# `secureJsonFields`, so token=true proves ${INFLUXDB2_TOKEN} in
+# provisioning/datasources/influxdb.yaml was substituted with a non-empty value - which
+# only happens if init.sh exported it.
 
 services:
   grafana:
     build:
       context: ../../../docker/grafana
       dockerfile: dockerfile
-    entrypoint: >
-      sh -c "
-        test -x /init.sh &&
-        test -d /provisioning &&
-        echo 'Success: build + layout check passed'
-      "
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=grouppass
+      - INFLUXDB2_TOKEN=grouptokenabc123
+    networks:
+      - test-network
     stop_grace_period: 3s
+
+  test-runner:
+    image: curlimages/curl:8.11.1
+    depends_on:
+      grafana:
+        condition: service_started
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "Waiting for Grafana to provision the InfluxDB datasource..."
+        for i in $$(seq 1 60); do
+          body=$$(curl -sS -u admin:grouppass \
+                    http://grafana:3000/api/datasources/name/influxdb 2>/dev/null)
+          case "$$body" in
+            *'"secureJsonFields"'*)
+              echo "$$body" | grep -q '"token":[[:space:]]*true' && {
+                echo "Success: the datasource token was provisioned from INFLUXDB2_TOKEN"
+                exit 0
+              }
+              echo "FAILED: datasource exists but its token is unset -"
+              echo "        \$${INFLUXDB2_TOKEN} substituted to empty, so the mapping did not apply"
+              exit 1
+              ;;
+          esac
+          sleep 3
+        done
+        echo "FAILED: the influxdb datasource never appeared in Grafana"
+        curl -sS -u admin:grouppass http://grafana:3000/api/datasources/name/influxdb
+        exit 1
+    networks:
+      - test-network
+    stop_grace_period: 3s
+
+networks:
+  test-network:
+    driver: bridge

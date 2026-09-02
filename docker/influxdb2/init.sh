@@ -42,6 +42,21 @@ if [ "$ACTUAL_DIR_GID" -ne "$TARGET_USER_GID" ] && [ "$ACTUAL_DIR_GID" -ne 0 ]; 
   }
 fi
 
+# The v2 image is set up from DOCKER_INFLUXDB_INIT_*, but the connection is defined once
+# in the shared influxdb2-config Variable Group as INFLUXDB2_*. Map one onto the other,
+# keeping the legacy names as a fallback so deployments created before the rename keep
+# working. Username and org also have image defaults set in the dockerfile.
+export DOCKER_INFLUXDB_INIT_ADMIN_TOKEN="${INFLUXDB2_TOKEN:-$DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}"
+export DOCKER_INFLUXDB_INIT_PASSWORD="${INFLUXDB2_PASSWORD:-$DOCKER_INFLUXDB_INIT_PASSWORD}"
+export DOCKER_INFLUXDB_INIT_BUCKET="${INFLUXDB2_BUCKET:-$DOCKER_INFLUXDB_INIT_BUCKET}"
+export DOCKER_INFLUXDB_INIT_USERNAME="${INFLUXDB2_USERNAME:-$DOCKER_INFLUXDB_INIT_USERNAME}"
+export DOCKER_INFLUXDB_INIT_ORG="${INFLUXDB2_ORG:-$DOCKER_INFLUXDB_INIT_ORG}"
+
+if [ -z "$DOCKER_INFLUXDB_INIT_ADMIN_TOKEN" ] || [ -z "$DOCKER_INFLUXDB_INIT_PASSWORD" ]; then
+  echo "❌ ERROR: INFLUXDB2_TOKEN and INFLUXDB2_PASSWORD are required to set up InfluxDB v2"
+  exit 1
+fi
+
 # Launch the influx setup in the background.
 (
     #echo "Waiting for InfluxDB to be available at localhost:8086..."

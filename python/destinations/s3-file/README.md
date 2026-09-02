@@ -21,10 +21,14 @@ The connector uses the following environment variables (which generally correspo
 ### Required
 - `input`: The input Kafka topic
 - `S3_BUCKET`: The S3 bucket to use.
-- `AWS_ENDPOINT_URL`: The URL to your S3 instance.
-- `AWS_REGION_NAME`: The region of your S3 bucket.
-- `AWS_SECRET_ACCESS_KEY`: Your AWS secret.
-- `AWS_ACCESS_KEY_ID`: Your AWS Access Key.
+
+Credentials and region come from the shared **`aws-connection`** Variable Group, so every
+AWS connector in the pipeline uses one set of credentials:
+
+- `AWS_ACCESS_KEY_ID`: Your AWS access key ID.
+- `AWS_SECRET_ACCESS_KEY`: Your AWS secret access key.
+- `AWS_REGION`: The region of your S3 bucket (Default: `us-east-1`).
+  Renamed from `AWS_REGION_NAME`, which still works for existing deployments.
 
 ### Optional
 Unless explicitly defined, these are optional, or generally set to the [`S3FileSink`](https://quix.io/docs/quix-streams/connectors/sinks/amazon-s3-sink.html) defaults.

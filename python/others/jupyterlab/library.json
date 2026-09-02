@@ -37,11 +37,22 @@
   },
   "Variables": [
     {
-      "Name": "JUPYTER_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "The allowed password for connecting to JupyterLab",
-      "Required": true
+      "Name": "JUPYTER_AUTH",
+      "InputType": "VariableGroup",
+      "Description": "JupyterLab password from a shared Variable Group.",
+      "VariableGroupId": "jupyter-auth",
+      "VariableGroupName": "Jupyter Auth",
+      "VariableGroupDescription": "Shared JupyterLab password.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "JUPYTER_PASSWORD",
+          "Description": "Password required to open the JupyterLab UI",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     }
   ]
 }

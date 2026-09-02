@@ -3,8 +3,12 @@
   "name": "postgreSQL",
   "language": "docker",
   "tags": {
-    "Category": ["Database"],
-    "Type": ["Auxiliary Services"]
+    "Category": [
+      "Database"
+    ],
+    "Type": [
+      "Auxiliary Services"
+    ]
   },
   "shortDescription": "Run postgreSQL in your pipeline.",
   "DefaultFile": "dockerfile",
@@ -17,8 +21,7 @@
     "Replicas": 1,
     "Network": {
       "ServiceName": "postgresql",
-      "Ports":
-      [
+      "Ports": [
         {
           "Port": 80,
           "TargetPort": 5432
@@ -28,27 +31,50 @@
   },
   "Variables": [
     {
-      "Name": "POSTGRES_USER",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The root username to initialize PostgreSQL with",
-      "DefaultValue": "admin",
-      "Required": true
-    },
-    {
-      "Name": "POSTGRES_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "The root password to initialize MongoDB with",
-      "Required": true
-    },
+      "Name": "POSTGRES_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "PostgreSQL host, port, database and credentials from a shared Variable Group.",
+      "VariableGroupId": "postgres-connection",
+      "VariableGroupName": "PostgreSQL Connection",
+      "VariableGroupDescription": "Shared PostgreSQL host, port, database and credentials.",
+      "Required": true,
+      "Variables": [
         {
-      "Name": "POSTGRES_DB",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The default database name to initialize PostgreSQL with",
-      "DefaultValue": "quix",
-      "Required": true
+          "Key": "POSTGRES_HOST",
+          "Description": "Host address of the PostgreSQL instance",
+          "DefaultValue": "postgresql",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "POSTGRES_PORT",
+          "Description": "Port of the PostgreSQL instance (80 for the bundled server on the internal Quix network)",
+          "DefaultValue": "80",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "POSTGRES_DB",
+          "Description": "Database name to connect to, and to initialise the server with",
+          "DefaultValue": "quix",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "POSTGRES_USER",
+          "Description": "Username for the PostgreSQL database",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "POSTGRES_PASSWORD",
+          "Description": "Password for the PostgreSQL database",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     }
   ]
 }

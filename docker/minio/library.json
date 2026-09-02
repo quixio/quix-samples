@@ -3,8 +3,12 @@
   "name": "MinIO",
   "language": "docker",
   "tags": {
-    "Category": ["Database"],
-    "Type": ["Auxiliary Services"]
+    "Category": [
+      "Database"
+    ],
+    "Type": [
+      "Auxiliary Services"
+    ]
   },
   "shortDescription": "Run a localized S3-compatible datastore in your pipeline.",
   "DefaultFile": "dockerfile",
@@ -17,8 +21,7 @@
     "Replicas": 1,
     "Network": {
       "ServiceName": "minio",
-      "Ports":
-      [
+      "Ports": [
         {
           "Port": 80,
           "TargetPort": 9000
@@ -28,19 +31,50 @@
   },
   "Variables": [
     {
-      "Name": "MINIO_ROOT_USER",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The root username to initialize Minio with",
-      "DefaultValue": "admin",
-      "Required": true
-    },
-    {
-      "Name": "MINIO_ROOT_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "The root password to initialize Minio with",
-      "Required": true
+      "Name": "AWS_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "AWS credentials and region from a shared Variable Group.",
+      "VariableGroupId": "aws-connection",
+      "VariableGroupName": "AWS Connection",
+      "VariableGroupDescription": "Shared AWS credentials, region and optional S3-compatible endpoint.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "AWS_ACCESS_KEY_ID",
+          "Description": "Your AWS access key ID",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "AWS_SECRET_ACCESS_KEY",
+          "Description": "Your AWS secret access key",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "AWS_REGION",
+          "Description": "The AWS region your resources live in",
+          "DefaultValue": "us-east-1",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "AWS_SESSION_TOKEN",
+          "Description": "AWS session token, for temporary credentials only",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": false
+        },
+        {
+          "Key": "AWS_ENDPOINT_URL",
+          "Description": "Custom endpoint for S3-compatible storage such as MinIO. Leave empty for AWS",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": false
+        }
+      ]
     }
-  ]  
+  ]
 }

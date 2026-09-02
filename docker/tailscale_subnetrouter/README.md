@@ -34,6 +34,10 @@ The container supports the following environment variables:
 | `TAILSCALE_SOCKS5_PORT` | Port for the SOCKS5 proxy | 1055 |
 | `TAILSCALE_EXTRA_ARGS` | Additional arguments to pass to "tailscale up" command | "" |
 
+These come from the shared **`tailscale-auth`** Variable Group (Tailscale Auth), so the connection is defined once per environment rather than per deployment:
+
+- `TS_AUTHKEY`
+
 ## Usage
 
 The container is designed to run as a service in Quix. It will:

@@ -43,5 +43,16 @@ if [ "$ACTUAL_DIR_GID" -ne "$TARGET_USER_GID" ] && [ "$ACTUAL_DIR_GID" -ne 0 ]; 
 fi
 
 su -s /bin/sh $TARGET_USER -c "mkdir -p $TARGET_DIR/config/ $TARGET_DIR/log/ $TARGET_DIR/data/"
-su -s /bin/sh $TARGET_USER -c "mosquitto_passwd -b -c $TARGET_DIR/config/passwd $MQTT_USERNAME $MQTT_PASSWORD"
+# Credentials come from the shared mqtt-connection Variable Group (mqtt_username /
+# mqtt_password). Fall back to the legacy MQTT_USERNAME / MQTT_PASSWORD names so
+# deployments created before the rename keep working.
+BROKER_USERNAME="${mqtt_username:-$MQTT_USERNAME}"
+BROKER_PASSWORD="${mqtt_password:-$MQTT_PASSWORD}"
+
+if [ -z "$BROKER_USERNAME" ] || [ -z "$BROKER_PASSWORD" ]; then
+  echo "❌ ERROR: mqtt_username and mqtt_password are required (mosquitto.conf sets allow_anonymous false)"
+  exit 1
+fi
+
+su -s /bin/sh $TARGET_USER -c "mosquitto_passwd -b -c $TARGET_DIR/config/passwd $BROKER_USERNAME $BROKER_PASSWORD"
 exec su -s /bin/sh $TARGET_USER -c "mosquitto -c /mosquitto/config/mosquitto.conf"

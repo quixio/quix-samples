@@ -37,6 +37,14 @@ Note that the columns to rename and columns to drop settings do not affect the s
 
 Driver and columns to rename should include `{` and `}` and the start and end of their values and these MUST be escaped with a `\`.
 
+These come from the shared **`sqlserver-connection`** Variable Group (SQL Server Connection), so the connection is defined once per environment rather than per deployment:
+
+- `SQL_SERVER`
+- `SQL_DATABASE`
+- `SQL_USERNAME`
+- `SQL_PASSWORD`
+- `SQL_DRIVER`
+
 ## Contribute
 
 Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.

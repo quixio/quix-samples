@@ -1,16 +1,62 @@
-# Build-only test for docker/influxdb1.
-# Verifies the image builds, the init script is in place, and the
-# embedded influx.conf was copied to /etc/influxdb/.
+# timeout: 300
+# Runtime test for docker/influxdb1.
+#
+# Boots the server with ONLY the influxdb1-config Variable Group key names set
+# (INFLUXDB1_USERNAME / INFLUXDB1_PASSWORD / INFLUXDB1_DATABASE) and no INFLUXDB_ADMIN_*
+# or INFLUXDB_DB anywhere, then queries over HTTP with those credentials. init.sh enables
+# INFLUXDB_HTTP_AUTH_ENABLED, so an authenticated query succeeding *and* an
+# unauthenticated one being refused proves the group keys were mapped through.
 
 services:
-  influxdb1:
+  influxdb:
     build:
       context: ../../../docker/influxdb1
       dockerfile: dockerfile
-    entrypoint: >
-      sh -c "
-        test -x /init.sh &&
-        test -f /etc/influxdb/influx.conf &&
-        echo 'Success: build + layout check passed'
-      "
+    environment:
+      - INFLUXDB1_USERNAME=groupuser
+      - INFLUXDB1_PASSWORD=grouppass
+      - INFLUXDB1_DATABASE=groupdb
+    # influxdb:1.12 runs as a non-root user, so it cannot create /app itself. Quix Cloud
+    # mounts state there; a world-writable tmpfs reproduces that locally.
+    tmpfs:
+      - /app:mode=1777
+    networks:
+      - test-network
     stop_grace_period: 3s
+
+  test-runner:
+    image: curlimages/curl:8.11.1
+    depends_on:
+      influxdb:
+        condition: service_started
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "Waiting for InfluxDB v1 to accept the group credentials..."
+        for i in $$(seq 1 60); do
+          if curl -sS -f -G 'http://influxdb:8086/query' \
+               -u groupuser:grouppass \
+               --data-urlencode 'q=SHOW DATABASES' | grep -q groupdb; then
+            echo "Authenticated query succeeded and groupdb exists."
+            code=$$(curl -s -o /dev/null -w '%{http_code}' -G 'http://influxdb:8086/query' \
+                      --data-urlencode 'q=SHOW DATABASES')
+            if [ "$$code" = "200" ]; then
+              echo "FAILED: unauthenticated query returned 200 - HTTP auth is not enforced"
+              exit 1
+            fi
+            echo "Success: init.sh mapped INFLUXDB1_* onto INFLUXDB_ADMIN_USER/PASSWORD/DB"
+            exit 0
+          fi
+          sleep 3
+        done
+        echo "FAILED: could not query as the INFLUXDB1_USERNAME/PASSWORD from the group"
+        curl -sS -G 'http://influxdb:8086/query' -u groupuser:grouppass --data-urlencode 'q=SHOW DATABASES'
+        exit 1
+    networks:
+      - test-network
+    stop_grace_period: 3s
+
+networks:
+  test-network:
+    driver: bridge

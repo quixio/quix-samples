@@ -31,6 +31,14 @@ def main():
     mqtt_username = os.getenv("mqtt_username")
     mqtt_password = os.getenv("mqtt_password")
 
+    # mqtt_tls_enabled comes from the shared mqtt-connection Variable Group, so this
+    # source and the MQTT Sink agree on TLS. When it is absent, fall back to the previous
+    # behaviour of enabling TLS whenever a username was supplied.
+    tls_setting = os.getenv("mqtt_tls_enabled")
+    mqtt_tls_enabled = (
+        tls_setting.lower() == "true" if tls_setting is not None else bool(mqtt_username)
+    )
+
     app = Application()
     output_topic = app.topic(output_topic_name, value_serializer="bytes")
     source = MQTTSource(
@@ -41,7 +49,7 @@ def main():
         username=mqtt_username,
         password=mqtt_password,
         version=os.getenv("mqtt_version", "3.1.1"),
-        tls_enabled=bool(mqtt_username),
+        tls_enabled=mqtt_tls_enabled,
         on_client_connect_success=on_connect_success,
         on_client_connect_failure=on_connect_failure,
     )

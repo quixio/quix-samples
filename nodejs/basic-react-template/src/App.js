@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { QuixLiveService } from './services/quix.ts';
-import {Data} from '../src/Models/data.ts'
 
 function App() {
   const [activeStreams, setActiveStreams] = useState([]);

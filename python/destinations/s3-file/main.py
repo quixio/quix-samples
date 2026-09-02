@@ -25,6 +25,18 @@ def on_connect_success():
     print("CONNECTED!")
 
 
+def conn_var(new_name: str, legacy_name: str, default: str = None) -> str:
+    """
+    Read a connection env var by the name the shared aws-connection Variable Group
+    injects, falling back to the legacy name so deployments created before the rename
+    keep working.
+    """
+    value = os.getenv(new_name) or os.getenv(legacy_name) or default
+    if value is None:
+        raise KeyError(f"{new_name} (or legacy {legacy_name})")
+    return value
+
+
 def on_connect_failure(err):
     print(f"ERROR! Failed to connect to S3: {err}")
     raise err
@@ -35,7 +47,7 @@ s3_file_sink = S3FileSink(
     directory=os.getenv("S3_BUCKET_DIRECTORY", ""),
     aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
     aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
-    region_name=os.environ["AWS_REGION_NAME"],
+    region_name=conn_var("AWS_REGION", "AWS_REGION_NAME"),
     format=get_file_format(),
     on_client_connect_success=on_connect_success,
     on_client_connect_failure=on_connect_failure,

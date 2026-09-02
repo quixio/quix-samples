@@ -21,6 +21,18 @@ producer_topic = None
 quix_producer = None
 
 
+def conn_var(new_name: str, legacy_name: str, default: str = None) -> str:
+    """
+    Read a connection env var by the name the shared aws-connection Variable Group
+    injects, falling back to the legacy name so deployments created before the rename
+    keep working.
+    """
+    value = os.getenv(new_name) or os.getenv(legacy_name) or default
+    if value is None:
+        raise KeyError(f"{new_name} (or legacy {legacy_name})")
+    return value
+
+
 def connect_to_aws() -> bool:
     global kinesis_client
 
@@ -31,9 +43,9 @@ def connect_to_aws() -> bool:
     try:
         kinesis_client = boto3.client(
             'kinesis',
-            aws_access_key_id = os.environ["aws_access_key_id"],
-            aws_secret_access_key = os.environ["aws_secret_access_key"],
-            region_name = os.environ["aws_region_name"]
+            aws_access_key_id = conn_var("AWS_ACCESS_KEY_ID", "aws_access_key_id"),
+            aws_secret_access_key = conn_var("AWS_SECRET_ACCESS_KEY", "aws_secret_access_key"),
+            region_name = conn_var("AWS_REGION", "aws_region_name")
         )
     except Exception as e:
         print(f"ERROR! - Failed to connect to AWS: {e}")
@@ -117,10 +129,16 @@ def connect_to_quix():
 def main():
     global run
 
-    # validate the required env vars have been set supplied
-    required_env_vars = ["aws_access_key_id", "aws_secret_access_key", "aws_region_name", "output"]
-    for var in required_env_vars:
-        if var not in os.environ:
+    # validate the required env vars have been set supplied. The AWS ones are checked
+    # under both the aws-connection Variable Group names and their legacy equivalents.
+    required_env_vars = [
+        ("AWS_ACCESS_KEY_ID", "aws_access_key_id"),
+        ("AWS_SECRET_ACCESS_KEY", "aws_secret_access_key"),
+        ("AWS_REGION", "aws_region_name"),
+        ("output", "output"),
+    ]
+    for var, legacy_var in required_env_vars:
+        if not (os.getenv(var) or os.getenv(legacy_var)):
             raise ValueError(f"Environment variable {var} is required but not set.")
 
     try:

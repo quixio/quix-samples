@@ -19,11 +19,19 @@ The connector uses the following environment variables:
 
 - **output**: This is the output topic that will receive the stream (Default: `influxdb`, Required: `True`)
 - **task_interval**: Interval to run query. Must be within the InfluxDB notation; 1s, 1m, 1h, 1d, 1w, 1mo, 1y (Default: `5m`, Required: `True`)
-- **INFLUXDB_HOST**: Host address for the InfluxDB instance. (Default: `eu-central-1-1.aws.cloud2.influxdata.com`, Required: `True`)
-- **INFLUXDB_TOKEN**: Authentication token to access InfluxDB. (Default: `<TOKEN>`, Required: `True`)
-- **INFLUXDB_ORG**: Organization name in InfluxDB. (Default: `<ORG>`, Required: `False`)
-- **INFLUXDB_BUCKET**: Bucket name in InfluxDB where data is stored. (Default: `<BUCKET>`, Required: `True`)
 - **INFLUXDB_MEASUREMENT_NAME**: The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used (Default: `<INSERT MEASUREMENT>`, Required: `False`)
+
+The connection comes from the shared **`influxdb2-config`** Variable Group, so this
+source, the bundled InfluxDB v2 server and Grafana all read the same host, token and org.
+These were renamed from `INFLUXDB_HOST` / `INFLUXDB_TOKEN` / `INFLUXDB_ORG` /
+`INFLUXDB_BUCKET`, which still work for existing deployments:
+
+- **INFLUXDB2_HOST**: Base URL of the InfluxDB v2 instance, including scheme and port (Default: `http://influxdb:80`)
+- **INFLUXDB2_TOKEN**: Authentication token to access InfluxDB
+- **INFLUXDB2_ORG**: Organization name in InfluxDB (Default: `quix`)
+- **INFLUXDB2_BUCKET**: Bucket name in InfluxDB where data is stored (Default: `demo`)
+
+Point the group at InfluxDB Cloud instead by setting `INFLUXDB2_HOST` to your cloud URL.
 
 ## Requirements / Prerequisites
 

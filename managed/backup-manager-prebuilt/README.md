@@ -89,6 +89,11 @@ All configuration is via environment variables, set on the deployment. Every var
 
 ### MongoDB Metadata Backend (only when `METADATA_BACKEND=mongo`)
 
+These come from the shared **`mongodb-metadata-connection`** Variable Group. This is the
+manager's *own* metadata store, which is why it has its own group rather than sharing
+`mongodb-connection` with the pipeline's data MongoDB - pointing it at the data instance
+would put `backup_manager` collections inside your data database.
+
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `METADATA_MONGO_HOST` | `metadata-mongodb` | Metadata MongoDB hostname |

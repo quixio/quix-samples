@@ -19,4 +19,9 @@ if [ ! -d "$TARGET_DIR" ]; then
   }
 fi
 
+# The InfluxDB datasource is provisioned with ${INFLUXDB2_TOKEN}, which comes from the
+# shared influxdb2-config Variable Group. Fall back to the legacy INFLUXDB_TOKEN name so
+# deployments created before the rename keep working.
+export INFLUXDB2_TOKEN="${INFLUXDB2_TOKEN:-$INFLUXDB_TOKEN}"
+
 exec su -s /bin/sh $TARGET_USER -c "/run.sh grafana-server --homepath=/usr/share/grafana"

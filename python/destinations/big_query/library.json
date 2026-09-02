@@ -28,28 +28,43 @@
       "Required": true
     },
     {
-      "Name": "PROJECT_ID",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The BigQuery GCP Project ID",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "DATASET_ID",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The target BigQuery dataset ID",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "DATASET_LOCATION",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Location of BigQuery dataset",
-      "DefaultValue": "US",
-      "Required": true
+      "Name": "BIGQUERY_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "BigQuery project, dataset and service account from a shared Variable Group.",
+      "VariableGroupId": "bigquery-connection",
+      "VariableGroupName": "BigQuery Connection",
+      "VariableGroupDescription": "Shared BigQuery project, dataset and service account.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "PROJECT_ID",
+          "Description": "Your Google Cloud project id",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "DATASET_ID",
+          "Description": "The BigQuery dataset to write into",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "DATASET_LOCATION",
+          "Description": "The region the dataset lives in",
+          "DefaultValue": "US",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "SERVICE_ACCOUNT_JSON",
+          "Description": "Service account credentials as a JSON object",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "TABLE_NAME",
@@ -65,14 +80,6 @@
       "InputType": "FreeText",
       "Description": "Kafka consumer group.",
       "DefaultValue": "big-query-sink-v1",
-      "Required": true
-    },
-    {
-      "Name": "SERVICE_ACCOUNT_JSON",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "JSON string of the service account file for the BigQuery GCP project",
-      "DefaultValue": "",
       "Required": true
     },
     {
