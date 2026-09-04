@@ -28,14 +28,19 @@ serializer = JSONSerializer()
 topic_name = os.environ["output"]
 topic = app.topic(topic_name)
 
-influxdb2_client = influxdb_client.InfluxDBClient(token=os.environ["INFLUXDB_TOKEN"],
-                        org=os.environ["INFLUXDB_ORG"],
-                        url=os.environ['INFLUXDB_HOST'])
+# The connection comes from the shared influxdb2-config Variable Group, so this source,
+# the bundled InfluxDB v2 server and Grafana all read the same host, token and org.
+influxdb_host = os.environ["INFLUXDB2_HOST"]
+influxdb_org = os.environ["INFLUXDB2_ORG"]
+
+influxdb2_client = influxdb_client.InfluxDBClient(token=os.environ["INFLUXDB2_TOKEN"],
+                        org=influxdb_org,
+                        url=influxdb_host)
 
 query_api = influxdb2_client.query_api()
 
 interval = os.environ.get("task_interval", "5m")
-bucket = os.environ.get("INFLUXDB_BUCKET", "placeholder-bucket")
+bucket = os.getenv("INFLUXDB2_BUCKET", "placeholder-bucket")
 
 # Global variable to control the main loop's execution
 run = True
@@ -84,7 +89,7 @@ def get_data():
             '''
             logger.info(f"Sending query: {flux_query}")
 
-            table = query_api.query_data_frame(query=flux_query,org=os.environ['INFLUXDB_ORG'])
+            table = query_api.query_data_frame(query=flux_query,org=influxdb_org)
 
             # Renaming time column to distinguish it from other timestamp types
             # table.rename(columns={'_time': 'original_time'}, inplace=True)
@@ -125,7 +130,7 @@ def main():
         else:
             print(f"ERROR! InfluxDB health check failed: status={health.status}, message={health.message}")
     except Exception as e:
-        print(f"ERROR! Failed to connect to InfluxDB at {os.environ['INFLUXDB_HOST']}: {e}")
+        print(f"ERROR! Failed to connect to InfluxDB at {influxdb_host}: {e}")
 
     # Create a pre-configured Producer object.
     # Producer is already setup to use Quix brokers.

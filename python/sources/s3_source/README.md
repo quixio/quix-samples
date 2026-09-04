@@ -28,13 +28,18 @@ This service continuously monitors a specified S3 bucket and folder path for new
 
 - **output**: Name of the output Kafka topic (default: `s3-data`)
 - **S3_BUCKET**: S3 bucket URI (e.g., `s3://quix-test-bucket/configurations/`)
-- **S3_REGION**: AWS region of the S3 bucket (e.g., `eu-west-2`)
-- **S3_SECRET**: AWS Secret Access Key (stored as secret)
-- **S3_ACCESS_KEY_ID**: AWS Access Key ID (stored as secret)
 - **S3_FOLDER_PATH**: Folder path within bucket to monitor (e.g., `configurations`)
 - **S3_FILE_FORMAT**: Expected file format (e.g., `xml`)
 - **S3_FILE_COMPRESSION**: Compression type (e.g., `gzip`)
 - **POLL_INTERVAL_SECONDS**: Polling interval in seconds (default: 30)
+
+Credentials, region and endpoint come from the shared **`aws-connection`** Variable Group,
+so every AWS connector in the pipeline uses one set of credentials:
+
+- **AWS_ACCESS_KEY_ID**: AWS access key ID (optional - omit both keys to use an IAM role or anonymous access)
+- **AWS_SECRET_ACCESS_KEY**: AWS secret access key (optional, as above)
+- **AWS_REGION**: AWS region of the S3 bucket (default: `us-east-1`)
+- **AWS_ENDPOINT_URL**: Custom endpoint for S3-compatible storage such as MinIO. Leave empty for AWS
 
 ## Configuration Example
 
@@ -42,7 +47,7 @@ Based on the current deployment configuration:
 
 ```yaml
 S3_BUCKET: "s3://quix-test-bucket/configurations/"
-S3_REGION: "eu-west-2"
+AWS_REGION: "eu-west-2"
 S3_FOLDER_PATH: "configurations"
 S3_FILE_FORMAT: "xml"
 S3_FILE_COMPRESSION: "gzip"
@@ -67,9 +72,9 @@ pip install -r requirements.txt
 
 # Set environment variables
 export S3_BUCKET="s3://your-bucket/path/"
-export S3_REGION="your-region"
-export S3_ACCESS_KEY_ID="your-access-key"
-export S3_SECRET="your-secret-key"
+export AWS_REGION="your-region"
+export AWS_ACCESS_KEY_ID="your-access-key"
+export AWS_SECRET_ACCESS_KEY="your-secret-key"
 export S3_FOLDER_PATH="configurations"
 export output="s3-data"
 

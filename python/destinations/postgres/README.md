@@ -19,13 +19,17 @@ The connector uses the following environment variables:
 
 ### Required
 - **input**: The input kafka topic.
-- **POSTGRES_HOST**: Host address for the PostgreSQL instance.
-- **POSTGRES_PORT**: Port number for the PostgreSQL instance.
-- **POSTGRES_DBNAME**: Database name in PostgreSQL where data should be stored.
-- **POSTGRES_USER**: Username for the PostgreSQL database.
-- **POSTGRES_PASSWORD**: Password for the PostgreSQL database.
 - **POSTGRES_TABLE**: The PostgreSQL table where data will be stored. If the table does not exist, it will be created automatically.  
   Default: `default_table`
+
+The connection itself comes from the shared **`postgres-connection`** Variable Group, so
+this sink, the Postgres CDC Source and the bundled PostgreSQL server all agree:
+
+- **POSTGRES_HOST**: Host address of the PostgreSQL instance (Default: `postgresql`)
+- **POSTGRES_PORT**: Port of the PostgreSQL instance (Default: `80`)
+- **POSTGRES_DB**: Database name where data should be stored (Default: `quix`)
+- **POSTGRES_USER**: Username for the PostgreSQL database (Default: `admin`)
+- **POSTGRES_PASSWORD**: Password for the PostgreSQL database
 
 ### Optional
 - **POSTGRES_SCHEMA**: The schema name. Schemas are a way of organizing tables and not related to the table data, referenced as `<schema_name>.<table_name>`.  

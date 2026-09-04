@@ -57,13 +57,13 @@ services:
         tail -f /dev/null
       "
     environment:
-      - PG_HOST=postgres
-      - PG_PORT=5432
-      - PG_USER=testuser
-      - PG_PASSWORD=testpass
-      - PG_DATABASE=testdb
-      - PG_SCHEMA=public
-      - PG_TABLE=test_table
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_DB=testdb
+      - POSTGRES_SCHEMA=public
+      - POSTGRES_TABLE=test_table
     volumes:
       - ./setup_postgres.py:/tests/setup_postgres.py:ro
     networks:
@@ -84,13 +84,13 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - output=test-postgres-cdc-output
-      - PG_HOST=postgres
-      - PG_PORT=5432
-      - PG_USER=testuser
-      - PG_PASSWORD=testpass
-      - PG_DATABASE=testdb
-      - PG_SCHEMA=public
-      - PG_TABLE=test_table
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_DB=testdb
+      - POSTGRES_SCHEMA=public
+      - POSTGRES_TABLE=test_table
     networks:
       - test-network
     depends_on:
@@ -106,13 +106,13 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - TEST_OUTPUT_TOPIC=test-postgres-cdc-output
-      - PG_HOST=postgres
-      - PG_PORT=5432
-      - PG_USER=testuser
-      - PG_PASSWORD=testpass
-      - PG_DATABASE=testdb
-      - PG_SCHEMA=public
-      - PG_TABLE=test_table
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_DB=testdb
+      - POSTGRES_SCHEMA=public
+      - POSTGRES_TABLE=test_table
       - TEST_MESSAGE_COUNT=3
     command: >
       sh -c "

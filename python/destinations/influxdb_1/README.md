@@ -23,14 +23,17 @@ The connector uses the following environment variables:
 
 ### Required
 - **input**: Quix input topic
-- **INFLUXDB_HOST**: Host address for the InfluxDB instance.
-- **INFLUXDB_PORT**: Port for the InfluxDB instance.
-- **INFLUXDB_USERNAME**: Username for the InfluxDB instance.
-- **INFLUXDB_PASSWORD**: Password for the InfluxDB instance.
+
+The connection comes from the shared **`influxdb1-config`** Variable Group, so this sink
+and the bundled InfluxDB v1 server agree:
+
+- **INFLUXDB1_HOST**: Host address of the InfluxDB v1 instance, including the scheme (Default: `http://influxdb`)
+- **INFLUXDB1_PORT**: Port of the InfluxDB v1 instance (Default: `80`)
+- **INFLUXDB1_USERNAME**: Username for the InfluxDB instance (Default: `admin`)
+- **INFLUXDB1_PASSWORD**: Password for the InfluxDB instance
+- **INFLUXDB1_DATABASE**: Database name where data should be stored (Default: `quix`)
 
 ### Optional
-- **INFLUXDB_DATABASE**: Database name in InfluxDB where data should be stored. 
-  Default: `quix`
 - **INFLUXDB_TAG_KEYS**: A comma-separated list of column names (based on message value) to be used as tags when writing data to InfluxDB.
   Can optionally replace with a callable in the template directly.
 - **INFLUXDB_FIELD_KEYS**: A comma-separated list of column names (based on message value) to be used as fields when writing data to InfluxDB.

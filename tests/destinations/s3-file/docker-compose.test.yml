@@ -62,7 +62,7 @@ services:
       - S3_BUCKET_DIRECTORY=test_data
       - AWS_ACCESS_KEY_ID=minioadmin
       - AWS_SECRET_ACCESS_KEY=minioadmin
-      - AWS_REGION_NAME=us-east-1
+      - AWS_REGION=us-east-1
       - AWS_ENDPOINT_URL_S3=http://minio:9000
       - FILE_FORMAT=json
     networks:

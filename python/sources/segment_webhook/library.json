@@ -28,12 +28,22 @@
       "Required": true
     },
     {
-      "Name": "shared_secret",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "The secret you configured in Segment",
-      "DefaultValue": "",
-      "Required": true
+      "Name": "SEGMENT_WEBHOOK_AUTH",
+      "InputType": "VariableGroup",
+      "Description": "Segment shared secret from a shared Variable Group.",
+      "VariableGroupId": "segment-webhook-auth",
+      "VariableGroupName": "Segment Webhook Auth",
+      "VariableGroupDescription": "Shared Segment shared secret used to verify webhook signatures.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "shared_secret",
+          "Description": "The shared secret configured on your Segment webhook, used to verify signatures",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     }
   ],
   "DeploySettings": {

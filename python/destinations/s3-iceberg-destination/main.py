@@ -28,7 +28,8 @@ iceberg_sink = IcebergSink(
         aws_region=os.environ["AWS_REGION"],
         aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
         aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
-        aws_session_token=os.getenv("AWS_SESSION_TOKEN")
+        # `or None` so a blank value from the Variable Group is not passed as ""
+        aws_session_token=os.getenv("AWS_SESSION_TOKEN") or None
     ),
     on_client_connect_success=on_connect_success,
     on_client_connect_failure=on_connect_failure,

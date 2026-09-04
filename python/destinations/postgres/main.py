@@ -38,7 +38,7 @@ def on_connect_failure(err):
 postgres_sink = PostgreSQLSink(
     host=os.environ["POSTGRES_HOST"],
     port=int(os.environ["POSTGRES_PORT"]),
-    dbname=os.environ["POSTGRES_DBNAME"],
+    dbname=os.environ["POSTGRES_DB"],
     user=os.environ["POSTGRES_USER"],
     password=os.environ["POSTGRES_PASSWORD"],
     table_name=table_name,

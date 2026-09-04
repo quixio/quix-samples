@@ -6,22 +6,35 @@ This sample demonstrates how to deploy and use Mosquitto's MQTT server in your p
 
 This deployment will work seamlessly with the [Quix Cloud MQTT sink connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/mqtt).
 
-Simply provide the following arguments to the connector, 
-where `username` and `password` are the credentials used when 
-creating this service: 
+Assign the same `mqtt-connection` variable group to the connector and it picks up the
+matching address and credentials automatically - no need to copy the values by hand:
 
 ```shell
-MQTT_USERNAME="<YOUR USERNAME>"  # (default: "admin")
-MQTT_PASSWORD="<YOUR PASSWORD>"
-MQTT_HOST="mqtt"
-MQTT_PORT="1883"
+mqtt_server="mqtt"      # the internal service name
+mqtt_port="1883"
+mqtt_username="admin"
+mqtt_password="<YOUR PASSWORD>"
 ```
+
+## Configuration
+
+This sample uses the shared **`mqtt-connection`** variable group, so the broker and every
+client (source/sink) read the same address and credentials. Assign the group to this
+deployment (or your project/environment) with:
+
+- **mqtt_server** — host address clients use to reach the broker (default `mqtt`, the internal service name)
+- **mqtt_port** — port clients connect on (default `1883`)
+- **mqtt_username** — username the broker is seeded with, and that clients authenticate as (default `admin`)
+- **mqtt_password** — password for that user, secret
+
+`mosquitto.conf` sets `allow_anonymous false`, so both a username and a password are
+required and the container exits with an error if either is empty.
 
 ## How to Run
 
 1. Log in or sign up at [Quix](https://portal.platform.quix.io/signup?xlink=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
-3. Fill in the required environment variables for your MongoDB instance.
+3. Assign the `mqtt-connection` variable group, setting at least `mqtt_password`.
 4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
 
 For more configuration options and details, refer to [Mosquitto Docker Hub](https://hub.docker.com/_/eclipse-mosquitto).

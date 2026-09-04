@@ -3,11 +3,18 @@
 This sample demonstrates how to deploy a JupyterLab instance so you can run
 Jupyter notebooks from the platform.
 
+## Configuration
+
+The UI password comes from the shared **`jupyter-auth`** Variable Group, so it is defined
+once per environment rather than per deployment:
+
+- `JUPYTER_PASSWORD` - password required to open the JupyterLab UI, secret.
+
 ## How to Run
 
 1. Log in or sign up at [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) and navigate to the Code Samples section.
-2. Click **Deploy** to launch a pre-built container.
-3. Fill in the required environment variables for your JupyterLab instance.
+2. Assign the `jupyter-auth` variable group, setting `JUPYTER_PASSWORD`.
+3. Click **Deploy** to launch a pre-built container.
 4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
 
 For more configuration options and details, refer to [Mongo Docker Hub](https://hub.docker.com/_/mongo).

@@ -24,6 +24,13 @@ The connector uses the following environment variables:
 - **SERVICE_ACCOUNT_JSON**: The service account json string for the BigQuery GCP project. [Tutorial on how to create service account.](https://cloud.google.com/iam/docs/creating-managing-service-accounts#iam-service-accounts-create-console)
 - **MAX_QUEUE_SIZE**: Max queue size for the sink ingestion.
 
+These come from the shared **`bigquery-connection`** Variable Group (BigQuery Connection), so the connection is defined once per environment rather than per deployment:
+
+- `PROJECT_ID`
+- `DATASET_ID`
+- `DATASET_LOCATION`
+- `SERVICE_ACCOUNT_JSON`
+
 ## Known limitations 
 - BigQuery fails to immediately recognize new Schema changes such as adding a new field when streaming insert data.
 - BigQuery doesn't allow deleting data when streaming insert data.

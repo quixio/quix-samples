@@ -2,16 +2,33 @@
 
 This sample demonstrates how to deploy and use InfluxDB v1 as a time series database in your Quix Cloud pipeline. Please note: this image is provided by Influx and is offered as-is, with no specific support from Quix. For any support, contact Influx directly.
 
+## Configuration
+
+This sample uses the shared **`influxdb1-config`** variable group, so the server and every
+client (source/sink) read the same connection details and credentials. Assign the group to
+this deployment (or your project/environment) with:
+
+- **INFLUXDB1_HOST** — host address clients use to reach the server, including the scheme (default `http://influxdb`)
+- **INFLUXDB1_PORT** — port clients connect on (default `80`, which maps to 8086 in the container)
+- **INFLUXDB1_DATABASE** — database the server is initialised with, and that clients read and write (default `quix`)
+- **INFLUXDB1_USERNAME** — admin username the server is initialised with (default `admin`)
+- **INFLUXDB1_PASSWORD** — admin password for that user, secret
+
+If a non-empty username and password are provided, HTTP API authentication is enabled. The
+v1 image reads `INFLUXDB_ADMIN_USER` / `INFLUXDB_ADMIN_PASSWORD` / `INFLUXDB_DB`; `init.sh`
+maps the group values onto those names, and falls back to them directly so deployments
+created before the group was introduced keep working.
+
 ## How to Run
 
 1. Create an account or log in to your [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account and navigate to the Code Samples section.
 2. Click `Deploy` to launch a pre-built container in Quix.
-3. Configure authentication (username + password) for your InfluxDB instance:
-    - `INFLUXDB_ADMIN_USER`: Admin username
-    - `INFLUXDB_ADMIN_PASSWORD`: Admin password
+3. Assign the `influxdb1-config` variable group and set authentication (username + password) for your InfluxDB instance:
+    - `INFLUXDB1_USERNAME`: Admin username
+    - `INFLUXDB1_PASSWORD`: Admin password
     > Note: If non-empty username + password are provided, HTTP API authentication is also enabled
-4. **\[Recommended, Optional\]** configure your DB name with the environment variable:   
-    - `INFLUXDB_DB`: Database name to create (else, defaults to: `quix`)
+4. **\[Recommended, Optional\]** configure your DB name in the same group:   
+    - `INFLUXDB1_DATABASE`: Database name to create (else, defaults to: `quix`)
 5. **\[Recommended, Optional\]** Enable state, otherwise changes will be lost on restart.  
     > Note: the necessary storage type may not be supported on all Quix Platforms.
 

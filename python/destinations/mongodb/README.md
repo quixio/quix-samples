@@ -8,15 +8,15 @@ MongoDB database using the [Quix Streams MongoDB sink](https://quix.io/docs/quix
 
 This deployment will work seamlessly with a [Quix Cloud MongoDB service](https://github.com/quixio/quix-samples/tree/main/docker/mongodb).
 
-Simply provide the following arguments to this connector, 
-where `username` and `password` are are the credentials used when 
-creating the **Quix Cloud MongoDB service**: 
+Assign the same `mongodb-connection` variable group to this connector and to the
+**Quix Cloud MongoDB service**, and both ends use the same connection - no need to copy
+the values by hand:
 
 ```shell
-MONGODB_USERNAME="<YOUR USERNAME>"  # (default: "admin")
-MONGODB_PASSWORD="<YOUR PASSWORD>"
-MONGODB_HOST="mongodb"
-MONGODB_PORT="27017"
+MONGO_HOST="mongodb"      # the internal service name
+MONGO_PORT="27017"
+MONGO_USER="admin"
+MONGO_PASSWORD="<YOUR PASSWORD>"
 ```
 ## How to run
 
@@ -36,9 +36,16 @@ The connector uses the following environment variables (which correspond to the
 
 ### Required
 - `input`: The input Kafka topic name
-- `MONGODB_URL`: MongoDB url; most commonly `mongodb://username:password@host:port`
-- `MONGODB_DB`: MongoDB database name
-- `MONGODB_COLLECTION`: MongoDB collection name
+- `MONGO_DATABASE`: MongoDB database name
+- `MONGO_COLLECTION`: MongoDB collection name
+
+The connection itself comes from the shared **`mongodb-connection`** Variable Group, so
+this sink, the bundled MongoDB service and any other client agree on one connection:
+
+- `MONGO_HOST`: MongoDB host name (Default: `mongodb`)
+- `MONGO_PORT`: MongoDB host port (Default: `27017`)
+- `MONGO_USER`: MongoDB username (Default: `admin`)
+- `MONGO_PASSWORD`: MongoDB password
 
 ### Optional
 Unless explicitly defined, these are set to the [`MongoDBSink` defaults](https://quix.io/docs/quix-streams/connectors/sinks/mongodb-sink.html#configuration-options).

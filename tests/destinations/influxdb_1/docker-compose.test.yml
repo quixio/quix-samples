@@ -40,11 +40,11 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - input=test-influxdb1-input
-      - INFLUXDB_HOST=influxdb
-      - INFLUXDB_PORT=8086
-      - INFLUXDB_USERNAME=testuser
-      - INFLUXDB_PASSWORD=testpass
-      - INFLUXDB_DATABASE=testdb
+      - INFLUXDB1_HOST=influxdb
+      - INFLUXDB1_PORT=8086
+      - INFLUXDB1_USERNAME=testuser
+      - INFLUXDB1_PASSWORD=testpass
+      - INFLUXDB1_DATABASE=testdb
       - INFLUXDB_MEASUREMENT_NAME=test_measurement
       - INFLUXDB_FIELD_KEYS=temperature,humidity
       - INFLUXDB_TAG_KEYS=sensor_id
