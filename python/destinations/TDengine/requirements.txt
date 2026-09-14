@@ -1,2 +1,2 @@
-﻿quixstreams[tdengine]==3.24.0
+﻿quixstreams[tdengine]==3.26.0
 python-dotenv
