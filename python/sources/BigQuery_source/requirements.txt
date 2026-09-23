@@ -1,0 +1,5 @@
+quixstreams==3.2.1
+python-dotenv
+google-auth
+google-cloud-bigquery
+google-cloud-bigquery[pandas]
