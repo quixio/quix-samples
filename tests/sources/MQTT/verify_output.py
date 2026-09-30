@@ -24,7 +24,7 @@ def main():
     sdf = app.dataframe(topic)
     sdf.sink(list_sink)
 
-    app.run(timeout=timeout)
+    app.run(timeout=timeout, count=min_expected_count)
 
     message_count = len(list_sink)
     print(f"Received {message_count} messages from output topic")
