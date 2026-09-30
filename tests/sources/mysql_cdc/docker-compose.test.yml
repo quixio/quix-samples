@@ -1,0 +1,90 @@
+# timeout: 180
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=test_db
+    command:
+      - --server-id=1
+      - --log-bin=mysql-bin
+      - --binlog-format=ROW
+      - --binlog-row-image=FULL
+      - --binlog-row-metadata=FULL
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot_password", "--silent"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+    stop_grace_period: 3s
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  mysql-cdc-source:
+    build:
+      context: ../../../python/sources/mysql_cdc
+      dockerfile: dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - output=test-mysql-cdc-output
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=cdc
+      - MYSQL_PASSWORD=cdc_password
+      - MYSQL_DATABASE=test_db
+      - MYSQL_TABLE=test_table
+      - MYSQL_TLS=true
+      - MYSQL_COMMIT_INTERVAL=1
+    networks:
+      - test-network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_OUTPUT_TOPIC=test-mysql-cdc-output
+      - MYSQL_HOST=mysql
+      - MYSQL_ROOT_PASSWORD=root_password
+    command: sh -c "pip install pymysql > /dev/null 2>&1 && python /tests/modify_data.py && python /tests/verify_output.py"
+    volumes:
+      - ./modify_data.py:/tests/modify_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      mysql-cdc-source:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

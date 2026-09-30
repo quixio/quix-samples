@@ -1,0 +1,111 @@
+{
+  "libraryItemId": "mysql-cdc-source",
+  "name": "MySQL CDC Source",
+  "language": "Python",
+  "IconFile": "icon.png",
+  "tags": {
+    "Type": [
+      "Connectors"
+    ],
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Category": [
+      "SQL DB"
+    ]
+  },
+  "shortDescription": "Stream row-level INSERT, UPDATE and DELETE changes from a MySQL table to a Kafka topic by reading the binary log.",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "DefaultFile": "main.py",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Kafka topic that receives one message per changed row, keyed `<database>.<table>`",
+      "DefaultValue": "mysql-cdc-source",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_HOST",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Hostname or IP address of the MySQL server to replicate from",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_PORT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "MySQL server port",
+      "DefaultValue": "3306",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_USER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "MySQL user with REPLICATION SLAVE and REPLICATION CLIENT on *.* and SELECT on the table",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Password of MYSQL_USER",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_DATABASE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Database (schema) that contains the table",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_TABLE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Table to capture changes from",
+      "DefaultValue": "",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_TLS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "`true` encrypts without verifying the server certificate; a CA file path (e.g. `/etc/ssl/certs/ca-certificates.crt`) encrypts and verifies the certificate and hostname; `false` connects in plaintext",
+      "DefaultValue": "true",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_COMMIT_INTERVAL",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Seconds between producing buffered changes and committing the binlog position; bounds the delay between a change and its message",
+      "DefaultValue": "5",
+      "Required": true
+    },
+    {
+      "Name": "MYSQL_SOURCE_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Leave empty for `mysql_cdc_lite_<database>_<table>`. Sets the state store and replication client id: changing it restarts from the server's current binlog position. Change it only to re-seed after a purged position or to avoid a server_id collision",
+      "DefaultValue": "",
+      "Required": false
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
+}
