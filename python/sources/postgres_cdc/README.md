@@ -31,6 +31,8 @@ The connector uses the following environment variables:
 - A Postgres Database.
 - Set `wal_level = logical` in `postgresql.conf`.
 
+This connector uses the `wal2json` output plugin. PostgreSQL 14.24, 15.19, 16.15, 17.11, 18.6 and later only allow the built-in `pgoutput` and `test_decoding` plugins by default, so on those versions also set `output_plugin_libraries = 'pgoutput,test_decoding,wal2json'` in `postgresql.conf`.
+
 ## Contribute
 
 Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
