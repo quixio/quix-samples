@@ -1,4 +1,4 @@
-# timeout: 90
+# timeout: 180
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest

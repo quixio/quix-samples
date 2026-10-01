@@ -1,4 +1,4 @@
-﻿quixstreams==3.26.0
+﻿quixstreams==3.27.0
 python-dotenv
 jupyterlab
 notebook

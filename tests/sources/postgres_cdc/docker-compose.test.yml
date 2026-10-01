@@ -17,6 +17,8 @@ services:
       - max_wal_senders=10
       - -c
       - max_replication_slots=10
+      - -c
+      - output_plugin_libraries=pgoutput,test_decoding,wal2json
     networks:
       - test-network
     healthcheck:
