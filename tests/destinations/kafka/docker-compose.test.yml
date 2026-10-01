@@ -1,0 +1,130 @@
+# timeout: 60
+services:
+  # Quix Kafka instance (source)
+  quix-kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://quix-kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+
+  # External Kafka instance (destination)
+  external-kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://external-kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+
+  # Generate data to Quix Kafka
+  data-generator:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+        echo 'Waiting for Quix Kafka to be ready...' &&
+        sleep 5 &&
+        echo 'Generating test data to Quix Kafka...' &&
+        python /tests/generate_data.py &&
+        echo 'Test data generated successfully' &&
+        echo 'Keeping data-generator alive to prevent test abort...' &&
+        tail -f /dev/null
+      "
+    volumes:
+      - ./generate_data.py:/tests/generate_data.py:ro
+      - ./data.jsonlines:/tests/data.jsonlines:ro
+    working_dir: /tests
+    networks:
+      - test-network
+    depends_on:
+      quix-kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+
+  # Kafka replicator sink (consumes from quix, produces to external)
+  kafka-sink:
+    build:
+      context: ../../../python/destinations/kafka
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Waiting for data generator to populate Quix Kafka...' &&
+        sleep 10 &&
+        echo 'Starting Kafka replicator sink...' &&
+        python3 main.py
+      "
+    environment:
+      - Quix__Broker__Address=quix-kafka:9092
+      - Quix__Consumer__Group=kafka-sink-test
+      - Quix__Deployment__Id=test-kafka-sink
+      - input=source-topic
+      - CONSUMER_GROUP=kafka-sink-test
+      - SINK_OUTPUT_TOPIC=replicated-topic
+      - SINK_BOOTSTRAP_SERVERS=external-kafka:9092
+      - SINK_KEY_SERIALIZER=bytes
+      - SINK_VALUE_SERIALIZER=json
+    networks:
+      - test-network
+    depends_on:
+      quix-kafka:
+        condition: service_healthy
+      external-kafka:
+        condition: service_healthy
+      data-generator:
+        condition: service_started
+    stop_grace_period: 3s
+
+  # Verify output in external Kafka
+  test-verifier:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+        echo 'Waiting for kafka sink to replicate data...' &&
+        sleep 10 &&
+        echo 'Verifying replicated data in external Kafka...' &&
+        python /tests/verify_output.py
+      "
+    environment:
+      - EXTERNAL_BROKER_ADDRESS=external-kafka:9092
+      - TEST_OUTPUT_TOPIC=replicated-topic
+      - TEST_TIMEOUT=40
+    volumes:
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      external-kafka:
+        condition: service_healthy
+      kafka-sink:
+        condition: service_started
+    stop_grace_period: 3s
+
+networks:
+  test-network:
+    driver: bridge
