@@ -2,12 +2,13 @@ import psycopg2
 import os
 
 def connect_postgres():
-    # Postgres Constants
-    PG_HOST = os.environ["PG_HOST"]
-    PG_PORT = os.environ["PG_PORT"]
-    PG_USER = os.environ["PG_USER"]
-    PG_PASSWORD = os.environ["PG_PASSWORD"]
-    PG_DATABASE = os.environ["PG_DATABASE"]
+    # Postgres Constants - the connection comes from the shared postgres-connection
+    # Variable Group, so the CDC source, the sink and the bundled server all agree.
+    PG_HOST = os.environ["POSTGRES_HOST"]
+    PG_PORT = os.environ["POSTGRES_PORT"]
+    PG_USER = os.environ["POSTGRES_USER"]
+    PG_PASSWORD = os.environ["POSTGRES_PASSWORD"]
+    PG_DATABASE = os.environ["POSTGRES_DB"]
 
     conn = psycopg2.connect(
         database = PG_DATABASE, user = PG_USER, password = PG_PASSWORD, host = PG_HOST, port = PG_PORT

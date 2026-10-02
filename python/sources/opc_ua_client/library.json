@@ -28,20 +28,29 @@
       "Required": true
     },
     {
-      "Name": "OPC_SERVER_URL",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The URL to your OPC UA server",
-      "DefaultValue": "https://intopcserver:4840/freeopcua/server/",
-      "Required": true
-    },
-    {
-      "Name": "OPC_NAMESPACE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The namespace of the data coming from your OPC UA server",
-      "DefaultValue": "http://quix.freeopcua.io",
-      "Required": true
+      "Name": "OPCUA_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "OPC UA server URL and namespace from a shared Variable Group.",
+      "VariableGroupId": "opcua-connection",
+      "VariableGroupName": "OPC UA Connection",
+      "VariableGroupDescription": "Shared OPC UA server URL and namespace.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "OPC_SERVER_URL",
+          "Description": "URL of your OPC UA server. Defaults to the bundled OPC UA Server sample on the internal Quix network",
+          "DefaultValue": "https://intopcserver:4840/freeopcua/server/",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "OPC_NAMESPACE",
+          "Description": "Namespace of the data coming from your OPC UA server",
+          "DefaultValue": "http://quix.freeopcua.io",
+          "Secret": false,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "PARAMETER_NAMES_TO_PROCESS",

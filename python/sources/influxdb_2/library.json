@@ -36,36 +36,57 @@
       "Required": true
     },
     {
-      "Name": "INFLUXDB_HOST",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Host address for the InfluxDB instance.",
-      "DefaultValue": "eu-central-1-1.aws.cloud2.influxdata.com",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_TOKEN",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Authentication token to access InfluxDB.",
-      "DefaultValue": "<TOKEN>",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_ORG",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Organization name in InfluxDB.",
-      "DefaultValue": "<ORG>",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_BUCKET",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Bucket name in InfluxDB where data is stored.",
-      "DefaultValue": "<BUCKET>",
-      "Required": true
+      "Name": "INFLUXDB2_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "InfluxDB v2 connection details and admin token from a shared Variable Group.",
+      "VariableGroupId": "influxdb2-config",
+      "VariableGroupName": "InfluxDB v2 config",
+      "VariableGroupDescription": "Shared InfluxDB v2 connection details, admin token and credentials.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "INFLUXDB2_HOST",
+          "Description": "Base URL clients use to reach InfluxDB v2, including the http:// scheme and port",
+          "DefaultValue": "http://influxdb:80",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB2_TOKEN",
+          "Description": "Admin token. Seeds server auth on first boot and authenticates clients",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB2_ORG",
+          "Description": "Organization the server is initialised with, and that clients query",
+          "DefaultValue": "quix",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB2_BUCKET",
+          "Description": "Bucket the server is initialised with, and that clients read and write",
+          "DefaultValue": "demo",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB2_USERNAME",
+          "Description": "Admin username the server is initialised with",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB2_PASSWORD",
+          "Description": "Admin password the server is initialised with",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "INFLUXDB_MEASUREMENT_NAME",

@@ -20,6 +20,11 @@ Then either:
 The connector uses the following environment variables (which correspond to the 
 `ElasticsearchSink` parameter names):
 
+These come from the shared **`elasticsearch-connection`** Variable Group (Elasticsearch Connection), so the connection is defined once per environment rather than per deployment:
+
+- `ELASTICSEARCH_URL`
+- `ELASTICSEARCH_AUTHENTICATION_JSON`
+
 ### Required
 - `input`: The input Kafka topic name
 - `ELASTICSEARCH_URL`: Elasticsearch url

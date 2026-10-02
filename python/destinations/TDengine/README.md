@@ -20,6 +20,11 @@ Then either:
 
 The connector uses the following environment variables:
 
+These come from the shared **`tdengine-connection`** Variable Group (TDengine Connection), so the connection is defined once per environment rather than per deployment:
+
+- `TDENGINE_HOST`
+- `TDENGINE_TOKEN`
+- `TDENGINE_DATABASE`
 
 ### Required
 - **input**: This is the input topic.

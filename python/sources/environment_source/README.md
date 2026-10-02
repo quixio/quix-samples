@@ -23,6 +23,11 @@ The following environment variables are required for this connector:
 - **consumer_group**: *(Optional)* The Kafka consumer group used by the source environment. Defaults to `quix_environment_source`.
 - **auto_offset_reset**: *(Optional)* Specifies the offset reset policy when starting a new consumer group. Defaults to `earliest`.
 
+These come from the shared **`quix-environment-connection`** Variable Group (Quix Environment Connection), so the connection is defined once per environment rather than per deployment:
+
+- `source_workspace_id`
+- `source_sdk_token`
+
 ## How it works
 
 This project enables seamless data streaming from one Quix environment to another by utilizing the `QuixEnvironmentSource` to read data from the source environment's Kafka topic and publish it to a designated output topic.

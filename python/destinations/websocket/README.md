@@ -20,8 +20,10 @@ The service requires the following environment variables:
 
 Authentication is required and is easy to configure. Provide a user name and password in the above environment variables, these will be used to authenticate users.
 
-If deploying to Quix Cloud you will need to create secrets for the username and password.
-See the [docs](https://quix.io/docs/deploy/secrets-management.html) for more information on how to do this.
+`WS_USERNAME` and `WS_PASSWORD` come from the shared **`websocket-connection`** Variable
+Group, so the credentials are defined once per environment rather than per deployment, and
+both are stored as secrets. Assign the group to this deployment (or your
+project/environment) - there is no longer a separate workspace secret to create.
 
 ## Connecting
 

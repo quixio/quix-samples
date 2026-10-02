@@ -31,9 +31,9 @@ def connect_to_aws() -> bool:
     try:
         kinesis_client = boto3.client(
             'kinesis',
-            aws_access_key_id = os.environ["aws_access_key_id"],
-            aws_secret_access_key = os.environ["aws_secret_access_key"],
-            region_name = os.environ["aws_region_name"]
+            aws_access_key_id = os.environ["AWS_ACCESS_KEY_ID"],
+            aws_secret_access_key = os.environ["AWS_SECRET_ACCESS_KEY"],
+            region_name = os.environ["AWS_REGION"]
         )
     except Exception as e:
         print(f"ERROR! - Failed to connect to AWS: {e}")
@@ -118,7 +118,7 @@ def main():
     global run
 
     # validate the required env vars have been set supplied
-    required_env_vars = ["aws_access_key_id", "aws_secret_access_key", "aws_region_name", "output"]
+    required_env_vars = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION", "output"]
     for var in required_env_vars:
         if var not in os.environ:
             raise ValueError(f"Environment variable {var} is required but not set.")

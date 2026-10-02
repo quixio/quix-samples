@@ -1,14 +1,48 @@
-# Build-only test for docker/minio.
-# Verifies the image builds and the init script is in place.
+# timeout: 240
+# Runtime test for docker/minio.
+#
+# Boots MinIO with ONLY the aws-connection Variable Group key names set
+# (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY) and no MINIO_ROOT_* anywhere, then
+# authenticates with those credentials. MinIO's root user *is* the S3 access key, so this
+# proves init.sh maps the group keys onto MINIO_ROOT_USER / MINIO_ROOT_PASSWORD.
 
 services:
   minio:
     build:
       context: ../../../docker/minio
       dockerfile: dockerfile
-    entrypoint: >
-      sh -c "
-        test -x /init.sh &&
-        echo 'Success: build + layout check passed'
-      "
+    environment:
+      - AWS_ACCESS_KEY_ID=groupkeyid
+      - AWS_SECRET_ACCESS_KEY=groupsecret123
+    networks:
+      - test-network
     stop_grace_period: 3s
+
+  test-runner:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_started
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "Waiting for MinIO to accept the group credentials..."
+        for i in $$(seq 1 40); do
+          if mc alias set t http://minio:9000 groupkeyid groupsecret123 >/dev/null 2>&1; then
+            mc ls t >/dev/null 2>&1 || true
+            echo "Success: init.sh mapped AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY onto MINIO_ROOT_*"
+            exit 0
+          fi
+          sleep 2
+        done
+        echo "FAILED: could not authenticate with the AWS_* credentials from the group"
+        mc alias set t http://minio:9000 groupkeyid groupsecret123
+        exit 1
+    networks:
+      - test-network
+    stop_grace_period: 3s
+
+networks:
+  test-network:
+    driver: bridge

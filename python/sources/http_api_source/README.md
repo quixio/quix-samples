@@ -18,6 +18,14 @@ The code sample uses the following environment variables:
 
 - **output**: This is the output topic for hello world data.
 
+These come from the shared **`http-api-auth`** Variable Group (HTTP API Auth), so the connection is defined once per environment rather than per deployment:
+
+- `basic_auth_username`
+- `basic_auth_password`
+- `api_key`
+
+Every key is optional, so the group reference is optional too - leave it unassigned to run the endpoint without authentication.
+
 ## Contribute
 
 Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.

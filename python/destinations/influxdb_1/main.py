@@ -41,14 +41,14 @@ def on_connect_failure(err):
 
 
 influxdb_v1_sink = InfluxDB1Sink(
-    host=os.environ["INFLUXDB_HOST"],
-    port=int(os.environ["INFLUXDB_PORT"]),
-    username=os.environ["INFLUXDB_USERNAME"],
-    password=os.environ["INFLUXDB_PASSWORD"],
+    host=os.environ["INFLUXDB1_HOST"],
+    port=int(os.environ["INFLUXDB1_PORT"]),
+    username=os.environ["INFLUXDB1_USERNAME"],
+    password=os.environ["INFLUXDB1_PASSWORD"],
     tags_keys=tag_keys,
     fields_keys=field_keys,
     time_setter=time_setter,
-    database=os.getenv("INFLUXDB_DATABASE", "quix"),
+    database=os.getenv("INFLUXDB1_DATABASE", "quix"),
     measurement=measurement_name,
     on_client_connect_success=on_connect_success,
     on_client_connect_failure=on_connect_failure,

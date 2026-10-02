@@ -28,20 +28,29 @@
       "Required": false
     },
     {
-      "Name": "source_workspace_id",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Source workspace ID",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "source_sdk_token",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "SDK token for source",
-      "DefaultValue": "source_sdk_token_key",
-      "Required": true
+      "Name": "QUIX_ENVIRONMENT_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "Source Quix environment id and SDK token from a shared Variable Group.",
+      "VariableGroupId": "quix-environment-connection",
+      "VariableGroupName": "Quix Environment Connection",
+      "VariableGroupDescription": "Shared source Quix environment id and SDK token.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "source_workspace_id",
+          "Description": "Id of the Quix environment to replicate from",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "source_sdk_token",
+          "Description": "SDK token for that environment",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "consumer_group",

@@ -3,8 +3,12 @@
   "name": "MongoDB",
   "language": "docker",
   "tags": {
-    "Category": ["Database"],
-    "Type": ["Auxiliary Services"]
+    "Category": [
+      "Database"
+    ],
+    "Type": [
+      "Auxiliary Services"
+    ]
   },
   "shortDescription": "Run MongoDB in your pipeline.",
   "DefaultFile": "dockerfile",
@@ -17,8 +21,7 @@
     "Replicas": 1,
     "Network": {
       "ServiceName": "mongodb",
-      "Ports":
-      [
+      "Ports": [
         {
           "Port": 27017,
           "TargetPort": 27017
@@ -28,20 +31,43 @@
   },
   "Variables": [
     {
-      "Name": "MONGO_INITDB_ROOT_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The root username to initialize MongoDB with",
-      "DefaultValue": "admin",
-      "Required": true
-    },
-    {
-      "Name": "MONGO_INITDB_ROOT_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "The root password to initialize MongoDB with",
-      "DefaultValue": "MONGO_ROOT_PASSWORD",
-      "Required": true
+      "Name": "MONGODB_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "MongoDB connection (host, port, credentials) from a shared Variable Group.",
+      "VariableGroupId": "mongodb-connection",
+      "VariableGroupName": "MongoDB Connection",
+      "VariableGroupDescription": "Shared MongoDB connection details.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "MONGO_HOST",
+          "Description": "MongoDB host name",
+          "DefaultValue": "mongodb",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "MONGO_PORT",
+          "Description": "MongoDB host port",
+          "DefaultValue": "27017",
+          "Secret": false,
+          "Required": false
+        },
+        {
+          "Key": "MONGO_USER",
+          "Description": "MongoDB username",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "MONGO_PASSWORD",
+          "Description": "MongoDB password",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     }
-  ]  
+  ]
 }

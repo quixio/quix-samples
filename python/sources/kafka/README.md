@@ -12,6 +12,16 @@ This source template replicates data from a Kafka topic to a Quix topic using th
 
 ## Environment Variables
 
+These come from the shared **`source-kafka-connection`** Variable Group (Source Kafka Connection), so the connection is defined once per environment rather than per deployment:
+
+- `SOURCE_BROKER_ADDRESS`
+- `SOURCE_KAFKA_SASL_USERNAME`
+- `SOURCE_KAFKA_SASL_PASSWORD`
+- `SOURCE_KAFKA_SASL_MECHANISM`
+- `SOURCE_KAFKA_SSL_CA_LOCATION`
+
+`SOURCE_KAFKA_SASL_MECHANISM` is free text inside the group rather than a dropdown; its valid values are listed above.
+
 ### Required
 
 - **output**: The Quix topic that will receive the replicated data

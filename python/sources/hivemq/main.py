@@ -31,6 +31,10 @@ def main():
     mqtt_username = os.getenv("mqtt_username")
     mqtt_password = os.getenv("mqtt_password")
 
+    # mqtt_tls_enabled comes from the shared hivemq-connection Variable Group, so this
+    # source and the HiveMQ Sink agree on TLS. HiveMQ Cloud requires it, hence the default.
+    mqtt_tls_enabled = os.getenv("mqtt_tls_enabled", "true").lower() == "true"
+
     app = Application()
     output_topic = app.topic(output_topic_name, value_serializer="bytes")
     source = MQTTSource(
@@ -41,7 +45,7 @@ def main():
         username=mqtt_username,
         password=mqtt_password,
         version=os.getenv("mqtt_version", "3.1.1"),
-        tls_enabled=True,
+        tls_enabled=mqtt_tls_enabled,
         on_client_connect_success=on_connect_success,
         on_client_connect_failure=on_connect_failure,
     )

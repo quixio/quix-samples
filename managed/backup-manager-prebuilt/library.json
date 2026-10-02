@@ -3,9 +3,15 @@
   "name": "MongoDB Backup Manager",
   "language": "docker",
   "tags": {
-    "Type": ["Auxiliary Services"],
-    "Category": ["NoSQL DB"],
-    "Complexity": ["Medium"]
+    "Type": [
+      "Auxiliary Services"
+    ],
+    "Category": [
+      "NoSQL DB"
+    ],
+    "Complexity": [
+      "Medium"
+    ]
   },
   "shortDescription": "Web-based tool for managing MongoDB backups across multiple servers with scheduling, restore, and encrypted credential storage.",
   "DefaultFile": "dockerfile",
@@ -19,41 +25,62 @@
       "Description": "Metadata storage backend: 'mongo' or 'json'",
       "DefaultValue": "json",
       "options": [
-        { "label": "json", "value": "json" },
-        { "label": "mongo", "value": "mongo" }
+        {
+          "label": "json",
+          "value": "json"
+        },
+        {
+          "label": "mongo",
+          "value": "mongo"
+        }
       ],
       "Required": true
     },
     {
-      "Name": "METADATA_MONGO_HOST",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Metadata MongoDB hostname (only when METADATA_BACKEND=mongo)",
-      "DefaultValue": "metadata-mongodb",
-      "Required": false
-    },
-    {
-      "Name": "METADATA_MONGO_PORT",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Metadata MongoDB port (only when METADATA_BACKEND=mongo)",
-      "DefaultValue": "27017",
-      "Required": false
-    },
-    {
-      "Name": "METADATA_MONGO_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Metadata MongoDB username (only when METADATA_BACKEND=mongo)",
-      "DefaultValue": "admin",
-      "Required": false
-    },
-    {
-      "Name": "METADATA_MONGO_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Metadata MongoDB password (only when METADATA_BACKEND=mongo)",
-      "Required": false
+      "Name": "MONGODB_METADATA_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "The backup manager's metadata MongoDB connection, from a shared Variable Group.",
+      "VariableGroupId": "mongodb-metadata-connection",
+      "VariableGroupName": "MongoDB Metadata Connection",
+      "VariableGroupDescription": "Shared MongoDB connection for the backup manager's own metadata store.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "METADATA_MONGO_HOST",
+          "Description": "Metadata MongoDB hostname (only when METADATA_BACKEND=mongo)",
+          "DefaultValue": "metadata-mongodb",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "METADATA_MONGO_PORT",
+          "Description": "Metadata MongoDB port",
+          "DefaultValue": "80",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "METADATA_MONGO_USERNAME",
+          "Description": "Metadata MongoDB username",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "METADATA_MONGO_PASSWORD",
+          "Description": "Metadata MongoDB password",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "METADATA_MONGO_DATABASE",
+          "Description": "Database the backup manager stores its metadata in",
+          "DefaultValue": "backup_manager",
+          "Secret": false,
+          "Required": false
+        }
+      ]
     },
     {
       "Name": "SECRET_KEY",
@@ -94,7 +121,10 @@
     "Network": {
       "ServiceName": "backup-manager",
       "Ports": [
-        { "Port": 80, "TargetPort": 80 }
+        {
+          "Port": 80,
+          "TargetPort": 80
+        }
       ]
     },
     "blobStorage": {

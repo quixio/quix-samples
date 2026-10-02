@@ -11,8 +11,8 @@ load_dotenv()
 
 # Global Variables
 PG_SLOT_NAME = "replication_slot"
-PG_SCHEMA = os.environ["PG_SCHEMA"]
-PG_TABLE = os.environ["PG_TABLE"]
+PG_SCHEMA = os.environ["POSTGRES_SCHEMA"]
+PG_TABLE = os.environ["POSTGRES_TABLE"]
 PG_PUBLICATION_NAME = f"pub_{PG_SCHEMA}_{PG_TABLE}"
 PG_TABLE_NAME = f"{PG_SCHEMA}.{PG_TABLE}"
 WAIT_INTERVAL = 0.1

@@ -28,35 +28,43 @@
       "Required": true
     },
     {
-      "Name": "redis_host",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Host address for the Redis instance",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "redis_port",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Port for the Redis instance",
-      "DefaultValue": "6379",
-      "Required": true
-    },
-    {
-      "Name": "redis_password",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Password for the Redis instance",
-      "Required": false
-    },
-    {
-      "Name": "redis_username",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Username for the Redis instance",
-      "DefaultValue": "",
-      "Required": false
+      "Name": "REDIS_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "Redis host, port and credentials from a shared Variable Group.",
+      "VariableGroupId": "redis-connection",
+      "VariableGroupName": "Redis Connection",
+      "VariableGroupDescription": "Shared Redis host, port and credentials.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "redis_host",
+          "Description": "Host address of your Redis instance",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "redis_port",
+          "Description": "Port of your Redis instance",
+          "DefaultValue": "6379",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "redis_username",
+          "Description": "Username for your Redis instance, if it requires one",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": false
+        },
+        {
+          "Key": "redis_password",
+          "Description": "Password for your Redis instance, if it requires one",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": false
+        }
+      ]
     },
     {
       "Name": "redis_key_prefix",

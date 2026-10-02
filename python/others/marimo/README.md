@@ -18,6 +18,12 @@ This sample demonstrates how to deploy a [Marimo](https://marimo.io/) notebook i
 | `MARIMO_PASSWORD` | Optional password protection for standalone mode | (none) |
 | `QUIX_PLUGIN_MODE` | Set to `true` to enable Quix plugin mode with nginx auth proxy | `false` |
 
+These come from the shared **`anthropic-api`** Variable Group (Anthropic API), so the connection is defined once per environment rather than per deployment:
+
+- `ANTHROPIC_API_KEY`
+
+The key is optional, so the group reference is optional too - leave it unassigned to run the notebook without the AI assistant.
+
 ## Modes
 
 - **Standalone mode** (`QUIX_PLUGIN_MODE=false`): Direct access to Marimo on port 8080. Supports optional password protection via `MARIMO_PASSWORD`.

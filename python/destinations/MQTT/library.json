@@ -35,71 +35,55 @@
       "Required": true
     },
     {
-      "Name": "mqtt_server",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The address of your MQTT server",
-      "Required": true
-    },
-    {
-      "Name": "mqtt_port",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The port of your MQTT server",
-      "DefaultValue": "8883",
-      "Required": true
-    },
-    {
-      "Name": "mqtt_username",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Username of your MQTT user",
-      "Required": false
-    },
-    {
-      "Name": "mqtt_password",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Password for the MQTT user",
-      "Required": false
-    },
-    {
-      "Name": "mqtt_version",
-      "Type": "EnvironmentVariable",
-      "InputType": "Options",
-      "Description": "MQTT protocol version",
-      "DefaultValue": "3.1.1",
+      "Name": "MQTT_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "MQTT broker address, port and credentials from a shared Variable Group.",
+      "VariableGroupId": "mqtt-connection",
+      "VariableGroupName": "MQTT Connection",
+      "VariableGroupDescription": "Shared MQTT broker address, port and credentials.",
       "Required": true,
-      "options": [
+      "Variables": [
         {
-          "label": "3.1",
-          "value": "3.1"
+          "Key": "mqtt_server",
+          "Description": "Host address of your MQTT broker, without the protocol prefix",
+          "DefaultValue": "mqtt",
+          "Secret": false,
+          "Required": true
         },
         {
-          "label": "3.1.1",
-          "value": "3.1.1"
+          "Key": "mqtt_port",
+          "Description": "Port of your MQTT broker",
+          "DefaultValue": "1883",
+          "Secret": false,
+          "Required": true
         },
         {
-          "label": "5",
-          "value": "5"
-        }
-      ]
-    },
-    {
-      "Name": "mqtt_tls_enabled",
-      "Type": "EnvironmentVariable",
-      "InputType": "Options",
-      "Description": "Enable TLS for MQTT connection",
-      "DefaultValue": "true",
-      "Required": false,
-      "options": [
-        {
-          "label": "true",
-          "value": "true"
+          "Key": "mqtt_username",
+          "Description": "Username to connect to the broker with",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": false
         },
         {
-          "label": "false",
-          "value": "false"
+          "Key": "mqtt_password",
+          "Description": "Password to connect to the broker with",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": false
+        },
+        {
+          "Key": "mqtt_version",
+          "Description": "MQTT protocol version. One of: 3.1, 3.1.1, 5",
+          "DefaultValue": "3.1.1",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "mqtt_tls_enabled",
+          "Description": "Enable TLS for the broker connection. One of: true, false. The bundled Mosquitto broker listens plaintext on 1883, so this defaults to false",
+          "DefaultValue": "false",
+          "Secret": false,
+          "Required": false
         }
       ]
     },

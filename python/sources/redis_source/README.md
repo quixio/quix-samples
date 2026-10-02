@@ -20,10 +20,14 @@ Then either:
 The connector uses the following environment variables:
 
 - **output**: This is the output topic that will receive the stream (Default: `output`, Required: `True`)
-- **redis_host**: Host address for the Redis instance (Required: `True`)
-- **redis_port**: Port for the Redis instance (Default: `6379`, Required: `True`)
-- **redis_password**: Password for the Redis instance (Default: `None`, Required: `False`)
-- **redis_username**: Username for the Redis instance (Default: `None`, Required: `False`)
+
+The Redis connection comes from the shared **`redis-connection`** Variable Group, so this
+source, the Redis Sink and anything else pointing at the same instance stay in sync:
+
+- **redis_host**: Host address of your Redis instance (Required: `True`)
+- **redis_port**: Port of your Redis instance (Default: `6379`, Required: `True`)
+- **redis_username**: Username for your Redis instance, if it requires one (Required: `False`)
+- **redis_password**: Password for your Redis instance, if it requires one (Required: `False`)
 
 ## Requirements / Prerequisites
 

@@ -27,25 +27,36 @@
       "Required": true
     },
     {
-      "Name": "TDENGINE_HOST",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Host address for the TDengine instance.",
-      "Required": true
-    },
-    {
-      "Name": "TDENGINE_TOKEN",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Authentication token to access TDengine. Either this or a username + password must be used.",
-      "Required": false
-    },
-    {
-      "Name": "TDENGINE_DATABASE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "TDengine database name.",
-      "Required": true
+      "Name": "TDENGINE_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "TDengine host, token and database from a shared Variable Group.",
+      "VariableGroupId": "tdengine-connection",
+      "VariableGroupName": "TDengine Connection",
+      "VariableGroupDescription": "Shared TDengine host, token and database.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "TDENGINE_HOST",
+          "Description": "Host address of your TDengine instance, including the scheme and port",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "TDENGINE_TOKEN",
+          "Description": "Authentication token for your TDengine instance",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": false
+        },
+        {
+          "Key": "TDENGINE_DATABASE",
+          "Description": "Database clients read from and write to",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "TDENGINE_SUPERTABLE",

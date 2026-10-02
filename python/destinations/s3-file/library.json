@@ -43,25 +43,50 @@
       "Required": false
     },
     {
-      "Name": "AWS_REGION_NAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The region of your S3 bucket.",
-      "Required": true
-    },
-    {
-      "Name": "AWS_SECRET_ACCESS_KEY",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Your AWS secret.",
-      "Required": true
-    },
-    {
-      "Name": "AWS_ACCESS_KEY_ID",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Your AWS Access Key.",
-      "Required": true
+      "Name": "AWS_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "AWS credentials and region from a shared Variable Group.",
+      "VariableGroupId": "aws-connection",
+      "VariableGroupName": "AWS Connection",
+      "VariableGroupDescription": "Shared AWS credentials, region and optional S3-compatible endpoint.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "AWS_ACCESS_KEY_ID",
+          "Description": "Your AWS access key ID",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "AWS_SECRET_ACCESS_KEY",
+          "Description": "Your AWS secret access key",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "AWS_REGION",
+          "Description": "The AWS region your resources live in",
+          "DefaultValue": "us-east-1",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "AWS_SESSION_TOKEN",
+          "Description": "AWS session token, for temporary credentials only",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": false
+        },
+        {
+          "Key": "AWS_ENDPOINT_URL",
+          "Description": "Custom endpoint for S3-compatible storage such as MinIO. Leave empty for AWS",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": false
+        }
+      ]
     },
     {
       "Name": "FILE_FORMAT",

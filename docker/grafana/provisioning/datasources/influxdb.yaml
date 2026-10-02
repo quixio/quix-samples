@@ -16,6 +16,6 @@ datasources:
       organization: "quix"
       version: "Flux"
     secureJsonData:
-      token: "${INFLUXDB_TOKEN}"            
+      token: "${INFLUXDB2_TOKEN}"            
     version: 8
     readOnly: false
