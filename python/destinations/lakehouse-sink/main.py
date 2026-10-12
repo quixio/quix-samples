@@ -11,6 +11,7 @@ automatically from this configuration.
 File paths follow the workspace-aware structure:
     {workspaceId}/data-lake/time-series/{table_name}/...
 """
+import inspect
 import os
 import re
 import logging
@@ -41,6 +42,31 @@ def _positive_int(env_var: str, default: str) -> int:
     if value <= 0:
         raise ValueError(f"{env_var} must be a positive integer, got {value}")
     return value
+
+
+def supported_kwargs(**candidates) -> dict:
+    """The candidates the INSTALLED QuixTSDataLakeSink actually accepts.
+
+    This sample runs against whatever `quixstreams[quixdatalake]>=3.24.0`
+    resolves to, which may predate a parameter. Passing one it does not know
+    is a TypeError at startup, so each is offered only if its name is in the
+    signature; dropped ones are logged rather than silently ignored.
+    """
+    accepted = inspect.signature(QuixTSDataLakeSink.__init__).parameters
+    out, missing = {}, []
+    for name, value in candidates.items():
+        if value is None:
+            continue
+        if name in accepted:
+            out[name] = value
+        else:
+            missing.append(name)
+    if missing:
+        logger.warning(
+            "Installed QuixStreams does not support %s; upgrade quixstreams[quixdatalake] "
+            "to use it", ", ".join(sorted(missing))
+        )
+    return out
 
 
 def parse_hive_columns(columns_str: str) -> list:
@@ -93,14 +119,28 @@ workspace_id = os.getenv("Quix__Workspace__Id", "")
 # secrets-bag / secretKeyRef path that the platform uses for the Catalog's own credentials.
 # Optional preferred ordering column recorded on the table (properties.sort_column).
 # Compaction orders files by it so ORDER BY / time-range queries can skip files and
-# stream. Forwarded only if the installed QuixStreams supports the kwarg; otherwise
-# it is ignored and the lakehouse falls back to the timestamp column automatically.
-import inspect
-_sort_column = os.getenv("SORT_COLUMN") or None
-_sort_kwargs = (
-    {"sort_column": _sort_column}
-    if _sort_column and "sort_column" in inspect.signature(QuixTSDataLakeSink.__init__).parameters
-    else {}
+# stream. Omitted, the lakehouse falls back to the timestamp column automatically.
+sort_column = os.getenv("SORT_COLUMN") or None
+
+# The QUERY API is a second address, separate from the catalog: registering a file
+# is durable bookkeeping, ANNOUNCING it is what makes the lakehouse console's tree
+# and QuixLab's lake watch react as the data lands. Without it the sink still
+# writes and registers exactly as before — nothing downstream just reacts until
+# something polls. Quix injects the pair when a Lakehouse Query API deployment
+# exists in the workspace; QUERY_API_URL is the manual override for when it does
+# not, and the token falls back to the workspace SDK token.
+query_api_url = os.getenv("Quix__Lakehouse__Query__Url") or os.getenv("QUERY_API_URL") or None
+query_api_auth_token = (
+    os.getenv("Quix__Lakehouse__Query__AuthToken")
+    or os.getenv("Quix__Sdk__Token")
+    or os.getenv("QUERY_API_AUTH_TOKEN")
+    or None
+)
+
+optional_kwargs = supported_kwargs(
+    sort_column=sort_column,
+    query_api_url=query_api_url,
+    query_api_auth_token=query_api_auth_token,
 )
 
 blob_sink = QuixTSDataLakeSink(
@@ -109,7 +149,7 @@ blob_sink = QuixTSDataLakeSink(
     workspace_id=workspace_id,
     hive_columns=hive_columns,
     timestamp_column=os.getenv("TIMESTAMP_COLUMN", "ts_ms"),
-    **_sort_kwargs,
+    **optional_kwargs,
     catalog_url=os.getenv("Quix__Lakehouse__Catalog__Url") or os.getenv("CATALOG_URL"),
     catalog_auth_token=os.getenv("Quix__Lakehouse__Catalog__AuthToken"),
     auto_discover=auto_discover,
@@ -132,6 +172,12 @@ logger.info("Starting Quix Lakehouse Sink")
 logger.info(f"  Input topic: {os.environ['input']}")
 logger.info(f"  Storage path: {storage_path}/{table_name}")
 logger.info(f"  Partitioning: {hive_columns if hive_columns else 'none'}")
+# Say it at startup: a lakehouse tree that never lights up looks the same as a
+# sink that was never told where to announce.
+if "query_api_url" in optional_kwargs:
+    logger.info(f"  Live notifications: {query_api_url}")
+else:
+    logger.info("  Live notifications: OFF (no Quix__Lakehouse__Query__Url or QUERY_API_URL)")
 
 if __name__ == "__main__":
     app.run()
