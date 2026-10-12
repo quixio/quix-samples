@@ -33,9 +33,14 @@ Then either:
 - **`TABLE_NAME`**: Table name for data organization and registration
   *Default*: Uses the topic name if not specified
 
-- **`HIVE_COLUMNS`**: Comma-separated list of columns for Hive partitioning. Include `year`, `month`, `day`, `hour` to extract from `TIMESTAMP_COLUMN`
-  *Example*: `location,year,month,day,sensor_type`
+- **`HIVE_COLUMNS`**: Comma-separated list of columns for Hive partitioning. Include `year`, `month`, `day`, `hour` to extract from `TIMESTAMP_COLUMN`. Prefix a column with `~` to make it a **virtual partition** (see below).
+  *Example*: `location,year,month,day,sensor_type` — or `location,year,month,day,~sensor_type` to make `sensor_type` virtual
   *Default*: `""` (no partitioning)
+
+  **Physical vs. virtual partitions (`~`):**
+  - A **physical** column (no prefix) is written as a real `key=value/` folder in storage. It splits the data: every file lives under exactly one value, so one file = one value. Use it for low-cardinality columns you filter by often (and time columns `year/month/day/hour`).
+  - A **virtual** column (prefixed with `~`) is *not* a folder and does *not* split files — a single file can contain many of its values. The value stays inside the parquet data, and the catalog indexes which values each file contains. It still shows up as a browsable level in the partition tree and prunes files at query time, but without the write-amplification and tiny-file explosion that physical partitioning on a higher-cardinality column would cause.
+  - **When to use which:** physical for the handful of columns that define your folder layout (e.g. `region`, `year/month/day`); virtual for an additional column you want to browse/filter by but that has too many values (or changes too often) to be a folder — e.g. `~sensor_type`, `~driver`. Example: `HIVE_COLUMNS=region,year,month,day,~sensor_type` folders physically by region + date and exposes `sensor_type` as a virtual level.
 
 - **`TIMESTAMP_COLUMN`**: Column containing timestamp values to extract year/month/day/hour from
   *Default*: `ts_ms`

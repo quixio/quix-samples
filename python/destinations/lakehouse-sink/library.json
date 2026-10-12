@@ -37,7 +37,7 @@
       "Name": "HIVE_COLUMNS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Comma-separated list of columns for Hive partitioning (e.g. region,datacenter,hostname OR year,month,day extracted from TIMESTAMP_COLUMN). Leave empty for no Hive partitioning — every column listed here must exist in the incoming message payload, otherwise writes will fail."
+      "Description": "Comma-separated list of columns for Hive partitioning (e.g. region,datacenter,hostname OR year,month,day extracted from TIMESTAMP_COLUMN). Prefix a column with ~ to make it a VIRTUAL partition: it still appears in the partition tree and is filterable, but is NOT written as a physical key=value/ folder and does not split files — a single file keeps every value of it, and the column stays in the data so row-level filters still work. Example: year,month,~driver folders physically by year/month and exposes driver as a virtual level. Leave empty for no Hive partitioning — every physical (non-~) column listed here must exist in the incoming message payload, otherwise writes will fail."
     },
     {
       "Name": "TIMESTAMP_COLUMN",
