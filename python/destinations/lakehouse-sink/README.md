@@ -52,18 +52,14 @@ Then either:
 
 Registering a file in the catalog is durable bookkeeping; **announcing** it to the Lakehouse Query API is what makes things downstream react as the data lands — the lakehouse console marks the table and folder as live, and a QuixLab node watching that selection re-runs. Without it the sink writes and registers exactly as before; nothing downstream just notices until it polls.
 
-On Quix Cloud the platform injects `Quix__Lakehouse__Query__Url` and `Quix__Lakehouse__Query__AuthToken` when the workspace has a Lakehouse Query API deployment, and the sink picks them up with no configuration. The startup log says which it got:
+Configured exactly like the catalog, from the environment: on Quix Cloud the platform injects `Quix__Lakehouse__Query__Url` and `Quix__Lakehouse__Query__AuthToken` when the workspace has a Lakehouse Query API deployment, and the sink picks them up with no configuration. For a self-hosted lakehouse, set `QUERY_API_URL` (and the token under the Quix name) as deployment variables on the deployed sink.
+
+The startup log says which it got:
 
 ```
-Live notifications: https://<your-query-api>          # announcing
-Live notifications: OFF (no Quix__Lakehouse__Query__Url or QUERY_API_URL)
+Live notifications: https://<your-query-api>     # announcing
+Live notifications: OFF (no Quix__Lakehouse__Query__Url)
 ```
-
-- **`QUERY_API_URL`**: Query API base URL, for when the platform does not inject one (a self-hosted lakehouse, or a deployment without the Query API in its workspace)
-  *Default*: `""` (platform-injected value, else off)
-
-- **`QUERY_API_AUTH_TOKEN`**: Bearer token for that API. Falls back to the platform's `Quix__Lakehouse__Query__AuthToken`, then the workspace SDK token
-  *Default*: `""`
 
 Notification is best effort by design: the catalog is the source of truth and the flush has already succeeded, so a failed or slow announcement is logged and swallowed, never retried into the write path. (Requires a QuixStreams build whose `QuixTSDataLakeSink` supports `query_api_url`; on older builds the sink starts normally and logs that it was dropped.)
 

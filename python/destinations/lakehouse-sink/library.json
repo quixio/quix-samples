@@ -78,20 +78,6 @@
       "DefaultValue": "default"
     },
     {
-      "Name": "QUERY_API_URL",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Lakehouse Query API base URL. Announcing each registered file there is what makes the lakehouse console's tree and QuixLab's lake watch react as data lands; the catalog registration itself is unaffected. Leave empty on Quix Cloud — the platform injects Quix__Lakehouse__Query__Url when the workspace has a Query API deployment. Set it for a self-hosted lakehouse. Notification is best effort: a failure is logged, never retried into the write path.",
-      "DefaultValue": ""
-    },
-    {
-      "Name": "QUERY_API_AUTH_TOKEN",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Bearer token for QUERY_API_URL. Leave empty to use the platform's Quix__Lakehouse__Query__AuthToken, falling back to the workspace SDK token.",
-      "DefaultValue": ""
-    },
-    {
       "Name": "BATCH_SIZE",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",

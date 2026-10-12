@@ -126,16 +126,13 @@ sort_column = os.getenv("SORT_COLUMN") or None
 # is durable bookkeeping, ANNOUNCING it is what makes the lakehouse console's tree
 # and QuixLab's lake watch react as the data lands. Without it the sink still
 # writes and registers exactly as before — nothing downstream just reacts until
-# something polls. Quix injects the pair when a Lakehouse Query API deployment
-# exists in the workspace; QUERY_API_URL is the manual override for when it does
-# not, and the token falls back to the workspace SDK token.
+# something polls. Read exactly like the Catalog URL above: Quix Portal injects
+# `Quix__Lakehouse__Query__Url` when a Lakehouse Query API deployment exists in
+# the workspace, with the plain `QUERY_API_URL` as the override for a self-hosted
+# one; the token is injected only under the Quix name, via the same secrets-bag /
+# secretKeyRef path the Catalog's own credentials use.
 query_api_url = os.getenv("Quix__Lakehouse__Query__Url") or os.getenv("QUERY_API_URL") or None
-query_api_auth_token = (
-    os.getenv("Quix__Lakehouse__Query__AuthToken")
-    or os.getenv("Quix__Sdk__Token")
-    or os.getenv("QUERY_API_AUTH_TOKEN")
-    or None
-)
+query_api_auth_token = os.getenv("Quix__Lakehouse__Query__AuthToken") or None
 
 optional_kwargs = supported_kwargs(
     sort_column=sort_column,
@@ -177,7 +174,7 @@ logger.info(f"  Partitioning: {hive_columns if hive_columns else 'none'}")
 if "query_api_url" in optional_kwargs:
     logger.info(f"  Live notifications: {query_api_url}")
 else:
-    logger.info("  Live notifications: OFF (no Quix__Lakehouse__Query__Url or QUERY_API_URL)")
+    logger.info("  Live notifications: OFF (no Quix__Lakehouse__Query__Url)")
 
 if __name__ == "__main__":
     app.run()
