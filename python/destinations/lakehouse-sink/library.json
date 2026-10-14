@@ -180,8 +180,8 @@
       "Name": "STREAM_TIMEOUT_TOPIC",
       "Type": "EnvironmentVariable",
       "InputType": "OutputTopic",
-      "Description": "Topic to emit stream-timeout events on. Set to empty string to disable the feature.",
-      "DefaultValue": "timeout-topic"
+      "Description": "Topic to emit stream-timeout events on. Leave empty to disable the feature.",
+      "Required": false
     },
     {
       "Name": "STREAM_TIMEOUT_SECONDS",

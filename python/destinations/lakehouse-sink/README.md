@@ -124,10 +124,10 @@ On Quix Cloud, when the workspace has a Lakehouse provisioned, `CATALOG_URL` and
 
 ### Stream Timeout
 
-Emits one event when an input message key stops receiving messages, so downstream consumers know that stream has gone quiet. A key that resumes is tracked again and can time out again.
+Emits one event when an input message key stops receiving messages, so downstream consumers know that stream has gone quiet. A key that resumes is tracked again and can time out again. The feature is off by default and is enabled by setting `STREAM_TIMEOUT_TOPIC`.
 
-- **`STREAM_TIMEOUT_TOPIC`**: Topic the timeout events are produced to. Set it to an empty string to disable the feature.
-  *Default*: `timeout-topic`
+- **`STREAM_TIMEOUT_TOPIC`**: Topic the timeout events are produced to. Leave it empty to keep the feature disabled.
+  *Default*: `""` (disabled)
 
 - **`STREAM_TIMEOUT_SECONDS`**: Per-key inactivity threshold in seconds.
   *Default*: `60`

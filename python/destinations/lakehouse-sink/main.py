@@ -11,8 +11,8 @@ automatically from this configuration.
 File paths follow the workspace-aware structure:
     {workspaceId}/data-lake/time-series/{table_name}/...
 
-Optionally emits a stream_timeout event to STREAM_TIMEOUT_TOPIC for every input key that has
-been silent for STREAM_TIMEOUT_SECONDS.
+When STREAM_TIMEOUT_TOPIC is set, emits a stream_timeout event to it for every input key that
+has been silent for STREAM_TIMEOUT_SECONDS.
 """
 import os
 import re
@@ -111,8 +111,8 @@ if not _TABLE_NAME_PATTERN.match(table_name):
 # Workspace ID (automatically injected by Quix platform)
 workspace_id = os.getenv("Quix__Workspace__Id", "")
 
-# Stream timeout: unset STREAM_TIMEOUT_TOPIC falls back to the default topic, empty disables it.
-stream_timeout_topic_name = os.getenv("STREAM_TIMEOUT_TOPIC", "timeout-topic")
+# Stream timeout is enabled only when STREAM_TIMEOUT_TOPIC is set to a non-empty value.
+stream_timeout_topic_name = os.getenv("STREAM_TIMEOUT_TOPIC")
 stream_timeout = {}
 if stream_timeout_topic_name:
     timeout_topic = app.topic(
@@ -124,7 +124,7 @@ if stream_timeout_topic_name:
         # Also runs on the processing thread inside the sink's flush(): produce only, never flush.
         event = {
             "ts_ms": int(time.time() * 1000),
-            "stream": stream_key.decode(),
+            "stream": stream_key.decode(errors="replace"),
             "event": "stream_timeout",
         }
         message = timeout_topic.serialize(key=stream_key, value=event)
