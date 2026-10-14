@@ -1,5 +1,5 @@
 # Stage 1: build Go runtime binaries
-FROM golang:1.20 AS builder
+FROM golang:1.24 AS builder
 RUN apt-get update && apt-get install -y git make
 RUN git clone --depth 1 --branch quix https://github.com/quixio/tsbs-quix.git /src
 WORKDIR /src

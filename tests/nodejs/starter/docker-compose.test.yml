@@ -1,0 +1,16 @@
+# Build-only test for nodejs/starter.
+# Verifies the image builds, npm install ran, and main.js is loadable
+# (express resolves and main.js parses as JS).
+
+services:
+  starter:
+    build:
+      context: ../../../nodejs/starter
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        node -e \"require('express')\" &&
+        node --check /app/main.js &&
+        echo 'Success: npm install + js syntax check passed'
+      "
+    stop_grace_period: 3s

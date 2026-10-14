@@ -56,10 +56,7 @@ real time without pushing them directly through Kafka.
 ### Required Configuration
 
 - **topic**: Kafka topic for configuration updates.
-- **mongoHost**: MongoDB host.
-- **mongoPort**: MongoDB port.
-- **mongoUser**: MongoDB user.
-- **mongoPasswordSecret**: MongoDB password secret.
+- **variableGroup**: Variable Group supplying the MongoDB connection (host, port, user, password). Defaults to `mongodb-connection`; the group must be assigned to the workspace.
 - **mongoDatabase**: MongoDB database name.
 - **mongoCollection**: MongoDB collection name.
 
@@ -69,6 +66,20 @@ real time without pushing them directly through Kafka.
 - **port**: Port of the API (default: `80`).
 - **workers**: Number of worker processes (default: `1`).
 - **contentStore**: Storage backend for configuration content (`mongo` or `file`, default: `mongo`).
+
+### Variable Group
+
+The MongoDB connection is provided by a Variable Group (default id
+`mongodb-connection`) whose members map to the connection environment
+variables the service reads: `MONGO_HOST`, `MONGO_PORT`, `MONGO_USER`,
+`MONGO_PASSWORD`. The same group can be shared with other apps that use
+the same connection (e.g. the MongoDB sink). Assign the group to the
+workspace before deploying.
+
+> **Compatibility.** Earlier deployments that configured the MongoDB
+> connection with individual settings (host, port, user, password) instead
+> of a Variable Group continue to run unchanged — the platform still
+> supports that configuration for existing deployments.
 
 ### Blob Storage
 

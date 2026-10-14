@@ -1,0 +1,205 @@
+{
+  "libraryItemId": "lakehouse-sink",
+  "name": "Quix Lakehouse Sink",
+  "language": "Python",
+  "tags": {
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "File Store",
+      "Quix Lake"
+    ]
+  },
+  "shortDescription": "Consume data from a Kafka topic and write it to blob storage as Hive-partitioned Parquet files, with optional Quix Lakehouse catalog registration.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "IconFile": "icon.png",
+  "Variables": [
+    {
+      "Name": "input",
+      "Type": "EnvironmentVariable",
+      "InputType": "InputTopic",
+      "Description": "Name of the Kafka input topic to consume from",
+      "Required": true
+    },
+    {
+      "Name": "TABLE_NAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Table name for data organization and registration. Leave empty to use the input topic name."
+    },
+    {
+      "Name": "HIVE_COLUMNS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Comma-separated list of columns for Hive partitioning, for example region,datacenter,hostname or year,month,day extracted from TIMESTAMP_COLUMN. Prefix an entry with a tilde and no space, for example ~device_id, to make it a virtual partition that stays filterable and stays in the Parquet data but gets no folder and does not split files, which suits high-cardinality ids; year, month, day and hour can only be used as plain physical entries. Leave empty for no partitioning, every column listed here must exist in the incoming message payload, and changing this list on a table that already holds data fails at startup, so a layout change needs a new TABLE_NAME."
+    },
+    {
+      "Name": "TIMESTAMP_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Column containing timestamp values to extract year/month/day/hour from (only used when HIVE_COLUMNS includes one of those time components).",
+      "DefaultValue": "ts_ms"
+    },
+    {
+      "Name": "STATS_COLUMNS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Comma-separated list of columns to compute per-file min/max statistics for, which the query layer uses to skip files whose value range cannot match a filter. Leave empty to collect statistics for every numeric and timestamp column, and restrict the list only on very wide tables where per-file, per-column statistics become costly in the catalog."
+    },
+    {
+      "Name": "SORT_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Column recorded on the table for the lakehouse to order files by during compaction, which lets ORDER BY and time-range queries skip files instead of sorting the whole table. Leave empty to fall back to TIMESTAMP_COLUMN; this is table metadata written once when the table is created, so changing it on an existing table is ignored and needs a new TABLE_NAME."
+    },
+    {
+      "Name": "ROW_GROUP_ROWS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Maximum number of rows per Parquet row group in the files this sink writes, where smaller groups give finer read skipping but cost roughly one storage request each. Leave empty to use the sink default of 1000000 rows, which matches the lakehouse compaction; a flush smaller than the limit stays a single row group."
+    },
+    {
+      "Name": "AUTO_DISCOVER",
+      "Type": "EnvironmentVariable",
+      "InputType": "Options",
+      "Description": "Automatically register table in REST Catalog on first write",
+      "DefaultValue": "true",
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
+    },
+    {
+      "Name": "CATALOG_NAMESPACE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Catalog namespace for table registration",
+      "DefaultValue": "default"
+    },
+    {
+      "Name": "BATCH_SIZE",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Number of messages to batch before writing to storage",
+      "DefaultValue": "1000"
+    },
+    {
+      "Name": "COMMIT_INTERVAL",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Kafka commit interval in seconds",
+      "DefaultValue": "30"
+    },
+    {
+      "Name": "KAFKA_KEY_DESERIALIZER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The key deserializer to use",
+      "DefaultValue": "str"
+    },
+    {
+      "Name": "KAFKA_VALUE_DESERIALIZER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "the value deserializer to use",
+      "DefaultValue": "json"
+    },
+    {
+      "Name": "CONSUMER_GROUP",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Kafka consumer group name",
+      "DefaultValue": "s3_direct_sink_v1.0"
+    },
+    {
+      "Name": "AUTO_OFFSET_RESET",
+      "Type": "EnvironmentVariable",
+      "InputType": "Options",
+      "Description": "Where to start consuming if no offset exists",
+      "DefaultValue": "earliest",
+      "options": [
+        {
+          "label": "earliest",
+          "value": "earliest"
+        },
+        {
+          "label": "latest",
+          "value": "latest"
+        }
+      ]
+    },
+    {
+      "Name": "LOGLEVEL",
+      "Type": "EnvironmentVariable",
+      "InputType": "Options",
+      "Description": "Application logging level",
+      "DefaultValue": "INFO",
+      "options": [
+        {
+          "label": "DEBUG",
+          "value": "DEBUG"
+        },
+        {
+          "label": "INFO",
+          "value": "INFO"
+        },
+        {
+          "label": "WARNING",
+          "value": "WARNING"
+        },
+        {
+          "label": "ERROR",
+          "value": "ERROR"
+        },
+        {
+          "label": "CRITICAL",
+          "value": "CRITICAL"
+        }
+      ]
+    },
+    {
+      "Name": "MAX_WRITE_WORKERS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "How many files can be written in parallel to storage at once (based on partitioning + batch size)",
+      "DefaultValue": "10"
+    },
+    {
+      "Name": "STREAM_TIMEOUT_TOPIC",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Topic to emit stream-timeout events on. Set to empty string to disable the feature.",
+      "DefaultValue": "timeout-topic"
+    },
+    {
+      "Name": "STREAM_TIMEOUT_SECONDS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Per-key inactivity threshold in seconds. A message key that receives nothing for this long emits one event to STREAM_TIMEOUT_TOPIC.",
+      "DefaultValue": "60"
+    }
+  ],
+  "DeploySettings": {
+    "blobStorage": {
+      "bind": true
+    },
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 500,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": true
+  }
+}

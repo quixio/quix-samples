@@ -1,6 +1,0 @@
-quixstreams[quixdatalake] @ git+https://github.com/quixio/quix-streams.git@91c1bbef120ab00080cde5aa5205f68e029fc131
-python-dotenv
-
-# Blob storage support via quixportal (AWS S3, Azure, GCP, MinIO)
---extra-index-url https://pkgs.dev.azure.com/quix-analytics/53f7fe95-59fe-4307-b479-2473b96de6d1/_packaging/public/pypi/simple/
-quixportal[all]>=2.0.1

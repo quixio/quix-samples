@@ -94,12 +94,31 @@ class TestReport:
 # Test Discovery
 # ============================================================================
 
+# Maps test category -> source root (relative to repo root). The source root
+# is recursively walked for `dockerfile`/`Dockerfile` to enumerate apps;
+# tests/<category>/<app-relative-path>/docker-compose.test.yml is the
+# corresponding test location. Add a new category here to include it in
+# auto-discovery (test-all, list, list-untested) and the `test-<category>`
+# subcommand.
+CATEGORIES = {
+    "sources":         "python/sources",
+    "destinations":    "python/destinations",
+    "transformations": "python/transformations",
+    "others":          "python/others",
+    "docker":          "docker",
+    "csharp":          "csharp",
+    "java":            "java",
+    "nodejs":          "nodejs",
+    "managed":         "managed",
+}
+
+
 class TestDiscovery:
     """
     Discovers available tests in the test directory.
 
     Tests are identified by the presence of docker-compose.test.yml files
-    in subdirectories under tests/{sources,destinations,transformations}.
+    anywhere under tests/<category>/. Categories are configured in CATEGORIES.
     """
 
     def __init__(self, tests_dir: Path):
@@ -124,25 +143,22 @@ class TestDiscovery:
         """Find all test directories with docker-compose.test.yml"""
         tests = []
 
-        for category in ["sources", "destinations", "transformations"]:
+        for category in CATEGORIES:
             tests.extend(self.find_tests_by_pattern(category))
 
         return sorted(tests)
 
     def find_tests_by_pattern(self, pattern: str) -> List[Path]:
-        """Find tests matching pattern (sources, destinations, transformations)"""
-        tests = []
+        """Find all tests under tests/<pattern>/ (recursive)."""
         category_dir = self.tests_dir / pattern
 
         if not category_dir.exists():
-            return tests
+            return []
 
-        for test_dir in category_dir.iterdir():
-            if test_dir.is_dir():
-                compose_file = test_dir / "docker-compose.test.yml"
-                if compose_file.exists():
-                    tests.append(test_dir)
-
+        tests = [
+            compose_file.parent
+            for compose_file in category_dir.rglob("docker-compose.test.yml")
+        ]
         return sorted(tests)
 
     def is_excluded(self, test_name: str) -> Optional[str]:
@@ -155,30 +171,35 @@ class TestDiscovery:
 
     def find_untested_apps(self) -> Dict[str, List[str]]:
         """Find applications that don't have tests"""
-        untested = {"sources": [], "destinations": [], "transformations": []}
+        untested = {category: [] for category in CATEGORIES}
 
-        python_dir = self.script_dir / "python"
-
-        for category in ["sources", "destinations", "transformations"]:
-            category_dir = python_dir / category
-
-            if not category_dir.exists():
+        for category, source_subdir in CATEGORIES.items():
+            source_dir = self.script_dir / source_subdir
+            if not source_dir.exists():
                 continue
 
-            for app_dir in category_dir.iterdir():
-                if app_dir.is_dir():
-                    app_name = app_dir.name
-                    test_dir = self.tests_dir / category / app_name
+            for app_dir in self._find_app_dirs(source_dir):
+                app_relative = app_dir.relative_to(source_dir)
+                test_dir = self.tests_dir / category / app_relative
 
-                    # Skip if excluded
-                    if self.is_excluded(app_name):
-                        continue
+                # Skip if excluded (check both leaf name and full relative path)
+                if self.is_excluded(str(app_relative)):
+                    continue
 
-                    # Check if test exists
-                    if not (test_dir / "docker-compose.test.yml").exists():
-                        untested[category].append(app_name)
+                # Check if test exists
+                if not (test_dir / "docker-compose.test.yml").exists():
+                    untested[category].append(str(app_relative))
 
         return untested
+
+    def _find_app_dirs(self, source_dir: Path) -> List[Path]:
+        """Find all dirs under source_dir that contain a Dockerfile."""
+        seen = set()
+        for name in ("dockerfile", "Dockerfile"):
+            for dockerfile in source_dir.rglob(name):
+                if dockerfile.is_file():
+                    seen.add(dockerfile.parent)
+        return sorted(seen)
 
 
 # ============================================================================
@@ -765,14 +786,8 @@ class TestCLI:
         elif command == "test-all":
             self.run_all()
 
-        elif command == "test-sources":
-            self.run_category("sources")
-
-        elif command == "test-destinations":
-            self.run_category("destinations")
-
-        elif command == "test-transformations":
-            self.run_category("transformations")
+        elif command.startswith("test-") and command[len("test-"):] in CATEGORIES:
+            self.run_category(command[len("test-"):])
 
         elif command == "list":
             self.list_tests()
@@ -998,13 +1013,13 @@ class TestCLI:
         ReportFormatter.print_header("Available Tests")
         print()
 
-        for category in ["sources", "destinations", "transformations"]:
+        for category in CATEGORIES:
             tests = self.discovery.find_tests_by_pattern(category)
             if tests:
+                category_dir = self.discovery.tests_dir / category
                 print(f"{category.capitalize()}:")
                 for test_path in tests:
-                    app_name = test_path.name
-                    print(f"  - {app_name}")
+                    print(f"  - {test_path.relative_to(category_dir)}")
                 print()
 
     def list_untested(self):
@@ -1015,7 +1030,7 @@ class TestCLI:
         untested = self.discovery.find_untested_apps()
         total_untested = 0
 
-        for category in ["sources", "destinations", "transformations"]:
+        for category in CATEGORIES:
             apps = untested[category]
             if apps:
                 print(f"{category.capitalize()}:")
@@ -1042,10 +1057,16 @@ USAGE:
 
 COMMANDS:
     test <app-path> [...]     Test one or more specific apps
-    test-sources              Test all sources
-    test-destinations         Test all destinations
-    test-transformations      Test all transformations
-    test-all                  Run all tests
+    test-sources              Test all sources         (python/sources/*)
+    test-destinations         Test all destinations    (python/destinations/*)
+    test-transformations      Test all transformations (python/transformations/*)
+    test-others               Test all others          (python/others/*)
+    test-docker               Test all docker samples  (docker/**)
+    test-csharp               Test all csharp samples  (csharp/**)
+    test-java                 Test all java samples    (java/**)
+    test-nodejs               Test all nodejs samples  (nodejs/**)
+    test-managed              Test all managed samples (managed/**)
+    test-all                  Run all tests across every category above
     list                      List available tests
     list-untested             List apps without tests
     help                      Show this help

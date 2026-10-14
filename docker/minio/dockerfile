@@ -1,4 +1,4 @@
-FROM quay.io/minio/minio:latest
+FROM pgsty/minio:RELEASE.2026-08-04T00-00-00Z
 
 EXPOSE 9000 9001
 

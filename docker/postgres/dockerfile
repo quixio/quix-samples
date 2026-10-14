@@ -1,4 +1,4 @@
-FROM postgres:16
+FROM postgres:16.15
 
 # Install wal2json plugin
 RUN apt-get update && apt-get install -y postgresql-16-wal2json

@@ -1,0 +1,16 @@
+# Build-only test for docker/postgres.
+# Verifies the image builds, the wal2json plugin was installed via apt,
+# and the init script is in place.
+
+services:
+  postgres:
+    build:
+      context: ../../../docker/postgres
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /init.sh &&
+        dpkg -s postgresql-16-wal2json > /dev/null &&
+        echo 'Success: build + apt install + layout check passed'
+      "
+    stop_grace_period: 3s
