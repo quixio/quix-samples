@@ -118,6 +118,15 @@ def main():
     Read data from the Query and publish it to Kafka
     """
 
+    try:
+        health = influxdb2_client.health()
+        if health.status == "pass":
+            logger.info("CONNECTED!")
+        else:
+            print(f"ERROR! InfluxDB health check failed: status={health.status}, message={health.message}")
+    except Exception as e:
+        print(f"ERROR! Failed to connect to InfluxDB at {os.environ['INFLUXDB_HOST']}: {e}")
+
     # Create a pre-configured Producer object.
     # Producer is already setup to use Quix brokers.
     # It will also ensure that the topics exist before producing to them if
@@ -135,7 +144,7 @@ def main():
 
                 # Serialize row value to bytes
                 serialized_value = serializer(
-                    value=obj, ctx=SerializationContext(topic=topic.name)
+                    value=obj, ctx=SerializationContext(topic=topic.name, field="value")
                 )
 
                 # publish the data to the topic

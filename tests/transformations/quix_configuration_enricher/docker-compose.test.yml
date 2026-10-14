@@ -1,0 +1,13 @@
+services:
+  quix-configuration-enricher-transformation:
+    build:
+      context: ../../../python/transformations/quix_configuration_enricher
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for quix_configuration_enricher transformation'
+      "
+
+    stop_grace_period: 3s

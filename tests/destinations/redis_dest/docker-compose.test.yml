@@ -1,0 +1,86 @@
+# timeout: 50
+services:
+  redis:
+    image: redis/redis-stack-server:latest
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 3s
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  redis-dest:
+    build:
+      context: ../../../python/destinations/redis_dest
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - Quix__Consumer__Group=redis-dest-test
+      - Quix__Deployment__Id=test-redis-dest
+      - input=test-redis-input
+      - redis_host=redis
+      - redis_port=6379
+      - redis_password=
+      - redis_key_prefix=test
+    networks:
+      - test-network
+    depends_on:
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-redis-input
+      - TEST_MESSAGE_COUNT=3
+    command: >
+      sh -c "
+        echo 'Installing Redis client...' &&
+        pip install redis > /dev/null 2>&1 &&
+        echo 'Producing test messages to Kafka...' &&
+        python /tests/produce_test_data.py &&
+        echo 'Waiting for redis-dest to process messages...' &&
+        sleep 10 &&
+        echo 'Verifying data in Redis...' &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      redis-dest:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

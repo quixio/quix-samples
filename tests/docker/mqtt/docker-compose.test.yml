@@ -1,0 +1,16 @@
+# Build-only test for docker/mqtt.
+# Verifies the image builds and both the init script and the bundled
+# mosquitto.conf landed in the expected locations.
+
+services:
+  mqtt:
+    build:
+      context: ../../../docker/mqtt
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /init.sh &&
+        test -f /mosquitto/config/mosquitto.conf &&
+        echo 'Success: build + layout check passed'
+      "
+    stop_grace_period: 3s

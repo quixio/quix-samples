@@ -1,0 +1,46 @@
+{
+  "libraryItemId": "mqtt-mosquitto",
+  "name": "MQTT Broker",
+  "language": "docker",
+  "tags": {
+    "Category": ["Server"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run Mosquitto's MQTT broker in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 800,
+    "Replicas": 1,
+    "Network": {
+      "ServiceName": "mqtt",
+      "Ports":
+      [
+        {
+          "Port": 1883,
+          "TargetPort": 1883
+        }
+      ]
+    }
+  },
+  "Variables": [
+    {
+      "Name": "MQTT_USERNAME",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The username to connect to the server with",
+      "DefaultValue": "admin",
+      "Required": true
+    },
+    {
+      "Name": "MQTT_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "The password to connect to the server with",
+      "Required": true
+    }
+  ]  
+}

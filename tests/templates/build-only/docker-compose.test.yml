@@ -1,0 +1,20 @@
+# Build-only test for [APP_NAME]
+#
+# This test only validates:
+# 1. Docker image builds successfully
+# 2. Python syntax is valid (via py_compile)
+#
+# To run: docker compose -f docker-compose.test.yml up --abort-on-container-exit
+
+services:
+  [app-name]:  # TODO: Replace [app-name] with your app name (e.g., hugging-face-model)
+    build:
+      context: ../../../python/[category]/[app_name]  # TODO: Update path (sources/destinations/transformations)
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for [app_name] [category]'
+      "
+    stop_grace_period: 3s

@@ -1,0 +1,14 @@
+# Build-only test for opc_ua_server.
+# Verifies the image builds and main.py is syntactically valid.
+
+services:
+  opc-ua-server:
+    build:
+      context: ../../../python/others/opc_ua_server
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        python -m py_compile main.py &&
+        echo 'Success: build + py_compile passed'
+      "
+    stop_grace_period: 3s

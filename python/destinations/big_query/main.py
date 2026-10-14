@@ -37,4 +37,4 @@ sdf = app.dataframe(input_topic)
 sdf.sink(big_query_sink)
 
 if __name__ == "__main__":
-    app.run(sdf)
+    app.run()

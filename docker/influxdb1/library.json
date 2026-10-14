@@ -1,0 +1,56 @@
+{
+  "libraryItemId": "influxdb1",
+  "name": "InfluxDB v1",
+  "language": "docker",
+  "tags": {
+    "Category": ["Time series DB"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run InfluxDB v1 in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 1000,
+    "MemoryInMb": 8000,
+    "Replicas": 1,
+    "PublicAccess": true,
+    "UrlPrefix": "influxdb",
+    "Network": {
+      "ServiceName": "influxdb",
+      "Ports":
+      [
+        {
+          "Port": 80,
+          "TargetPort": 8086
+        }
+      ]
+    }
+  },
+  "Variables": [
+    {
+      "Name": "INFLUXDB_ADMIN_USER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Admin username to initialize InfluxDB with",
+      "DefaultValue": "admin",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_ADMIN_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "Admin password to initialize InfluxDB with",
+      "Required": true
+    },
+    {
+      "Name": "INFLUXDB_DB",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Database name to initialize InfluxDB with",
+      "DefaultValue": "quix",
+      "Required": false
+    }
+  ]  
+}

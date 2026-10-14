@@ -1,0 +1,128 @@
+# Docker Compose configuration for [APP_NAME] transformation integration test
+#
+# TODO: Replace all [PLACEHOLDERS] with your actual values
+# TODO: Add any external services your transformation depends on
+# TODO: Update environment variables for your specific transformation
+
+services:
+  # Kafka broker (Redpanda) - DO NOT MODIFY unless you have specific requirements
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  # OPTIONAL: External service your transformation depends on
+  # TODO: Uncomment and customize if your transformation needs external service (API, cache, ML model server, etc.)
+  # [external-service]:  # TODO: Replace with service name (e.g., redis, model-server, api-mock)
+  #   image: [service-image]:[version]  # TODO: Replace with actual image
+  #   environment:
+  #     - [ENV_VAR1]=[VALUE1]  # TODO: Add environment variables
+  #   networks:
+  #     - test-network
+  #   healthcheck:
+  #     test: ["CMD", "[health-check-command]"]  # TODO: Add health check
+  #     interval: 3s
+  #     timeout: 5s
+  #     retries: 10
+  #   stop_grace_period: 3s
+
+  # Your transformation application under test
+  [app-name]-transformation:  # TODO: Replace [app-name] with your app name in kebab-case (e.g., data-enricher)
+    build:
+      context: ../../../[language]/transformations/[app_name]  # TODO: Update path - replace [language] and [app_name]
+      dockerfile: Dockerfile
+    environment:
+      # Kafka configuration - DO NOT MODIFY
+      - Quix__Broker__Address=kafka:9092
+      - input=test-[app-name]-input    # TODO: Replace [app-name] (e.g., test-data-enricher-input)
+      - output=test-[app-name]-output  # TODO: Replace [app-name] (e.g., test-data-enricher-output)
+
+      # TODO: Add transformation-specific configuration
+      # EXAMPLE: Threshold/parameter configuration
+      # - THRESHOLD_VALUE=0.5
+      # - WINDOW_SIZE=5
+      # - SMOOTHING_FACTOR=0.3
+
+      # EXAMPLE: External service connection
+      # - API_URL=http://[external-service]:8080
+      # - API_KEY=test-key
+      # - CACHE_HOST=[external-service]
+      # - CACHE_PORT=6379
+
+      # EXAMPLE: Feature flags
+      # - ENABLE_ENRICHMENT=true
+      # - ENABLE_FILTERING=true
+
+      # EXAMPLE: Model configuration (for ML transformations)
+      # - MODEL_NAME=[model-name]
+      # - MODEL_PATH=/models/[model-file]
+      # - INFERENCE_BATCH_SIZE=10
+
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      # TODO: Uncomment if using external service
+      # [external-service]:
+      #   condition: service_healthy
+    stop_grace_period: 3s
+
+    # TODO: Uncomment if transformation needs model files or other resources
+    # volumes:
+    #   - ./test-model:/models:ro
+
+  # Test runner that produces input and verifies output
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-[app-name]-input   # TODO: Replace [app-name] to match input above
+      - TEST_OUTPUT_TOPIC=test-[app-name]-output # TODO: Replace [app-name] to match output above
+      - TEST_MESSAGE_COUNT=10    # Number of input messages to produce
+      - TEST_TIMEOUT=45          # Maximum time to wait for transformation
+      - TEST_EXPECTED_COUNT=1    # Minimum messages to verify functionality
+
+    command: >
+      sh -c "
+        echo 'Producing test messages to Kafka input topic...' &&
+        python /tests/produce_test_data.py &&
+        echo 'Waiting for [app-name]-transformation to process messages...' &&
+        sleep 15 &&
+        echo 'Verifying transformed messages in output topic...' &&
+        python /tests/verify_output.py
+      "
+      # TODO: Adjust sleep duration based on transformation processing time
+      # EXAMPLE: sleep 5 for fast transformations
+      # EXAMPLE: sleep 20 for transformations with windowing or ML inference
+      # EXAMPLE: sleep 30 for transformations calling external APIs with rate limits
+
+    volumes:
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      [app-name]-transformation:  # TODO: Replace [app-name] with your service name above
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

@@ -8,8 +8,8 @@ import os
 import time
 
 # for local dev, you can load env vars from a .env file
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class MyDatabaseSink(BatchingSink):

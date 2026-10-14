@@ -1,0 +1,8 @@
+FROM pgsty/minio:RELEASE.2026-08-04T00-00-00Z
+
+EXPOSE 9000 9001
+
+# Define the default command to run when starting the container
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+ENTRYPOINT ["/init.sh"]

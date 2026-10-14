@@ -1,0 +1,22 @@
+# Build-only test for java/transformations/kstreams.
+# Multi-stage build (maven builder -> eclipse-temurin runtime). Verifies
+# that maven package succeeded, the shaded jar landed at /app/app.jar,
+# and the JMX agent was downloaded from Maven Central.
+#
+# This test would have caught the openjdk:17-jdk-slim deletion that
+# previously broke this sample.
+
+services:
+  kstreams:
+    build:
+      context: ../../../../java/transformations/kstreams
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -f /app/app.jar &&
+        test -f /app/jmx_prometheus_javaagent.jar &&
+        test -f /app/config.yaml &&
+        java -jar /app/app.jar --help 2>&1 | head -1 || true &&
+        echo 'Success: multi-stage maven build + jar layout check passed'
+      "
+    stop_grace_period: 3s

@@ -3,10 +3,19 @@
   "name": "Hugging Face Model Transformation",
   "language": "Python",
   "tags": {
-    "Complexity": ["Medium"],
-    "Technology": ["Quix Streams"],
-    "Pipeline Stage": ["Transformation"],
-    "Popular Subjects": ["Sentiment Analysis", "Machine Learning"]
+    "Complexity": [
+      "Medium"
+    ],
+    "Technology": [
+      "Quix Streams"
+    ],
+    "Pipeline Stage": [
+      "Transformation"
+    ],
+    "Popular Subjects": [
+      "Sentiment Analysis",
+      "Machine Learning"
+    ]
   },
   "shortDescription": "Consume data from a topic, use an ML model to run inference on the data and publish the results to an output topic.",
   "DefaultFile": "hugging_face_model.py",

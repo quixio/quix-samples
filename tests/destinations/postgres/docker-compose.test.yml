@@ -1,0 +1,108 @@
+# timeout: 105
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser -d testdb"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+    stop_grace_period: 3s
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  postgres-destination:
+    build:
+      context: ../../../python/destinations/postgres
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - CONSUMER_GROUP_NAME=postgres-destination-test
+      - input=test-postgres-input
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DBNAME=testdb
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_TABLE=test_data
+      - POSTGRES_SCHEMA=public
+      - POSTGRES_SCHEMA_AUTO_UPDATE=true
+      - BATCH_SIZE=1000
+      - BATCH_TIMEOUT=1
+    networks:
+      - test-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-postgres-input
+      - TEST_MESSAGE_COUNT=3
+      - PGPASSWORD=testpass
+    command: >
+      sh -c "
+        echo 'Installing PostgreSQL client...' &&
+        apt-get update -qq && apt-get install -y -qq postgresql-client > /dev/null 2>&1 &&
+        echo 'Producing test messages...' &&
+        python /tests/produce_test_data.py &&
+        echo 'Waiting for postgres-destination to process messages...' &&
+        sleep 15 &&
+        echo 'Verifying data in PostgreSQL...' &&
+        count=0 &&
+        max_attempts=20 &&
+        while [ \$$count -lt 1 ] && [ \$$max_attempts -gt 0 ]; do
+          count=\$$(psql -h postgres -U testuser -d testdb -t -c 'SELECT COUNT(*) FROM test_data' 2>/dev/null | tr -d ' ' || echo 0) &&
+          echo \"Found \$$count rows in test_data table\" &&
+          if [ \$$count -ge 1 ]; then
+            echo \"Success: Found at least 1 row in PostgreSQL\" &&
+            exit 0;
+          fi &&
+          max_attempts=\$$((max_attempts - 1)) &&
+          sleep 2;
+        done &&
+        echo \"Failed: Expected at least 1 row, found \$$count\" &&
+        exit 1
+      "
+    volumes:
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      postgres-destination:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

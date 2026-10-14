@@ -3,11 +3,24 @@
   "name": "Flet Input Form",
   "language": "Python",
   "tags": {
-    "Complexity": ["Medium"],
-    "Technology": ["Quix Streams", "Flet"],
-    "Pipeline Stage": ["Source"],
-    "Popular Subjects": ["Data Input", "Manufacturing", "Web Forms"],
-    "Type": ["Input Form"]
+    "Complexity": [
+      "Medium"
+    ],
+    "Technology": [
+      "Quix Streams",
+      "Flet"
+    ],
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Popular Subjects": [
+      "Data Input",
+      "Manufacturing",
+      "Web Forms"
+    ],
+    "Type": [
+      "Input Form"
+    ]
   },
   "shortDescription": "A web-based input form template built with Flet that demonstrates how to create forms with validation and send data to Kafka topics using Quix Streams.",
   "DefaultFile": "main.py",

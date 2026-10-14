@@ -1,0 +1,71 @@
+# timeout: 105
+services:
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  websocket-destination:
+    build:
+      context: ../../../python/destinations/websocket
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - input=test-websocket-input
+      - WS_USERNAME=testuser
+      - WS_PASSWORD=testpass
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-websocket-input
+      - TEST_MESSAGE_COUNT=5
+      - WS_HOST=websocket-destination
+      - WS_PORT=80
+      - WS_USERNAME=testuser
+      - WS_PASSWORD=testpass
+    command: >
+      sh -c "
+        echo 'Installing websocket client...' &&
+        pip install websockets > /dev/null 2>&1 &&
+        echo 'Waiting for websocket server to start...' &&
+        sleep 8 &&
+        echo 'Starting WebSocket client and producer in parallel...' &&
+        python /tests/verify_and_produce.py
+      "
+    volumes:
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+      - ./verify_and_produce.py:/tests/verify_and_produce.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      websocket-destination:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge

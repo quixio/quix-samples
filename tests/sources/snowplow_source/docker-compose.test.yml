@@ -1,0 +1,13 @@
+services:
+  snowplow-source:
+    build:
+      context: ../../../python/sources/snowplow_source
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for snowplow_source source'
+      "
+
+    stop_grace_period: 3s

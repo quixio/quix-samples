@@ -3,9 +3,15 @@
   "name": "Confluent Kafka Sink",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Destination"],
-    "Type": ["Connectors"],
-    "Category": ["Data streaming"]
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Data streaming"
+    ]
   },
   "shortDescription": "Consume data from a Kafka topic in Quix and publish it to a topic in Confluent Cloud",
   "DefaultFile": "quix_function.py",
@@ -51,6 +57,14 @@
       "Description": "Obtained from the Confluent Kafka portal",
       "DefaultValue": "",
       "Required": true
+    },
+    {
+      "Name": "consumer_group_name",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Kafka consumer group name for the Confluent Kafka destination",
+      "DefaultValue": "kafka-connector-consumer-group",
+      "Required": false
     }
   ],
   "DeploySettings": {

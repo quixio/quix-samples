@@ -1,0 +1,46 @@
+{
+  "libraryItemId": "minio",
+  "name": "MinIO",
+  "language": "docker",
+  "tags": {
+    "Category": ["Database"],
+    "Type": ["Auxiliary Services"]
+  },
+  "shortDescription": "Run a localized S3-compatible datastore in your pipeline.",
+  "DefaultFile": "dockerfile",
+  "EntryPoint": "dockerfile",
+  "IconFile": "icon.png",
+  "DeploySettings": {
+    "DeploymentType": "Service",
+    "CpuMillicores": 200,
+    "MemoryInMb": 800,
+    "Replicas": 1,
+    "Network": {
+      "ServiceName": "minio",
+      "Ports":
+      [
+        {
+          "Port": 80,
+          "TargetPort": 9000
+        }
+      ]
+    }
+  },
+  "Variables": [
+    {
+      "Name": "MINIO_ROOT_USER",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "The root username to initialize Minio with",
+      "DefaultValue": "admin",
+      "Required": true
+    },
+    {
+      "Name": "MINIO_ROOT_PASSWORD",
+      "Type": "EnvironmentVariable",
+      "InputType": "Secret",
+      "Description": "The root password to initialize Minio with",
+      "Required": true
+    }
+  ]  
+}

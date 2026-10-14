@@ -3,9 +3,15 @@
   "name": "InfluxDB 2.0 Source",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Source"],
-    "Type": ["Connectors"],
-    "Category": ["Time series DB"]
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Time series DB"
+    ]
   },
   "shortDescription": "Periodically query InfluxDB 2.0 and publish the results to a Kafka topic.",
   "DefaultFile": "main.py",
@@ -40,7 +46,7 @@
     {
       "Name": "INFLUXDB_TOKEN",
       "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "Authentication token to access InfluxDB.",
       "DefaultValue": "<TOKEN>",
       "Required": true
@@ -66,7 +72,7 @@
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "The InfluxDB measurement to read data from. If not specified, the name of the output topic will be used",
-      "DefaultValue": "<INSERT MEASUREMENT>",
+      "DefaultValue": "test_measurement",
       "Required": false
     }
   ],

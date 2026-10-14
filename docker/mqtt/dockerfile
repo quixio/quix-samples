@@ -1,0 +1,13 @@
+FROM eclipse-mosquitto:2.0.22
+
+USER root
+# RUN apk add --no-cache gosu  # For Alpine-based images
+
+EXPOSE 1883
+
+COPY mosquitto.conf /mosquitto/config/mosquitto.conf
+
+# Define the default command to run when starting the container
+COPY init.sh /init.sh
+RUN chmod +x /init.sh
+ENTRYPOINT ["/init.sh"]

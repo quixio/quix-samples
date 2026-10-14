@@ -29,6 +29,11 @@ filename = "demo-data.csv"
 # Read data from the csv file
 df = pd.read_csv(filename)
 
+# Limit rows for testing if MAX_ROWS is set
+max_rows = os.getenv("MAX_ROWS")
+if max_rows is not None:
+    df = df.head(int(max_rows))
+
 # Create a Source instance based on a DataFrame
 pandas_source = PandasDataFrameSource(
     df=df,
@@ -49,4 +54,4 @@ sdf.to_topic(output_topic)
 
 if __name__ == "__main__":
     # Start the application
-    app.run(sdf)
+    app.run()

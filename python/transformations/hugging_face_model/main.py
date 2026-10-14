@@ -27,4 +27,4 @@ sdf['model_result'] = sdf['text'].apply(lambda t: json.dumps(model_pipeline(t)))
 sdf = sdf.to_topic(output_topic)
 
 if __name__ == "__main__":
-    app.run(sdf)
+    app.run()

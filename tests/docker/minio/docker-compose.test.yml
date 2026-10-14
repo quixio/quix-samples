@@ -1,0 +1,14 @@
+# Build-only test for docker/minio.
+# Verifies the image builds and the init script is in place.
+
+services:
+  minio:
+    build:
+      context: ../../../docker/minio
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -x /init.sh &&
+        echo 'Success: build + layout check passed'
+      "
+    stop_grace_period: 3s

@@ -5,8 +5,8 @@ from quixstreams import Application
 import os
 
 # for local dev, load env vars from a .env file
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def main():

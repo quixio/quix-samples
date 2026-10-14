@@ -1,0 +1,13 @@
+services:
+  iceberg-destination:
+    build:
+      context: ../../../python/destinations/s3-iceberg-destination
+      dockerfile: Dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        echo 'Success: Syntax validation passed for s3-iceberg-destination destination'
+      "
+
+    stop_grace_period: 3s

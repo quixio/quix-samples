@@ -1,0 +1,16 @@
+# Use the official InfluxDB image from the Docker Hub
+FROM influxdb:1.12
+
+ENV INFLUXD_CONFIG_PATH=/etc/influxdb/influx.conf
+
+# Copy the InfluxDB configuration file if needed
+ADD influx.conf "${INFLUXD_CONFIG_PATH}"
+
+# Expose the necessary ports (8086 is the default port for InfluxDB)
+EXPOSE 8086
+
+# Define the default command to run when starting the container.
+# Use COPY --chmod because influxdb:1.12 sets a non-root USER, so a
+# subsequent RUN chmod would be denied (was permitted under 1.8).
+COPY --chmod=0755 init.sh /init.sh
+ENTRYPOINT ["/init.sh"]
