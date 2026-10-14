@@ -31,6 +31,15 @@ field_keys: FieldsSetter = _as_iterable("INFLUXDB_FIELD_KEYS")
 time_setter: Optional[TimeSetter] = col if (col := os.environ.get("TIMESTAMP_COLUMN")) else None
 
 
+def on_connect_success():
+    print("CONNECTED!")
+
+
+def on_connect_failure(err):
+    print(f"ERROR! Failed to connect to InfluxDB: {err}")
+    raise err
+
+
 influxdb_v1_sink = InfluxDB1Sink(
     host=os.environ["INFLUXDB_HOST"],
     port=int(os.environ["INFLUXDB_PORT"]),
@@ -41,6 +50,8 @@ influxdb_v1_sink = InfluxDB1Sink(
     time_setter=time_setter,
     database=os.getenv("INFLUXDB_DATABASE", "quix"),
     measurement=measurement_name,
+    on_client_connect_success=on_connect_success,
+    on_client_connect_failure=on_connect_failure,
 )
 
 
@@ -48,7 +59,7 @@ app = Application(
     consumer_group=os.environ.get("CONSUMER_GROUP_NAME", "influxdb-data-writer"),
     auto_offset_reset="earliest",
     commit_every=int(os.environ.get("BUFFER_SIZE", "1000")),
-    commit_interval=float(os.environ.get("BUFFER_DELAY", "1")),
+    commit_interval=float(os.environ.get("BUFFER_TIMEOUT", "1")),
 )
 input_topic = app.topic(os.environ["input"])
 

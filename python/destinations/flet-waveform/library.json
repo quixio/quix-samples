@@ -3,11 +3,23 @@
   "name": "Flet Waveform",
   "language": "Python",
   "tags": {
-    "Complexity": ["Medium"],
-    "Technology": ["Quix Streams", "Flet"],
-    "Pipeline Stage": ["Destination"],
-    "Popular Subjects": ["Data Visualization", "Real-time"],
-    "Type": ["Visualization"]
+    "Complexity": [
+      "Medium"
+    ],
+    "Technology": [
+      "Quix Streams",
+      "Flet"
+    ],
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Popular Subjects": [
+      "Data Visualization",
+      "Real-time"
+    ],
+    "Type": [
+      "Visualization"
+    ]
   },
   "shortDescription": "Real-time web-based data visualization using Flet framework to display streaming sensor data with interactive charts.",
   "DefaultFile": "main.py",

@@ -129,11 +129,7 @@ def main():
     # Get starting LSN
     last_lsn = load_last_lsn()
 
-    if last_lsn is None:
-        # Start from minimum LSN if no state exists
-        last_lsn = cdc_helper.get_min_lsn(conn, SQL_SCHEMA, SQL_TABLE)
-        logger.info(f"Starting from minimum LSN: {cdc_helper.lsn_to_hex(last_lsn)}")
-    else:
+    if last_lsn is not None:
         logger.info(f"Resuming from last LSN: {cdc_helper.lsn_to_hex(last_lsn)}")
 
     # Main CDC loop
@@ -141,6 +137,17 @@ def main():
         changes_processed = 0
         while True:
             try:
+                # If we have no starting LSN yet, try to fetch the minimum.
+                # fn_cdc_get_min_lsn returns NULL until the capture job has
+                # published its first LSN — keep polling until it does.
+                if last_lsn is None:
+                    last_lsn = cdc_helper.get_min_lsn(conn, SQL_SCHEMA, SQL_TABLE)
+                    if last_lsn is None:
+                        logger.info("Waiting for CDC capture job to publish initial LSN")
+                        time.sleep(POLL_INTERVAL)
+                        continue
+                    logger.info(f"Starting from minimum LSN: {cdc_helper.lsn_to_hex(last_lsn)}")
+
                 # Get changes since last LSN
                 changes = cdc_helper.get_changes(
                     conn=conn,

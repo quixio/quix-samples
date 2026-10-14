@@ -1,0 +1,7 @@
+﻿quixstreams==3.27.0
+python-dotenv
+requests
+pandas
+boto3
+pyarrow
+mypy-boto3-s3

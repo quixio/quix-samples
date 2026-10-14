@@ -3,11 +3,17 @@
   "name": "InfluxDB 1.0 Sink",
   "language": "Python",
   "tags": {
-    "Pipeline Stage": ["Destination"],
-    "Type": ["Connectors"],
-    "Category": ["Time series DB"]
+    "Pipeline Stage": [
+      "Destination"
+    ],
+    "Type": [
+      "Connectors"
+    ],
+    "Category": [
+      "Time series DB"
+    ]
   },
-  "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an InfluxDB 3.0 database.",
+  "shortDescription": "Consume data from a Kafka topic in Quix and persist the data to an InfluxDB 1.0 database.",
   "DefaultFile": "main.py",
   "EntryPoint": "dockerfile",
   "RunEntryPoint": "main.py",

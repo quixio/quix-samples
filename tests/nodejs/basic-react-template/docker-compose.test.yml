@@ -1,0 +1,17 @@
+# Build-only test for nodejs/basic-react-template.
+# Multi-stage build (node:22 builder -> nginx:alpine runtime). Verifies
+# that react-scripts build succeeded and the produced index.html + the
+# run_server.sh launcher both ended up in the runtime image.
+
+services:
+  basic-react-template:
+    build:
+      context: ../../../nodejs/basic-react-template
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        test -f /usr/share/nginx/html/index.html &&
+        test -x /run_server.sh &&
+        echo 'Success: react-scripts build + COPY check passed'
+      "
+    stop_grace_period: 3s

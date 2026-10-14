@@ -25,7 +25,7 @@
     {
       "Name": "bearer_token",
       "Type" : "EnvironmentVariable",
-      "InputType": "FreeText",
+      "InputType": "Secret",
       "Description": "Your bearer_token",
       "DefaultValue": "",
       "Required": true

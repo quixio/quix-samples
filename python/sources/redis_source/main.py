@@ -14,7 +14,7 @@ run = True # a flag to stop the main loop
 r = redis.Redis(
     host=os.environ['redis_host'],
     port=int(int(os.environ['redis_port'])),
-    password=os.environ['redis_password'],
+    password=os.environ.get('redis_password'),
     username=os.environ['redis_username'] if 'redis_username' in os.environ else None,
     decode_responses=True)
 
@@ -26,6 +26,7 @@ producer = app.get_producer()
 # Check the output topic is configured
 output_topic_name = os.getenv("output", "")
 if output_topic_name == "":
+    print("ERROR! output_topic environment variable is required")
     raise ValueError("output_topic environment variable is required")
 output_topic = app.topic(output_topic_name)
 
@@ -76,6 +77,12 @@ def get_data():
 
 
 def main():
+    try:
+        r.ping()
+        print("CONNECTED!")
+    except Exception as e:
+        print(f"ERROR! Failed to connect to Redis at {os.environ['redis_host']}:{os.environ['redis_port']}: {e}")
+
     keys = r.keys()
 
     for key in keys:
