@@ -41,10 +41,10 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - output=test-influxdb2-output
-      - INFLUXDB_HOST=http://influxdb:8086
-      - INFLUXDB_TOKEN=testtokenabc123
-      - INFLUXDB_ORG=testorg
-      - INFLUXDB_BUCKET=testbucket
+      - INFLUXDB2_HOST=http://influxdb:8086
+      - INFLUXDB2_TOKEN=testtokenabc123
+      - INFLUXDB2_ORG=testorg
+      - INFLUXDB2_BUCKET=testbucket
       - task_interval=15s
     networks:
       - test-network
@@ -61,10 +61,10 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - TEST_OUTPUT_TOPIC=test-influxdb2-output
-      - INFLUXDB_HOST=http://influxdb:8086
-      - INFLUXDB_TOKEN=testtokenabc123
-      - INFLUXDB_ORG=testorg
-      - INFLUXDB_BUCKET=testbucket
+      - INFLUXDB2_HOST=http://influxdb:8086
+      - INFLUXDB2_TOKEN=testtokenabc123
+      - INFLUXDB2_ORG=testorg
+      - INFLUXDB2_BUCKET=testbucket
     command: >
       sh -c "
         echo 'Installing InfluxDB client...' &&

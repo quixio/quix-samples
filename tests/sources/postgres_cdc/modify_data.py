@@ -11,17 +11,17 @@ import time
 def main():
     # Connect to Postgres
     conn = psycopg2.connect(
-        host=os.environ["PG_HOST"],
-        port=os.environ["PG_PORT"],
-        user=os.environ["PG_USER"],
-        password=os.environ["PG_PASSWORD"],
-        database=os.environ["PG_DATABASE"]
+        host=os.environ["POSTGRES_HOST"],
+        port=os.environ["POSTGRES_PORT"],
+        user=os.environ["POSTGRES_USER"],
+        password=os.environ["POSTGRES_PASSWORD"],
+        database=os.environ["POSTGRES_DB"]
     )
     conn.autocommit = True
     cursor = conn.cursor()
 
-    schema = os.environ["PG_SCHEMA"]
-    table = os.environ["PG_TABLE"]
+    schema = os.environ["POSTGRES_SCHEMA"]
+    table = os.environ["POSTGRES_TABLE"]
     table_name = f"{schema}.{table}"
 
     try:

@@ -27,20 +27,29 @@
       "Required": true
     },
     {
-      "Name": "WS_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Websocket username",
-      "DefaultValue": "websocket_username",
-      "Required": true
-    },
-    {
-      "Name": "WS_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Websocket password",
-      "DefaultValue": "websocket_password",
-      "Required": true
+      "Name": "WEBSOCKET_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "Websocket credentials from a shared Variable Group.",
+      "VariableGroupId": "websocket-connection",
+      "VariableGroupName": "Websocket Connection",
+      "VariableGroupDescription": "Shared websocket credentials.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "WS_USERNAME",
+          "Description": "Username for the websocket endpoint",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "WS_PASSWORD",
+          "Description": "Password for the websocket endpoint",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     }
   ],
   "DeploySettings": {

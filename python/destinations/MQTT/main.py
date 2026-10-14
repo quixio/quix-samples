@@ -7,21 +7,21 @@ import os
 # load_dotenv()
 
 app = Application(
-    consumer_group=os.getenv("CONSUMER_GROUP", "mqtt_consumer_group"),
+    consumer_group=os.getenv("consumer_group_name", "mqtt_consumer_group"),
     auto_offset_reset="earliest",
 )
 input_topic = app.topic(os.environ["input"])
 
 sink = MQTTSink(
-    client_id=os.environ["MQTT_CLIENT_ID"],
-    server=os.environ["MQTT_SERVER"],
-    port=int(os.environ["MQTT_PORT"]),
-    topic_root=os.environ["MQTT_TOPIC_ROOT"],
-    username=os.getenv("MQTT_USERNAME"),
-    password=os.getenv("MQTT_PASSWORD"),
-    version=os.environ["MQTT_VERSION"],
-    retain=os.getenv("MQTT_RETAIN_MESSAGES", "false").lower() == "true",
-    tls_enabled=os.environ["MQTT_USE_TLS"].lower() == "true",
+    client_id=os.getenv("mqtt_client_id", "quix-mqtt-sink"),
+    server=os.environ["mqtt_server"],
+    port=int(os.environ["mqtt_port"]),
+    topic_root=os.environ["mqtt_topic_root"],
+    username=os.getenv("mqtt_username"),
+    password=os.getenv("mqtt_password"),
+    version=os.environ["mqtt_version"],
+    retain=os.getenv("mqtt_retain", "true").lower() == "true",
+    tls_enabled=os.getenv("mqtt_tls_enabled", "false").lower() == "true",
 )
 
 sdf = app.dataframe(topic=input_topic)

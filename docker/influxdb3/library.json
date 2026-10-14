@@ -33,7 +33,7 @@
       "Description": "Shared InfluxDB v3 connection details and admin token (used by this server and by every client that reads/writes it)",
       "VariableGroupId": "influxdb3-config",
       "VariableGroupName": "InfluxDB v3 config",
-      "VariableGroupDescription": "Shared InfluxDB v3 connection details and admin token (used by this server and by every client that reads/writes it)",
+      "VariableGroupDescription": "Shared InfluxDB v3 connection details and admin token, used by the server and all its clients",
       "Required": true,
       "Variables": [
         {

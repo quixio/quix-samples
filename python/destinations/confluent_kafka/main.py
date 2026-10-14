@@ -9,11 +9,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # SASL configuration
+# sasl.mechanism and ssl.ca.location come from the shared confluent-kafka-connection
+# Variable Group, so this sink and the Confluent Kafka Source authenticate the same way.
+# PLAIN is the default because that is what Confluent Cloud API keys use.
 sasl_config = {
-    'sasl.mechanism': 'PLAIN',
+    'sasl.mechanism': os.getenv("kafka_sasl_mechanism", "PLAIN"),
     'security.protocol': 'SASL_SSL',
     'sasl.username': os.getenv("kafka_key", ""),
-    'sasl.password': os.getenv("kafka_secret", "")
+    'sasl.password': os.getenv("kafka_secret", ""),
+    'ssl.ca.location': os.getenv("kafka_ca_location", "")
 }
 broker_address = os.getenv("kafka_broker_address", "")
 input_topic_name = os.getenv("input", "")

@@ -80,11 +80,22 @@
       "Required": false
     },
     {
-      "Name": "ANTHROPIC_API_KEY",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Token generated from https://platform.claude.com/settings/keys.",
-      "Required": false
+      "Name": "ANTHROPIC_API",
+      "InputType": "VariableGroup",
+      "Description": "Anthropic API key from a shared Variable Group.",
+      "VariableGroupId": "anthropic-api",
+      "VariableGroupName": "Anthropic API",
+      "VariableGroupDescription": "Shared Anthropic API key.",
+      "Required": false,
+      "Variables": [
+        {
+          "Key": "ANTHROPIC_API_KEY",
+          "Description": "Token generated from https://platform.claude.com/settings/keys. Used by the notebook's AI assistant.",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": false
+        }
+      ]
     }
   ]
 }
