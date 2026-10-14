@@ -11,13 +11,13 @@ automatically from this configuration.
 File paths follow the workspace-aware structure:
     {workspaceId}/data-lake/time-series/{table_name}/...
 """
-import inspect
 import os
 import re
 import logging
 from typing import List, Optional
 
 from quixstreams import Application
+from quixstreams.dataframe import StreamingDataFrame
 from quixstreams.sinks.core.quix_ts_datalake_sink import QuixTSDataLakeSink
 
 # Configure logging
@@ -25,19 +25,19 @@ logging.basicConfig(
     level=os.getenv("LOGLEVEL", "INFO"),
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
-logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger(__name__)
 
 # Constant for time-series data lake path structure
-TIMESERIES_PREFIX = "data-lake/time-series"
+TIMESERIES_PREFIX: str = "data-lake/time-series"
 
 
-_TABLE_NAME_PATTERN = re.compile(r'^[a-zA-Z0-9][a-zA-Z0-9._-]*$')
+_TABLE_NAME_PATTERN: re.Pattern[str] = re.compile(r'^[a-zA-Z0-9][a-zA-Z0-9._-]*$')
 
 
 def _positive_int(env_var: str, default: str) -> int:
-    raw = os.getenv(env_var, default)
+    raw: str = os.getenv(env_var, default)
     try:
-        value = int(raw)
+        value: int = int(raw)
     except (TypeError, ValueError):
         raise ValueError(f"{env_var} must be a positive integer, got '{raw}'")
     if value <= 0:
@@ -45,39 +45,13 @@ def _positive_int(env_var: str, default: str) -> int:
     return value
 
 
-def supported_kwargs(**candidates) -> dict:
-    """The candidates the INSTALLED QuixTSDataLakeSink actually accepts.
-
-    This sample runs against whatever `quixstreams[quixdatalake]>=3.27.0`
-    resolves to, which may predate a parameter (the Query API notification
-    ones landed after 3.27.0). Passing one it does not know
-    is a TypeError at startup, so each is offered only if its name is in the
-    signature; dropped ones are logged rather than silently ignored.
-    """
-    accepted = inspect.signature(QuixTSDataLakeSink.__init__).parameters
-    out, missing = {}, []
-    for name, value in candidates.items():
-        if value is None:
-            continue
-        if name in accepted:
-            out[name] = value
-        else:
-            missing.append(name)
-    if missing:
-        logger.warning(
-            "Installed QuixStreams does not support %s; upgrade quixstreams[quixdatalake] "
-            "to use it", ", ".join(sorted(missing))
-        )
-    return out
-
-
 def _optional_positive_int(env_var: str) -> Optional[int]:
     """Read an optional positive integer. Unset or blank -> None (SDK default)."""
-    raw = (os.getenv(env_var) or "").strip()
+    raw: str = (os.getenv(env_var) or "").strip()
     if not raw:
         return None
     try:
-        value = int(raw)
+        value: int = int(raw)
     except ValueError:
         raise ValueError(f"{env_var} must be a positive integer, got '{raw}'")
     if value <= 0:
@@ -105,7 +79,7 @@ def parse_column_list(columns_str: str) -> List[str]:
 # Initialize Quix Streams Application. `broker_address` is read from KAFKA_BOOTSTRAP_SERVERS for
 # local-dev convenience; in Quix Cloud it stays None and the Application picks up Quix__Broker__*
 # from the platform.
-app = Application(
+app: Application = Application(
     broker_address=os.getenv("KAFKA_BOOTSTRAP_SERVERS"),
     consumer_group=os.getenv("CONSUMER_GROUP", "s3_direct_sink_v1.0"),
     auto_offset_reset=os.getenv("AUTO_OFFSET_RESET", "latest"),
@@ -114,17 +88,17 @@ app = Application(
 )
 
 # Parse configuration
-hive_columns = parse_column_list(os.getenv("HIVE_COLUMNS", ""))
-timestamp_column = os.getenv("TIMESTAMP_COLUMN", "ts_ms")
+hive_columns: List[str] = parse_column_list(os.getenv("HIVE_COLUMNS", ""))
+timestamp_column: str = os.getenv("TIMESTAMP_COLUMN", "ts_ms")
 # Empty/unset -> None so the SDK default applies:
 #   stats_columns  None -> every numeric/timestamp column
 #   sort_column    None -> lakehouse falls back to timestamp_column
 #   row_group_rows None -> 1,000,000 rows per Parquet row group
-stats_columns = parse_column_list(os.getenv("STATS_COLUMNS", "")) or None
-sort_column = os.getenv("SORT_COLUMN", "").strip() or None
-row_group_rows = _optional_positive_int("ROW_GROUP_ROWS")
-auto_discover = os.getenv("AUTO_DISCOVER", "true").lower() == "true"
-table_name = os.getenv("TABLE_NAME") or os.environ["input"]
+stats_columns: Optional[List[str]] = parse_column_list(os.getenv("STATS_COLUMNS", "")) or None
+sort_column: Optional[str] = os.getenv("SORT_COLUMN", "").strip() or None
+row_group_rows: Optional[int] = _optional_positive_int("ROW_GROUP_ROWS")
+auto_discover: bool = os.getenv("AUTO_DISCOVER", "true").lower() == "true"
+table_name: str = os.getenv("TABLE_NAME") or os.environ["input"]
 if not _TABLE_NAME_PATTERN.match(table_name):
     raise ValueError(
         f"Invalid table name '{table_name}'. Table names must start with a letter or digit "
@@ -132,7 +106,7 @@ if not _TABLE_NAME_PATTERN.match(table_name):
     )
 
 # Workspace ID (automatically injected by Quix platform)
-workspace_id = os.getenv("Quix__Workspace__Id", "")
+workspace_id: str = os.getenv("Quix__Workspace__Id", "")
 
 # Initialize QuixLakeSink
 # Note: Blob storage credentials are configured via Quix__BlobStorage__Connection__Json
@@ -152,22 +126,18 @@ workspace_id = os.getenv("Quix__Workspace__Id", "")
 # the workspace, with the plain `QUERY_API_URL` as the override for a self-hosted
 # one; the token is injected only under the Quix name, via the same secrets-bag /
 # secretKeyRef path the Catalog's own credentials use.
-query_api_url = os.getenv("Quix__Lakehouse__Query__Url") or os.getenv("QUERY_API_URL") or None
-query_api_auth_token = os.getenv("Quix__Lakehouse__Query__AuthToken") or None
+query_api_url: Optional[str] = os.getenv("Quix__Lakehouse__Query__Url") or os.getenv("QUERY_API_URL") or None
+query_api_auth_token: Optional[str] = os.getenv("Quix__Lakehouse__Query__AuthToken") or None
 
-optional_kwargs = supported_kwargs(
-    query_api_url=query_api_url,
-    query_api_auth_token=query_api_auth_token,
-)
-
-blob_sink = QuixTSDataLakeSink(
+blob_sink: QuixTSDataLakeSink = QuixTSDataLakeSink(
     s3_prefix=TIMESERIES_PREFIX,
     table_name=table_name,
     workspace_id=workspace_id,
     hive_columns=hive_columns,
     timestamp_column=timestamp_column,
     sort_column=sort_column,
-    **optional_kwargs,
+    query_api_url=query_api_url,
+    query_api_auth_token=query_api_auth_token,
     catalog_url=os.getenv("Quix__Lakehouse__Catalog__Url") or os.getenv("CATALOG_URL"),
     catalog_auth_token=os.getenv("Quix__Lakehouse__Catalog__AuthToken"),
     auto_discover=auto_discover,
@@ -181,13 +151,13 @@ blob_sink = QuixTSDataLakeSink(
 )
 
 # Create streaming dataframe and attach sink
-sdf = app.dataframe(topic=app.topic(os.environ["input"]))
+sdf: StreamingDataFrame = app.dataframe(topic=app.topic(os.environ["input"]))
 
 # Attach sink (batching is handled by BatchingSink)
 sdf.sink(blob_sink)
 
 # Log startup configuration
-storage_path = f"{workspace_id}/{TIMESERIES_PREFIX}" if workspace_id else TIMESERIES_PREFIX
+storage_path: str = f"{workspace_id}/{TIMESERIES_PREFIX}" if workspace_id else TIMESERIES_PREFIX
 logger.info("Starting Quix Lakehouse Sink")
 logger.info(f"  Input topic: {os.environ['input']}")
 logger.info(f"  Storage path: {storage_path}/{table_name}")
@@ -197,10 +167,7 @@ logger.info(f"  Sort column: {sort_column or f'{timestamp_column} (fallback)'}")
 logger.info(f"  Row group rows: {row_group_rows or 'sink default'}")
 # Say it at startup: a lakehouse tree that never lights up looks the same as a
 # sink that was never told where to announce.
-if "query_api_url" in optional_kwargs:
-    logger.info(f"  Live notifications: {query_api_url}")
-else:
-    logger.info("  Live notifications: OFF (no Quix__Lakehouse__Query__Url)")
+logger.info(f"  Live notifications: {query_api_url or 'OFF (no Quix__Lakehouse__Query__Url)'}")
 
 if __name__ == "__main__":
     app.run()

@@ -100,7 +100,7 @@ Live notifications: https://<your-query-api>     # announcing
 Live notifications: OFF (no Quix__Lakehouse__Query__Url)
 ```
 
-Notification is best effort by design: the catalog is the source of truth and the flush has already succeeded, so a failed or slow announcement is logged and swallowed, never retried into the write path. (Requires a QuixStreams release whose `QuixTSDataLakeSink` accepts `query_api_url`; on 3.27.0 the sink starts normally and logs that it was dropped.)
+Notification is best effort by design: the catalog is the source of truth and the flush has already succeeded, so a failed or slow announcement is logged and swallowed, never retried into the write path.
 
 ### Catalog Integration (Optional)
 
