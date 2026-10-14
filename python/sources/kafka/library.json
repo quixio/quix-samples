@@ -28,12 +28,50 @@
       "Required": true
     },
     {
-      "Name": "SOURCE_BROKER_ADDRESS",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The source Kafka broker address (e.g., localhost:9092 or broker.example.com:9092)",
-      "DefaultValue": "",
-      "Required": true
+      "Name": "SOURCE_KAFKA_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "External Kafka broker address and SASL credentials from a shared Variable Group.",
+      "VariableGroupId": "source-kafka-connection",
+      "VariableGroupName": "Source Kafka Connection",
+      "VariableGroupDescription": "Shared external Kafka broker address and SASL credentials.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "SOURCE_BROKER_ADDRESS",
+          "Description": "Address of the external Kafka broker to replicate from",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "SOURCE_KAFKA_SASL_USERNAME",
+          "Description": "SASL username, if the broker requires authentication",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": false
+        },
+        {
+          "Key": "SOURCE_KAFKA_SASL_PASSWORD",
+          "Description": "SASL password, if the broker requires authentication",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": false
+        },
+        {
+          "Key": "SOURCE_KAFKA_SASL_MECHANISM",
+          "Description": "SASL mechanism. One of: PLAIN, SCRAM-SHA-256, SCRAM-SHA-512, GSSAPI, OAUTHBEARER",
+          "DefaultValue": "SCRAM-SHA-256",
+          "Secret": false,
+          "Required": false
+        },
+        {
+          "Key": "SOURCE_KAFKA_SSL_CA_LOCATION",
+          "Description": "Path to the SSL CA certificate file. Leave empty for the system defaults",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": false
+        }
+      ]
     },
     {
       "Name": "SOURCE_TOPIC",
@@ -135,64 +173,6 @@
       "InputType": "FreeText",
       "Description": "Timeout for shutting down the source in seconds",
       "DefaultValue": "10",
-      "Required": false
-    },
-    {
-      "Name": "SOURCE_KAFKA_SASL_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "SASL username for source Kafka authentication (optional)",
-      "DefaultValue": "",
-      "Required": false
-    },
-    {
-      "Name": "SOURCE_KAFKA_SASL_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "SASL password for source Kafka authentication (optional)",
-      "DefaultValue": "",
-      "Required": false
-    },
-    {
-      "Name": "SOURCE_KAFKA_SASL_MECHANISM",
-      "Type": "EnvironmentVariable",
-      "InputType": "Options",
-      "Description": "SASL mechanism for authentication",
-      "DefaultValue": "SCRAM-SHA-256",
-      "Required": false,
-      "options": [
-        {
-          "label": "PLAIN",
-          "value": "PLAIN"
-        },
-        {
-          "label": "SCRAM-SHA-256",
-          "value": "SCRAM-SHA-256"
-        },
-        {
-          "label": "SCRAM-SHA-512",
-          "value": "SCRAM-SHA-512"
-        },
-        {
-          "label": "GSSAPI",
-          "value": "GSSAPI"
-        },
-        {
-          "label": "OAUTHBEARER",
-          "value": "OAUTHBEARER"
-        },
-        {
-          "label": "AWS_MSK_IAM",
-          "value": "AWS_MSK_IAM"
-        }
-      ]
-    },
-    {
-      "Name": "SOURCE_KAFKA_SSL_CA_LOCATION",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Path to the SSL CA certificate file for secure connections. If not provided, system default CA certificates will be used",
-      "DefaultValue": "",
       "Required": false
     },
     {

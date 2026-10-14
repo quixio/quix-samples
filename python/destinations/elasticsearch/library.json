@@ -28,24 +28,35 @@
       "Required": true
     },
     {
-      "Name": "ELASTICSEARCH_URL",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Elasticsearch url",
-      "Required": true
+      "Name": "ELASTICSEARCH_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "Elasticsearch URL and authentication from a shared Variable Group.",
+      "VariableGroupId": "elasticsearch-connection",
+      "VariableGroupName": "Elasticsearch Connection",
+      "VariableGroupDescription": "Shared Elasticsearch URL and authentication.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "ELASTICSEARCH_URL",
+          "Description": "Base URL of your Elasticsearch instance, including the scheme and port",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "ELASTICSEARCH_AUTHENTICATION_JSON",
+          "Description": "Authentication settings as a JSON object, passed to the Elasticsearch client",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "ELASTICSEARCH_INDEX",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
       "Description": "Elasticsearch Index name",
-      "Required": true
-    },
-    {
-      "Name": "ELASTICSEARCH_AUTHENTICATION_JSON",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "A json-serializable object with Elasticsearch connection arguments",
       "Required": true
     },
     {

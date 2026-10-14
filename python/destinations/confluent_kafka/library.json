@@ -35,28 +35,50 @@
       "Required": true
     },
     {
-      "Name": "kafka_key",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Obtained from the Confluent Kafka portal",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "kafka_secret",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Obtained from the Confluent Kafka portal",
-      "DefaultValue": "",
-      "Required": true
-    },
-    {
-      "Name": "kafka_broker_address",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Obtained from the Confluent Kafka portal",
-      "DefaultValue": "",
-      "Required": true
+      "Name": "CONFLUENT_KAFKA_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "Confluent Cloud broker address and API credentials from a shared Variable Group.",
+      "VariableGroupId": "confluent-kafka-connection",
+      "VariableGroupName": "Confluent Kafka Connection",
+      "VariableGroupDescription": "Shared Confluent Cloud bootstrap server and API key/secret.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "kafka_broker_address",
+          "Description": "Bootstrap server address, obtained from the Confluent Kafka portal",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "kafka_key",
+          "Description": "API key, obtained from the Confluent Kafka portal",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "kafka_secret",
+          "Description": "API secret, obtained from the Confluent Kafka portal",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        },
+        {
+          "Key": "kafka_sasl_mechanism",
+          "Description": "SASL mechanism for authentication. One of: PLAIN, SCRAM-SHA-256, SCRAM-SHA-512, GSSAPI, OAUTHBEARER, AWS_MSK_IAM. Confluent Cloud API keys use PLAIN",
+          "DefaultValue": "PLAIN",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "kafka_ca_location",
+          "Description": "Path to the SSL CA certificate file. Leave empty to use the system's default CA certificates",
+          "DefaultValue": "",
+          "Secret": false,
+          "Required": false
+        }
+      ]
     },
     {
       "Name": "consumer_group_name",

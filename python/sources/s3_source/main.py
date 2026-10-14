@@ -8,12 +8,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration
-AWS_ACCESS_KEY_ID = os.getenv("S3_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("S3_SECRET")
+# Credentials, region and endpoint come from the shared aws-connection Variable Group.
+# These two stay optional (`or None`): S3FileWatcher falls back to the ambient credential
+# chain - an IAM role, or anonymous access - when neither is supplied.
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID") or None
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY") or None
 S3_BUCKET_NAME = os.environ["S3_BUCKET"]
 S3_FOLDER_PREFIX = os.getenv("S3_FOLDER_PREFIX", "")
-AWS_REGION = os.getenv("S3_REGION", "us-east-1")
-AWS_ENDPOINT_URL = os.getenv("AWS_ENDPOINT_URL")  # For MinIO or custom S3-compatible endpoints
+AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+# For MinIO or custom S3-compatible endpoints. `or None` so a blank value from the
+# Variable Group is not passed to boto3 as an empty endpoint URL.
+AWS_ENDPOINT_URL = os.getenv("AWS_ENDPOINT_URL") or None
 TOPIC_NAME = os.environ["output"]
 POLL_INTERVAL = int(os.getenv("POLL_INTERVAL_SECONDS", "30"))
 

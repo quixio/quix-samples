@@ -1,0 +1,27 @@
+FROM containers.mathworks.com/matlab-runtime:r2024b
+
+RUN apt-get update && apt-get install -y --no-install-recommends python3.12 python3.12-venv && rm -rf /var/lib/apt/lists/*
+RUN python3.12 -m venv /opt/venv
+
+# quixmatlab finds the MATLAB Runtime through LD_LIBRARY_PATH.
+ENV PATH="/opt/venv/bin:$PATH" \
+    LD_LIBRARY_PATH=/opt/matlabruntime/R2024b/runtime/glnxa64 \
+    DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=UTF-8 \
+    PYTHONPATH="/app"
+
+ARG MAINAPPPATH=.
+
+WORKDIR /app
+
+COPY "${MAINAPPPATH}/requirements.txt" "${MAINAPPPATH}/quixmatlab_r2024b-24.2-py3-none-any.whl" "${MAINAPPPATH}/"
+
+# pip resolves the wheel path in requirements.txt against the working directory.
+RUN cd "${MAINAPPPATH}" && pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+WORKDIR "/app/${MAINAPPPATH}"
+
+ENTRYPOINT ["python3", "main.py"]

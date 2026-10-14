@@ -28,32 +28,50 @@
       "Required": true
     },
     {
-      "Name": "INFLUXDB_HOST",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Host address for the InfluxDB instance (formatted as https://<host>).",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_PORT",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Port for the InfluxDB instance.",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_USERNAME",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Username for the InfluxDB instance.",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Password for the InfluxDB instance.",
-      "Required": true
+      "Name": "INFLUXDB1_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "InfluxDB v1 connection details and admin credentials from a shared Variable Group.",
+      "VariableGroupId": "influxdb1-config",
+      "VariableGroupName": "InfluxDB v1 config",
+      "VariableGroupDescription": "Shared InfluxDB v1 connection details and admin credentials.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "INFLUXDB1_HOST",
+          "Description": "Host address of the InfluxDB v1 instance, including the http:// scheme",
+          "DefaultValue": "http://influxdb",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB1_PORT",
+          "Description": "Port of the InfluxDB v1 instance (80 for the bundled server on the internal Quix network)",
+          "DefaultValue": "80",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB1_DATABASE",
+          "Description": "Database clients read and write, and the database the server is initialised with",
+          "DefaultValue": "quix",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB1_USERNAME",
+          "Description": "Admin username the server is initialised with, and that clients authenticate as",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB1_PASSWORD",
+          "Description": "Admin password the server is initialised with, and that clients authenticate with",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "INFLUXDB_MEASUREMENT_NAME",
@@ -62,14 +80,6 @@
       "Description": "The InfluxDB measurement to write data to. Can optionally replace with a callable in the template directly.",
       "DefaultValue": "default",
       "Required": false
-    },
-    {
-      "Name": "INFLUXDB_DATABASE",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Database name in InfluxDB where data should be stored.",
-      "DefaultValue": "quix",
-      "Required": true
     },
     {
       "Name": "INFLUXDB_TAG_KEYS",

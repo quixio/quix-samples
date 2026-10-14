@@ -277,7 +277,10 @@ def main():
     print("\n" + "="*60)
     print("✓ ALL VALIDATIONS PASSED")
     print("="*60)
-    sys.exit(0)
+    sys.stdout.flush()
+    # pyarrow can abort during interpreter teardown ("terminate called without an
+    # active exception"), which turned passing runs into exit code 134.
+    os._exit(0)
 
 
 if __name__ == "__main__":

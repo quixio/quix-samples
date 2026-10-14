@@ -6,22 +6,27 @@ This sample demonstrates how to deploy and use MinIO in your pipeline.
 
 This deployment will work seamlessly with the Quix Cloud Amazon S3 Source/Sink connectors.
 
-Simply set your environment variables for either connector:
+Assign the same `aws-connection` variable group to MinIO and to either connector, and they
+share one set of credentials - MinIO's root user *is* the S3 access key:
+
+```shell
+AWS_ACCESS_KEY_ID="<MINIO ROOT USERNAME>"      # seeds MinIO's root user
+AWS_SECRET_ACCESS_KEY="<MINIO ROOT PASSWORD>"  # seeds MinIO's root password
+AWS_ENDPOINT_URL="http://minio:80"
+AWS_REGION="<ANY STR>"
+```
+
+The bucket stays per-deployment on the connector:
 
 ```shell
 S3_BUCKET="<MINIO BUCKET NAME>"
-AWS_ENDPOINT_URL="http://minio:80"
-AWS_REGION_NAME="<ANY STR>"
-AWS_ACCESS_KEY_ID: "<MINIO ROOT USERNAME>"
-AWS_SECRET_ACCESS_KEY: "<MINIO ROOT PASSWORD>"
-
 ```
 
 ## How to Run
 
 1. Log in or sign up at [Quix](https://portal.platform.quix.io/signup?xlink=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
-3. Fill in the required environment variables for your MinIO instance.
+3. Assign the `aws-connection` variable group, setting at least `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
 
 For more configuration options and details, refer to [MinIO's Docker Hub](https://hub.docker.com/r/minio/minio).

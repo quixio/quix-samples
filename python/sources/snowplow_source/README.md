@@ -20,10 +20,14 @@ Then either:
 The connector uses the following environment variables:
 
 - **output**: This is the Quix Topic that will receive the stream.
-- **aws_access_key_id**: AWS Access Key Id.
-- **aws_secret_access_key**: AWS Secret Access Key.
-- **aws_region_name**: AWS Region Name.
 - **aws_stream_name**: The name of the AWS stream you want to use.
+
+Credentials and region come from the shared **`aws-connection`** Variable Group, so every
+AWS connector in the pipeline uses one set of credentials:
+
+- **AWS_ACCESS_KEY_ID**: AWS access key ID.
+- **AWS_SECRET_ACCESS_KEY**: AWS secret access key.
+- **AWS_REGION**: AWS region name (Default: `us-east-1`).
 
 ## Requirements/prerequisites
 
