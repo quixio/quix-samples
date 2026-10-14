@@ -26,8 +26,7 @@ def matlab_processing(row: dict):
 def main():
     # Setup necessary objects
     app = Application(
-        consumer_group="CompilerSDKMatlab2024b_wheel_general",
-        auto_create_topics=True,
+        consumer_group=os.environ["CONSUMER_GROUP"],
         auto_offset_reset="earliest"
     )
     input_topic = app.topic(name=os.environ["input"])

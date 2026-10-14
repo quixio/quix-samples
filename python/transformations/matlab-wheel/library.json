@@ -31,6 +31,21 @@
             "Description": "Output topic.",
             "DefaultValue": "output-topic",
             "Required": true
+        },
+        {
+            "Name": "CONSUMER_GROUP",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Name of the Kafka consumer group.",
+            "DefaultValue": "matlab-wheel-transformation",
+            "Required": true
+        },
+        {
+            "Name": "AGREE_TO_MATLAB_RUNTIME_LICENSE",
+            "Type": "EnvironmentVariable",
+            "InputType": "FreeText",
+            "Description": "Set to yes to accept the MathWorks MATLAB Runtime license. By setting it, you, the deployer, accept that license (https://www.mathworks.com/help/compiler/get-matlab-runtime-container.html).",
+            "Required": true
         }
     ],
     "DeploySettings": {
