@@ -1,4 +1,4 @@
-# timeout: 50
+# timeout: 90
 services:
   redis:
     image: redis/redis-stack-server:latest
