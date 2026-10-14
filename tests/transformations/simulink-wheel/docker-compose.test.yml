@@ -1,0 +1,64 @@
+# timeout: 900
+services:
+  kafka:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.2.4
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092
+      - --advertise-kafka-addr internal://kafka:9092
+      - --mode dev-container
+      - --smp 1
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -E 'Healthy:.+true' || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    networks:
+      - test-network
+    stop_grace_period: 3s
+  simulink-wheel:
+    build:
+      context: ../../../python/transformations/simulink-wheel
+      dockerfile: dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - input=test-input
+      - output=test-output
+      - CONSUMER_GROUP=simulink-wheel-test
+      - AGREE_TO_MATLAB_RUNTIME_LICENSE=yes
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+    stop_grace_period: 3s
+  test-runner:
+    build:
+      context: ../../framework
+      dockerfile: Dockerfile
+    environment:
+      - Quix__Broker__Address=kafka:9092
+      - TEST_INPUT_TOPIC=test-input
+      - TEST_OUTPUT_TOPIC=test-output
+      - TEST_TIMEOUT=300
+    command: >
+      sh -c "
+        python /tests/produce_test_data.py &&
+        python /tests/verify_output.py
+      "
+    volumes:
+      - ./produce_test_data.py:/tests/produce_test_data.py:ro
+      - ./verify_output.py:/tests/verify_output.py:ro
+    working_dir: /
+    networks:
+      - test-network
+    depends_on:
+      kafka:
+        condition: service_healthy
+      simulink-wheel:
+        condition: service_started
+    stop_grace_period: 3s
+networks:
+  test-network:
+    driver: bridge
