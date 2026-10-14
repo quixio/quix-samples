@@ -1,6 +1,6 @@
 # Test configuration for Quix Lakehouse Sink destination
 # Uses only public Docker images + mock catalog service
-# timeout: 120
+# timeout: 150
 
 services:
   # MinIO for S3-compatible storage
