@@ -1,2 +1,1 @@
-# These are test certificates/credentials (not secrets), so we commit them
-# to avoid needing docker during CI setup phase
+certs/
