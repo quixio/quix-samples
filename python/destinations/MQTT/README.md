@@ -1,6 +1,7 @@
 # MQTT
 
 [This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/MQTT) demonstrates how to produce data from a Kafka topic and publish it to an MQTT broker.
+It uses the QuixStreams [`MQTTSink`](https://quix.io/docs/quix-streams/connectors/sinks/mqtt-sink.html).
 
 The MQTT topic the example produces to will be `mqtt_topic_root`/`message_key`.
 
@@ -25,6 +26,9 @@ The connector uses the following environment variables:
 
 - **input**: Name of the input topic to listen to.
 - **mqtt_topic_root**: The root for messages in MQTT, this can be anything.
+- **mqtt_retain**: Whether to retain the latest message (per key) on the MQTT topic. One of `true`, `false` (Default: `true`)
+- **mqtt_client_id**: A client ID for the sink (Default: `quix-mqtt-sink`)
+- **consumer_group_name**: Kafka consumer group name for the MQTT destination (Default: `mqtt_consumer_group`)
 
 The broker connection comes from the shared **`mqtt-connection`** Variable Group, so this
 sink, the MQTT Source and the bundled Mosquitto broker all agree:
@@ -39,6 +43,9 @@ sink, the MQTT Source and the bundled Mosquitto broker all agree:
 
 `mqtt_version` and `mqtt_tls_enabled` are free text inside the group rather than
 dropdowns - the group schema has no options list. Valid values are given above.
+
+`mqtt_username` and `mqtt_password` are optional: leave `mqtt_username` empty to connect
+to an anonymous broker.
 
 ## Contribute
 

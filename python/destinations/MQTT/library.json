@@ -88,6 +88,32 @@
       ]
     },
     {
+      "Name": "mqtt_retain",
+      "Type": "EnvironmentVariable",
+      "InputType": "Options",
+      "Description": "Whether to retain the latest message (per key) on the MQTT topic.",
+      "DefaultValue": "true",
+      "Required": false,
+      "options": [
+        {
+          "label": "true",
+          "value": "true"
+        },
+        {
+          "label": "false",
+          "value": "false"
+        }
+      ]
+    },
+    {
+      "Name": "mqtt_client_id",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "A client ID for the sink",
+      "DefaultValue": "quix-mqtt-sink",
+      "Required": false
+    },
+    {
       "Name": "consumer_group_name",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
