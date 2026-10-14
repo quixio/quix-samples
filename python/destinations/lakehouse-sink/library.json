@@ -37,7 +37,7 @@
       "Name": "HIVE_COLUMNS",
       "Type": "EnvironmentVariable",
       "InputType": "FreeText",
-      "Description": "Comma-separated list of columns for Hive partitioning (e.g. region,datacenter,hostname OR year,month,day extracted from TIMESTAMP_COLUMN). Leave empty for no Hive partitioning — every column listed here must exist in the incoming message payload, otherwise writes will fail."
+      "Description": "Comma-separated list of columns for Hive partitioning, for example region,datacenter,hostname or year,month,day extracted from TIMESTAMP_COLUMN. Prefix an entry with a tilde and no space, for example ~device_id, to make it a virtual partition that stays filterable and stays in the Parquet data but gets no folder and does not split files, which suits high-cardinality ids; year, month, day and hour can only be used as plain physical entries. Leave empty for no partitioning, every column listed here must exist in the incoming message payload, and changing this list on a table that already holds data fails at startup, so a layout change needs a new TABLE_NAME."
     },
     {
       "Name": "TIMESTAMP_COLUMN",
@@ -45,6 +45,24 @@
       "InputType": "FreeText",
       "Description": "Column containing timestamp values to extract year/month/day/hour from (only used when HIVE_COLUMNS includes one of those time components).",
       "DefaultValue": "ts_ms"
+    },
+    {
+      "Name": "STATS_COLUMNS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Comma-separated list of columns to compute per-file min/max statistics for, which the query layer uses to skip files whose value range cannot match a filter. Leave empty to collect statistics for every numeric and timestamp column, and restrict the list only on very wide tables where per-file, per-column statistics become costly in the catalog."
+    },
+    {
+      "Name": "SORT_COLUMN",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Column recorded on the table for the lakehouse to order files by during compaction, which lets ORDER BY and time-range queries skip files instead of sorting the whole table. Leave empty to fall back to TIMESTAMP_COLUMN; this is table metadata written once when the table is created, so changing it on an existing table is ignored and needs a new TABLE_NAME."
+    },
+    {
+      "Name": "ROW_GROUP_ROWS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Maximum number of rows per Parquet row group in the files this sink writes, where smaller groups give finer read skipping but cost roughly one storage request each. Leave empty to use the sink default of 1000000 rows, which matches the lakehouse compaction; a flush smaller than the limit stays a single row group."
     },
     {
       "Name": "AUTO_DISCOVER",

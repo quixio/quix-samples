@@ -14,6 +14,7 @@ File paths follow the workspace-aware structure:
 import os
 import re
 import logging
+from typing import List, Optional
 
 from quixstreams import Application
 from quixstreams.sinks.core.quix_ts_datalake_sink import QuixTSDataLakeSink
@@ -43,15 +44,31 @@ def _positive_int(env_var: str, default: str) -> int:
     return value
 
 
-def parse_hive_columns(columns_str: str) -> list:
+def _optional_positive_int(env_var: str) -> Optional[int]:
+    """Read an optional positive integer. Unset or blank -> None (SDK default)."""
+    raw = (os.getenv(env_var) or "").strip()
+    if not raw:
+        return None
+    try:
+        value = int(raw)
+    except ValueError:
+        raise ValueError(f"{env_var} must be a positive integer, got '{raw}'")
+    if value <= 0:
+        raise ValueError(f"{env_var} must be a positive integer, got {value}")
+    return value
+
+
+def parse_column_list(columns_str: str) -> List[str]:
     """
-    Parse comma-separated list of partition columns.
+    Parse a comma-separated list of column names.
 
     Args:
-        columns_str: Comma-separated column names (e.g., "year,month,day")
+        columns_str: Comma-separated column names (e.g., "year,month,day").
+            A "~" prefix on an entry is preserved verbatim - the sink reads it
+            as a virtual-partition marker.
 
     Returns:
-        List of column names, or empty list if input is empty
+        List of column names, or an empty list if the input is empty.
     """
     if not columns_str or columns_str.strip() == "":
         return []
@@ -70,7 +87,15 @@ app = Application(
 )
 
 # Parse configuration
-hive_columns = parse_hive_columns(os.getenv("HIVE_COLUMNS", ""))
+hive_columns = parse_column_list(os.getenv("HIVE_COLUMNS", ""))
+timestamp_column = os.getenv("TIMESTAMP_COLUMN", "ts_ms")
+# Empty/unset -> None so the SDK default applies:
+#   stats_columns  None -> every numeric/timestamp column
+#   sort_column    None -> lakehouse falls back to timestamp_column
+#   row_group_rows None -> 1,000,000 rows per Parquet row group
+stats_columns = parse_column_list(os.getenv("STATS_COLUMNS", "")) or None
+sort_column = os.getenv("SORT_COLUMN", "").strip() or None
+row_group_rows = _optional_positive_int("ROW_GROUP_ROWS")
 auto_discover = os.getenv("AUTO_DISCOVER", "true").lower() == "true"
 table_name = os.getenv("TABLE_NAME") or os.environ["input"]
 if not _TABLE_NAME_PATTERN.match(table_name):
@@ -96,13 +121,16 @@ blob_sink = QuixTSDataLakeSink(
     table_name=table_name,
     workspace_id=workspace_id,
     hive_columns=hive_columns,
-    timestamp_column=os.getenv("TIMESTAMP_COLUMN", "ts_ms"),
+    timestamp_column=timestamp_column,
+    sort_column=sort_column,
     catalog_url=os.getenv("Quix__Lakehouse__Catalog__Url") or os.getenv("CATALOG_URL"),
     catalog_auth_token=os.getenv("Quix__Lakehouse__Catalog__AuthToken"),
     auto_discover=auto_discover,
     namespace=os.getenv("CATALOG_NAMESPACE", "default"),
     auto_create_bucket=True,
     max_workers=_positive_int("MAX_WRITE_WORKERS", "10"),
+    stats_columns=stats_columns,
+    row_group_rows=row_group_rows,
     on_client_connect_success=lambda: print("CONNECTED!"),
     on_client_connect_failure=lambda e: print(f"ERROR! {e}"),
 )
@@ -119,6 +147,9 @@ logger.info("Starting Quix Lakehouse Sink")
 logger.info(f"  Input topic: {os.environ['input']}")
 logger.info(f"  Storage path: {storage_path}/{table_name}")
 logger.info(f"  Partitioning: {hive_columns if hive_columns else 'none'}")
+logger.info(f"  Stats columns: {stats_columns if stats_columns else 'all numeric/timestamp'}")
+logger.info(f"  Sort column: {sort_column or f'{timestamp_column} (fallback)'}")
+logger.info(f"  Row group rows: {row_group_rows or 'sink default'}")
 
 if __name__ == "__main__":
     app.run()
