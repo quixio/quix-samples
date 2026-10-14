@@ -7,6 +7,8 @@ This connector consumes time-series data from a Kafka topic and writes it to blo
 - **Multi-Cloud Storage**: Supports AWS S3, Azure Blob Storage, GCP, MinIO via Quix platform blob storage binding
 - **Hive Partitioning**: Automatically partition data by any columns (e.g., location, sensor type, year/month/day/hour)
 - **Time-based Partitioning**: Extract year/month/day/hour from timestamp columns for efficient time-based queries
+- **Virtual Partitions**: Keep high-cardinality ids filterable without fragmenting storage, using a `~` prefix in `HIVE_COLUMNS`
+- **Query Performance**: Per-file statistics (zone maps), a recorded sort column for compaction, and configurable Parquet row-group size
 - **Quix Lakehouse Catalog Integration**: Optional table registration in a REST Catalog for seamless integration with analytics tools
 - **Efficient Batching**: Configurable batch sizes and parallel uploads for high throughput
 - **Schema Evolution**: Automatic schema detection from data
@@ -33,20 +35,57 @@ Then either:
 - **`TABLE_NAME`**: Table name for data organization and registration
   *Default*: Uses the topic name if not specified
 
-- **`HIVE_COLUMNS`**: Comma-separated list of columns for Hive partitioning. Include `year`, `month`, `day`, `hour` to extract from `TIMESTAMP_COLUMN`. Prefix a column with `~` to make it a **virtual partition** (see below).
-  *Example*: `location,year,month,day,sensor_type` — or `location,year,month,day,~sensor_type` to make `sensor_type` virtual
+- **`HIVE_COLUMNS`**: Comma-separated list of columns for Hive partitioning. Include `year`, `month`, `day`, `hour` to extract from `TIMESTAMP_COLUMN`. Prefix an entry with `~` to make it a *virtual* partition (see below)
+  *Example*: `location,year,month,day,~device_id`
   *Default*: `""` (no partitioning)
 
-  **Physical vs. virtual partitions (`~`):**
-  - A **physical** column (no prefix) is written as a real `key=value/` folder in storage. It splits the data: every file lives under exactly one value, so one file = one value. Use it for low-cardinality columns you filter by often (and time columns `year/month/day/hour`).
-  - A **virtual** column (prefixed with `~`) is *not* a folder and does *not* split files — a single file can contain many of its values. The value stays inside the parquet data, and the catalog indexes which values each file contains. It still shows up as a browsable level in the partition tree and prunes files at query time, but without the write-amplification and tiny-file explosion that physical partitioning on a higher-cardinality column would cause.
-  - **When to use which:** physical for the handful of columns that define your folder layout (e.g. `region`, `year/month/day`); virtual for an additional column you want to browse/filter by but that has too many values (or changes too often) to be a folder — e.g. `~sensor_type`, `~driver`. Example: `HIVE_COLUMNS=region,year,month,day,~sensor_type` folders physically by region + date and exposes `sensor_type` as a virtual level.
 
 - **`TIMESTAMP_COLUMN`**: Column containing timestamp values to extract year/month/day/hour from
   *Default*: `ts_ms`
 
-- **`SORT_COLUMN`**: Optional column to order data by during lakehouse compaction, enabling `ORDER BY` streaming and file skipping. Leave empty to fall back to `TIMESTAMP_COLUMN` automatically. (Requires a QuixStreams build whose `QuixTSDataLakeSink` supports `sort_column`.)
-  *Default*: `""` (auto = timestamp column)
+### Query Performance
+
+Requires `quixstreams[quixdatalake]>=3.26.0`.
+
+- **`STATS_COLUMNS`**: Comma-separated columns to compute per-file min/max statistics ("zone maps") for. The query layer uses them to skip files whose value range cannot satisfy a `WHERE` or `ORDER BY`. Statistics are computed from the in-memory batch, so they are nearly free — restrict the list only on very wide tables where per-file, per-column rows get costly in the catalog
+  *Example*: `ts_ms,seq`
+  *Default*: `""` — statistics for **every** numeric and timestamp column
+
+- **`SORT_COLUMN`**: Column recorded on the table as `properties.sort_column`; lakehouse compaction writes files ordered by it so `ORDER BY` and time-range queries can skip files and stream. This is table metadata only — the sink does **not** reorder rows within a file
+  *Example*: `seq`
+  *Default*: `""` — falls back to `TIMESTAMP_COLUMN`
+
+- **`ROW_GROUP_ROWS`**: Maximum rows per Parquet row group. A reader pays roughly one storage range request per row group, so many small groups cost a round-trip storm on high-latency storage, while one huge group forfeits intra-file skipping and inflates reader memory. A flush smaller than this is a single row group; only large flushes are split
+  *Example*: `250000`
+  *Default*: `""` — the sink default of `1000000`, matching lakehouse compaction
+
+#### Virtual partitions
+
+A plain `HIVE_COLUMNS` entry is a **physical** partition: it becomes a real `key=value/` folder,
+splits the batch into one file per distinct value, and the column is dropped from the Parquet
+because the path already carries it.
+
+An entry prefixed with `~` is a **virtual** partition: it joins the partition tree and stays
+filterable, but gets **no** folder, does **not** split files, and the column **stays in** the
+Parquet data. Use it for high-cardinality identifiers — device, session, order — where a physical
+partition would emit one tiny file per value per batch.
+
+```bash
+HIVE_COLUMNS=year,month,day,~device_id
+TIMESTAMP_COLUMN=ts_ms
+```
+
+Rules:
+
+- No space after the `~`. `~ device_id` creates a virtual column literally named `" device_id"`.
+- `year`, `month`, `day` and `hour` are **physical only**. They are derived from
+  `TIMESTAMP_COLUMN`, so a virtual `~hour` would mean inventing a column your records never
+  contained. Time-range pruning comes from `STATS_COLUMNS` instead.
+- A virtual column must be a field your records actually carry — reads rebuild physical columns
+  from the folder path, but a virtual column can only come from the Parquet data itself.
+- Each data file gets a virtual-index sidecar in a `.vidx/` subfolder of its own partition folder.
+  Sidecar writes are best-effort: a failure is logged, never raised, and self-heals on the next
+  write.
 
 ### Live Notifications (Optional)
 
@@ -61,7 +100,7 @@ Live notifications: https://<your-query-api>     # announcing
 Live notifications: OFF (no Quix__Lakehouse__Query__Url)
 ```
 
-Notification is best effort by design: the catalog is the source of truth and the flush has already succeeded, so a failed or slow announcement is logged and swallowed, never retried into the write path. (Requires a QuixStreams build whose `QuixTSDataLakeSink` supports `query_api_url`; on older builds the sink starts normally and logs that it was dropped.)
+Notification is best effort by design: the catalog is the source of truth and the flush has already succeeded, so a failed or slow announcement is logged and swallowed, never retried into the write path. (Requires a QuixStreams release whose `QuixTSDataLakeSink` accepts `query_api_url`; on 3.27.0 the sink starts normally and logs that it was dropped.)
 
 ### Catalog Integration (Optional)
 
@@ -137,6 +176,34 @@ Creates: `{workspace}/data-lake/time-series/{table}/location=NYC/sensor_type=tem
 HIVE_COLUMNS=
 ```
 Creates: `{workspace}/data-lake/time-series/{table}/data_*.parquet`
+
+### Example 4: Virtual partition for a high-cardinality id
+```bash
+HIVE_COLUMNS=year,month,day,~device_id
+TIMESTAMP_COLUMN=ts_ms
+```
+Creates:
+```
+{workspace}/data-lake/time-series/{table}/year=2024/month=01/day=15/data_*.parquet        # every device, one file
+{workspace}/data-lake/time-series/{table}/year=2024/month=01/day=15/.vidx/data_*.parquet   # virtual index
+```
+`device_id` has no folder and does not split files, but it stays in the Parquet data, so
+`WHERE device_id = 'sensor-42'` still resolves.
+
+## Changing an existing table
+
+Table properties are written **once, at table creation**. On restart against a table that is
+already registered in the catalog, the sink logs `Table '<name>' already exists in catalog` and
+returns early — so changing `SORT_COLUMN` or `TIMESTAMP_COLUMN` on an existing table is
+**silently ignored**, and the original metadata stands. Changing the set of physical
+`HIVE_COLUMNS` is worse than ignored: it raises at startup, because the configured partitions no
+longer match the folders already on disk (and the spec already registered in the catalog).
+
+**Any layout or table-property change means a NEW TABLE NAME.** Give the table a version suffix
+(`sensor_readings_v1` → `sensor_readings_v2`) and re-sink, the same way consumer groups are
+versioned. `STATS_COLUMNS` and `ROW_GROUP_ROWS` are the two exceptions — they are per-file
+settings, not table properties, so they can be changed freely on a live table and take effect on
+the next flush.
 
 ## Architecture
 

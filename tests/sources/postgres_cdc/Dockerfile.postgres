@@ -1,4 +1,4 @@
-FROM postgres:16-alpine
+FROM postgres:16.15-alpine
 
 # Install dependencies and build wal2json (skip bitcode to avoid clang version issues)
 RUN apk add --no-cache --virtual .build-deps \
@@ -7,7 +7,7 @@ RUN apk add --no-cache --virtual .build-deps \
         gcc \
         musl-dev \
         postgresql-dev && \
-    git clone https://github.com/eulerto/wal2json.git /tmp/wal2json && \
+    git clone --depth 1 --branch wal2json_2_6 https://github.com/eulerto/wal2json.git /tmp/wal2json && \
     cd /tmp/wal2json && \
     make with_llvm=no && \
     make with_llvm=no install && \

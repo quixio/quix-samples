@@ -1,0 +1,1 @@
+quixstreams[mysql]==3.27.0
