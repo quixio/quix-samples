@@ -103,6 +103,10 @@ services:
       - COMMIT_INTERVAL=1
       - MAX_WRITE_WORKERS=5
 
+      # Stream timeout
+      - STREAM_TIMEOUT_TOPIC=test-lakehouse-timeout
+      - STREAM_TIMEOUT_SECONDS=5
+
       # Kafka consumer settings
       - CONSUMER_GROUP=lakehouse-sink-test-consumer
       - AUTO_OFFSET_RESET=earliest
@@ -136,6 +140,7 @@ services:
       # Test configuration
       - TEST_INPUT_TOPIC=test-lakehouse-input
       - TEST_MESSAGE_COUNT=6
+      - TEST_TIMEOUT_TOPIC=test-lakehouse-timeout
 
       # S3 configuration for verification
       - AWS_ENDPOINT_URL=http://minio:9000
@@ -166,12 +171,16 @@ services:
         python /tests/verify_output.py &&
         echo '' &&
         echo '=== Verifying catalog integration ===' &&
-        python /tests/verify_catalog.py
+        python /tests/verify_catalog.py &&
+        echo '' &&
+        echo '=== Verifying stream-timeout events ===' &&
+        python /tests/verify_timeout.py
       "
     volumes:
       - ./produce_test_data.py:/tests/produce_test_data.py:ro
       - ./verify_output.py:/tests/verify_output.py:ro
       - ./verify_catalog.py:/tests/verify_catalog.py:ro
+      - ./verify_timeout.py:/tests/verify_timeout.py:ro
     working_dir: /
     networks:
       - test-network

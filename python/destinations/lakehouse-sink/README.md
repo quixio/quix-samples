@@ -122,6 +122,24 @@ On Quix Cloud, when the workspace has a Lakehouse provisioned, `CATALOG_URL` and
 - **`MAX_WRITE_WORKERS`**: How many files can be written in parallel to storage at once
   *Default*: `10`
 
+### Stream Timeout
+
+Emits one event when an input message key stops receiving messages, so downstream consumers know that stream has gone quiet. A key that resumes is tracked again and can time out again. The feature is off by default and is enabled by setting `STREAM_TIMEOUT_TOPIC`.
+
+- **`STREAM_TIMEOUT_TOPIC`**: Topic the timeout events are produced to. Leave it empty to keep the feature disabled.
+  *Default*: `""` (disabled)
+
+- **`STREAM_TIMEOUT_SECONDS`**: Per-key inactivity threshold in seconds.
+  *Default*: `60`
+
+Each event is keyed by the silent input key (the same bytes that arrived on the input topic), and its value is JSON:
+
+```json
+{"ts_ms": 1714000000000, "stream": "<input key as a string>", "event": "stream_timeout"}
+```
+
+`ts_ms` is the wall-clock time the timeout was detected. Tracking is held in memory and starts empty on every restart, so a key only times out after the sink has seen a message for it since it last started.
+
 ### Application Settings
 
 - **`LOGLEVEL`**: Set application logging level

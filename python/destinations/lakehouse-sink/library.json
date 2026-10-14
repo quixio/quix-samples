@@ -175,6 +175,20 @@
       "InputType": "FreeText",
       "Description": "How many files can be written in parallel to storage at once (based on partitioning + batch size)",
       "DefaultValue": "10"
+    },
+    {
+      "Name": "STREAM_TIMEOUT_TOPIC",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Topic to emit stream-timeout events on. Leave empty to disable the feature.",
+      "Required": false
+    },
+    {
+      "Name": "STREAM_TIMEOUT_SECONDS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Per-key inactivity threshold in seconds. A message key that receives nothing for this long emits one event to STREAM_TIMEOUT_TOPIC.",
+      "DefaultValue": "60"
     }
   ],
   "DeploySettings": {
