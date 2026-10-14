@@ -1,4 +1,5 @@
-﻿quixstreams[quixdatalake]>=3.26.0
+# Pinned to a quix-streams commit until the release carrying the Arrow QuixTSDataLakeSink ships; restore quixstreams[quixdatalake]>=<that version> then.
+quixstreams[quixdatalake] @ git+https://github.com/quixio/quix-streams.git@0066ebcbe49ea401e175b753433f305c5c650b43
 python-dotenv
 
 # Blob storage support via quixportal (AWS S3, Azure, GCP, MinIO)
