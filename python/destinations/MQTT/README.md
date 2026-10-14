@@ -2,7 +2,7 @@
 
 [This connector](https://github.com/quixio/quix-samples/tree/main/python/destinations/MQTT) demonstrates how to produce data from a Kafka topic and publish it to an MQTT broker.
 
-The MQTT topic the example produces to will be `mqtt_topic_root`/`message_key`.
+The MQTT topic the example produces to will be `MQTT_TOPIC_ROOT`/`message_key`.
 
 ## How to run
 
@@ -30,12 +30,14 @@ The connector uses the following environment variables:
 - **MQTT_SERVER**: The address of your MQTT server.
 - **MQTT_PORT**: The port of your MQTT server.  
   **Default**: `8883`
-- **MQTT_USERNAME**: Username of your MQTT user.
-- **MQTT_PASSWORD**: Password for the MQTT user.
+- **MQTT_USERNAME**: (Optional) Username of your MQTT user. Leave empty for anonymous brokers.
+- **MQTT_PASSWORD**: (Optional) Password for the MQTT user. Leave empty for anonymous brokers.
 - **MQTT_VERSION**: MQTT protocol version; choose 3.1, 3.1.1, or 5.  
   **Default**: `3.1.1`
 - **MQTT_USE_TLS**: Set to true if the server uses TLS.  
-  **Default**: `True`
+  **Default**: `true`
+- **MQTT_RETAIN_MESSAGES**: Whether to retain the latest message (per key) on the MQTT topic. **Default**: `false`
+- **CONSUMER_GROUP**: Kafka consumer group name for the MQTT destination. **Default**: `mqtt_consumer_group`
 
 ## Contribute
 

@@ -11,6 +11,15 @@ app = Application(consumer_group="destination-v1",
 
 input_topic = app.topic(os.environ["input"])
 
+def on_connect_success():
+    print("CONNECTED!")
+
+
+def on_connect_failure(err):
+    print(f"ERROR! Failed to connect to Iceberg/S3: {err}")
+    raise err
+
+
 iceberg_sink = IcebergSink(
     data_catalog_spec="aws_glue",
     table_name=os.environ["table_name"],
@@ -20,7 +29,9 @@ iceberg_sink = IcebergSink(
         aws_access_key_id=os.environ["AWS_ACCESS_KEY_ID"],
         aws_secret_access_key=os.environ["AWS_SECRET_ACCESS_KEY"],
         aws_session_token=os.getenv("AWS_SESSION_TOKEN")
-    )
+    ),
+    on_client_connect_success=on_connect_success,
+    on_client_connect_failure=on_connect_failure,
 )
 
 sdf = app.dataframe(input_topic)

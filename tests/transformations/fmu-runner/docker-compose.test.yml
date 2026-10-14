@@ -1,0 +1,14 @@
+services:
+  fmu-runner-transformation:
+    build:
+      context: ../../../python/transformations/fmu-runner
+      dockerfile: dockerfile
+    entrypoint: >
+      sh -c "
+        echo 'Validating Python syntax...' &&
+        python -m py_compile main.py &&
+        python -m py_compile fmu_executor.py &&
+        echo 'Success: Syntax validation passed for fmu-runner transformation'
+      "
+
+    stop_grace_period: 3s

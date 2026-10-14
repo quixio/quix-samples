@@ -8,7 +8,7 @@ import os
 
 app = Application(
     consumer_group=os.getenv("CONSUMER_GROUP", "mqtt_consumer_group"),
-    auto_offset_reset="earliest"
+    auto_offset_reset="earliest",
 )
 input_topic = app.topic(os.environ["input"])
 
@@ -17,16 +17,16 @@ sink = MQTTSink(
     server=os.environ["MQTT_SERVER"],
     port=int(os.environ["MQTT_PORT"]),
     topic_root=os.environ["MQTT_TOPIC_ROOT"],
-    username=os.environ["MQTT_USERNAME"],
-    password=os.environ["MQTT_PASSWORD"],
+    username=os.getenv("MQTT_USERNAME"),
+    password=os.getenv("MQTT_PASSWORD"),
     version=os.environ["MQTT_VERSION"],
     retain=os.getenv("MQTT_RETAIN_MESSAGES", "false").lower() == "true",
-    tls_enabled=os.environ["MQTT_USE_TLS"].lower() == "true"
+    tls_enabled=os.environ["MQTT_USE_TLS"].lower() == "true",
 )
 
 sdf = app.dataframe(topic=input_topic)
 sdf.sink(sink)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()

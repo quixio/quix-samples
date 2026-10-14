@@ -45,6 +45,7 @@ services:
       - mqtt_username=testuser
       - mqtt_password=testpass
       - mqtt_ca_cert=/app/ca.crt
+      - SSL_CERT_FILE=/app/ca.crt
     volumes:
       - ./certs/ca.crt:/app/ca.crt:ro
     networks:

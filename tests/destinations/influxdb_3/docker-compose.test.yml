@@ -41,10 +41,10 @@ services:
     environment:
       - Quix__Broker__Address=kafka:9092
       - input=test-influxdb3-input
-      - INFLUXDB_HOST=http://influxdb:8086
-      - INFLUXDB_TOKEN=testtokenabc123
-      - INFLUXDB_ORG=testorg
-      - INFLUXDB_DATABASE=testdb
+      - INFLUXDB3_HOST=http://influxdb:8086
+      - INFLUXDB3_TOKEN=testtokenabc123
+      - INFLUXDB3_ORG=testorg
+      - INFLUXDB3_DATABASE=testdb
       - INFLUXDB_MEASUREMENT_NAME=test_measurement
       - INFLUXDB_FIELD_KEYS=temperature,humidity
       - INFLUXDB_TAG_KEYS=sensor_id

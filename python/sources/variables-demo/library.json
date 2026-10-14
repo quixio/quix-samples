@@ -1,0 +1,118 @@
+{
+  "libraryItemId": "variables-demo",
+  "name": "Variables Demo",
+  "language": "Python",
+  "IsHighlighted": false,
+  "DisplayOrder": 99,
+  "tags": {
+    "Pipeline Stage": [
+      "Source"
+    ],
+    "Type": [
+      "Demos"
+    ],
+    "Complexity": [
+      "Easy"
+    ],
+    "Technology": [
+      "Quix Streams"
+    ]
+  },
+  "shortDescription": "Demonstrates project variables (secret and non-secret) and variable groups end-to-end.",
+  "longDescription": "Reference example for the Quix variable system. A single library item declares three resolution mechanisms: a plain Project Variable (API_REGION), a secret Project Variable (API_SECRET, delivered as a Kubernetes secret), and a Variable Group (INFLUXDB_CONNECTION) whose selected value set is bulk-expanded into individual environment variables. On deployment the backend resolves each reference before the container starts; the container then logs every resolved value (the secret masked) and emits one heartbeat message to the output topic, so the runtime injection can be verified directly from the deployment logs.",
+  "DefaultFile": "main.py",
+  "EntryPoint": "dockerfile",
+  "RunEntryPoint": "main.py",
+  "Variables": [
+    {
+      "Name": "output",
+      "Type": "EnvironmentVariable",
+      "InputType": "OutputTopic",
+      "Description": "Output topic to write the heartbeat messages into.",
+      "DefaultValue": "variables-demo-out",
+      "Required": true
+    },
+    {
+      "Name": "LOG_LEVEL",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Logging level for the demo container.",
+      "DefaultValue": "INFO",
+      "Required": false
+    },
+    {
+      "Name": "HEARTBEAT_INTERVAL_SECONDS",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "Seconds between heartbeat messages (demo runtime knob).",
+      "DefaultValue": "5",
+      "Required": false
+    },
+    {
+      "Name": "HEARTBEAT_COUNT",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "How many heartbeats to emit before the job completes (demo runtime knob).",
+      "DefaultValue": "12",
+      "Required": false
+    },
+    {
+      "Name": "API_REGION",
+      "Type": "EnvironmentVariable",
+      "InputType": "ProjectVariable",
+      "Description": "Reference to a non-secret Project Variable holding a non-sensitive config value (e.g. an API region). The DefaultValue is the project-variable key to resolve, not a literal value.",
+      "DefaultValue": "demo_api_region",
+      "Required": true,
+      "Secret": false
+    },
+    {
+      "Name": "API_SECRET",
+      "Type": "EnvironmentVariable",
+      "InputType": "ProjectVariable",
+      "Description": "Reference to a secret Project Variable holding an API secret. Resolved from a Kubernetes secret; the DefaultValue is the project-variable key to resolve, never a real secret value.",
+      "DefaultValue": "demo_api_secret",
+      "Required": true,
+      "Secret": true
+    },
+    {
+      "Name": "INFLUXDB_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "InfluxDB connection details, injected from a shared Variable Group's selected value set.",
+      "VariableGroupId": "influxdb-connection",
+      "VariableGroupName": "InfluxDB Connection",
+      "VariableGroupDescription": "InfluxDB connection details (host, port, organization).",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "INFLUXDB_HOST",
+          "Description": "InfluxDB hostname.",
+          "DefaultValue": "localhost",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB_PORT",
+          "Description": "InfluxDB port.",
+          "DefaultValue": "8086",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB_ORG",
+          "Description": "InfluxDB organization.",
+          "DefaultValue": "my-org",
+          "Secret": false,
+          "Required": true
+        }
+      ]
+    }
+  ],
+  "DeploySettings": {
+    "DeploymentType": "Job",
+    "CpuMillicores": 200,
+    "MemoryInMb": 200,
+    "Replicas": 1,
+    "PublicAccess": false,
+    "ValidateConnection": false
+  }
+}

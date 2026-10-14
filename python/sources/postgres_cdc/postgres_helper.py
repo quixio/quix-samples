@@ -41,8 +41,14 @@ def create_logical_slot(slot_name: str):
 
 def create_publication_on_table(publication_name: str, table_name: str):
     conn = connect_postgres()
+    # Handle schema.table format properly
+    if '.' in table_name:
+        schema, table = table_name.split('.', 1)
+        quoted_table = f'"{schema}"."{table}"'
+    else:
+        quoted_table = f'"{table_name}"'
     query = f'''
-    CREATE PUBLICATION {publication_name} FOR TABLE {table_name};
+    CREATE PUBLICATION {publication_name} FOR TABLE {quoted_table};
     '''
     try:
         run_query(conn, query)
