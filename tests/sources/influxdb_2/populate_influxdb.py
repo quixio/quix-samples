@@ -5,10 +5,10 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 def main():
     # InfluxDB connection details
-    url = os.getenv("INFLUXDB_HOST", "http://influxdb:8086")
-    token = os.getenv("INFLUXDB_TOKEN", "testtokenabc123")
-    org = os.getenv("INFLUXDB_ORG", "testorg")
-    bucket = os.getenv("INFLUXDB_BUCKET", "testbucket")
+    url = os.getenv("INFLUXDB2_HOST", "http://influxdb:8086")
+    token = os.getenv("INFLUXDB2_TOKEN", "testtokenabc123")
+    org = os.getenv("INFLUXDB2_ORG", "testorg")
+    bucket = os.getenv("INFLUXDB2_BUCKET", "testbucket")
 
     print(f"Connecting to InfluxDB at {url}")
 

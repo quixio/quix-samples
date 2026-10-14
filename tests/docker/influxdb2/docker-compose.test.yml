@@ -1,16 +1,53 @@
-# Build-only test for docker/influxdb2.
-# Verifies the image builds, the init script is in place, and the
-# influx-configs.toml was copied to /etc/influxdb2/.
+# timeout: 300
+# Runtime test for docker/influxdb2.
+#
+# Boots the server with ONLY the influxdb2-config Variable Group key names set
+# (INFLUXDB2_TOKEN / PASSWORD / BUCKET / USERNAME / ORG) and no DOCKER_INFLUXDB_INIT_*
+# override anywhere, then lists buckets with that token and org. Since `influx setup` in
+# init.sh is what creates them, a successful listing proves the group keys were mapped onto
+# the DOCKER_INFLUXDB_INIT_* names the setup call reads.
 
 services:
-  influxdb2:
+  influxdb:
     build:
       context: ../../../docker/influxdb2
       dockerfile: dockerfile
-    entrypoint: >
-      sh -c "
-        test -x /init.sh &&
-        test -f /etc/influxdb2/influx-configs.toml &&
-        echo 'Success: build + layout check passed'
-      "
+    environment:
+      - INFLUXDB2_TOKEN=grouptokenabc123
+      - INFLUXDB2_PASSWORD=grouppassword
+      - INFLUXDB2_BUCKET=groupbucket
+      - INFLUXDB2_USERNAME=groupuser
+      - INFLUXDB2_ORG=grouporg
+    networks:
+      - test-network
     stop_grace_period: 3s
+
+  test-runner:
+    image: influxdb:2.7.12
+    depends_on:
+      influxdb:
+        condition: service_started
+    entrypoint:
+      - sh
+      - -c
+      - |
+        echo "Waiting for InfluxDB v2 to be set up from the group values..."
+        for i in $$(seq 1 60); do
+          if influx bucket list --host http://influxdb:8086 \
+               --token grouptokenabc123 --org grouporg 2>/dev/null | grep -q groupbucket; then
+            echo "Success: init.sh mapped INFLUXDB2_* onto DOCKER_INFLUXDB_INIT_*"
+            echo "         (token, org and bucket from the group all took effect)"
+            exit 0
+          fi
+          sleep 3
+        done
+        echo "FAILED: the group token/org/bucket did not reach influx setup"
+        influx bucket list --host http://influxdb:8086 --token grouptokenabc123 --org grouporg
+        exit 1
+    networks:
+      - test-network
+    stop_grace_period: 3s
+
+networks:
+  test-network:
+    driver: bridge

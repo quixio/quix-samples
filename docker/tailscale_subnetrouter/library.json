@@ -3,9 +3,15 @@
   "name": "Tailscale Subnet Router",
   "language": "docker",
   "tags": {
-    "Pipeline Stage": ["Infrastructure"],
-    "Type": ["Auxiliary Services"],
-    "Category": ["Network"]
+    "Pipeline Stage": [
+      "Infrastructure"
+    ],
+    "Type": [
+      "Auxiliary Services"
+    ],
+    "Category": [
+      "Network"
+    ]
   },
   "shortDescription": "Tailscale subnet router to access private network resources securely.",
   "DefaultFile": "start.sh",
@@ -14,12 +20,22 @@
   "RunEntryPoint": "dockerfile",
   "Variables": [
     {
-      "Name": "TS_AUTHKEY",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Tailscale authentication key for connecting to your tailnet",
-      "DefaultValue": "TS_AUTHKEY",
-      "Required": true
+      "Name": "TAILSCALE_AUTH",
+      "InputType": "VariableGroup",
+      "Description": "Tailscale auth key from a shared Variable Group.",
+      "VariableGroupId": "tailscale-auth",
+      "VariableGroupName": "Tailscale Auth",
+      "VariableGroupDescription": "Shared Tailscale auth key.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "TS_AUTHKEY",
+          "Description": "Tailscale auth key used to join the tailnet",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "TAILSCALE_HOSTNAME",

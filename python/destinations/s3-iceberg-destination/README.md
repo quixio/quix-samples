@@ -19,10 +19,15 @@ The connector uses the following environment variables:
 
 - **input**: This is the input topic (Default: `input`, Required: `True`)
 - **AWS_S3_URI**: The URI or URL to your S3 bucket (Required: `True`)
-- **AWS_SECRET_ACCESS_KEY**: Your AWS secret (Required: `True`)
-- **AWS_ACCESS_KEY_ID**: Your AWS Access Key (Required: `True`)
-- **AWS_REGION**: Your AWS S3 bucket region (Required: `True`)
 - **table_name**: The table to publish data to (Required: `True`)
+
+Credentials and region come from the shared **`aws-connection`** Variable Group, so every
+AWS connector in the pipeline uses one set of credentials:
+
+- **AWS_ACCESS_KEY_ID**: Your AWS access key ID
+- **AWS_SECRET_ACCESS_KEY**: Your AWS secret access key
+- **AWS_REGION**: Your AWS S3 bucket region (Default: `us-east-1`)
+- **AWS_SESSION_TOKEN**: AWS session token, for temporary credentials only (optional)
 
 ## Requirements / Prerequisites
 
