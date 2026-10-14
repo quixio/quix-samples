@@ -9,28 +9,13 @@ from pydantic_settings import (
 
 from quixstreams import Application
 from quixstreams.kafka.configuration import ConnectionConfig
-
-from sink import KafkaReplicatorSink
+from quixstreams.sinks.community.kafka import KafkaReplicatorSink
 
 
 class SinkConnectionConfig(ConnectionConfig):
     """
-    A ConnectionConfig subclass that reads configuration from environment variables
-    with a SINK_ prefix.
-
-    This allows users to configure the sink's Kafka connection using environment
-    variables like SINK_BOOTSTRAP_SERVERS, SINK_SASL_USERNAME, etc.
-
-    Example:
-        export SINK_BOOTSTRAP_SERVERS=kafka:9092
-        export SINK_SECURITY_PROTOCOL=SASL_SSL
-        export SINK_SASL_MECHANISM=PLAIN
-        export SINK_SASL_USERNAME=myuser
-        export SINK_SASL_PASSWORD=mypass
-
-        # Then create the config
-        config = SinkConnectionConfig()
-        sink = KafkaSink(broker_address=config, topic_name="output-topic")
+    A ConnectionConfig subclass that reads the external Kafka connection from
+    environment variables with a SINK_ prefix, e.g. SINK_BOOTSTRAP_SERVERS.
     """
 
     model_config = SettingsConfigDict(
@@ -58,7 +43,7 @@ app = Application(
 )
 input_topic = app.topic(os.environ['input'])
 kafka_sink = KafkaReplicatorSink(
-    broker_address=SinkConnectionConfig(),
+    broker_address=SinkConnectionConfig(sasl_mechanism=os.getenv("SINK_SASL_MECHANISM")),
     topic_name=os.environ["SINK_OUTPUT_TOPIC"],
     key_serializer=os.getenv("SINK_KEY_SERIALIZER", "bytes"),
     value_serializer=os.getenv("SINK_VALUE_SERIALIZER", "json"),
