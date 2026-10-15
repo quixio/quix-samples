@@ -1,3 +1,3 @@
-﻿quixstreams[influxdb3]==3.27.0
+﻿quixstreams[influxdb3]==3.28.0
 influxdb3-python
 python-dotenv

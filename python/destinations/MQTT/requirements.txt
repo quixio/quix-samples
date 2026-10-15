@@ -1,2 +1,2 @@
-﻿quixstreams[mqtt]==3.27.0
+﻿quixstreams[mqtt]==3.28.0
 python-dotenv
