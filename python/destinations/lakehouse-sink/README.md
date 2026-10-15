@@ -45,7 +45,7 @@ Then either:
 
 ### Query Performance
 
-Requires `quixstreams[quixdatalake]>=3.26.0`.
+Requires `quixstreams[quixdatalake]>=3.28.0`.
 
 - **`STATS_COLUMNS`**: Comma-separated columns to compute per-file min/max statistics ("zone maps") for. The query layer uses them to skip files whose value range cannot satisfy a `WHERE` or `ORDER BY`. Statistics are computed from the in-memory batch, so they are nearly free — restrict the list only on very wide tables where per-file, per-column rows get costly in the catalog
   *Example*: `ts_ms,seq`
