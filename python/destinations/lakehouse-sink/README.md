@@ -39,12 +39,13 @@ Then either:
   *Example*: `location,year,month,day,~device_id`
   *Default*: `""` (no partitioning)
 
+
 - **`TIMESTAMP_COLUMN`**: Column containing timestamp values to extract year/month/day/hour from
   *Default*: `ts_ms`
 
 ### Query Performance
 
-Requires `quixstreams[quixdatalake]>=3.26.0`.
+Requires `quixstreams[quixdatalake]>=3.28.0`.
 
 - **`STATS_COLUMNS`**: Comma-separated columns to compute per-file min/max statistics ("zone maps") for. The query layer uses them to skip files whose value range cannot satisfy a `WHERE` or `ORDER BY`. Statistics are computed from the in-memory batch, so they are nearly free — restrict the list only on very wide tables where per-file, per-column rows get costly in the catalog
   *Example*: `ts_ms,seq`
@@ -85,6 +86,21 @@ Rules:
 - Each data file gets a virtual-index sidecar in a `.vidx/` subfolder of its own partition folder.
   Sidecar writes are best-effort: a failure is logged, never raised, and self-heals on the next
   write.
+
+### Live Notifications (Optional)
+
+Registering a file in the catalog is durable bookkeeping; **announcing** it to the Lakehouse Query API is what makes things downstream react as the data lands — the lakehouse console marks the table and folder as live, and a QuixLab node watching that selection re-runs. Without it the sink writes and registers exactly as before; nothing downstream just notices until it polls.
+
+Configured exactly like the catalog, from the environment: on Quix Cloud the platform injects `Quix__Lakehouse__Query__Url` and `Quix__Lakehouse__Query__AuthToken` when the workspace has a Lakehouse Query API deployment, and the sink picks them up with no configuration. For a self-hosted lakehouse, set `QUERY_API_URL` (and the token under the Quix name) as deployment variables on the deployed sink.
+
+The startup log says which it got:
+
+```
+Live notifications: https://<your-query-api>     # announcing
+Live notifications: OFF (no Quix__Lakehouse__Query__Url)
+```
+
+Notification is best effort by design: the catalog is the source of truth and the flush has already succeeded, so a failed or slow announcement is logged and swallowed, never retried into the write path.
 
 ### Catalog Integration (Optional)
 
