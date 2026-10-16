@@ -10,9 +10,13 @@ automatically from this configuration.
 
 File paths follow the workspace-aware structure:
     {workspaceId}/data-lake/time-series/{table_name}/...
+
+When STREAM_TIMEOUT_TOPIC is set, emits a stream_timeout event to it for every input key that
+has been silent for STREAM_TIMEOUT_SECONDS.
 """
 import os
 import re
+import time
 import logging
 from typing import List, Optional
 
@@ -108,6 +112,30 @@ if not _TABLE_NAME_PATTERN.match(table_name):
 # Workspace ID (automatically injected by Quix platform)
 workspace_id: str = os.getenv("Quix__Workspace__Id", "")
 
+# Stream timeout is enabled only when STREAM_TIMEOUT_TOPIC is set to a non-empty value.
+stream_timeout_topic_name = os.getenv("STREAM_TIMEOUT_TOPIC")
+stream_timeout = {}
+if stream_timeout_topic_name:
+    timeout_topic = app.topic(
+        stream_timeout_topic_name, key_serializer="bytes", value_serializer="json"
+    )
+    producer = app.get_producer()
+
+    def on_stream_timeout(stream_key: bytes) -> None:
+        # Also runs on the processing thread inside the sink's flush(): produce only, never flush.
+        event = {
+            "ts_ms": int(time.time() * 1000),
+            "stream": stream_key.decode(errors="replace"),
+            "event": "stream_timeout",
+        }
+        message = timeout_topic.serialize(key=stream_key, value=event)
+        producer.produce(topic=timeout_topic.name, key=message.key, value=message.value)
+
+    stream_timeout = {
+        "stream_timeout_ms": _positive_int("STREAM_TIMEOUT_SECONDS", "60") * 1000,
+        "on_stream_timeout": on_stream_timeout,
+    }
+
 # Initialize QuixLakeSink
 # Note: Blob storage credentials are configured via Quix__BlobStorage__Connection__Json
 # environment variable, which is automatically read by quixportal.
@@ -146,6 +174,7 @@ blob_sink: QuixTSDataLakeSink = QuixTSDataLakeSink(
     max_workers=_positive_int("MAX_WRITE_WORKERS", "10"),
     stats_columns=stats_columns,
     row_group_rows=row_group_rows,
+    **stream_timeout,
     on_client_connect_success=lambda: print("CONNECTED!"),
     on_client_connect_failure=lambda e: print(f"ERROR! {e}"),
 )
@@ -168,6 +197,7 @@ logger.info(f"  Row group rows: {row_group_rows or 'sink default'}")
 # Say it at startup: a lakehouse tree that never lights up looks the same as a
 # sink that was never told where to announce.
 logger.info(f"  Live notifications: {query_api_url or 'OFF (no Quix__Lakehouse__Query__Url)'}")
+logger.info(f"  Stream timeout topic: {stream_timeout_topic_name or 'disabled'}")
 
 if __name__ == "__main__":
     app.run()

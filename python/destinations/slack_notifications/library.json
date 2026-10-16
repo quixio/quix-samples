@@ -29,11 +29,22 @@
       "Required": true
     },
     {
-      "Name": "webhook_url",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "The webhook url to send notifications to",
-      "Required": true
+      "Name": "SLACK_WEBHOOK",
+      "InputType": "VariableGroup",
+      "Description": "Slack incoming webhook URL from a shared Variable Group.",
+      "VariableGroupId": "slack-webhook",
+      "VariableGroupName": "Slack Webhook",
+      "VariableGroupDescription": "Shared Slack incoming webhook URL.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "webhook_url",
+          "Description": "Slack incoming webhook URL to post messages to",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     },
     {
       "Name": "consumer_group_name",

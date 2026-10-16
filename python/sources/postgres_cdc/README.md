@@ -18,13 +18,17 @@ Then either:
 The connector uses the following environment variables:
 
 - **output**: Name of the output topic to write into.
-- **PG_HOST**: The IP address or fully qualified domain name of your server.
-- **PG_PORT**: The Port number to use for communication with the server.
-- **PG_DATABASE**: The name of the database for CDC.
-- **PG_USER**: The username of the sink should use to interact with the database.
-- **PG_PASSWORD**: The password for the user configured above.
-- **PG_SCHEMA**: The name of the schema for CDC.
-- **PG_TABLE**: The name of the table for CDC.
+- **POSTGRES_SCHEMA**: The name of the schema for CDC.
+- **POSTGRES_TABLE**: The name of the table for CDC.
+
+The connection comes from the shared **`postgres-connection`** Variable Group, so this
+source, the PostgreSQL Sink and the bundled PostgreSQL server all agree:
+
+- **POSTGRES_HOST**: Host address of the PostgreSQL instance (Default: `postgresql`)
+- **POSTGRES_PORT**: Port of the PostgreSQL instance (Default: `80`)
+- **POSTGRES_DB**: The name of the database for CDC (Default: `quix`)
+- **POSTGRES_USER**: The username the source uses to interact with the database (Default: `admin`)
+- **POSTGRES_PASSWORD**: The password for the user configured above
 
 ## Requirements / Prerequisites
 

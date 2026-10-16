@@ -5,22 +5,15 @@ This test verifies the HiveMQ MQTT source connector with TLS authentication.
 ## Test Certificates and Credentials
 
 The `certs/` directory and `passwd` file contain **test credentials only** (not real secrets).
-They are committed to git to avoid needing docker during CI setup.
 
 ### Files
 - `certs/ca.crt`, `certs/ca.key` - Test Certificate Authority
-- `certs/server.crt`, `certs/server.key` - Mosquitto server certificates
+- `certs/server.crt`, `certs/server.key` - Mosquitto server certificate (`CN=mosquitto`, `subjectAltName=DNS:mosquitto`)
 - `passwd` - Mosquitto password file (user: testuser, pass: testpass)
 
-### Regenerating (if needed)
+### Generation
 
-If you accidentally delete these files, run:
+`setup.sh` runs before every test and generates a fresh CA and server certificate in `certs/`
+using docker, valid for 2 days. `certs/` is gitignored.
 
-```bash
-./setup.sh
-```
-
-This will regenerate them using docker. After regeneration, commit them to git.
-
-**Note:** The setup.sh script is kept only for emergency regeneration. In normal operation,
-the committed certificates are used directly and setup.sh just verifies they exist.
+`passwd` is committed. `setup.sh` regenerates it only if it is missing; commit it again if that happens.

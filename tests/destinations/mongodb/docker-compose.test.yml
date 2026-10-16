@@ -38,12 +38,12 @@ services:
       - Quix__Broker__Address=kafka:9092
       - input=test-mongodb-input
       - CONSUMER_GROUP_NAME=mongodb-test-consumer
-      - MONGODB_HOST=mongodb
-      - MONGODB_PORT=27017
-      - MONGODB_USERNAME=admin
-      - MONGODB_PASSWORD=password
-      - MONGODB_DB=testdb
-      - MONGODB_COLLECTION=testcollection
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - MONGO_USER=admin
+      - MONGO_PASSWORD=password
+      - MONGO_DATABASE=testdb
+      - MONGO_COLLECTION=testcollection
       - BUFFER_SIZE=1
       - BUFFER_DELAY=0.1
     networks:

@@ -85,10 +85,10 @@ services:
       # - DB_PASSWORD=testpass
 
       # EXAMPLE for InfluxDB:
-      # - INFLUXDB_HOST=http://[destination-service]:8086
-      # - INFLUXDB_TOKEN=testtokenabc123
-      # - INFLUXDB_ORG=testorg
-      # - INFLUXDB_DATABASE=testdb
+      # - INFLUXDB3_HOST=http://[destination-service]:8086
+      # - INFLUXDB3_TOKEN=testtokenabc123
+      # - INFLUXDB3_ORG=testorg
+      # - INFLUXDB3_DATABASE=testdb
 
       # TODO: Add destination-specific configuration
       # EXAMPLE: Table/collection/measurement naming

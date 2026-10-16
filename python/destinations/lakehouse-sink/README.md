@@ -45,7 +45,7 @@ Then either:
 
 ### Query Performance
 
-Requires `quixstreams[quixdatalake]>=3.26.0`.
+Requires `quixstreams[quixdatalake]>=3.28.0`.
 
 - **`STATS_COLUMNS`**: Comma-separated columns to compute per-file min/max statistics ("zone maps") for. The query layer uses them to skip files whose value range cannot satisfy a `WHERE` or `ORDER BY`. Statistics are computed from the in-memory batch, so they are nearly free — restrict the list only on very wide tables where per-file, per-column rows get costly in the catalog
   *Example*: `ts_ms,seq`
@@ -137,6 +137,24 @@ On Quix Cloud, when the workspace has a Lakehouse provisioned, `CATALOG_URL` and
 
 - **`MAX_WRITE_WORKERS`**: How many files can be written in parallel to storage at once
   *Default*: `10`
+
+### Stream Timeout
+
+Emits one event when an input message key stops receiving messages, so downstream consumers know that stream has gone quiet. A key that resumes is tracked again and can time out again. The feature is off by default and is enabled by setting `STREAM_TIMEOUT_TOPIC`.
+
+- **`STREAM_TIMEOUT_TOPIC`**: Topic the timeout events are produced to. Leave it empty to keep the feature disabled.
+  *Default*: `""` (disabled)
+
+- **`STREAM_TIMEOUT_SECONDS`**: Per-key inactivity threshold in seconds.
+  *Default*: `60`
+
+Each event is keyed by the silent input key (the same bytes that arrived on the input topic), and its value is JSON:
+
+```json
+{"ts_ms": 1714000000000, "stream": "<input key as a string>", "event": "stream_timeout"}
+```
+
+`ts_ms` is the wall-clock time the timeout was detected. Tracking is held in memory and starts empty on every restart, so a key only times out after the sink has seen a message for it since it last started.
 
 ### Application Settings
 

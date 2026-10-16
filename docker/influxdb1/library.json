@@ -3,8 +3,12 @@
   "name": "InfluxDB v1",
   "language": "docker",
   "tags": {
-    "Category": ["Time series DB"],
-    "Type": ["Auxiliary Services"]
+    "Category": [
+      "Time series DB"
+    ],
+    "Type": [
+      "Auxiliary Services"
+    ]
   },
   "shortDescription": "Run InfluxDB v1 in your pipeline.",
   "DefaultFile": "dockerfile",
@@ -19,8 +23,7 @@
     "UrlPrefix": "influxdb",
     "Network": {
       "ServiceName": "influxdb",
-      "Ports":
-      [
+      "Ports": [
         {
           "Port": 80,
           "TargetPort": 8086
@@ -30,27 +33,50 @@
   },
   "Variables": [
     {
-      "Name": "INFLUXDB_ADMIN_USER",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Admin username to initialize InfluxDB with",
-      "DefaultValue": "admin",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_ADMIN_PASSWORD",
-      "Type": "EnvironmentVariable",
-      "InputType": "Secret",
-      "Description": "Admin password to initialize InfluxDB with",
-      "Required": true
-    },
-    {
-      "Name": "INFLUXDB_DB",
-      "Type": "EnvironmentVariable",
-      "InputType": "FreeText",
-      "Description": "Database name to initialize InfluxDB with",
-      "DefaultValue": "quix",
-      "Required": false
+      "Name": "INFLUXDB1_CONNECTION",
+      "InputType": "VariableGroup",
+      "Description": "InfluxDB v1 connection details and admin credentials from a shared Variable Group.",
+      "VariableGroupId": "influxdb1-config",
+      "VariableGroupName": "InfluxDB v1 config",
+      "VariableGroupDescription": "Shared InfluxDB v1 connection details and admin credentials.",
+      "Required": true,
+      "Variables": [
+        {
+          "Key": "INFLUXDB1_HOST",
+          "Description": "Host address of the InfluxDB v1 instance, including the http:// scheme",
+          "DefaultValue": "http://influxdb",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB1_PORT",
+          "Description": "Port of the InfluxDB v1 instance (80 for the bundled server on the internal Quix network)",
+          "DefaultValue": "80",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB1_DATABASE",
+          "Description": "Database clients read and write, and the database the server is initialised with",
+          "DefaultValue": "quix",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB1_USERNAME",
+          "Description": "Admin username the server is initialised with, and that clients authenticate as",
+          "DefaultValue": "admin",
+          "Secret": false,
+          "Required": true
+        },
+        {
+          "Key": "INFLUXDB1_PASSWORD",
+          "Description": "Admin password the server is initialised with, and that clients authenticate with",
+          "DefaultValue": "",
+          "Secret": true,
+          "Required": true
+        }
+      ]
     }
-  ]  
+  ]
 }

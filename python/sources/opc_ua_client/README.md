@@ -15,9 +15,15 @@ Clicking `Customise` allows you to view or save the code to the repo that backs 
 The connector uses the following environment variables:
 
 - **output**: Name of the output topic to publish to.
-- **OPC_SERVER_URL**: The URL to your OPC UA server.
-- **OPC_NAMESPACE**: The namespace of the data coming from your OPC UA server.
 - **PARAMETER_NAMES_TO_PROCESS**: List of parameters from your OPC UA server that you want to process. e.g. ['a', 'b', 'c']. NB:Use single quotes.
+
+The server details come from the shared **`opcua-connection`** Variable Group, so this
+source and the bundled OPC UA Server sample stay in agreement:
+
+- **OPC_SERVER_URL**: URL of your OPC UA server (Default: `https://intopcserver:4840/freeopcua/server/`,
+  which is the OPC UA Server sample's internal service name)
+- **OPC_NAMESPACE**: The namespace of the data coming from your OPC UA server
+  (Default: `http://quix.freeopcua.io`)
 
 
 ## Contribute

@@ -24,6 +24,10 @@ This connector uses the following environment variables:
 - **output**: The output topic to stream Segment data into
 - **shared_secret**: The secret you configured in Segment
 
+These come from the shared **`segment-webhook-auth`** Variable Group (Segment Webhook Auth), so the connection is defined once per environment rather than per deployment:
+
+- `shared_secret`
+
 ## Contribute
 
 Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-samples) repo. Any new project that we accept will be attributed to you and you'll receive $200 in Quix credit.
