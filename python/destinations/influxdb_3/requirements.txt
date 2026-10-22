@@ -1,3 +1,6 @@
 ﻿quixstreams[influxdb3]==3.27.0
 influxdb3-python
 python-dotenv
+
+# Keep the Python CA bundle aligned with the image trust bootstrap.
+certifi==2026.10.19

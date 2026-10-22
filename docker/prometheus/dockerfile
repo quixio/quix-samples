@@ -1,5 +1,26 @@
+FROM python:3.12.15-slim-bookworm AS ca-trust
+RUN dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge '20250419~deb12u2'
+
 # Use the official Prometheus Docker image
 FROM prom/prometheus:v3.11.3
+
+USER root
+RUN mkdir -p /opt/quix-trust/certs
+COPY --from=ca-trust /etc/ssl/certs/ca-certificates.crt /opt/quix-trust/ca-certificates.crt
+RUN for bundle in \
+        /etc/ssl/certs/ca-certificates.crt \
+        /etc/pki/tls/certs/ca-bundle.crt \
+        /etc/ssl/ca-bundle.pem \
+        /etc/pki/tls/cacert.pem \
+        /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem \
+        /etc/ssl/cert.pem; do \
+        if [ -e "$bundle" ] || [ -L "$bundle" ]; then \
+            rm -f "$bundle" \
+                && cp /opt/quix-trust/ca-certificates.crt "$bundle" || exit 1; \
+        fi; \
+    done
+ENV SSL_CERT_FILE=/opt/quix-trust/ca-certificates.crt \
+    SSL_CERT_DIR=/opt/quix-trust/certs
 
 # Copy Prometheus configuration file into the container
 COPY prometheus.yml /etc/prometheus/prometheus.yml

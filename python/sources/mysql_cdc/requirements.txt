@@ -1,1 +1,4 @@
 quixstreams[mysql]==3.27.0
+
+# Keep the Python CA bundle aligned with the image trust bootstrap.
+certifi==2026.10.19

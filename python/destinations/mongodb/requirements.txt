@@ -1,2 +1,5 @@
 ﻿quixstreams[mongodb]==3.27.0
 python-dotenv
+
+# Keep the Python CA bundle aligned with the image trust bootstrap.
+certifi==2026.10.19
