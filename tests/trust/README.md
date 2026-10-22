@@ -1,6 +1,6 @@
 # Sample image trust qualification
 
-The [catalog](catalog.json) covers **76 catalog entries and 80 Dockerfile definitions** on `release/v5`: 74 sample Dockerfiles, two managed entries without Dockerfiles, two utility Dockerfiles, and four test Dockerfiles. The PostgreSQL CDC fixture uses `Dockerfile.postgres` and is included. Ten repositories referenced by `project-templates.json` are tracked separately.
+The [catalog](catalog.json) covers **76 catalog entries and 80 Dockerfile definitions** on `main`: 74 sample Dockerfiles, two managed entries without Dockerfiles, two utility Dockerfiles, and four test Dockerfiles. The PostgreSQL CDC fixture uses `Dockerfile.postgres` and is included. Ten repositories referenced by `project-templates.json` are tracked separately.
 
 Every catalog qualification starts as `pending`. A digest pin, package version, successful build, or passing OS bundle check alone does not establish that an application rejects the [disclosed eMudhra chains](https://emudhra.we-have-a-problem.com/). Owner routes identify maintainers or publishing repositories; they do not assign a named person.
 
@@ -72,7 +72,7 @@ does not update their source or running images.
 
 Explicit custom CA files, mounted certificates, environment overrides, and packages installed later can change effective trust. An unresolved item remains open exposure or unknown status; it does not count as a qualified sample.
 
-After qualification, rebuild applicable Instant Deploy artifacts and plan a controlled cluster rollout. Existing copied samples and deployments are separate rollout targets. Keep the `main` follow-up separate from this `release/v5` work.
+After qualification, rebuild applicable Instant Deploy artifacts and plan a controlled cluster rollout. Existing copied samples and deployments are separate rollout targets. Qualify this `main` candidate separately from `release/v5`: its application dependencies differ.
 
 ## Platform rollout
 

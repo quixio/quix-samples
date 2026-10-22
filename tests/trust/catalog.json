@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "baseline": {
-    "branch": "release/v5",
-    "commit": "fd8686bb76d0e0addd11be92fab227a9cece1133"
+    "branch": "main",
+    "commit": "cbffe05e473ea1cd7c05415310706353feac5520"
   },
   "target_platform": "linux/amd64",
   "counts": {
