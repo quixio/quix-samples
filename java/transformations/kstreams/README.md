@@ -86,6 +86,14 @@ docker run -e input=input-topic -e output=output-topic -p 8080:8080 kafka-stream
 
 The application will start inside the container, consuming data from the specified input topic, processing it, and publishing to the output topic.
 
+## TLS trust
+
+Both build and runtime images require Ubuntu's corrected CA package and replace
+the JVM's default `cacerts` with the resulting system trust store. This mitigates
+the disclosed eMudhra chains without relying on a patched Temurin release. Custom
+trust stores supplied to Java or Kafka must be assessed separately. The image
+digests and JMX agent checksum are pinned; refresh them alongside trust checks.
+
 ## Contribute
 
 Submit forked projects to the Quix GitHub repository. If your project is accepted, it will be attributed to you, and you’ll receive $200 in Quix credit.

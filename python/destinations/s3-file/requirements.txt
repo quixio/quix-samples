@@ -5,3 +5,6 @@ pandas
 boto3
 pyarrow
 mypy-boto3-s3
+
+# Keep the Python CA bundle aligned with the image trust bootstrap.
+certifi==2026.10.19

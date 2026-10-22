@@ -25,6 +25,20 @@ All samples include Docker Compose integration tests. Run tests using:
 
 See [tests/README.md](tests/README.md) for complete testing documentation.
 
+## Updating an existing project
+
+Projects copied from this library do not automatically receive later Dockerfile
+or dependency changes. Compare your project with the corresponding sample on
+the library release you use, apply the relevant base-image and trust-store
+updates, then rebuild and redeploy. Preserve your application changes and review
+any custom CA files or environment overrides.
+
+A platform builder update or cache refresh does not repair a previously built
+application image. Verify the resulting image's actual TLS clients and legitimate
+connections before rollout; restarting the old image does not apply these fixes.
+See [trust qualification](tests/trust/README.md) for checks and coverage limits,
+including managed publishers, vendor components and existing customer copies.
+
 ## Contributing
 
 Contributors are very welcome at Quix! Follow this guide to get a project into production on the platform.
