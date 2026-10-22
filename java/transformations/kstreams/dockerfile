@@ -1,6 +1,15 @@
 # Stage 1: Build the application
 FROM maven:3.9-eclipse-temurin-17 AS build
 
+# Replace the independent JVM trust store before Maven downloads dependencies.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates p11-kit \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge 20260816ubuntu0.24.04.1 \
+    && update-ca-certificates \
+    && trust extract --overwrite --format=java-cacerts --filter=ca-anchors \
+        --purpose=server-auth "$JAVA_HOME/lib/security/cacerts" \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory in the container
 WORKDIR /app
 
@@ -15,6 +24,14 @@ RUN mvn clean package -DskipTests
 # Stage 2: Run the application
 FROM eclipse-temurin:17-jre-jammy
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates p11-kit \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge 20260816ubuntu0.22.04.1 \
+    && update-ca-certificates \
+    && trust extract --overwrite --format=java-cacerts --filter=ca-anchors \
+        --purpose=server-auth "$JAVA_HOME/lib/security/cacerts" \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set the working directory in the container
 WORKDIR /app
 COPY config.yaml /app/config.yaml
@@ -23,7 +40,10 @@ COPY config.yaml /app/config.yaml
 COPY --from=build /app/target/kafka-message-count-1.0-SNAPSHOT.jar app.jar
 
 # Copy the Prometheus JMX Exporter and configuration file
-ADD https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/1.0.1/jmx_prometheus_javaagent-1.0.1.jar /app/jmx_prometheus_javaagent.jar
+RUN curl --fail --show-error --silent --location \
+        https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/1.0.1/jmx_prometheus_javaagent-1.0.1.jar \
+        --output /app/jmx_prometheus_javaagent.jar \
+    && echo "7d61f737fd661610ccc14aea79764faa1ea94a340cbc8f0029b3d2edea3d80c1  /app/jmx_prometheus_javaagent.jar" | sha256sum -c -
 
 # Expose port 80 for Prometheus metrics
 EXPOSE 80

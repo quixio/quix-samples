@@ -1,3 +1,4 @@
+certifi==2026.10.19
 quixstreams==3.27.0
 numpy
 python-dotenv
