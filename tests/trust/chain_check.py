@@ -151,4 +151,3 @@ def check_store(args, path, directory=False):
     return {"name": "os_ca_directory" if directory else "os_ca_file",
             "status": "failed" if accepted else "passed", **metadata,
             "accepted": accepted, "rejected": len(results) - accepted, "results": results}
-
