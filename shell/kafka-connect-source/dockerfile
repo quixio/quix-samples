@@ -1,4 +1,4 @@
-FROM alpine:3.19 as builder
+FROM alpine:3.23 AS builder
 
 ARG CONNECTOR_NAME=""
 
@@ -8,15 +8,17 @@ ENV SCALA_VERSION=2.13
 COPY src/scripts/install-kafka.sh /bin/
 COPY src/scripts/download-connector.sh /bin/
 
-RUN apk update \
-  && apk add --no-cache bash curl jq \
+RUN apk add --no-cache 'ca-certificates>=20261020-r0' bash curl jq openjdk17-jre java-cacerts \
+  && update-ca-certificates \
   && chmod a+x /bin/install-kafka.sh \
   && /bin/install-kafka.sh \
-  && apk del curl jq \
-  && apk add --no-cache bash openjdk17-jre \
-  && wget https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz \
-  && mkdir confluent-hub \
-  && tar -xzf confluent-hub-client-latest.tar.gz -C confluent-hub
+  && curl --fail --show-error --silent --location \
+       https://client.hub.confluent.io/confluent-hub-client-latest.tar.gz \
+       --output /tmp/confluent-hub-client.tar.gz \
+  && echo "4a498853807784f366b9fa848747b54c9038a1dfac296d24980f3f6d0f09583d  /tmp/confluent-hub-client.tar.gz" | sha256sum -c - \
+  && mkdir /confluent-hub \
+  && tar -xzf /tmp/confluent-hub-client.tar.gz -C /confluent-hub \
+  && rm /tmp/confluent-hub-client.tar.gz
 
 # Install connector at build time if CONNECTOR_NAME is provided
 RUN if [ -n "$CONNECTOR_NAME" ] && [ "$CONNECTOR_NAME" != "connector-name" ]; then \
@@ -27,7 +29,7 @@ RUN if [ -n "$CONNECTOR_NAME" ] && [ "$CONNECTOR_NAME" != "connector-name" ]; th
       echo "No connector specified for build-time installation"; \
     fi 
 
-FROM alpine:3.19
+FROM alpine:3.23
 
 ENV CONNECT_MODE=distributed
 ENV BOOTSTRAP_SERVERS=localhost:9091
@@ -41,9 +43,8 @@ ENV Quix__Sdk__Token=0
 
 EXPOSE 80
 
-RUN apk update \
-  && apk search openjdk \
-  && apk add --no-cache bash openjdk17-jre curl jq unzip \
+RUN apk add --no-cache 'ca-certificates>=20261020-r0' bash openjdk17-jre java-cacerts curl jq unzip \
+  && update-ca-certificates \
   && mkdir -p /opt/kafka/plugins
 
 # COPY Kafka and ConfluentHub Connectors

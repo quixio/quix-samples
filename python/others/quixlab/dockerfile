@@ -1,1 +1,17 @@
 FROM ghcr.io/quixio/quixlab:v-stable
+
+USER root
+RUN apk add --no-cache 'ca-certificates>=20260909-r3' \
+    && update-ca-certificates
+
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
+    SSL_CERT_DIR=/etc/ssl/certs \
+    REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
+    PIP_CERT=/etc/ssl/certs/ca-certificates.crt \
+    AWS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
+    GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=/etc/ssl/certs/ca-certificates.crt
+
+RUN python3 -c 'import os, shutil; import pip._vendor.certifi as certifi; source = "/etc/ssl/certs/ca-certificates.crt"; target = certifi.where(); (os.path.exists(target) and os.path.samefile(source, target)) or shutil.copyfile(source, target)' \
+    && python3 -m pip install --no-cache-dir \
+        --cert /etc/ssl/certs/ca-certificates.crt \
+        pip==26.2.2 certifi==2026.10.19
