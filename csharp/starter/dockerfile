@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim@sha256:738f72aff955d5c5690e06b6fc8ecd1b90ead564099a257ac528ff720b8da85f AS build
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge 20250419~deb12u2 \
@@ -7,7 +7,7 @@ WORKDIR /project
 COPY . .
 RUN dotnet build ./Service.csproj -o /buildoutput
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim@sha256:74a1d7c07211a7e8a2e35ff3c70ed8e4e1d6451a1ff7cf7bdf526f9eafa23023
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge 20250419~deb12u2 \

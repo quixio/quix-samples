@@ -1,4 +1,4 @@
-FROM mongo:8.0.21
+FROM mongo:8.0.21@sha256:02d91831f61a3194065e5e88e406f1ffe94b5b4d388f12d8f4444dfe2b1713c9
 
 USER root
 RUN apt-get update \

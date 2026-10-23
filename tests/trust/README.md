@@ -51,12 +51,32 @@ python3 -m unittest discover -s tests/trust -p 'test_*.py'
 
 ## Coverage limits and remaining work
 
-The sample Dockerfiles use version tags compatible with the current platform
-builder. Record the resolved base and output digests for every qualification;
-version tags can move. Digest-aware platform caching and sample digest pins are
-separate hardening work. Existing copied projects must apply the Dockerfile and
-dependency updates, rebuild and redeploy. A library update or cache refresh alone
-does not update their source or running images.
+The qualified sample Dockerfiles use readable version tags plus SHA-256 digests.
+The digest selects the image; the tag describes the intended version. The
+[base-image lock](base-images.lock.json) records the exact base resolutions from
+stage 1 amd64 builds and hashes of their build provenance. Pinning preserves
+those base inputs; it does not fix vulnerable image contents, authenticate a
+publisher, freeze package repositories, or make the entire build reproducible.
+
+Deploy the digest-aware Build service before switching the samples release.
+Its pinned-image cache verifies and consumes the original manifest/index digest;
+if mirroring fails, the original pinned upstream reference remains in place.
+It never substitutes a mutable tag for a requested digest. Existing tag-only
+projects retain their tag-cache behavior, including their configured offline
+fallback. No global cache purge is required.
+
+Update a base digest through a reviewed change and rerun trust and application
+checks. Security fixes published under the same tag are deliberately not picked
+up until the pin is refreshed. Run `python3 -m unittest discover -s tests/trust`
+to check that Dockerfiles, inventory and lock agree. InfluxDB3 remains excluded
+until its image can be accessed and qualified; pinning an unknown image would
+not close that gap.
+
+Existing copied projects must apply the Dockerfile and dependency updates,
+rebuild and redeploy. A library update or cache refresh alone does not update
+their source or running images. To roll back pinned sample source, drain queued
+builds first and restore the stage 1 source; retain the digest-aware builder
+until no pinned builds remain. Do not roll back corrected CA stores.
 
 | Area | Required follow-up |
 |---|---|
