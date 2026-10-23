@@ -1,8 +1,8 @@
-FROM python:3.12.15-slim-bookworm AS ca-trust
+FROM python:3.12.15-slim-bookworm@sha256:6a0e06f5ba0b373d051aabd3fffb9b873f27f9a2a3a14bcbe37dee6f0e3bbc70 AS ca-trust
 RUN dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge '20250419~deb12u2'
 
 # Use the official Prometheus Pushgateway image as the base image
-FROM prom/pushgateway:v1.11.2
+FROM prom/pushgateway:v1.11.2@sha256:c835998819105d84d484918908df132807c78c05f3e0e649df0c0479c6780d98
 
 USER root
 RUN mkdir -p /opt/quix-trust/certs

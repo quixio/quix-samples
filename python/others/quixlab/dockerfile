@@ -1,4 +1,4 @@
-FROM ghcr.io/quixio/quixlab:v-stable
+FROM ghcr.io/quixio/quixlab:v-stable@sha256:aae870317a333637a4ac80e1323a6f84d2b61843a0dc179edc90eb492e6ae19d
 
 USER root
 RUN apk add --no-cache 'ca-certificates>=20260909-r3' \
