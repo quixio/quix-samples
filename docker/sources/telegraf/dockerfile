@@ -1,5 +1,5 @@
 # Use the official Telegraf image for the final container
-FROM telegraf:1.38.3
+FROM telegraf:1.38.3@sha256:abd4f8eed229fc271394784dab7e21e6e4c4b56511dc9fe911b3bb0218baea20
 
 USER root
 RUN apt-get update \

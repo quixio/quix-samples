@@ -1,5 +1,5 @@
 # Stage 1: build Go runtime binaries
-FROM golang:1.27.3-bookworm AS builder
+FROM golang:1.27.3-bookworm@sha256:972b4110ba0f47539a975c31e52c64765e1ff19f2d74469ae4a595c6676e80a5 AS builder
 ENV GOTOOLCHAIN=local
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates git \
@@ -16,7 +16,7 @@ RUN go build -mod=readonly -o bin/tsbs_generate_data ./cmd/tsbs_generate_data \
 
 
 # Stage 2: build runtime container
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim@sha256:7ff6ba31527b9e336162fa061746c366c4b2032f4d2cff2078bea43f78efe3f8
 
 # Install CA certs for HTTPS
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \

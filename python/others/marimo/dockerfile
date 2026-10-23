@@ -1,6 +1,6 @@
-FROM ghcr.io/astral-sh/uv:0.13.4 AS uv-tools
+FROM ghcr.io/astral-sh/uv:0.13.4@sha256:9f130421e930bfbdc563c00740466603f8723158e90297d07957c2294640262b AS uv-tools
 
-FROM quixpublic.azurecr.io/devsessions-marimo:stable
+FROM quixpublic.azurecr.io/devsessions-marimo:stable@sha256:b42b6baceaa82673b74175d83897b8543a0d9567761ff0951fbbaca92cd775d8
 
 COPY --from=uv-tools /uv /uvx /bin/
 
