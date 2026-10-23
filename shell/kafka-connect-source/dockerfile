@@ -1,4 +1,4 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.23@sha256:21f3e19bafab57a9ff7aa9dd571dac72f868370472c10f450cc0416cc1aca553 AS builder
 
 ARG CONNECTOR_NAME=""
 
@@ -29,7 +29,7 @@ RUN if [ -n "$CONNECTOR_NAME" ] && [ "$CONNECTOR_NAME" != "connector-name" ]; th
       echo "No connector specified for build-time installation"; \
     fi 
 
-FROM alpine:3.23
+FROM alpine:3.23@sha256:21f3e19bafab57a9ff7aa9dd571dac72f868370472c10f450cc0416cc1aca553
 
 ENV CONNECT_MODE=distributed
 ENV BOOTSTRAP_SERVERS=localhost:9091

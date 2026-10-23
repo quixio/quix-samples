@@ -1,4 +1,4 @@
-FROM containers.mathworks.com/matlab-runtime:r2024b
+FROM containers.mathworks.com/matlab-runtime:r2024b@sha256:cdabc93d035d6c00cb28532a8d4971cab17ee4a91f9feb43a007be92d939a9c4
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates p11-kit \

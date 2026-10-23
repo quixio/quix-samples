@@ -1,5 +1,5 @@
 # Use the official InfluxDB image from the Docker Hub
-FROM influxdb:1.12
+FROM influxdb:1.12@sha256:b0d38932a1ace211782a030ace6d9aff2ad9cdd38f25ea13ff9d27f4a5845301
 
 USER root
 RUN apt-get update \

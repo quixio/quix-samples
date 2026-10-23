@@ -1,4 +1,4 @@
-FROM python:3.13.17-slim-bookworm
+FROM python:3.13.17-slim-bookworm@sha256:e32be0e55814a08977501ca863271d9bd02443710db8f2afaf8372e2c4508530
 
 # Use the patched OS trust store for Python and SDKs with bundled CA roots.
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \

@@ -1,4 +1,4 @@
-FROM python:3.13.17-slim-trixie
+FROM python:3.13.17-slim-trixie@sha256:fe14fd57a4c0361110eaa0c284112b189750bcb43fb04bb5d1ee7b7744027ccf
 
 # Use the patched OS trust store for Python and SDKs with bundled CA roots.
 ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \

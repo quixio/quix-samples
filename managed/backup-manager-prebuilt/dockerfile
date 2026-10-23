@@ -1,4 +1,4 @@
-FROM ghcr.io/quixio/mongodb-backup-manager:1.0.6
+FROM ghcr.io/quixio/mongodb-backup-manager:1.0.6@sha256:95fa6af6a84b182e6cba24649bccec4bf564382e7a942c2b14d4c85ec1b26831
 
 USER root
 RUN apt-get update \

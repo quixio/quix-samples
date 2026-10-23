@@ -1,0 +1,518 @@
+{
+  "schema_version": 1,
+  "platform": "linux/amd64",
+  "stage1_commit": "2080c0d0a13bec14e4933ad0e54d121dbef17e2b",
+  "unqualified_unpinned": [
+    "docker/influxdb3/dockerfile"
+  ],
+  "images": {
+    "alpine:3.23": {
+      "digest": "sha256:21f3e19bafab57a9ff7aa9dd571dac72f868370472c10f450cc0416cc1aca553",
+      "evidence": [
+        {
+          "dockerfile": "shell/kafka-connect-sink/dockerfile",
+          "metadata_sha256": "0191656405fe812efa555ae75eed3de0d889e593306a685815452c3ed5616af9"
+        },
+        {
+          "dockerfile": "shell/kafka-connect-source/dockerfile",
+          "metadata_sha256": "0bba4aa0d26aeb4e9d614027ba08c48e93d7a7928220201a2b745e177e84913f"
+        }
+      ]
+    },
+    "alpine:3.24.3": {
+      "digest": "sha256:b3413572228e34bd1c9245f5565e6cd127005655e8a7899aef33d8e83255c9e6",
+      "evidence": [
+        {
+          "dockerfile": "utils/display/dockerfile",
+          "metadata_sha256": "ed85bebd8fa9b07ab987bce5114be43f3c920552834e281bac12335d1cf85969"
+        },
+        {
+          "dockerfile": "utils/validate/dockerfile",
+          "metadata_sha256": "fe0ad17eb879cc2a56df2921da85f293d5fa6bd394b69dd511deae4fc6dedec5"
+        }
+      ]
+    },
+    "containers.mathworks.com/matlab-runtime:r2024b": {
+      "digest": "sha256:cdabc93d035d6c00cb28532a8d4971cab17ee4a91f9feb43a007be92d939a9c4",
+      "evidence": [
+        {
+          "dockerfile": "python/transformations/matlab-wheel/dockerfile",
+          "metadata_sha256": "0cf4b387578185e0b0b6067550f509e352381ddcfc6860cad86e05ff1ca8c1f9"
+        },
+        {
+          "dockerfile": "python/transformations/simulink-wheel/dockerfile",
+          "metadata_sha256": "8cd77475421fe62a8a5df383bcb18246374ce3ad2db97fb602728752c438b999"
+        }
+      ]
+    },
+    "debian:bookworm-slim": {
+      "digest": "sha256:7ff6ba31527b9e336162fa061746c366c4b2032f4d2cff2078bea43f78efe3f8",
+      "evidence": [
+        {
+          "dockerfile": "docker/sources/tsbs/dockerfile",
+          "metadata_sha256": "392dfec340d1c5cf239adf4115fbc81e4deafcc3eed86082c92971b072d26baf"
+        },
+        {
+          "dockerfile": "docker/tailscale_subnetrouter/dockerfile",
+          "metadata_sha256": "90752032db0e97f1b81e6c3daea429bc47a91d10fe5d522d11c5db0646adcc79"
+        }
+      ]
+    },
+    "eclipse-mosquitto:2.0.22": {
+      "digest": "sha256:199ea8ef2e35ec2b1b37e59cfd1dbae538ed4dfa4a2251a121a52215a6248a21",
+      "evidence": [
+        {
+          "dockerfile": "docker/mqtt/dockerfile",
+          "metadata_sha256": "872eeb21735f7103487f4ee0b5552890b1bcce99f759eed3a7a2eee96598cbf7"
+        }
+      ]
+    },
+    "eclipse-temurin:17-jre-jammy": {
+      "digest": "sha256:b3054a20e1a851574cdb1692dd0db5310c647e62214a2a7abecbec1b9e3ae8f1",
+      "evidence": [
+        {
+          "dockerfile": "java/transformations/kstreams/dockerfile",
+          "metadata_sha256": "7a7a5d593c49eb78271e8d36ecd2d6a47bd01910386b87167510863ea4859b1a"
+        }
+      ]
+    },
+    "ghcr.io/astral-sh/uv:0.13.4": {
+      "digest": "sha256:9f130421e930bfbdc563c00740466603f8723158e90297d07957c2294640262b",
+      "evidence": [
+        {
+          "dockerfile": "python/others/marimo/dockerfile",
+          "metadata_sha256": "4f747a82680fd2bb0a9e516c295211724a36a702b783a4dd1ebafbdccea21407"
+        }
+      ]
+    },
+    "ghcr.io/quixio/mongodb-backup-manager:1.0.6": {
+      "digest": "sha256:95fa6af6a84b182e6cba24649bccec4bf564382e7a942c2b14d4c85ec1b26831",
+      "evidence": [
+        {
+          "dockerfile": "managed/backup-manager-prebuilt/dockerfile",
+          "metadata_sha256": "5c1fac023ec0a71ab1d6f4bdd65eb8ded3f4a69b76c3a1bb3ee9d5c0637cac32"
+        }
+      ]
+    },
+    "ghcr.io/quixio/quixlab:v-stable": {
+      "digest": "sha256:aae870317a333637a4ac80e1323a6f84d2b61843a0dc179edc90eb492e6ae19d",
+      "evidence": [
+        {
+          "dockerfile": "python/others/quixlab/dockerfile",
+          "metadata_sha256": "d6f17af1a94cb197972ac70c4d4ff9d9bd37a4fc7a573caab60a62574a3a52e1"
+        }
+      ]
+    },
+    "golang:1.27.3-bookworm": {
+      "digest": "sha256:972b4110ba0f47539a975c31e52c64765e1ff19f2d74469ae4a595c6676e80a5",
+      "evidence": [
+        {
+          "dockerfile": "docker/sources/tsbs/dockerfile",
+          "metadata_sha256": "392dfec340d1c5cf239adf4115fbc81e4deafcc3eed86082c92971b072d26baf"
+        }
+      ]
+    },
+    "grafana/grafana:11.5.10": {
+      "digest": "sha256:4d1b2146de6488324c4e880be2028620259c414406e36a9ac2160485f8fd3259",
+      "evidence": [
+        {
+          "dockerfile": "docker/grafana/dockerfile",
+          "metadata_sha256": "c9be13465c0732a1cdf156aa103dbe5a3911ba05e3f7e59b7bd309959bea7df5"
+        }
+      ]
+    },
+    "influxdb:1.12": {
+      "digest": "sha256:b0d38932a1ace211782a030ace6d9aff2ad9cdd38f25ea13ff9d27f4a5845301",
+      "evidence": [
+        {
+          "dockerfile": "docker/influxdb1/dockerfile",
+          "metadata_sha256": "6db19ae06fa78afb2cae57daaaeb615f02272d408932e74b538275981c5881a7"
+        }
+      ]
+    },
+    "influxdb:2.7.12": {
+      "digest": "sha256:b8d940ca9376f85118260f5b6bd236b8a00b1749c3350c5578d4cde8e27f31f2",
+      "evidence": [
+        {
+          "dockerfile": "docker/influxdb2/dockerfile",
+          "metadata_sha256": "52c071b57ab0e5e56fc4f0c290dc7fb091d284f55f86e46a301a7d541422d41c"
+        }
+      ]
+    },
+    "maven:3.9-eclipse-temurin-17": {
+      "digest": "sha256:1a352420f7aba21f5ad08df31bab55f74c013fb491f1ae8ab1dd7ff9ed698584",
+      "evidence": [
+        {
+          "dockerfile": "java/transformations/kstreams/dockerfile",
+          "metadata_sha256": "7a7a5d593c49eb78271e8d36ecd2d6a47bd01910386b87167510863ea4859b1a"
+        }
+      ]
+    },
+    "mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim": {
+      "digest": "sha256:74a1d7c07211a7e8a2e35ff3c70ed8e4e1d6451a1ff7cf7bdf526f9eafa23023",
+      "evidence": [
+        {
+          "dockerfile": "csharp/starter/dockerfile",
+          "metadata_sha256": "af3b57883c25b9349282ce2467a82e53d09f1e6a2244cc92675970d31b89a35d"
+        }
+      ]
+    },
+    "mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim": {
+      "digest": "sha256:738f72aff955d5c5690e06b6fc8ecd1b90ead564099a257ac528ff720b8da85f",
+      "evidence": [
+        {
+          "dockerfile": "csharp/starter/dockerfile",
+          "metadata_sha256": "af3b57883c25b9349282ce2467a82e53d09f1e6a2244cc92675970d31b89a35d"
+        }
+      ]
+    },
+    "mongo:8.0.21": {
+      "digest": "sha256:02d91831f61a3194065e5e88e406f1ffe94b5b4d388f12d8f4444dfe2b1713c9",
+      "evidence": [
+        {
+          "dockerfile": "docker/mongodb/dockerfile",
+          "metadata_sha256": "42cebc287519e35d5f84ed3640a0a130cef32763fa08e43fddddfe7eb0115299"
+        }
+      ]
+    },
+    "nginx:1.31.8-alpine": {
+      "digest": "sha256:1ef7ca94d7879df82421428ce13bd1eaa412404953859cf7a5b6512c25e67a60",
+      "evidence": [
+        {
+          "dockerfile": "nodejs/basic-react-template/dockerfile",
+          "metadata_sha256": "f26805ce0949c70f440a6340dad191e348db1071151cc8f13a32cc9ca68efa29"
+        }
+      ]
+    },
+    "node:22.23.4-bookworm-slim": {
+      "digest": "sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d",
+      "evidence": [
+        {
+          "dockerfile": "nodejs/basic-react-template/dockerfile",
+          "metadata_sha256": "f26805ce0949c70f440a6340dad191e348db1071151cc8f13a32cc9ca68efa29"
+        },
+        {
+          "dockerfile": "nodejs/starter/dockerfile",
+          "metadata_sha256": "3cbf81929e741d5e636cbd2886b15a17458f070833734c67e03d75e0fd2bc351"
+        }
+      ]
+    },
+    "pgsty/minio:RELEASE.2026-08-04T00-00-00Z": {
+      "digest": "sha256:b6bfe7239bfc83fb90d31612d9704d86039dd714f7904b3f1ad68f211e602372",
+      "evidence": [
+        {
+          "dockerfile": "docker/minio/dockerfile",
+          "metadata_sha256": "ce50f81a7bb2950e6fef6e47b85f49016b7bc394001fc6a8b3f4ee176b34fce5"
+        }
+      ]
+    },
+    "postgres:16.15": {
+      "digest": "sha256:9e2cf6287f25c3151f4c9421ccce2b17f3e60061c111a29165e0d2cdd9ff0a97",
+      "evidence": [
+        {
+          "dockerfile": "docker/postgres/dockerfile",
+          "metadata_sha256": "1148f4bf3f5af3c416b8b489cb6809b49947157c212db707a8eb9bd547cc3a80"
+        }
+      ]
+    },
+    "postgres:16.15-alpine3.24": {
+      "digest": "sha256:f4610795587492cd4fb887c2dc3de301b813278bb6f616992061141b5f15ac36",
+      "evidence": [
+        {
+          "dockerfile": "tests/sources/postgres_cdc/Dockerfile.postgres",
+          "metadata_sha256": "802fce7c9234604e1f6f079b70d126163d979582868f0876855f8c7c298bde00"
+        }
+      ]
+    },
+    "prom/prometheus:v3.11.3": {
+      "digest": "sha256:e4254400b85610324913f0dc4acf92603d9984e7519414c5a12811aa6146acc3",
+      "evidence": [
+        {
+          "dockerfile": "docker/prometheus/dockerfile",
+          "metadata_sha256": "b82d9cb41e336e9d78d269170060e7f39dba4f62915c426bab56ea904f65f870"
+        }
+      ]
+    },
+    "prom/pushgateway:v1.11.2": {
+      "digest": "sha256:c835998819105d84d484918908df132807c78c05f3e0e649df0c0479c6780d98",
+      "evidence": [
+        {
+          "dockerfile": "docker/prometheus-pushgateway/dockerfile",
+          "metadata_sha256": "283791985a6c8cb808f6c91e87b7ea8a46e907f24ebcc2896a83c43f792763fc"
+        }
+      ]
+    },
+    "python:3.11.17-slim-trixie": {
+      "digest": "sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377",
+      "evidence": [
+        {
+          "dockerfile": "tests/destinations/lakehouse-sink/mock-catalog/Dockerfile",
+          "metadata_sha256": "d1d5df07170fb586be177256bd7e06b92c0a6430f36533fdd3db22c20fc7b9d5"
+        },
+        {
+          "dockerfile": "tests/framework/Dockerfile",
+          "metadata_sha256": "46554e8aa8688bbfa23198a3621fc98c6cf8525e0d33e25af58abef83ee4479f"
+        },
+        {
+          "dockerfile": "tests/sources/opc_ua_client/opcua-server/Dockerfile",
+          "metadata_sha256": "92d506bd3e5bfd06ce7b9a9ada18a9f1bdf048c7866bc2918002c07569fc7c7e"
+        }
+      ]
+    },
+    "python:3.12.15-slim-bookworm": {
+      "digest": "sha256:6a0e06f5ba0b373d051aabd3fffb9b873f27f9a2a3a14bcbe37dee6f0e3bbc70",
+      "evidence": [
+        {
+          "dockerfile": "docker/minio/dockerfile",
+          "metadata_sha256": "ce50f81a7bb2950e6fef6e47b85f49016b7bc394001fc6a8b3f4ee176b34fce5"
+        },
+        {
+          "dockerfile": "docker/prometheus-pushgateway/dockerfile",
+          "metadata_sha256": "283791985a6c8cb808f6c91e87b7ea8a46e907f24ebcc2896a83c43f792763fc"
+        },
+        {
+          "dockerfile": "docker/prometheus/dockerfile",
+          "metadata_sha256": "b82d9cb41e336e9d78d269170060e7f39dba4f62915c426bab56ea904f65f870"
+        },
+        {
+          "dockerfile": "python/destinations/MQTT/dockerfile",
+          "metadata_sha256": "6c826858d40cae93a89a097561baa4c0c0b7f0e9f2ca30b5b8d24a19ea95473a"
+        },
+        {
+          "dockerfile": "python/destinations/TDengine/dockerfile",
+          "metadata_sha256": "8d9397d96df27925a7ac27e030d365f36f0d6f6b3735dff08ca0e5f3ccddd6e9"
+        },
+        {
+          "dockerfile": "python/destinations/big_query/dockerfile",
+          "metadata_sha256": "5397a6f93c1b4ca2476b57bca63e9b8d673c9c40aab73f46976dc5f3e30d27b4"
+        },
+        {
+          "dockerfile": "python/destinations/confluent_kafka/dockerfile",
+          "metadata_sha256": "9627107d346dfc55dfcba5ef0cfdd611c53a72d9f5c8afda1eba5dd77da10767"
+        },
+        {
+          "dockerfile": "python/destinations/elasticsearch/dockerfile",
+          "metadata_sha256": "ba74a09c1476bcfffadf728d47c14c5137e704b1e08fdc5ccc4b562788c541ea"
+        },
+        {
+          "dockerfile": "python/destinations/flet-waveform/dockerfile",
+          "metadata_sha256": "5bbf709d12495da33b56a84a1df77d488e578a11a3ed04ee7e2ab542575d2224"
+        },
+        {
+          "dockerfile": "python/destinations/hivemq/dockerfile",
+          "metadata_sha256": "beab28a26a15590cf6c9d2860bc5356126dfd40443625717147f15b7a4b4cc62"
+        },
+        {
+          "dockerfile": "python/destinations/influxdb_1/dockerfile",
+          "metadata_sha256": "87498df64d238d49b0f49b18885f10af4544735ed0b1bd343e053ecf633bb1fa"
+        },
+        {
+          "dockerfile": "python/destinations/influxdb_3/dockerfile",
+          "metadata_sha256": "a071f836707e68b41f98eac3cf13d2c9365be1e0ea152aefe1c68da4e373acaa"
+        },
+        {
+          "dockerfile": "python/destinations/mongodb/dockerfile",
+          "metadata_sha256": "900500efc9fb82d350bca80e4f4d034965736d80d9f210c1329abd447f4737c4"
+        },
+        {
+          "dockerfile": "python/destinations/postgres/dockerfile",
+          "metadata_sha256": "732dcd06f69e39f11ad94546a2ad6a6c3dabdf1a13b9881c0bcfc71be23b69eb"
+        },
+        {
+          "dockerfile": "python/destinations/redis_dest/dockerfile",
+          "metadata_sha256": "0cb129c717fc0fbdda817108e3a6593b41cca8e516f190098eea8d09945c3bb6"
+        },
+        {
+          "dockerfile": "python/destinations/s3-file/dockerfile",
+          "metadata_sha256": "51af95f4fbcd3bf88e3a65cdc910ee837ff7ea1493e5003e82a42ec4e70b3024"
+        },
+        {
+          "dockerfile": "python/destinations/s3-iceberg-destination/dockerfile",
+          "metadata_sha256": "09b7a80efedc094e812758127d5fe39f4a2a0e405c9078a81bedfda3c0c1ec21"
+        },
+        {
+          "dockerfile": "python/destinations/slack_notifications/dockerfile",
+          "metadata_sha256": "b4015718042be54a08a5606c0db913ccc6f967e8a0beb7d4a5b168458069cb10"
+        },
+        {
+          "dockerfile": "python/destinations/starter_destination/dockerfile",
+          "metadata_sha256": "f3c9c196af500cc7b5c07df035145f74bc2375fab28bf3f914bfdb597212dcba"
+        },
+        {
+          "dockerfile": "python/destinations/websocket/dockerfile",
+          "metadata_sha256": "c90a2ddc80d490438976fbedfb8c8b2619f231336f71d57663aae4de0dfa5b38"
+        },
+        {
+          "dockerfile": "python/others/jupyterlab/dockerfile",
+          "metadata_sha256": "05888dcf251bec69d9e3c3f7555103716c759373c92719f1b8198104aafc0f11"
+        },
+        {
+          "dockerfile": "python/others/opc_ua_server/dockerfile",
+          "metadata_sha256": "2e90df0b42664e02df41ae085aa17059c778a9db3dc2e65ce5508da2ccc75a95"
+        },
+        {
+          "dockerfile": "python/sources/MQTT/dockerfile",
+          "metadata_sha256": "86d6b658b021a3ed20489272905568d3df4e0fba5f7c333d5a58ed102cd6f368"
+        },
+        {
+          "dockerfile": "python/sources/confluent_kafka/dockerfile",
+          "metadata_sha256": "81d239470cbff3990788c06198e5a836ec25d5173617c402b5b6fbc598b411f7"
+        },
+        {
+          "dockerfile": "python/sources/csv_import/dockerfile",
+          "metadata_sha256": "f79bed654ddfff25a544d821a957d0d1d9a8b4288159df5a159877db1a90b242"
+        },
+        {
+          "dockerfile": "python/sources/demo_data/dockerfile",
+          "metadata_sha256": "fec98085bfee1bd58e99b42ee9bd110d57117f530d20451e978e343816c23f6d"
+        },
+        {
+          "dockerfile": "python/sources/environment_source/dockerfile",
+          "metadata_sha256": "3bb5139a8c3233df5a7ce37ad4bf28547be4dd984441c3085190272a713fee7e"
+        },
+        {
+          "dockerfile": "python/sources/flet-input-form/dockerfile",
+          "metadata_sha256": "406aa154928aca2c82edcf2368d1973dd448c950ffe2de602ec02a546ca90530"
+        },
+        {
+          "dockerfile": "python/sources/hivemq/dockerfile",
+          "metadata_sha256": "f23399dc87eeb39cb5315620ea1ab103b0f666290eb3e26828f8b6c0b7a98514"
+        },
+        {
+          "dockerfile": "python/sources/http_api_source/dockerfile",
+          "metadata_sha256": "e978fb1b70efb28d6dfb5be313cbaf962b55332d41bd081f9e764c684e18fbec"
+        },
+        {
+          "dockerfile": "python/sources/influxdb_2/dockerfile",
+          "metadata_sha256": "92c6c096e5496d957f44cbe609b8aa3fa58f69dcc72eedc0f88294282beb87c3"
+        },
+        {
+          "dockerfile": "python/sources/influxdb_3/dockerfile",
+          "metadata_sha256": "24971030ea86cd0bcce9cd3ecc5792d65044d8beaf04b12a29b46217b15dbf9d"
+        },
+        {
+          "dockerfile": "python/sources/kafka/dockerfile",
+          "metadata_sha256": "5284dda2f02bfa931377a6aa476e38a6f5dcbd1f17effc887e38d1638211a86c"
+        },
+        {
+          "dockerfile": "python/sources/opc_ua_client/dockerfile",
+          "metadata_sha256": "c052c6ed4477bd7ed19b93a093c6dd6346aa2554948d3852695bdaeba31e33d9"
+        },
+        {
+          "dockerfile": "python/sources/postgres_cdc/dockerfile",
+          "metadata_sha256": "25863dc92df4aa84de0cd70941447ae6ad9425f3435c71d104ecb27f9948d710"
+        },
+        {
+          "dockerfile": "python/sources/redis_source/dockerfile",
+          "metadata_sha256": "b1d9524012a387da919e459779fc7e9c1eaa6f125c60e1a887cdd92a08162d1a"
+        },
+        {
+          "dockerfile": "python/sources/s3_source/dockerfile",
+          "metadata_sha256": "4349c10ab69a4053d95b70a3785c4b45768f8dd1bf5c2db998e5d8ea5a801021"
+        },
+        {
+          "dockerfile": "python/sources/segment_webhook/dockerfile",
+          "metadata_sha256": "27f2532766d37c4a3655b6c7331d75d704aeec674c593a833e09c4467819a01b"
+        },
+        {
+          "dockerfile": "python/sources/snowplow_source/dockerfile",
+          "metadata_sha256": "0de52bfb3acd9c84adf7a293ef31bf6fbaba06efff6b176e5b17c7dcd19a381a"
+        },
+        {
+          "dockerfile": "python/sources/sql_cdc/dockerfile",
+          "metadata_sha256": "110040429adf60c3af59f3cbc0b5105a5c68e1d78d9d58efab7ed1716923b0d5"
+        },
+        {
+          "dockerfile": "python/sources/starter_source/dockerfile",
+          "metadata_sha256": "4cb0e51c7a5ba685e25d56f739888d0353c7bf360d3f0ec534c5e5e2cc986153"
+        },
+        {
+          "dockerfile": "python/sources/variables-demo/dockerfile",
+          "metadata_sha256": "38b3a4cd30f74c4b2382c567f2a358bed496bc1ce4da0b5694af5b8240f9cee4"
+        },
+        {
+          "dockerfile": "python/transformations/event_detection/dockerfile",
+          "metadata_sha256": "fe912028207a1c047af2fa83167f564900c6415f34c79fd918655f06812af24b"
+        },
+        {
+          "dockerfile": "python/transformations/hugging_face_model/dockerfile",
+          "metadata_sha256": "c258950da833e6f9e17e571d57db2cbdcfd95b556136154e3b1f0f522339b67f"
+        },
+        {
+          "dockerfile": "python/transformations/quix_configuration_enricher/dockerfile",
+          "metadata_sha256": "1b359d3ec0d5312ecdecaf2c3a52b9f0e71cc8d9763e8eab329b395be681e60a"
+        },
+        {
+          "dockerfile": "python/transformations/starter_transformation/dockerfile",
+          "metadata_sha256": "6fa902b90d76747da61b61e02cdc38f0ebb3797b57e0c307d890d6f615fb1399"
+        },
+        {
+          "dockerfile": "python/transformations/transformation-with-tests/dockerfile",
+          "metadata_sha256": "e7f368ea35d2213f8f8d34d9c0d17ebb28b8e33dc6e013780c447ef3d09db01d"
+        }
+      ]
+    },
+    "python:3.12.15-slim-trixie": {
+      "digest": "sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704",
+      "evidence": [
+        {
+          "dockerfile": "python/others/streamlit/dockerfile",
+          "metadata_sha256": "fa153d2f3b4e9079af189654613852010f50dbfe37dd74151450f362baa7d3d5"
+        },
+        {
+          "dockerfile": "python/transformations/fmu-runner/dockerfile",
+          "metadata_sha256": "ef678f3bb65922875f6caa88730b0b17524510d7ad329d2a3246c60af7376bfb"
+        }
+      ]
+    },
+    "python:3.13.17-slim-bookworm": {
+      "digest": "sha256:e32be0e55814a08977501ca863271d9bd02443710db8f2afaf8372e2c4508530",
+      "evidence": [
+        {
+          "dockerfile": "python/destinations/lakehouse-sink/dockerfile",
+          "metadata_sha256": "ebeff0dccf5e527e86b86a8cce21e0f6391715b43b53cd3c2252a94e817d4388"
+        }
+      ]
+    },
+    "python:3.13.17-slim-trixie": {
+      "digest": "sha256:fe14fd57a4c0361110eaa0c284112b189750bcb43fb04bb5d1ee7b7744027ccf",
+      "evidence": [
+        {
+          "dockerfile": "python/destinations/kafka/dockerfile",
+          "metadata_sha256": "bd4d4662340c708fd28333ba9f97f2789c7c46ccc9c7584b1b6d70dde4c1cbe2"
+        },
+        {
+          "dockerfile": "python/sources/mysql_cdc/dockerfile",
+          "metadata_sha256": "7920652ba25040a28c6a171aaff6710bfee33c24266610e4ffb9f609024eaee2"
+        }
+      ]
+    },
+    "quixpublic.azurecr.io/devsessions-marimo:stable": {
+      "digest": "sha256:b42b6baceaa82673b74175d83897b8543a0d9567761ff0951fbbaca92cd775d8",
+      "evidence": [
+        {
+          "dockerfile": "python/others/marimo/dockerfile",
+          "metadata_sha256": "4f747a82680fd2bb0a9e516c295211724a36a702b783a4dd1ebafbdccea21407"
+        }
+      ]
+    },
+    "redis/redis-stack-server:7.4.0-v8": {
+      "digest": "sha256:798ab84d9f266936b034ab11c4d04a2b8e4b441884c5aa7d17ac951eefdf742a",
+      "evidence": [
+        {
+          "dockerfile": "docker/redis_server/dockerfile",
+          "metadata_sha256": "004ef28c512c1e2969c9bcd2c18b6f66e3b60927d787e653bf009506930b9758"
+        }
+      ]
+    },
+    "telegraf:1.38.3": {
+      "digest": "sha256:abd4f8eed229fc271394784dab7e21e6e4c4b56511dc9fe911b3bb0218baea20",
+      "evidence": [
+        {
+          "dockerfile": "docker/sources/telegraf/dockerfile",
+          "metadata_sha256": "2f052360ea9336a2c9afb840f7bef2d107b6486666135ae0828f21009a542002"
+        }
+      ]
+    }
+  }
+}
