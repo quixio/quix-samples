@@ -20,6 +20,8 @@ EXPOSE 3000
 
 # Init container as root then switch to user Grafana
 USER root
+COPY --from=tianon/gosu:1.19 /gosu /usr/local/bin/
 COPY init.sh /init.sh
+COPY state.sh /state.sh
 RUN chmod +x /init.sh
 ENTRYPOINT ["/init.sh"]

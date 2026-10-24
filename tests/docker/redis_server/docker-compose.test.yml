@@ -9,6 +9,7 @@ services:
       dockerfile: dockerfile
     entrypoint: >
       sh -c "
+        test -f /state.sh && gosu --version >/dev/null &&
         test -x /init.sh &&
         test -f /usr/local/etc/redis/redis.conf &&
         id redis &&

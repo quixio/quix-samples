@@ -1,27 +1,14 @@
 #!/bin/sh
 set -e
 
-TARGET_DIR="/app/state/influxdb"
-
-# Check if directory already exists
-if [ ! -d "$TARGET_DIR" ]; then
-  su -s /bin/sh -c "mkdir -p '$TARGET_DIR'" 2>/dev/null || {
-    mkdir -p "$TARGET_DIR" || {
-      echo "❌ Failed to create directory as root"
-      exit 1
-    }
-
-    chown "$TARGET_USER:$TARGET_GROUP" "$TARGET_DIR" 2>/dev/null || {
-      echo "❌ Failed to chown directory to $TARGET_USER"
-      exit 1
-    }
-  }
-fi
+STATE_DIR=/app/state/influxdb
+RUN_USER=influxdb
+. /state.sh
 
 # Set the data directory to our custom path
-export INFLUXDB_DATA_DIR="$TARGET_DIR/data"
-export INFLUXDB_META_DIR="$TARGET_DIR/meta"
-export INFLUXDB_DATA_WAL_DIR="$TARGET_DIR/wal"
+export INFLUXDB_DATA_DIR="$STATE_DIR/data"
+export INFLUXDB_META_DIR="$STATE_DIR/meta"
+export INFLUXDB_DATA_WAL_DIR="$STATE_DIR/wal"
 
 # The v1 image initialises itself from INFLUXDB_ADMIN_USER / INFLUXDB_ADMIN_PASSWORD /
 # INFLUXDB_DB, but the connection is defined once in the shared influxdb1-config Variable
@@ -42,5 +29,4 @@ fi
 
 export INFLUXDB_HTTP_AUTH_ENABLED=true
 
-# Call the original InfluxDB entrypoint with our config
-exec /entrypoint.sh influxd -config "${INFLUXD_CONFIG_PATH}"
+state_exec /entrypoint.sh influxd -config "${INFLUXD_CONFIG_PATH}"

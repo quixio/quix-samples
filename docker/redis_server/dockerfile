@@ -12,6 +12,8 @@ USER root
 # redis-stack-server image doesn't include a redis user (unlike the standard redis image)
 RUN groupadd -r redis && useradd -r -g redis redis
 
+COPY --from=tianon/gosu:1.19 /gosu /usr/local/bin/
 COPY init.sh /init.sh
+COPY state.sh /state.sh
 RUN chmod +x /init.sh
 ENTRYPOINT ["/init.sh"]

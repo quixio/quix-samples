@@ -16,8 +16,7 @@ this deployment (or your project/environment) with:
 
 If a non-empty username and password are provided, HTTP API authentication is enabled. The
 v1 image reads `INFLUXDB_ADMIN_USER` / `INFLUXDB_ADMIN_PASSWORD` / `INFLUXDB_DB`; `init.sh`
-maps the group values onto those names, and falls back to them directly so deployments
-created before the group was introduced keep working.
+maps the group values onto those names.
 
 ## How to Run
 
@@ -29,8 +28,7 @@ created before the group was introduced keep working.
     > Note: If non-empty username + password are provided, HTTP API authentication is also enabled
 4. **\[Recommended, Optional\]** configure your DB name in the same group:   
     - `INFLUXDB1_DATABASE`: Database name to create (else, defaults to: `quix`)
-5. **\[Recommended, Optional\]** Enable state, otherwise changes will be lost on restart.  
-    > Note: the necessary storage type may not be supported on all Quix Platforms.
+5. State is enabled by default (5 GB at `/app/state`). Run exactly one replica: replicas share the state volume, and two influxd processes on one data directory corrupt it. Without state the service exits at startup rather than run on disk that is wiped on restart. Credentials are applied when the data directory is first initialised; changing them later does not update an existing database.
 
 ## How to Use
 

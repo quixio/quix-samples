@@ -13,6 +13,8 @@ services:
     environment:
       - mqtt_username=groupuser
       - mqtt_password=grouppass
+    tmpfs:
+      - /app/state
     networks:
       - test-network
     stop_grace_period: 3s

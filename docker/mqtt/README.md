@@ -35,7 +35,7 @@ required and the container exits with an error if either is empty.
 1. Log in or sign up at [Quix](https://portal.platform.quix.io/signup?xlink=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
 3. Assign the `mqtt-connection` variable group, setting at least `mqtt_password`.
-4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
+4. State is enabled by default (1 GB at `/app/state`). Run exactly one replica: replicas share the state volume, and two mosquitto processes on one data directory corrupt it. Without state the service exits at startup rather than run on disk that is wiped on restart.
 
 For more configuration options and details, refer to [Mosquitto Docker Hub](https://hub.docker.com/_/eclipse-mosquitto).
 

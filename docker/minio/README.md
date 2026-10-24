@@ -27,7 +27,7 @@ S3_BUCKET="<MINIO BUCKET NAME>"
 1. Log in or sign up at [Quix](https://portal.platform.quix.io/signup?xlink=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
 3. Assign the `aws-connection` variable group, setting at least `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
-4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
+4. State is enabled by default (10 GB at `/app/state`). Run exactly one replica: replicas share the state volume, and two minio processes on one data directory corrupt it. Without state the service exits at startup rather than run on disk that is wiped on restart.
 
 For more configuration options and details, refer to [MinIO's Docker Hub](https://hub.docker.com/r/minio/minio).
 

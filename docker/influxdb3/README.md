@@ -30,7 +30,7 @@ and `INFLUXDB3_OBJECT_STORE` (default `file`).
 1. Create an account or log in to your [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account and navigate to the Code Samples section.
 2. Assign the `influxdb3-config` variable group. To enable authentication, set `INFLUXDB3_USE_TOKEN` to `true` and provide an `INFLUXDB3_TOKEN` starting with `apiv3_`; otherwise leave `INFLUXDB3_USE_TOKEN` as `false` to run without auth.
 3. Click `Deploy` to launch a pre-built container in Quix.
-4. Enable state, otherwise changes (including the seeded admin token) will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
+4. State is enabled by default (5 GB at `/app/state`). Run exactly one replica: replicas share the state volume, and two influxdb3 processes on one data directory corrupt it. Without state the service exits at startup rather than run on disk that is wiped on restart. Credentials are applied when the data directory is first initialised; changing them later does not update an existing database.
 
 ## How to Use
 To interact with InfluxDB v3 from your pipeline, either use one of the no-code [influxdb3 connectors](https://quix.io/integrations?category=Time+series+DB)

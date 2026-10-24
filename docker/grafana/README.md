@@ -20,7 +20,7 @@ that file if your InfluxDB is elsewhere.
 1. Log in or sign up at [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
 3. Set `GF_SECURITY_ADMIN_PASSWORD`, and assign the `influxdb2-config` variable group so the InfluxDB datasource gets its token.
-4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
+4. State is enabled by default (1 GB at `/app/state`). Run exactly one replica: replicas share the state volume, and two grafana processes on one data directory corrupt it. Without state the service exits at startup rather than run on disk that is wiped on restart. Credentials are applied when the data directory is first initialised; changing them later does not update an existing database.
 
 ## Save dashboards with code
 

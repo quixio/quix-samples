@@ -24,7 +24,7 @@ exactly those names, so the group values reach it directly with no mapping.
 1. Create an account or log in to your [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account and navigate to the Code Samples section.
 2. Assign the `postgres-connection` variable group, setting at least `POSTGRES_PASSWORD`.
 3. Click `Deploy` to launch a pre-built container in Quix.
-4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
+4. State is enabled by default (5 GB at `/app/state`). Run exactly one replica: replicas share the state volume, and two postgres processes on one data directory corrupt it. Without state the service exits at startup rather than run on disk that is wiped on restart. To start with an empty database, set `PGDATA` to an unused directory under `/app/state`; the old directory stays on the volume. Credentials are applied when the data directory is first initialised; changing them later does not update an existing database.
 
 ## How to Use
 To interact with PosgreSQL from your pipeline, either use one of the no-code [PostgreSQL connectors](https://quix.io/integrations?category=SQL+DB)

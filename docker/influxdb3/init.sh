@@ -1,10 +1,10 @@
 #!/bin/sh
 set -e
 
-TARGET_DIR="/app/state/influxdb3"
-TARGET_USER="influxdb3"
-TARGET_GROUP="influxdb3"
+STATE_DIR=/app/state/influxdb3
+RUN_USER=influxdb3
 TOKEN_FILE="/app/state/influxdb3-admin-token.json"
+. /state.sh
 
 # ---------------------------------------------------------------------------
 # Configuration (injected by the "influxdb3-config" Quix global variable group)
@@ -36,22 +36,7 @@ if [ "$USE_TOKEN" -eq 1 ]; then
   esac
 fi
 
-# Check if directory already exists
-if [ ! -d "$TARGET_DIR" ]; then
-  su -s /bin/sh -c "mkdir -p '$TARGET_DIR'" "$TARGET_USER" 2>/dev/null || {
-    mkdir -p "$TARGET_DIR" || {
-      echo "❌ Failed to create directory as root"
-      exit 1
-    }
-
-    chown "$TARGET_USER" "$TARGET_DIR" 2>/dev/null || {
-      echo "❌ Failed to chown directory to $TARGET_USER"
-      exit 1
-    }
-  }
-fi
-
-SERVE="influxdb3 serve --node-id '$NODE_ID' --object-store '$OBJECT_STORE' --data-dir '$TARGET_DIR'"
+set -- influxdb3 serve --node-id "$NODE_ID" --object-store "$OBJECT_STORE" --data-dir "$STATE_DIR"
 
 if [ "$USE_TOKEN" -eq 1 ]; then
   # Write an "offline" admin-token file so the first startup bootstraps auth
@@ -68,12 +53,12 @@ if [ "$USE_TOKEN" -eq 1 ]; then
   "expiry_millis": $EXPIRY_MILLIS
 }
 EOF
-  chown "$TARGET_USER" "$TOKEN_FILE" 2>/dev/null || true
+  chown "$RUN_USER" "$TOKEN_FILE" 2>/dev/null || true
   chmod 600 "$TOKEN_FILE"
-  SERVE="$SERVE --admin-token-file '$TOKEN_FILE'"
+  set -- "$@" --admin-token-file "$TOKEN_FILE"
 else
   echo "⚠️  INFLUXDB3_USE_TOKEN is not 'true' — starting InfluxDB v3 WITHOUT authentication."
-  SERVE="$SERVE --without-auth"
+  set -- "$@" --without-auth
 fi
 
-exec su -s /bin/sh "$TARGET_USER" -c "$SERVE"
+state_exec "$@"

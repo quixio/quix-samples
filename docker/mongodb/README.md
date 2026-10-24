@@ -28,15 +28,14 @@ to this deployment (or your project/environment) with:
 - **MONGO_PASSWORD** — root password for that user, secret
 
 The mongo image itself reads `MONGO_INITDB_ROOT_USERNAME` / `MONGO_INITDB_ROOT_PASSWORD`;
-`init.sh` maps the group values onto those names, and falls back to them directly so
-deployments created before the group was introduced keep working.
+`init.sh` maps the group values onto those names.
 
 ## How to Run
 
 1. Log in or sign up at [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) and navigate to the Code Samples section.
 2. Click **Deploy** to launch a pre-built container.
 3. Assign the `mongodb-connection` variable group, setting at least `MONGO_PASSWORD`.
-4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
+4. State is enabled by default (5 GB at `/app/state`). Run exactly one replica: replicas share the state volume, and two mongod processes on one data directory corrupt it. Without state the service exits at startup rather than run on disk that is wiped on restart. To start with an empty database, set `MONGO_DBPATH` to an unused directory under `/app/state`; the old directory stays on the volume. Credentials are applied when the data directory is first initialised; changing them later does not update an existing database.
 
 For more configuration options and details, refer to [Mongo Docker Hub](https://hub.docker.com/_/mongo).
 

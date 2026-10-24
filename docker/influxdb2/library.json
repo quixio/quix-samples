@@ -19,6 +19,10 @@
     "CpuMillicores": 1000,
     "MemoryInMb": 8000,
     "Replicas": 1,
+    "State": {
+      "Enabled": true,
+      "Size": 5
+    },
     "PublicAccess": true,
     "UrlPrefix": "influxdb",
     "Network": {

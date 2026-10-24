@@ -16,15 +16,14 @@ group to this deployment (or your project/environment) with:
 - **INFLUXDB2_PASSWORD** — admin password for that user, secret
 
 The v2 image is set up from `DOCKER_INFLUXDB_INIT_*`; `init.sh` maps the group values onto
-those names, and falls back to them directly so deployments created before the group was
-introduced keep working.
+those names.
 
 ## How to Run
 
 1. Create an account or log in to your [Quix](https://portal.cloud.quix.io/signup?utm_campaign=github) account and navigate to the Code Samples section.
 2. Click `Deploy` to launch a pre-built container in Quix.
 3. Assign the `influxdb2-config` variable group, setting at least `INFLUXDB2_TOKEN` and `INFLUXDB2_PASSWORD`.
-4. Enable state, otherwise changes will be lost on restart. Please note, the necessary storage type may not be supported on all Quix Platforms.
+4. State is enabled by default (5 GB at `/app/state`). Run exactly one replica: replicas share the state volume, and two influxd processes on one data directory corrupt it. Without state the service exits at startup rather than run on disk that is wiped on restart. Credentials are applied when the data directory is first initialised; changing them later does not update an existing database.
 
 ## How to Use
 To interact with InfluxDB v2 from your pipeline, add influxdb-client to your requirements.txt file and use the following Python code:

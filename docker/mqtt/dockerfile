@@ -1,7 +1,7 @@
 FROM eclipse-mosquitto:2.0.22
 
 USER root
-# RUN apk add --no-cache gosu  # For Alpine-based images
+COPY --from=tianon/gosu:1.19 /gosu /usr/local/bin/
 
 EXPOSE 1883
 
@@ -9,5 +9,6 @@ COPY mosquitto.conf /mosquitto/config/mosquitto.conf
 
 # Define the default command to run when starting the container
 COPY init.sh /init.sh
+COPY state.sh /state.sh
 RUN chmod +x /init.sh
 ENTRYPOINT ["/init.sh"]

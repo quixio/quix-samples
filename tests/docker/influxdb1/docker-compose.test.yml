@@ -16,10 +16,8 @@ services:
       - INFLUXDB1_USERNAME=groupuser
       - INFLUXDB1_PASSWORD=grouppass
       - INFLUXDB1_DATABASE=groupdb
-    # influxdb:1.12 runs as a non-root user, so it cannot create /app itself. Quix Cloud
-    # mounts state there; a world-writable tmpfs reproduces that locally.
     tmpfs:
-      - /app:mode=1777
+      - /app/state
     networks:
       - test-network
     stop_grace_period: 3s

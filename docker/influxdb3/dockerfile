@@ -1,10 +1,12 @@
 FROM quay.io/influxdb/influxdb3-core
 
 USER root
+COPY --from=tianon/gosu:1.19 /gosu /usr/local/bin/
 
 EXPOSE 8181
 
 # Define the default command to run when starting the container
 COPY init.sh /init.sh
+COPY state.sh /state.sh
 RUN chmod +x /init.sh
 ENTRYPOINT ["/init.sh"]

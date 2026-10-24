@@ -1,24 +1,8 @@
 #!/bin/sh
 set -e
 
-TARGET_DIR="/app/state/minio"
-TARGET_USER="root"
-TARGET_GROUP="root"
-
-# Check if directory already exists
-if [ ! -d "$TARGET_DIR" ]; then
-  su -s /bin/sh -c "mkdir -p '$TARGET_DIR'" "$TARGET_USER" 2>/dev/null || {
-    mkdir -p "$TARGET_DIR" || {
-      echo "❌ Failed to create directory as root"
-      exit 1
-    }
-
-    chown "$TARGET_USER:$TARGET_GROUP" "$TARGET_DIR" 2>/dev/null || {
-      echo "❌ Failed to chown directory to $TARGET_USER"
-      exit 1
-    }
-  }
-fi
+STATE_DIR=/app/state/minio
+. /state.sh
 
 # MinIO's root user is also the S3 access key that clients authenticate with, so it comes
 # from the shared aws-connection Variable Group (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY)
@@ -31,4 +15,4 @@ if [ -z "$MINIO_ROOT_USER" ] || [ -z "$MINIO_ROOT_PASSWORD" ]; then
   exit 1
 fi
 
-exec /bin/sh -c "minio server $TARGET_DIR --console-address ':9001'"
+exec minio server "$STATE_DIR" --console-address :9001

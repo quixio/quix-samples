@@ -16,6 +16,8 @@ services:
       - POSTGRES_USER=groupuser
       - POSTGRES_PASSWORD=grouppass
       - POSTGRES_DB=groupdb
+    tmpfs:
+      - /app/state
     networks:
       - test-network
     stop_grace_period: 3s

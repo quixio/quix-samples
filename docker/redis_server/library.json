@@ -15,6 +15,10 @@
     "CpuMillicores": 500,
     "MemoryInMb": 1000,
     "Replicas": 1,
+    "State": {
+      "Enabled": true,
+      "Size": 3
+    },
     "Network": {
       "ServiceName": "redis",
       "Ports":

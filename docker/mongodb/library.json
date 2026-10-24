@@ -19,6 +19,10 @@
     "CpuMillicores": 200,
     "MemoryInMb": 800,
     "Replicas": 1,
+    "State": {
+      "Enabled": true,
+      "Size": 5
+    },
     "Network": {
       "ServiceName": "mongodb",
       "Ports": [
@@ -68,6 +72,14 @@
           "Required": true
         }
       ]
+    },
+    {
+      "Name": "MONGO_DBPATH",
+      "Type": "EnvironmentVariable",
+      "InputType": "FreeText",
+      "Description": "mongod data directory under /app/state. Point it at an unused directory to start with an empty database; the old one stays on the volume.",
+      "DefaultValue": "/app/state/mongodb",
+      "Required": false
     }
   ]
 }

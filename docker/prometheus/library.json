@@ -15,6 +15,10 @@
     "CpuMillicores": 500,
     "MemoryInMb": 2000,
     "Replicas": 1,
+    "State": {
+      "Enabled": true,
+      "Size": 2
+    },
     "Network": {
       "ServiceName": "prometheus",
       "Ports":

@@ -13,5 +13,6 @@ EXPOSE 5432
 # Define the default command to run when starting the container
 USER root
 COPY init.sh /init.sh
+COPY state.sh /state.sh
 RUN chmod +x /init.sh
 ENTRYPOINT ["/init.sh"]

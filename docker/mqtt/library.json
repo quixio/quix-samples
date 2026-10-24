@@ -19,6 +19,10 @@
     "CpuMillicores": 200,
     "MemoryInMb": 800,
     "Replicas": 1,
+    "State": {
+      "Enabled": true,
+      "Size": 1
+    },
     "Network": {
       "ServiceName": "mqtt",
       "Ports": [

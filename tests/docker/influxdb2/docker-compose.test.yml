@@ -18,6 +18,8 @@ services:
       - INFLUXDB2_BUCKET=groupbucket
       - INFLUXDB2_USERNAME=groupuser
       - INFLUXDB2_ORG=grouporg
+    tmpfs:
+      - /app/state
     networks:
       - test-network
     stop_grace_period: 3s
