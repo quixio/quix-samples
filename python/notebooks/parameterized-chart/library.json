@@ -1,0 +1,17 @@
+{
+  "libraryItemId": "notebook-parameterized-chart",
+  "name": "Parameterized chart",
+  "language": "Python",
+  "tags": {
+    "Type": [
+      "Notebook"
+    ],
+    "Category": [
+      "Data Exploration"
+    ]
+  },
+  "shortDescription": "Use a dropdown and a text box to change a chart. Uses generated data and needs no data source.",
+  "DefaultFile": "parameterized-chart.py",
+  "DisplayOrder": 4,
+  "IsHighlighted": true
+}
