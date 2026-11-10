@@ -8,7 +8,7 @@ import quixlab as ql
 canvas = ql.Canvas(title="Live lake viewer")
 
 
-@canvas.cell(position=(60, 0), size=(900, 140), code_height=200)
+@canvas.cell(position=(60, 0), size=(900, 230), code_height=80)
 def inputs_check():
     try:
         from quixlab.sources.lake import list_tables
@@ -20,7 +20,7 @@ def inputs_check():
     return ql.ui.markdown(f"Ready. The first table is `{names[0]}`. Change the SQL in the next cell to use another table.")
 
 
-@canvas.dataset(position=(60, 160), size=(900, 360), code_height=240)
+@canvas.dataset(position=(60, 250), size=(900, 380), code_height=120)
 def latest(inputs_check):
     import pandas as pd
     try:
@@ -37,7 +37,7 @@ def latest(inputs_check):
     return df.head(200)
 
 
-@canvas.cell(position=(60, 540), size=(900, 360), code_height=240, viz={"type": "line", "x": "time", "y": "value"})
+@canvas.cell(position=(60, 650), size=(900, 360), code_height=100, viz={"type": "line", "x": "time", "y": "value"})
 def chart(latest):
     import pandas as pd
     if not len(latest):

@@ -8,7 +8,7 @@ import quixlab as ql
 canvas = ql.Canvas(title="Sensor data explorer")
 
 
-@canvas.cell(position=(60, 0), size=(900, 100), code_height=200)
+@canvas.cell(position=(60, 0), size=(900, 230), code_height=80)
 def inputs_check():
     try:
         import numpy  # noqa: F401
@@ -18,7 +18,7 @@ def inputs_check():
     return ql.ui.markdown("Ready. This notebook makes its own data. It needs no table or topic.")
 
 
-@canvas.dataset(position=(60, 120), size=(900, 320), code_height=200)
+@canvas.dataset(position=(60, 250), size=(900, 380), code_height=120)
 def readings(inputs_check):
     import numpy as np
     import pandas as pd
@@ -31,12 +31,12 @@ def readings(inputs_check):
     })
 
 
-@canvas.cell(position=(60, 460), size=(440, 300), code_height=200, viz={"type": "table"})
+@canvas.cell(position=(60, 650), size=(440, 360), code_height=100, viz={"type": "table"})
 def per_sensor(readings):
     return readings.groupby("sensor")["temperature"].agg(["count", "mean", "min", "max"]).reset_index()
 
 
-@canvas.cell(position=(520, 460), size=(440, 300), code_height=200, viz={"type": "line", "x": "time", "y": "temperature"})
+@canvas.cell(position=(520, 650), size=(440, 360), code_height=100, viz={"type": "line", "x": "time", "y": "temperature"})
 def trend(readings):
     return readings[readings["sensor"] == "A"]
 

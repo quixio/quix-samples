@@ -8,7 +8,7 @@ import quixlab as ql
 canvas = ql.Canvas(title="Parameterized chart")
 
 
-@canvas.cell(position=(60, 0), size=(900, 100), code_height=200)
+@canvas.cell(position=(60, 0), size=(900, 230), code_height=80)
 def inputs_check():
     try:
         import numpy  # noqa: F401
@@ -18,17 +18,17 @@ def inputs_check():
     return ql.ui.markdown("Ready. Pick a sensor and a window size. The chart updates.")
 
 
-@canvas.cell(position=(60, 120), size=(440, 160), code_height=200)
+@canvas.cell(position=(60, 250), size=(440, 230), code_height=80)
 def sensor_pick(inputs_check):
     return ql.ui.dropdown(["A", "B", "C"], value="A", label="Sensor")
 
 
-@canvas.cell(position=(520, 120), size=(440, 160), code_height=200)
+@canvas.cell(position=(520, 250), size=(440, 230), code_height=80)
 def window_size(inputs_check):
     return ql.ui.text(label="Window (rows)", value="20")
 
 
-@canvas.cell(position=(60, 300), size=(900, 360), code_height=240, viz={"type": "line", "x": "time", "y": "smooth"})
+@canvas.cell(position=(60, 500), size=(900, 380), code_height=100, viz={"type": "line", "x": "time", "y": "smooth"})
 def chart_data(sensor_pick, window_size):
     import numpy as np
     import pandas as pd
