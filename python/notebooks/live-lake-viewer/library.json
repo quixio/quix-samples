@@ -1,0 +1,18 @@
+{
+  "libraryItemId": "notebook-live-lake-viewer",
+  "name": "Live lake viewer",
+  "language": "Python",
+  "tags": {
+    "Type": [
+      "Notebook"
+    ],
+    "Category": [
+      "Quix Lake",
+      "Live data"
+    ]
+  },
+  "shortDescription": "Read the latest rows of a Quix Lake table and chart one number. Needs at least one table.",
+  "DefaultFile": "live-lake-viewer.py",
+  "DisplayOrder": 2,
+  "IsHighlighted": true
+}

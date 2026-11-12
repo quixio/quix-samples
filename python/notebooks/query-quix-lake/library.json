@@ -1,0 +1,18 @@
+{
+  "libraryItemId": "notebook-query-quix-lake",
+  "name": "Query Quix Lake",
+  "language": "Python",
+  "tags": {
+    "Type": [
+      "Notebook"
+    ],
+    "Category": [
+      "Quix Lake",
+      "SQL"
+    ]
+  },
+  "shortDescription": "Run SQL on a Quix Lake table and plot the result. Needs at least one table.",
+  "DefaultFile": "query-quix-lake.py",
+  "DisplayOrder": 1,
+  "IsHighlighted": true
+}

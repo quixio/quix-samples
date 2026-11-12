@@ -1,0 +1,18 @@
+{
+  "libraryItemId": "notebook-basics",
+  "name": "Notebook basics",
+  "language": "Python",
+  "tags": {
+    "Type": [
+      "Notebook"
+    ],
+    "Category": [
+      "Generated data",
+      "Basics"
+    ]
+  },
+  "shortDescription": "A note, a Python cell, a table and a chart on generated data. Needs no data source.",
+  "DefaultFile": "notebook-basics.py",
+  "DisplayOrder": 5,
+  "IsHighlighted": false
+}
