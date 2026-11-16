@@ -1,0 +1,17 @@
+{
+  "libraryItemId": "notebook-generated-sensor-explorer",
+  "name": "Sensor data explorer",
+  "language": "Python",
+  "tags": {
+    "Type": [
+      "Notebook"
+    ],
+    "Category": [
+      "Generated data"
+    ]
+  },
+  "shortDescription": "Explore generated sensor data with a summary table and a chart. Needs no data source.",
+  "DefaultFile": "generated-sensor-explorer.py",
+  "DisplayOrder": 3,
+  "IsHighlighted": true
+}

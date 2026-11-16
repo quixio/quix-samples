@@ -1,0 +1,19 @@
+name: Check notebook items
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, develop, feature/notebooks ]
+  pull_request:
+    branches: [ main, develop, feature/notebooks ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: python -m unittest discover -s tests/notebooks
+      - run: python utils/check_notebooks.py .
