@@ -2,3 +2,6 @@ fastapi[standard]
 quixstreams
 python-dotenv
 python-multipart
+
+# Keep the Python CA bundle aligned with the image trust bootstrap.
+certifi==2026.10.19

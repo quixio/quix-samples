@@ -1,6 +1,10 @@
 FROM eclipse-mosquitto:2.0.22
 
 USER root
+RUN apk add --no-cache 'ca-certificates>=20261020-r0' \
+    && update-ca-certificates
+
+USER root
 # RUN apk add --no-cache gosu  # For Alpine-based images
 
 EXPOSE 1883

@@ -8,3 +8,5 @@ python-dotenv
 pytest>=7.0.0
 pytest-cov
 
+# Keep the Python CA bundle aligned with the image trust bootstrap.
+certifi==2026.10.19

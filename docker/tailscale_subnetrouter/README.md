@@ -163,3 +163,9 @@ That's it! Your Tailscale Subnet Router is now deployed with state persistence e
 ## Open Source
 
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
+
+## TLS trust
+
+The image requires the corrected Debian CA package and pins Tailscale 1.104.2,
+which includes Go's eMudhra intermediate-certificate block. Update the base image
+digest and Tailscale version together with TLS regression checks.

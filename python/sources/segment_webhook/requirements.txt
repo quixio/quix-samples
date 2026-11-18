@@ -3,3 +3,6 @@ flask
 requests
 waitress
 python-dotenv
+
+# Keep the Python CA bundle aligned with the image trust bootstrap.
+certifi==2026.10.19

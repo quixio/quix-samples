@@ -1,8 +1,9 @@
 # Use Alpine as the base image
-FROM alpine:latest
+FROM alpine:3.24.3
 
 # Install jq
-RUN apk add --no-cache jq util-linux
+RUN apk add --no-cache 'ca-certificates>=20261020-r0' jq util-linux \
+    && update-ca-certificates
 
 # Copy the script into the image
 COPY script.sh /script.sh

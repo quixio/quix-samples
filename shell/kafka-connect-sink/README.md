@@ -65,3 +65,14 @@ Submit forked projects to the Quix [GitHub](https://github.com/quixio/quix-sampl
 This project is open source under the Apache 2.0 license and available in our [GitHub](https://github.com/quixio/quix-samples) repo.
 
 Please star us and mention us on social to show your appreciation.
+
+## TLS trust and pinned downloads
+
+The image requires Alpine's corrected CA package and regenerates the Java trust
+store from those system roots. This covers the default stores used by curl,
+Kafka Connect and Confluent Hub. Broker-specific trust stores fetched from Quix
+and independent stores bundled by a connector need separate validation.
+
+Kafka 3.6.1 and the Confluent Hub 8.3.1 archive have pinned checksums. Confluent
+Hub's download URL is mutable, so an upstream replacement fails the checksum
+check until its version and checksum are reviewed together.

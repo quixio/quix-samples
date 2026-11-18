@@ -1,9 +1,18 @@
 # Stage 1: build Go runtime binaries
-FROM golang:1.24 AS builder
-RUN apt-get update && apt-get install -y git make
-RUN git clone --depth 1 --branch quix https://github.com/quixio/tsbs-quix.git /src
+FROM golang:1.27.3-bookworm AS builder
+ENV GOTOOLCHAIN=local
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates git \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge 20250419~deb12u2 \
+    && rm -rf /var/lib/apt/lists/*
+RUN git init /src \
+    && git -C /src remote add origin https://github.com/quixio/tsbs-quix.git \
+    && git -C /src fetch --depth 1 origin 77799146ea9b810825ea74696241ccd42cb24d4e \
+    && git -C /src checkout --detach FETCH_HEAD \
+    && test "$(git -C /src rev-parse HEAD)" = 77799146ea9b810825ea74696241ccd42cb24d4e
 WORKDIR /src
-RUN make tsbs_generate_data tsbs_load_kafka_quix
+RUN go build -mod=readonly -o bin/tsbs_generate_data ./cmd/tsbs_generate_data \
+    && go build -mod=readonly -o bin/tsbs_load_kafka_quix ./cmd/tsbs_load_kafka_quix
 
 
 # Stage 2: build runtime container
@@ -11,6 +20,7 @@ FROM debian:bookworm-slim
 
 # Install CA certs for HTTPS
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && \
+    dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge 20250419~deb12u2 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /src/bin/tsbs_generate_data /app/bin/tsbs_generate_data

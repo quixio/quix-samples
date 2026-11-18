@@ -1,4 +1,7 @@
-FROM postgres:16.15-alpine
+FROM postgres:16.15-alpine3.24
+
+RUN apk add --no-cache 'ca-certificates>=20261020-r0' \
+    && update-ca-certificates
 
 # Install dependencies and build wal2json (skip bitcode to avoid clang version issues)
 RUN apk add --no-cache --virtual .build-deps \
@@ -7,7 +10,11 @@ RUN apk add --no-cache --virtual .build-deps \
         gcc \
         musl-dev \
         postgresql-dev && \
-    git clone --depth 1 --branch wal2json_2_6 https://github.com/eulerto/wal2json.git /tmp/wal2json && \
+    git init /tmp/wal2json && \
+    git -C /tmp/wal2json remote add origin https://github.com/eulerto/wal2json.git && \
+    git -C /tmp/wal2json fetch --depth 1 origin 75629c2e1e81a12350cc9d63782fc53252185d8d && \
+    git -C /tmp/wal2json checkout --detach FETCH_HEAD && \
+    test "$(git -C /tmp/wal2json rev-parse HEAD)" = 75629c2e1e81a12350cc9d63782fc53252185d8d && \
     cd /tmp/wal2json && \
     make with_llvm=no && \
     make with_llvm=no install && \

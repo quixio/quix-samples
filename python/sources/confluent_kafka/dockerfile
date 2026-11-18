@@ -1,4 +1,17 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.12.15-slim-bookworm
+
+# Use the patched OS trust store for Python and SDKs with bundled CA roots.
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
+    SSL_CERT_DIR=/etc/ssl/certs \
+    REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
+    PIP_CERT=/etc/ssl/certs/ca-certificates.crt \
+    AWS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
+    GRPC_DEFAULT_SSL_ROOTS_FILE_PATH=/etc/ssl/certs/ca-certificates.crt
+
+RUN dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge '20250419~deb12u2' \
+    && python -c "from pathlib import Path; import shutil, pip._vendor.certifi; source = Path('/etc/ssl/certs/ca-certificates.crt'); target = Path(pip._vendor.certifi.where()); source.resolve() == target.resolve() or shutil.copyfile(source, target)" \
+    && python -m pip install --no-cache-dir \
+        --cert /etc/ssl/certs/ca-certificates.crt pip==26.2.2 certifi==2026.10.19
 			
 # Set environment variables for non-interactive setup and unbuffered output
 ENV DEBIAN_FRONTEND=noninteractive \

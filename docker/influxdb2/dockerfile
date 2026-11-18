@@ -1,6 +1,21 @@
 # Use the official InfluxDB image from the Docker Hub
 FROM influxdb:2.7.12
 
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && . /etc/os-release \
+    && case "$ID:$VERSION_ID" in \
+        debian:12) ca_minimum='20250419~deb12u2' ;; \
+        debian:13) ca_minimum='20250419+deb13u1' ;; \
+        ubuntu:22.04) ca_minimum='20260816ubuntu0.22.04.1' ;; \
+        ubuntu:24.04) ca_minimum='20260816ubuntu0.24.04.1' ;; \
+        *) echo "No validated CA package floor for $ID:$VERSION_ID" >&2; exit 1 ;; \
+    esac \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge "$ca_minimum" \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy the InfluxDB configuration file if needed
 ADD influx-configs.toml /etc/influxdb2/influx-configs.toml
 ENV INFLUXD_CONFIG_PATH=/etc/influxdb2/influx-configs.toml
